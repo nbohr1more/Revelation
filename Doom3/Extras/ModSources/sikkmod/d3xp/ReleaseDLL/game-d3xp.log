@@ -1,0 +1,95 @@
+﻿Build started 22-06-2014 02:58:10.
+     1>Project "F:\Projects\grimm_source\game-d3xp.vcxproj" on node 2 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "d3xp/ReleaseDLL\game-d3xp.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       ClCompile:
+         All outputs are up-to-date.
+         All outputs are up-to-date.
+         All outputs are up-to-date.
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(990,5): warning MSB8012: TargetPath(F:\Projects\grimm_source\d3xp/ReleaseDLL\game-d3xp.dll) does not match the Linker's OutputFile property value (F:\Projects\grimm_source\ReleaseDLLD3XP\gamex86.dll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\Microsoft.CppBuild.targets(992,5): warning MSB8012: TargetName(game-d3xp) does not match the Linker's OutputFile property value (gamex86). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"./ReleaseDLLD3XP/gamex86.dll" /INCREMENTAL:NO /NOLOGO odbc32.lib odbccp32.lib ./ReleaseDLL/idLib.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /DEF:".\d3xp\game.def" /MANIFEST /ManifestFile:"d3xp/ReleaseDLL\game-d3xp.dll.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"d3xp/ReleaseDLL\d3xp_game.pdb" /MAP:"d3xp/ReleaseDLL\d3xp_game.map" /STACK:"4194304" /OPT:REF /OPT:ICF /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"d3xp/ReleaseDLL\game-d3xp.lib" /MACHINE:X86 /DLL d3xp/ReleaseDLL\Actor.obj
+         d3xp/ReleaseDLL\AF.obj
+         d3xp/ReleaseDLL\AFEntity.obj
+         d3xp/ReleaseDLL\BrittleFracture.obj
+         d3xp/ReleaseDLL\Camera.obj
+         d3xp/ReleaseDLL\Entity.obj
+         d3xp/ReleaseDLL\Fx.obj
+         d3xp/ReleaseDLL\Game_local.obj
+         d3xp/ReleaseDLL\Game_network.obj
+         d3xp/ReleaseDLL\GameEdit.obj
+         d3xp/ReleaseDLL\Grabber.obj
+         d3xp/ReleaseDLL\IK.obj
+         d3xp/ReleaseDLL\Item.obj
+         d3xp/ReleaseDLL\Light.obj
+         d3xp/ReleaseDLL\Misc.obj
+         d3xp/ReleaseDLL\Moveable.obj
+         d3xp/ReleaseDLL\Mover.obj
+         d3xp/ReleaseDLL\MultiplayerGame.obj
+         d3xp/ReleaseDLL\Player.obj
+         d3xp/ReleaseDLL\PlayerIcon.obj
+         d3xp/ReleaseDLL\PlayerView.obj
+         d3xp/ReleaseDLL\Projectile.obj
+         d3xp/ReleaseDLL\Pvs.obj
+         d3xp/ReleaseDLL\SecurityCamera.obj
+         d3xp/ReleaseDLL\SmokeParticles.obj
+         d3xp/ReleaseDLL\Sound.obj
+         d3xp/ReleaseDLL\Target.obj
+         d3xp/ReleaseDLL\Trigger.obj
+         d3xp/ReleaseDLL\Weapon.obj
+         d3xp/ReleaseDLL\WorldSpawn.obj
+         d3xp/ReleaseDLL\AAS.obj
+         d3xp/ReleaseDLL\AAS_debug.obj
+         d3xp/ReleaseDLL\AAS_pathing.obj
+         d3xp/ReleaseDLL\AAS_routing.obj
+         d3xp/ReleaseDLL\AI.obj
+         d3xp/ReleaseDLL\AI_events.obj
+         d3xp/ReleaseDLL\AI_pathing.obj
+         d3xp/ReleaseDLL\AI_Vagary.obj
+         d3xp/ReleaseDLL\Anim.obj
+         d3xp/ReleaseDLL\Anim_Blend.obj
+         d3xp/ReleaseDLL\Anim_Import.obj
+         d3xp/ReleaseDLL\Anim_Testmodel.obj
+         d3xp/ReleaseDLL\Class.obj
+         d3xp/ReleaseDLL\DebugGraph.obj
+         d3xp/ReleaseDLL\Event.obj
+         d3xp/ReleaseDLL\SaveGame.obj
+         d3xp/ReleaseDLL\SysCmds.obj
+         d3xp/ReleaseDLL\SysCvar.obj
+         d3xp/ReleaseDLL\TypeInfo.obj
+         d3xp/ReleaseDLL\Clip.obj
+         d3xp/ReleaseDLL\Force.obj
+         d3xp/ReleaseDLL\Force_Constant.obj
+         d3xp/ReleaseDLL\Force_Drag.obj
+         d3xp/ReleaseDLL\Force_Field.obj
+         d3xp/ReleaseDLL\Force_Grab.obj
+         d3xp/ReleaseDLL\Force_Spring.obj
+         d3xp/ReleaseDLL\Physics.obj
+         d3xp/ReleaseDLL\Physics_Actor.obj
+         d3xp/ReleaseDLL\Physics_AF.obj
+         d3xp/ReleaseDLL\Physics_Base.obj
+         d3xp/ReleaseDLL\Physics_Monster.obj
+         d3xp/ReleaseDLL\Physics_Parametric.obj
+         d3xp/ReleaseDLL\Physics_Player.obj
+         d3xp/ReleaseDLL\Physics_RigidBody.obj
+         d3xp/ReleaseDLL\Physics_Static.obj
+         d3xp/ReleaseDLL\Physics_StaticMulti.obj
+         d3xp/ReleaseDLL\Push.obj
+         d3xp/ReleaseDLL\Script_Compiler.obj
+         d3xp/ReleaseDLL\Script_Interpreter.obj
+         d3xp/ReleaseDLL\Script_Program.obj
+         d3xp/ReleaseDLL\Script_Thread.obj
+         d3xp/ReleaseDLL\precompiled.obj /MACHINE:I386 /fixed:no 
+            Creating library d3xp/ReleaseDLL\game-d3xp.lib and object d3xp/ReleaseDLL\game-d3xp.exp
+         game-d3xp.vcxproj -> F:\Projects\grimm_source\d3xp/ReleaseDLL\game-d3xp.dll
+       Manifest:
+         C:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /outputresource:"./ReleaseDLLD3XP/gamex86.dll;#2" /manifest "d3xp/ReleaseDLL\game-d3xp.dll.intermediate.manifest"
+       FinalizeBuildStatus:
+         Deleting file "d3xp/ReleaseDLL\game-d3xp.unsuccessfulbuild".
+         Touching "d3xp/ReleaseDLL\game-d3xp.lastbuildstate".
+     1>Done Building Project "F:\Projects\grimm_source\game-d3xp.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.24

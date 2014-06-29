@@ -1,0 +1,16 @@
+﻿Build started 22-06-2014 17:53:54.
+     1>Project "F:\Projects\Doom3\Wrappers\SikkModD3XP\run_d3xp.vcxproj" on node 2 (Rebuild target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /nologo /W3 /WX- /O2 /Oy- /Gm- /EHsc /MT /GS /Zc:wchar_t /Zc:forScope /Fo"F:\Projects\Doom3\Wrappers\SikkModD3XP\Debug\\" /Fd"F:\Projects\Doom3\Wrappers\SikkModD3XP\Debug\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt run_mp.c
+         run_mp.c
+       ResourceCompile:
+         C:\Program Files (x86)\Windows Kits\8.1\bin\x86\rc.exe /D _VC80_UPGRADE=0x0700 /l"0x0409" /nologo /fo"F:\Projects\Doom3\Wrappers\SikkModD3XP\Debug\run_d3xp.res" run_d3xp.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"F:\Projects\Doom3\Wrappers\SikkModD3XP\Debug\SikkMod-D3XP.exe" /VERSION:"1.666" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:"F:\Projects\Doom3\Wrappers\SikkModD3XP\Debug\SikkMod-D3XP.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /IMPLIB:"F:\Projects\Doom3\Wrappers\SikkModD3XP\Debug\SikkMod-D3XP.lib" /MACHINE:X86 /SAFESEH F:\Projects\Doom3\Wrappers\SikkModD3XP\Debug\run_d3xp.res
+         F:\Projects\Doom3\Wrappers\SikkModD3XP\Debug\run_mp.obj
+         run_d3xp.vcxproj -> F:\Projects\Doom3\Wrappers\SikkModD3XP\Debug\SikkMod-D3XP.exe
+     1>Done Building Project "F:\Projects\Doom3\Wrappers\SikkModD3XP\run_d3xp.vcxproj" (Rebuild target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.76

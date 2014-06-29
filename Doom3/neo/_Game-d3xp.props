@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <_PropertySheetDisplayName>Game d3xp Library</_PropertySheetDisplayName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ClCompile Include="idlib\precompiled.cpp">
+      <PrecompiledHeader>Create</PrecompiledHeader>
+      <PrecompiledHeaderFile></PrecompiledHeaderFile>
+      <ForcedIncludeFiles></ForcedIncludeFiles>
+    </ClCompile>
+  </ItemGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>__DOOM__;GAME_DLL;_D3XP;CTF;_XKEYCHECK_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\idlib;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>precompiled.h</PrecompiledHeaderFile>
+      <ForcedIncludeFiles>precompiled.h</ForcedIncludeFiles>
+    </ClCompile>
+    <Link>
+      <OutputFile>$(OutDir)d3xp\gamex86.dll</OutputFile>
+      <ModuleDefinitionFile>.\d3xp\game.def</ModuleDefinitionFile>
+    </Link>
+    <PreBuildEvent>
+      <Command>..\build\"$(PlatformName)"\"$(Configuration)"\TypeInfo.exe d3xp</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+</Project>

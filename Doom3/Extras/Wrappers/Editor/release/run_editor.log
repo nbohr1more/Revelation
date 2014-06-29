@@ -1,0 +1,18 @@
+﻿Build started 23-06-2014 03:08:26.
+     1>Project "F:\Projects\Doom3\Wrappers\Editor\run_editor.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /nologo /W3 /WX- /Ox /Ob1 /Oi /Ot /Oy /GL /D _VC80_UPGRADE=0x0700 /D _MBCS /Gm- /EHsc /MT /GS- /Zc:wchar_t /Zc:forScope /Fo"F:\Projects\Doom3\Wrappers\Editor\release\\" /Fd"F:\Projects\Doom3\Wrappers\Editor\release\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt run_mp.c
+         run_mp.c
+       ResourceCompile:
+         C:\Program Files (x86)\Windows Kits\8.1\bin\x86\rc.exe /D _VC80_UPGRADE=0x0700 /l"0x0409" /nologo /fo"F:\Projects\Doom3\Wrappers\Editor\release\run_editor.res" run_editor.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"F:\Projects\Doom3\Wrappers\Editor\release\Editor.exe" /VERSION:"1.666" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST:NO /PDB:"F:\Projects\Doom3\Wrappers\Editor\release\Editor.pdb" /SUBSYSTEM:WINDOWS /OPT:REF /LTCG /TLBID:1 /DYNAMICBASE:NO /IMPLIB:"F:\Projects\Doom3\Wrappers\Editor\release\Editor.lib" /MACHINE:X86 /SAFESEH F:\Projects\Doom3\Wrappers\Editor\release\run_editor.res
+         F:\Projects\Doom3\Wrappers\Editor\release\run_mp.obj
+         Generating code
+         Finished generating code
+         run_editor.vcxproj -> F:\Projects\Doom3\Wrappers\Editor\release\Editor.exe
+     1>Done Building Project "F:\Projects\Doom3\Wrappers\Editor\run_editor.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:01.48
