@@ -981,15 +981,17 @@ void RB_StencilShadowPass( const drawSurf_t *drawSurfs ) {
 		glEnable( GL_POLYGON_OFFSET_FILL );
 	}
 	glStencilFunc( GL_ALWAYS, 1, 255 );
+	// Moved depthbounds test here
 	if( r_useDepthBoundsTest.GetBool() ) {
 		GL_DepthBoundsTest( drawSurfs->scissorRect.zmin, drawSurfs->scissorRect.zmax );
 	}
 	RB_RenderDrawSurfChainWithFunction( drawSurfs, RB_T_Shadow );
-	if( r_useDepthBoundsTest.GetBool() ) {
-		GL_DepthBoundsTest( 0.0f, 0.0f );
-	}
 	if( r_shadowPolygonFactor.GetFloat() || r_shadowPolygonOffset.GetFloat() ) {
 		glDisable( GL_POLYGON_OFFSET_FILL );
+	}
+	// Moved depthbounds test here
+	if( r_useDepthBoundsTest.GetBool() ) {
+		GL_DepthBoundsTest( 0.0f, 0.0f );
 	}
 	glEnableClientState( GL_TEXTURE_COORD_ARRAY );
 	glStencilFunc( GL_GEQUAL, 128, 255 );

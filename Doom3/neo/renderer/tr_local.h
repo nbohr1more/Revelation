@@ -1050,8 +1050,6 @@ const int GLS_DEFAULT							= GLS_DEPTHFUNC_ALWAYS;
 
 void R_Init( void );
 void R_InitOpenGL( void );
-
-void R_DoneFreeType( void );
 void R_SetColorMappings( void );
 
 void R_ScreenShot_f( const idCmdArgs &args );

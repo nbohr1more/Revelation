@@ -360,7 +360,7 @@ static void R_FlareDeform( drawSurf_t *surf ) {
 	for( j = 1 ; j < tri->numVerts ; j++ ) {
 		center += tri->verts[j].xyz;
 	}
-	center *= 1.0 / tri->numVerts;
+	center *= 1.0f / tri->numVerts;
 	idVec3	dir = localViewer - center;
 	dir.Normalize();
 	dot = dir * plane.Normal();
@@ -405,41 +405,41 @@ static void R_FlareDeform( drawSurf_t *surf ) {
 	}
 	// build all the points
 	ac[4].xyz = tri->verts[ indexes[0] ].xyz + spread * edgeDir[0][0];
-	ac[4].st[0] = 0;
-	ac[4].st[1] = 0.5;
+	ac[4].st[0] = 0.0f;
+	ac[4].st[1] = 0.5f;
 	ac[5].xyz = tri->verts[ indexes[0] ].xyz + spread * edgeDir[0][2];
-	ac[5].st[0] = 0;
-	ac[5].st[1] = 0;
+	ac[5].st[0] = 0.0f;
+	ac[5].st[1] = 0.0f;
 	ac[6].xyz = tri->verts[ indexes[0] ].xyz + spread * edgeDir[0][1];
-	ac[6].st[0] = 0.5;
-	ac[6].st[1] = 0;
+	ac[6].st[0] = 0.5f;
+	ac[6].st[1] = 0.0f;
 	ac[7].xyz = tri->verts[ indexes[1] ].xyz + spread * edgeDir[1][0];
-	ac[7].st[0] = 0.5;
-	ac[7].st[1] = 0;
+	ac[7].st[0] = 0.5f;
+	ac[7].st[1] = 0.0f;
 	ac[8].xyz = tri->verts[ indexes[1] ].xyz + spread * edgeDir[1][2];
-	ac[8].st[0] = 1;
-	ac[8].st[1] = 0;
+	ac[8].st[0] = 1.0f;
+	ac[8].st[1] = 0.0f;
 	ac[9].xyz = tri->verts[ indexes[1] ].xyz + spread * edgeDir[1][1];
-	ac[9].st[0] = 1;
-	ac[9].st[1] = 0.5;
+	ac[9].st[0] = 1.0f;
+	ac[9].st[1] = 0.5f;
 	ac[10].xyz = tri->verts[ indexes[2] ].xyz + spread * edgeDir[2][0];
-	ac[10].st[0] = 1;
-	ac[10].st[1] = 0.5;
+	ac[10].st[0] = 1.0f;
+	ac[10].st[1] = 0.5f;
 	ac[11].xyz = tri->verts[ indexes[2] ].xyz + spread * edgeDir[2][2];
-	ac[11].st[0] = 1;
-	ac[11].st[1] = 1;
+	ac[11].st[0] = 1.0f;
+	ac[11].st[1] = 1.0f;
 	ac[12].xyz = tri->verts[ indexes[2] ].xyz + spread * edgeDir[2][1];
-	ac[12].st[0] = 0.5;
-	ac[12].st[1] = 1;
+	ac[12].st[0] = 0.5f;
+	ac[12].st[1] = 1.0f;
 	ac[13].xyz = tri->verts[ indexes[3] ].xyz + spread * edgeDir[3][0];
-	ac[13].st[0] = 0.5;
-	ac[13].st[1] = 1;
+	ac[13].st[0] = 0.5f;
+	ac[13].st[1] = 1.0f;
 	ac[14].xyz = tri->verts[ indexes[3] ].xyz + spread * edgeDir[3][2];
-	ac[14].st[0] = 0;
-	ac[14].st[1] = 1;
+	ac[14].st[0] = 0.0f;
+	ac[14].st[1] = 1.0f;
 	ac[15].xyz = tri->verts[ indexes[3] ].xyz + spread * edgeDir[3][1];
-	ac[15].st[0] = 0;
-	ac[15].st[1] = 0.5;
+	ac[15].st[0] = 0.0f;
+	ac[15].st[1] = 0.5f;
 	for( i = 4 ; i < 16 ; i++ ) {
 		idVec3	dir = ac[i].xyz - localViewer;
 		float len = dir.Normalize();
@@ -451,7 +451,7 @@ static void R_FlareDeform( drawSurf_t *surf ) {
 		ac[i].st[0] = 0;
 		ac[i].st[1] = 0.5;
 	}
-	static glIndex_t	triIndexes[18 * 3] = {
+	static const glIndex_t triIndexes[18 * 3] = {
 		0, 4, 5,  0, 5, 6, 0, 6, 7, 0, 7, 1, 1, 7, 8, 1, 8, 9,
 		15, 4, 0, 15, 0, 3, 3, 0, 1, 3, 1, 2, 2, 1, 9, 2, 9, 10,
 		14, 15, 3, 14, 3, 13, 13, 3, 2, 13, 2, 12, 12, 2, 11, 11, 2, 10
@@ -592,15 +592,15 @@ static void AddTriangleToIsland_r( const srfTriangles_t *tri, int triangleNum, b
 		if( usedList[i] ) {
 			continue;
 		}
-		if( tri->indexes[i * 3 + 0] == a
-				|| tri->indexes[i * 3 + 1] == a
-				|| tri->indexes[i * 3 + 2] == a
-				|| tri->indexes[i * 3 + 0] == b
-				|| tri->indexes[i * 3 + 1] == b
-				|| tri->indexes[i * 3 + 2] == b
-				|| tri->indexes[i * 3 + 0] == c
-				|| tri->indexes[i * 3 + 1] == c
-				|| tri->indexes[i * 3 + 2] == c ) {
+		if( tri->indexes[i * 3 + 0] == a || 
+			tri->indexes[i * 3 + 1] == a || 
+			tri->indexes[i * 3 + 2] == a || 
+			tri->indexes[i * 3 + 0] == b || 
+			tri->indexes[i * 3 + 1] == b || 
+			tri->indexes[i * 3 + 2] == b || 
+			tri->indexes[i * 3 + 0] == c || 
+			tri->indexes[i * 3 + 1] == c || 
+			tri->indexes[i * 3 + 2] == c ) {
 			AddTriangleToIsland_r( tri, i, usedList, island );
 		}
 	}
@@ -829,11 +829,11 @@ static void R_ParticleDeform( drawSurf_t *surf, bool useArea ) {
 				}
 				// supress particles before or after the age clamp
 				g.frac = ( float )inCycleTime / ( stage->particleLife * 1000 );
-				if( g.frac < 0 ) {
+				if( g.frac < 0.0f ) {
 					// yet to be spawned
 					continue;
 				}
-				if( g.frac > 1.0 ) {
+				if( g.frac > 1.0f ) {
 					// this particle is in the deadTime band
 					continue;
 				}
