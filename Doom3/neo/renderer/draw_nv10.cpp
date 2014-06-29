@@ -53,14 +53,14 @@ blended diffuse / specular maps to get the same effect
 ==================
 */
 static void RB_RenderInteraction( const drawSurf_t *surf ) {
-	const idMaterial	*surfaceShader = surf->material;
-	const float			*surfaceRegs = surf->shaderRegisters;
-	const viewLight_t	*vLight = backEnd.vLight;
-	const idMaterial	*lightShader = vLight->lightShader;
-	const float			*lightRegs = vLight->shaderRegisters;
-	static idPlane		lightProject[4];	// reused across function calls
+	const idMaterial		*surfaceShader = surf->material;
+	const float				*surfaceRegs = surf->shaderRegisters;
+	const viewLight_t		*vLight = backEnd.vLight;
+	const idMaterial		*lightShader = vLight->lightShader;
+	const float				*lightRegs = vLight->shaderRegisters;
+	static idPlane			lightProject[4];	// reused across function calls
 	const srfTriangles_t	*tri = surf->geo;
-	const shaderStage_t	*lastBumpStage = NULL;
+	const shaderStage_t		*lastBumpStage = NULL;
 	// change the matrix and light projection vectors if needed
 	if( surf->space != backEnd.currentSpace ) {
 		backEnd.currentSpace = surf->space;

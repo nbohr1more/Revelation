@@ -620,7 +620,7 @@ This is the only point where lights get added to the viewLights list
 void idRenderWorldLocal::AddAreaLightRefs( int areaNum, const portalStack_t *ps ) {
 	areaReference_t		*lref;
 	portalArea_t		*area;
-	idRenderLightLocal			*light;
+	idRenderLightLocal	*light;
 	viewLight_t			*vLight;
 	area = &portalAreas[ areaNum ];
 	for( lref = area->lightRefs.areaNext ; lref != &area->lightRefs ; lref = lref->areaNext ) {
@@ -631,9 +631,7 @@ void idRenderWorldLocal::AddAreaLightRefs( int areaNum, const portalStack_t *ps 
 		}
 		// check for being closed off behind a door
 		// a light that doesn't cast shadows will still light even if it is behind a door
-		if( r_useLightCulling.GetInteger() >= 3 &&
-				!light->parms.noShadows && light->lightShader->LightCastsShadows()
-				&& light->areaNum != -1 && !tr.viewDef->connectedAreas[ light->areaNum ] ) {
+		if( r_useLightCulling.GetInteger() >= 3 && !light->parms.noShadows && light->lightShader->LightCastsShadows() && light->areaNum != -1 && !tr.viewDef->connectedAreas[ light->areaNum ] ) {
 			continue;
 		}
 		// cull frustum

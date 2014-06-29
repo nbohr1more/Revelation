@@ -211,10 +211,9 @@ matrix will already have been loaded, and backEnd.currentSpace will
 be updated after the triangle function completes.
 ====================
 */
-void RB_RenderDrawSurfListWithFunction( drawSurf_t **drawSurfs, int numDrawSurfs,
-										void ( *triFunc_ )( const drawSurf_t * ) ) {
-	int				i;
-	const drawSurf_t		*drawSurf;
+void RB_RenderDrawSurfListWithFunction( drawSurf_t **drawSurfs, int numDrawSurfs, void ( *triFunc_ )( const drawSurf_t * ) ) {
+	int					i;
+	const drawSurf_t	*drawSurf;
 	backEnd.currentSpace = NULL;
 	for( i = 0  ; i < numDrawSurfs ; i++ ) {
 		drawSurf = drawSurfs[i];
@@ -671,6 +670,7 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void ( *DrawIntera
 	const viewLight_t	*vLight = backEnd.vLight;
 	const idMaterial	*lightShader = vLight->lightShader;
 	const float			*lightRegs = vLight->shaderRegisters;
+	bool				lightDepthBoundsDisabled = false;
 	drawInteraction_t	inter;
 	if( r_skipInteractions.GetBool() || !surf->geo || !surf->geo->ambientCache ) {
 		return;
@@ -678,6 +678,25 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void ( *DrawIntera
 	// change the matrix and light projection vectors if needed
 	if( surf->space != backEnd.currentSpace ) {
 		backEnd.currentSpace = surf->space;
+		// Disable the depth bounds test because translucent surfaces don't work with
+		// the depth bounds tests since they do not write depth during the depth pass.
+		if ( !vLight->translucentInteractions ) {
+			// turn off the light depth bounds test if this model is rendered with a depth hack
+			if( !surf->space->weaponDepthHack && surf->space->modelDepthHack == 0.0f ) {
+				if( lightDepthBoundsDisabled ) {
+					GL_DepthBoundsTest( vLight->scissorRect.zmin, vLight->scissorRect.zmax );
+					lightDepthBoundsDisabled = false;
+				}
+			} else {
+				if( !lightDepthBoundsDisabled ) {
+					GL_DepthBoundsTest( 0.0f, 0.0f );
+					lightDepthBoundsDisabled = true;
+				}
+			}
+		} else {
+			lightDepthBoundsDisabled = false;
+		}
+		// model-view-projection
 		glLoadMatrixf( surf->space->modelViewMatrix );
 	}
 	// change the scissor if needed
@@ -736,54 +755,54 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void ( *DrawIntera
 		for( int surfaceStageNum = 0 ; surfaceStageNum < surfaceShader->GetNumStages() ; surfaceStageNum++ ) {
 			const shaderStage_t	*surfaceStage = surfaceShader->GetStage( surfaceStageNum );
 			switch( surfaceStage->lighting ) {
-			case SL_AMBIENT: {
-				// ignore ambient stages while drawing interactions
-				break;
-			}
-			case SL_BUMP: {
-				// ignore stage that fails the condition
-				if( !surfaceRegs[ surfaceStage->conditionRegister ] ) {
+				case SL_AMBIENT: {
+					// ignore ambient stages while drawing interactions
 					break;
 				}
-				// draw any previous interaction
-				RB_SubmitInteraction( &inter, DrawInteraction );
-				inter.diffuseImage = NULL;
-				inter.specularImage = NULL;
-				R_SetDrawInteraction( surfaceStage, surfaceRegs, &inter.bumpImage, inter.bumpMatrix, NULL );
-				break;
-			}
-			case SL_DIFFUSE: {
-				// ignore stage that fails the condition
-				if( !surfaceRegs[ surfaceStage->conditionRegister ] ) {
-					break;
-				}
-				if( inter.diffuseImage ) {
+				case SL_BUMP: {
+					// ignore stage that fails the condition
+					if( !surfaceRegs[ surfaceStage->conditionRegister ] ) {
+						break;
+					}
+					// draw any previous interaction
 					RB_SubmitInteraction( &inter, DrawInteraction );
-				}
-				R_SetDrawInteraction( surfaceStage, surfaceRegs, &inter.diffuseImage, inter.diffuseMatrix, inter.diffuseColor.ToFloatPtr() );
-				inter.diffuseColor[0] *= lightColor[0];
-				inter.diffuseColor[1] *= lightColor[1];
-				inter.diffuseColor[2] *= lightColor[2];
-				inter.diffuseColor[3] *= lightColor[3];
-				inter.vertexColor = surfaceStage->vertexColor;
-				break;
-			}
-			case SL_SPECULAR: {
-				// ignore stage that fails the condition
-				if( !surfaceRegs[ surfaceStage->conditionRegister ] ) {
+					inter.diffuseImage = NULL;
+					inter.specularImage = NULL;
+					R_SetDrawInteraction( surfaceStage, surfaceRegs, &inter.bumpImage, inter.bumpMatrix, NULL );
 					break;
 				}
-				if( inter.specularImage ) {
-					RB_SubmitInteraction( &inter, DrawInteraction );
+				case SL_DIFFUSE: {
+					// ignore stage that fails the condition
+					if( !surfaceRegs[ surfaceStage->conditionRegister ] ) {
+						break;
+					}
+					if( inter.diffuseImage ) {
+						RB_SubmitInteraction( &inter, DrawInteraction );
+					}
+					R_SetDrawInteraction( surfaceStage, surfaceRegs, &inter.diffuseImage, inter.diffuseMatrix, inter.diffuseColor.ToFloatPtr() );
+					inter.diffuseColor[0] *= lightColor[0];
+					inter.diffuseColor[1] *= lightColor[1];
+					inter.diffuseColor[2] *= lightColor[2];
+					inter.diffuseColor[3] *= lightColor[3];
+					inter.vertexColor = surfaceStage->vertexColor;
+					break;
 				}
-				R_SetDrawInteraction( surfaceStage, surfaceRegs, &inter.specularImage, inter.specularMatrix, inter.specularColor.ToFloatPtr() );
-				inter.specularColor[0] *= lightColor[0];
-				inter.specularColor[1] *= lightColor[1];
-				inter.specularColor[2] *= lightColor[2];
-				inter.specularColor[3] *= lightColor[3];
-				inter.vertexColor = surfaceStage->vertexColor;
-				break;
-			}
+				case SL_SPECULAR: {
+					// ignore stage that fails the condition
+					if( !surfaceRegs[ surfaceStage->conditionRegister ] ) {
+						break;
+					}
+					if( inter.specularImage ) {
+						RB_SubmitInteraction( &inter, DrawInteraction );
+					}
+					R_SetDrawInteraction( surfaceStage, surfaceRegs, &inter.specularImage, inter.specularMatrix, inter.specularColor.ToFloatPtr() );
+					inter.specularColor[0] *= lightColor[0];
+					inter.specularColor[1] *= lightColor[1];
+					inter.specularColor[2] *= lightColor[2];
+					inter.specularColor[3] *= lightColor[3];
+					inter.vertexColor = surfaceStage->vertexColor;
+					break;
+				}
 			}
 		}
 		// draw the final interaction
@@ -792,6 +811,12 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void ( *DrawIntera
 	// unhack depth range if needed
 	if( surf->space->weaponDepthHack || surf->space->modelDepthHack != 0.0f ) {
 		RB_LeaveDepthHack();
+	}
+	// Once again into the night
+	if( lightDepthBoundsDisabled ) {
+		GL_DepthBoundsTest( vLight->scissorRect.zmin, vLight->scissorRect.zmax );
+	} else {
+		GL_DepthBoundsTest( 0.0f, 0.0f );
 	}
 }
 

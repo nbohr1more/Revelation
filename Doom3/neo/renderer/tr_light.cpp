@@ -135,7 +135,6 @@ void R_SkyboxTexGen( drawSurf_t *surf, const idVec3 &viewOrg ) {
 	int					size = numVerts * sizeof( idVec3 );
 	idVec3				*texCoords = ( idVec3 * ) _alloca16( size );
 	const idDrawVert	*verts = surf->geo->verts;
-#pragma loop( hint_parallel(8) )
 	for( i = 0; i < numVerts; i++ ) {
 		texCoords[i][0] = verts[i].xyz[0] - localViewOrigin[0];
 		texCoords[i][1] = verts[i].xyz[1] - localViewOrigin[1];
@@ -275,7 +274,6 @@ static const float INSIDE_LIGHT_FRUSTUM_SLOP = 32;
 static bool R_TestPointInViewLight( const idVec3 &org, const idRenderLightLocal *light ) {
 	int		i;
 	idVec3	local;
-#pragma loop( hint_parallel(8) )
 	for( i = 0 ; i < 6 ; i++ ) {
 		float d = light->frustum[i].Distance( org );
 		if( d > INSIDE_LIGHT_FRUSTUM_SLOP ) {
@@ -293,7 +291,6 @@ Assumes positive sides face outward
 ===================
 */
 static bool R_PointInFrustum( idVec3 &p, idPlane *planes, int numPlanes ) {
-#pragma loop( hint_parallel(8) )
 	for( int i = 0 ; i < numPlanes ; i++ ) {
 		float d = planes[i].Distance( p );
 		if( d > 0 ) {
@@ -543,7 +540,6 @@ idScreenRect R_ClippedLightScissorRectangle( viewLight_t *vLight ) {
 	idScreenRect				r;
 	idFixedWinding				w;
 	r.Clear();
-#pragma loop( hint_parallel(8) )
 	for( i = 0 ; i < 6 ; i++ ) {
 		const idWinding *ow = light->frustumWindings[i];
 		// projected lights may have one of the frustums degenerated
@@ -565,7 +561,6 @@ idScreenRect R_ClippedLightScissorRectangle( viewLight_t *vLight ) {
 			}
 		}
 		// project these points to the screen and add to bounds
-#pragma loop( hint_parallel(8) )
 		for( j = 0; j < w.GetNumPoints(); j++ ) {
 			idPlane		eye, clip;
 			idVec3		ndc;
@@ -620,7 +615,6 @@ idScreenRect R_CalcLightScissorRectangle( viewLight_t *vLight ) {
 	}
 	r.Clear();
 	tri = vLight->lightDef->frustumTris;
-#pragma loop( hint_parallel(8) )
 	for( int i = 0 ; i < tri->numVerts ; i++ ) {
 		R_TransformModelToClip( tri->verts[i].xyz, tr.viewDef->worldSpace.modelViewMatrix, tr.viewDef->projectionMatrix, eye, clip );
 		// if it is near clipped, clip the winding polygons to the view frustum
@@ -1062,7 +1056,6 @@ static void R_AddAmbientDrawsurfs( viewEntity_t *vEntity ) {
 	}
 	// add all the surfaces
 	total = model->NumSurfaces();
-#pragma loop( hint_parallel(8) )
 	for( i = 0 ; i < total ; i++ ) {
 		const modelSurface_t	*surf = model->Surface( i );
 		// for debugging, only show a single surface at a time
@@ -1088,7 +1081,6 @@ static void R_AddAmbientDrawsurfs( viewEntity_t *vEntity ) {
 		// debugging tool to make sure we are have the correct pre-calculated bounds
 		if( r_checkBounds.GetBool() ) {
 			int j, k;
-#pragma loop( hint_parallel(8) )
 			for( j = 0 ; j < tri->numVerts ; j++ ) {
 				for( k = 0 ; k < 3 ; k++ ) {
 					if( tri->verts[j].xyz[k] > tri->bounds[1][k] + CHECK_BOUNDS_EPSILON || tri->verts[j].xyz[k] < tri->bounds[0][k] - CHECK_BOUNDS_EPSILON ) {
