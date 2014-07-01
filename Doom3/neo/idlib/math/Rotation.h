@@ -2,9 +2,9 @@
 ===========================================================================
 
 Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
 
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
 
 Doom 3 Source Code is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -50,8 +50,8 @@ class idRotation {
 	friend class idMat3;
 
 public:
-						idRotation( void );
-						idRotation( const idVec3 &rotationOrigin, const idVec3 &rotationVec, const float rotationAngle );
+	idRotation( void );
+	idRotation( const idVec3 &rotationOrigin, const idVec3 &rotationVec, const float rotationAngle );
 
 	void				Set( const idVec3 &rotationOrigin, const idVec3 &rotationVec, const float rotationAngle );
 	void				SetOrigin( const idVec3 &rotationOrigin );
@@ -60,24 +60,24 @@ public:
 	void				SetAngle( const float rotationAngle );
 	void				Scale( const float s );
 	void				ReCalculateMatrix( void );
-	const idVec3 &		GetOrigin( void ) const;
-	const idVec3 &		GetVec( void ) const;
+	const idVec3 		&GetOrigin( void ) const;
+	const idVec3 		&GetVec( void ) const;
 	float				GetAngle( void ) const;
 
 	idRotation			operator-() const;										// flips rotation
 	idRotation			operator*( const float s ) const;						// scale rotation
 	idRotation			operator/( const float s ) const;						// scale rotation
-	idRotation &		operator*=( const float s );							// scale rotation
-	idRotation &		operator/=( const float s );							// scale rotation
+	idRotation 		&operator*=( const float s );							// scale rotation
+	idRotation 		&operator/=( const float s );							// scale rotation
 	idVec3				operator*( const idVec3 &v ) const;						// rotate vector
 
 	friend idRotation	operator*( const float s, const idRotation &r );		// scale rotation
 	friend idVec3		operator*( const idVec3 &v, const idRotation &r );		// rotate vector
-	friend idVec3 &		operator*=( idVec3 &v, const idRotation &r );			// rotate vector
+	friend idVec3 		&operator*=( idVec3 &v, const idRotation &r );			// rotate vector
 
 	idAngles			ToAngles( void ) const;
 	idQuat				ToQuat( void ) const;
-	const idMat3 &		ToMat3( void ) const;
+	const idMat3 		&ToMat3( void ) const;
 	idMat4				ToMat4( void ) const;
 	idVec3				ToAngularVelocity( void ) const;
 
@@ -182,10 +182,10 @@ ID_FORCE_INLINE idRotation &idRotation::operator/=( const float s ) {
 }
 
 ID_FORCE_INLINE idVec3 idRotation::operator*( const idVec3 &v ) const {
-	if ( !axisValid ) {
+	if( !axisValid ) {
 		ToMat3();
 	}
-	return ((v - origin) * axis + origin);
+	return ( ( v - origin ) * axis + origin );
 }
 
 ID_FORCE_INLINE idRotation operator*( const float s, const idRotation &r ) {
@@ -202,10 +202,10 @@ ID_FORCE_INLINE idVec3 &operator*=( idVec3 &v, const idRotation &r ) {
 }
 
 ID_FORCE_INLINE void idRotation::RotatePoint( idVec3 &point ) const {
-	if ( !axisValid ) {
+	if( !axisValid ) {
 		ToMat3();
 	}
-	point = ((point - origin) * axis + origin);
+	point = ( ( point - origin ) * axis + origin );
 }
 
 #endif /* !__MATH_ROTATION_H__ */

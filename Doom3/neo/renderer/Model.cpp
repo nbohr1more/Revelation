@@ -269,7 +269,7 @@ void idRenderModelStatic::InitFromFile( const char *fileName ) {
 		loaded		= false;
 	}
 	if( !loaded ) {
-		common->Warning( "Couldn't load model: '%s'", name.c_str() );
+		common->DWarning( "Couldn't load model: '%s'", name.c_str() );
 		MakeDefaultModel();
 		return;
 	}

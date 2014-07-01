@@ -1350,7 +1350,7 @@ void	idImage::ActuallyLoadImage( bool checkForPrecompressed, bool fromBackEnd ) 
 		// we don't check for pre-compressed cube images currently
 		R_LoadCubeImages( imgName, cubeFiles, pics, &width, &timestamp );
 		if( pics[0] == NULL ) {
-			common->Warning( "Couldn't load cube image: %s", imgName.c_str() );
+			common->DWarning( "Couldn't load cube image: %s", imgName.c_str() );
 			MakeDefault();
 			return;
 		}
@@ -1373,7 +1373,7 @@ void	idImage::ActuallyLoadImage( bool checkForPrecompressed, bool fromBackEnd ) 
 		}
 		R_LoadImageProgram( imgName, &pic, &width, &height, &timestamp, &depth );
 		if( pic == NULL ) {
-			common->Warning( "Couldn't load image: %s", imgName.c_str() );
+			common->DWarning( "Couldn't load image: %s", imgName.c_str() );
 			MakeDefault();
 			return;
 		}

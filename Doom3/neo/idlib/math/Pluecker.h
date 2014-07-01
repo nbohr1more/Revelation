@@ -2,9 +2,9 @@
 ===========================================================================
 
 Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
 
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
 
 Doom 3 Source Code is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -38,24 +38,24 @@ If you have questions concerning this license or the applicable additional terms
 */
 
 class idPluecker {
-public:	
-					idPluecker( void );
-					explicit idPluecker( const float *a );
-					explicit idPluecker( const idVec3 &start, const idVec3 &end );
-					explicit idPluecker( const float a1, const float a2, const float a3, const float a4, const float a5, const float a6 );
+public:
+	idPluecker( void );
+	explicit idPluecker( const float *a );
+	explicit idPluecker( const idVec3 &start, const idVec3 &end );
+	explicit idPluecker( const float a1, const float a2, const float a3, const float a4, const float a5, const float a6 );
 
 	float			operator[]( const int index ) const;
-	float &			operator[]( const int index );
+	float 			&operator[]( const int index );
 	idPluecker		operator-() const;											// flips the direction
 	idPluecker		operator*( const float a ) const;
 	idPluecker		operator/( const float a ) const;
 	float			operator*( const idPluecker &a ) const;						// permuted inner product
 	idPluecker		operator-( const idPluecker &a ) const;
 	idPluecker		operator+( const idPluecker &a ) const;
-	idPluecker &	operator*=( const float a );
-	idPluecker &	operator/=( const float a );
-	idPluecker &	operator+=( const idPluecker &a );
-	idPluecker &	operator-=( const idPluecker &a );
+	idPluecker 	&operator*=( const float a );
+	idPluecker 	&operator/=( const float a );
+	idPluecker 	&operator+=( const idPluecker &a );
+	idPluecker 	&operator-=( const idPluecker &a );
 
 	bool			Compare( const idPluecker &a ) const;						// exact compare, no epsilon
 	bool			Compare( const idPluecker &a, const float epsilon ) const;	// compare with epsilon
@@ -81,9 +81,9 @@ public:
 
 	int				GetDimension( void ) const;
 
-	const float *	ToFloatPtr( void ) const;
-	float *			ToFloatPtr( void );
-	const char *	ToString( int precision = 2 ) const;
+	const float 	*ToFloatPtr( void ) const;
+	float 			*ToFloatPtr( void );
+	const char 	*ToString( int precision = 2 ) const;
 
 private:
 	float			p[6];
@@ -125,7 +125,7 @@ ID_FORCE_INLINE float &idPluecker::operator[]( const int index ) {
 }
 
 ID_FORCE_INLINE idPluecker idPluecker::operator*( const float a ) const {
-	return idPluecker( p[0]*a, p[1]*a, p[2]*a, p[3]*a, p[4]*a, p[5]*a );
+	return idPluecker( p[0] * a, p[1] * a, p[2] * a, p[3] * a, p[4] * a, p[5] * a );
 }
 
 ID_FORCE_INLINE float idPluecker::operator*( const idPluecker &a ) const {
@@ -134,10 +134,9 @@ ID_FORCE_INLINE float idPluecker::operator*( const idPluecker &a ) const {
 
 ID_FORCE_INLINE idPluecker idPluecker::operator/( const float a ) const {
 	float inva;
-
 	assert( a != 0.0f );
 	inva = 1.0f / a;
-	return idPluecker( p[0]*inva, p[1]*inva, p[2]*inva, p[3]*inva, p[4]*inva, p[5]*inva );
+	return idPluecker( p[0] * inva, p[1] * inva, p[2] * inva, p[3] * inva, p[4] * inva, p[5] * inva );
 }
 
 ID_FORCE_INLINE idPluecker idPluecker::operator+( const idPluecker &a ) const {
@@ -160,7 +159,6 @@ ID_FORCE_INLINE idPluecker &idPluecker::operator*=( const float a ) {
 
 ID_FORCE_INLINE idPluecker &idPluecker::operator/=( const float a ) {
 	float inva;
-
 	assert( a != 0.0f );
 	inva = 1.0f / a;
 	p[0] *= inva;
@@ -194,34 +192,28 @@ ID_FORCE_INLINE idPluecker &idPluecker::operator-=( const idPluecker &a ) {
 
 ID_FORCE_INLINE bool idPluecker::Compare( const idPluecker &a ) const {
 	return ( ( p[0] == a[0] ) && ( p[1] == a[1] ) && ( p[2] == a[2] ) &&
-			( p[3] == a[3] ) && ( p[4] == a[4] ) && ( p[5] == a[5] ) );
+			 ( p[3] == a[3] ) && ( p[4] == a[4] ) && ( p[5] == a[5] ) );
 }
 
 ID_FORCE_INLINE bool idPluecker::Compare( const idPluecker &a, const float epsilon ) const {
-	if ( idMath::Fabs( p[0] - a[0] ) > epsilon ) {
+	if( idMath::Fabs( p[0] - a[0] ) > epsilon ) {
 		return false;
 	}
-			
-	if ( idMath::Fabs( p[1] - a[1] ) > epsilon ) {
+	if( idMath::Fabs( p[1] - a[1] ) > epsilon ) {
 		return false;
 	}
-
-	if ( idMath::Fabs( p[2] - a[2] ) > epsilon ) {
+	if( idMath::Fabs( p[2] - a[2] ) > epsilon ) {
 		return false;
 	}
-
-	if ( idMath::Fabs( p[3] - a[3] ) > epsilon ) {
+	if( idMath::Fabs( p[3] - a[3] ) > epsilon ) {
 		return false;
 	}
-
-	if ( idMath::Fabs( p[4] - a[4] ) > epsilon ) {
+	if( idMath::Fabs( p[4] - a[4] ) > epsilon ) {
 		return false;
 	}
-
-	if ( idMath::Fabs( p[5] - a[5] ) > epsilon ) {
+	if( idMath::Fabs( p[5] - a[5] ) > epsilon ) {
 		return false;
 	}
-
 	return true;
 }
 
@@ -267,21 +259,17 @@ ID_FORCE_INLINE void idPluecker::FromRay( const idVec3 &start, const idVec3 &dir
 ID_FORCE_INLINE bool idPluecker::ToLine( idVec3 &start, idVec3 &end ) const {
 	idVec3 dir1, dir2;
 	float d;
-
 	dir1[0] = p[3];
 	dir1[1] = -p[1];
 	dir1[2] = p[0];
-
 	dir2[0] = -p[2];
 	dir2[1] = p[5];
 	dir2[2] = -p[4];
-
 	d = dir2 * dir2;
-	if ( d == 0.0f ) {
+	if( d == 0.0f ) {
 		return false; // pluecker coordinate does not represent a line
 	}
-
-	start = dir2.Cross(dir1) * (1.0f / d);
+	start = dir2.Cross( dir1 ) * ( 1.0f / d );
 	end = start + dir2;
 	return true;
 }
@@ -289,21 +277,17 @@ ID_FORCE_INLINE bool idPluecker::ToLine( idVec3 &start, idVec3 &end ) const {
 ID_FORCE_INLINE bool idPluecker::ToRay( idVec3 &start, idVec3 &dir ) const {
 	idVec3 dir1;
 	float d;
-
 	dir1[0] = p[3];
 	dir1[1] = -p[1];
 	dir1[2] = p[0];
-
 	dir[0] = -p[2];
 	dir[1] = p[5];
 	dir[2] = -p[4];
-
 	d = dir * dir;
-	if ( d == 0.0f ) {
+	if( d == 0.0f ) {
 		return false; // pluecker coordinate does not represent a line
 	}
-
-	start = dir.Cross(dir1) * (1.0f / d);
+	start = dir.Cross( dir1 ) * ( 1.0f / d );
 	return true;
 }
 
@@ -327,9 +311,8 @@ ID_FORCE_INLINE float idPluecker::LengthSqr( void ) const {
 
 ID_FORCE_INLINE float idPluecker::NormalizeSelf( void ) {
 	float l, d;
-
 	l = LengthSqr();
-	if ( l == 0.0f ) {
+	if( l == 0.0f ) {
 		return l; // pluecker coordinate does not represent a line
 	}
 	d = idMath::InvSqrt( l );
@@ -344,13 +327,12 @@ ID_FORCE_INLINE float idPluecker::NormalizeSelf( void ) {
 
 ID_FORCE_INLINE idPluecker idPluecker::Normalize( void ) const {
 	float d;
-
 	d = LengthSqr();
-	if ( d == 0.0f ) {
+	if( d == 0.0f ) {
 		return *this; // pluecker coordinate does not represent a line
 	}
 	d = idMath::InvSqrt( d );
-	return idPluecker( p[0]*d, p[1]*d, p[2]*d, p[3]*d, p[4]*d, p[5]*d );
+	return idPluecker( p[0] * d, p[1] * d, p[2] * d, p[3] * d, p[4] * d, p[5] * d );
 }
 
 ID_FORCE_INLINE int idPluecker::GetDimension( void ) const {

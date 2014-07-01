@@ -2,9 +2,9 @@
 ===========================================================================
 
 Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
 
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
 
 Doom 3 Source Code is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -41,15 +41,14 @@ void idTimer::InitBaseClockTicks( void ) const {
 	idTimer timer;
 	double ct, b;
 	int i;
-
 	base = 0.0;
 	b = -1.0;
-	for ( i = 0; i < 1000; i++ ) {
+	for( i = 0; i < 1000; i++ ) {
 		timer.Clear();
 		timer.Start();
 		timer.Stop();
 		ct = timer.ClockTicks();
-		if ( b < 0.0 || ct < b ) {
+		if( b < 0.0 || ct < b ) {
 			b = ct;
 		}
 	}
@@ -89,7 +88,7 @@ idTimerReport::AddReport
 =================
 */
 int idTimerReport::AddReport( const char *name ) {
-	if ( name && *name ) {
+	if( name && *name ) {
 		names.Append( name );
 		return timers.Append( new idTimer() );
 	}
@@ -113,8 +112,8 @@ idTimerReport::Reset
 =================
 */
 void idTimerReport::Reset() {
-	assert ( timers.Num() == names.Num() );
-	for ( int i = 0; i < timers.Num(); i++ ) {
+	assert( timers.Num() == names.Num() );
+	for( int i = 0; i < timers.Num(); i++ ) {
 		timers[i]->Clear();
 	}
 }
@@ -125,17 +124,17 @@ idTimerReport::AddTime
 =================
 */
 void idTimerReport::AddTime( const char *name, idTimer *time ) {
-	assert ( timers.Num() == names.Num() );
+	assert( timers.Num() == names.Num() );
 	int i;
-	for ( i = 0; i < names.Num(); i++ ) {
-		if ( names[i].Icmp( name ) == 0 ) {
+	for( i = 0; i < names.Num(); i++ ) {
+		if( names[i].Icmp( name ) == 0 ) {
 			*timers[i] += *time;
 			break;
 		}
 	}
-	if ( i == names.Num() ) {
+	if( i == names.Num() ) {
 		int index = AddReport( name );
-		if ( index >= 0 ) {
+		if( index >= 0 ) {
 			timers[index]->Clear();
 			*timers[index] += *time;
 		}
@@ -152,7 +151,7 @@ void idTimerReport::PrintReport() {
 	idLib::common->Printf( "Timing Report for %s\n", reportName.c_str() );
 	idLib::common->Printf( "-------------------------------\n" );
 	float total = 0.0f;
-	for ( int i = 0; i < names.Num(); i++ ) {
+	for( int i = 0; i < names.Num(); i++ ) {
 		idLib::common->Printf( "%s consumed %5.2f seconds\n", names[i].c_str(), timers[i]->Milliseconds() * 0.001f );
 		total += timers[i]->Milliseconds();
 	}

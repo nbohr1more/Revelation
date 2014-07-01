@@ -689,8 +689,8 @@ int idDeclFile::LoadAndParse() {
 		if( newDecl ) {
 			// update the existing copy
 			if( newDecl->sourceFile != this || newDecl->redefinedInReload ) {
-				src.Warning( "%s '%s' previously defined at %s:%i", declManagerLocal.GetDeclNameFromType( identifiedType ),
-							 name.c_str(), newDecl->sourceFile->fileName.c_str(), newDecl->sourceLine );
+				src.SetFlags( LEXFL_NOWARNINGS ); // dont need to know this
+				src.Warning( "%s '%s' previously defined at %s:%i", declManagerLocal.GetDeclNameFromType( identifiedType ), name.c_str(), newDecl->sourceFile->fileName.c_str(), newDecl->sourceLine );
 				continue;
 			}
 			if( newDecl->declState != DS_UNPARSED ) {
@@ -1033,7 +1033,6 @@ const idDecl *idDeclManagerLocal::FindType( declType_t type, const char *name, b
 	idDeclLocal *decl;
 	if( !name || !name[0] ) {
 		name = "_emptyName";
-		//common->Warning( "idDeclManager::FindType: empty %s name", GetDeclType( (int)type )->typeName.c_str() );
 	}
 	decl = FindTypeWithoutParsing( type, name, makeDefault );
 	if( !decl ) {

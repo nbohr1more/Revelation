@@ -2,9 +2,9 @@
 ===========================================================================
 
 Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
 
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
 
 Doom 3 Source Code is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ If you have questions concerning this license or the applicable additional terms
 
 class idRandom {
 public:
-						idRandom( int seed = 0 );
+	idRandom( int seed = 0 );
 
 	void				SetSeed( int seed );
 	int					GetSeed( void ) const;
@@ -73,7 +73,7 @@ ID_FORCE_INLINE int idRandom::RandomInt( void ) {
 }
 
 ID_FORCE_INLINE int idRandom::RandomInt( int max ) {
-	if ( max == 0 ) {
+	if( max == 0 ) {
 		return 0;			// avoid divide by zero error
 	}
 	return RandomInt() % max;
@@ -98,7 +98,7 @@ ID_FORCE_INLINE float idRandom::CRandomFloat( void ) {
 
 class idRandom2 {
 public:
-							idRandom2( unsigned long seed = 0 );
+	idRandom2( unsigned long seed = 0 );
 
 	void					SetSeed( unsigned long seed );
 	unsigned long			GetSeed( void ) const;
@@ -131,11 +131,11 @@ ID_FORCE_INLINE unsigned long idRandom2::GetSeed( void ) const {
 
 ID_FORCE_INLINE int idRandom2::RandomInt( void ) {
 	seed = 1664525L * seed + 1013904223L;
-	return ( (int) seed & idRandom2::MAX_RAND );
+	return ( ( int ) seed & idRandom2::MAX_RAND );
 }
 
 ID_FORCE_INLINE int idRandom2::RandomInt( int max ) {
-	if ( max == 0 ) {
+	if( max == 0 ) {
 		return 0;		// avoid divide by zero error
 	}
 	return ( RandomInt() >> ( 16 - idMath::BitsForInteger( max ) ) ) % max;
@@ -145,14 +145,14 @@ ID_FORCE_INLINE float idRandom2::RandomFloat( void ) {
 	unsigned long i;
 	seed = 1664525L * seed + 1013904223L;
 	i = idRandom2::IEEE_ONE | ( seed & idRandom2::IEEE_MASK );
-	return ( ( *(float *)&i ) - 1.0f );
+	return ( ( *( float * )&i ) - 1.0f );
 }
 
 ID_FORCE_INLINE float idRandom2::CRandomFloat( void ) {
 	unsigned long i;
 	seed = 1664525L * seed + 1013904223L;
 	i = idRandom2::IEEE_ONE | ( seed & idRandom2::IEEE_MASK );
-	return ( 2.0f * ( *(float *)&i ) - 3.0f );
+	return ( 2.0f * ( *( float * )&i ) - 3.0f );
 }
 
 #endif /* !__MATH_RANDOM_H__ */

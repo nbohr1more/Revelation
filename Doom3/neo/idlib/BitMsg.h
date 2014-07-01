@@ -2,9 +2,9 @@
 ===========================================================================
 
 Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
 
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
 
 Doom 3 Source Code is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,13 +43,13 @@ If you have questions concerning this license or the applicable additional terms
 
 class idBitMsg {
 public:
-					idBitMsg();
-					~idBitMsg() {}
+	idBitMsg();
+	~idBitMsg() {}
 
 	void			Init( byte *data, int length );
 	void			Init( const byte *data, int length );
-	byte *			GetData( void );						// get data for writing
-	const byte *	GetData( void ) const;					// get data for reading
+	byte 			*GetData( void );						// get data for writing
+	const byte 	*GetData( void ) const;					// get data for reading
 	int				GetMaxSize( void ) const;				// get the maximum message size
 	void			SetAllowOverflow( bool set );			// generate error if not set and message is overflowed
 	bool			IsOverflowed( void ) const;				// returns true if the message was overflowed
@@ -134,8 +134,8 @@ public:
 	static idVec3	BitsToDir( int bits, int numBits );
 
 private:
-	byte *			writeData;			// pointer to data for writing
-	const byte *	readData;			// pointer to data for reading
+	byte 			*writeData;			// pointer to data for writing
+	const byte 	*readData;			// pointer to data for reading
 	int				maxSize;			// maximum size of message in bytes
 	int				curSize;			// current size of message in bytes
 	int				writeBit;			// number of bits written to the last written byte
@@ -146,7 +146,7 @@ private:
 
 private:
 	bool			CheckOverflow( int numBits );
-	byte *			GetByteSpace( int length );
+	byte 			*GetByteSpace( int length );
 	void			WriteDelta( int oldValue, int newValue, int numBits );
 	int				ReadDelta( int oldValue, int numBits ) const;
 };
@@ -189,7 +189,7 @@ ID_FORCE_INLINE int idBitMsg::GetSize( void ) const {
 }
 
 ID_FORCE_INLINE void idBitMsg::SetSize( int size ) {
-	if ( size > maxSize ) {
+	if( size > maxSize ) {
 		curSize = maxSize;
 	} else {
 		curSize = size;
@@ -202,7 +202,7 @@ ID_FORCE_INLINE int idBitMsg::GetWriteBit( void ) const {
 
 ID_FORCE_INLINE void idBitMsg::SetWriteBit( int bit ) {
 	writeBit = bit & 7;
-	if ( writeBit ) {
+	if( writeBit ) {
 		writeData[curSize - 1] &= ( 1 << writeBit ) - 1;
 	}
 }
@@ -223,7 +223,7 @@ ID_FORCE_INLINE void idBitMsg::SaveWriteState( int &s, int &b ) const {
 ID_FORCE_INLINE void idBitMsg::RestoreWriteState( int s, int b ) {
 	curSize = s;
 	writeBit = b & 7;
-	if ( writeBit ) {
+	if( writeBit ) {
 		writeData[curSize - 1] &= ( 1 << writeBit ) - 1;
 	}
 }
@@ -297,7 +297,7 @@ ID_FORCE_INLINE void idBitMsg::WriteLong( int c ) {
 }
 
 ID_FORCE_INLINE void idBitMsg::WriteFloat( float f ) {
-	WriteBits( *reinterpret_cast<int *>(&f), 32 );
+	WriteBits( *reinterpret_cast<int *>( &f ), 32 );
 }
 
 ID_FORCE_INLINE void idBitMsg::WriteFloat( float f, int exponentBits, int mantissaBits ) {
@@ -310,7 +310,7 @@ ID_FORCE_INLINE void idBitMsg::WriteAngle8( float f ) {
 }
 
 ID_FORCE_INLINE void idBitMsg::WriteAngle16( float f ) {
-	WriteShort( ANGLE2SHORT(f) );
+	WriteShort( ANGLE2SHORT( f ) );
 }
 
 ID_FORCE_INLINE void idBitMsg::WriteDir( const idVec3 &dir, int numBits ) {
@@ -334,7 +334,7 @@ ID_FORCE_INLINE void idBitMsg::WriteDeltaLong( int oldValue, int newValue ) {
 }
 
 ID_FORCE_INLINE void idBitMsg::WriteDeltaFloat( float oldValue, float newValue ) {
-	WriteDelta( *reinterpret_cast<int *>(&oldValue), *reinterpret_cast<int *>(&newValue), 32 );
+	WriteDelta( *reinterpret_cast<int *>( &oldValue ), *reinterpret_cast<int *>( &newValue ), 32 );
 }
 
 ID_FORCE_INLINE void idBitMsg::WriteDeltaFloat( float oldValue, float newValue, int exponentBits, int mantissaBits ) {
@@ -357,19 +357,19 @@ ID_FORCE_INLINE void idBitMsg::ReadByteAlign( void ) const {
 }
 
 ID_FORCE_INLINE int idBitMsg::ReadChar( void ) const {
-	return (signed char)ReadBits( -8 );
+	return ( signed char )ReadBits( -8 );
 }
 
 ID_FORCE_INLINE int idBitMsg::ReadByte( void ) const {
-	return (unsigned char)ReadBits( 8 );
+	return ( unsigned char )ReadBits( 8 );
 }
 
 ID_FORCE_INLINE int idBitMsg::ReadShort( void ) const {
-	return (short)ReadBits( -16 );
+	return ( short )ReadBits( -16 );
 }
 
 ID_FORCE_INLINE int idBitMsg::ReadUShort( void ) const {
-	return (unsigned short)ReadBits( 16 );
+	return ( unsigned short )ReadBits( 16 );
 }
 
 ID_FORCE_INLINE int idBitMsg::ReadLong( void ) const {
@@ -378,7 +378,7 @@ ID_FORCE_INLINE int idBitMsg::ReadLong( void ) const {
 
 ID_FORCE_INLINE float idBitMsg::ReadFloat( void ) const {
 	float value;
-	*reinterpret_cast<int *>(&value) = ReadBits( 32 );
+	*reinterpret_cast<int *>( &value ) = ReadBits( 32 );
 	return value;
 }
 
@@ -400,15 +400,15 @@ ID_FORCE_INLINE idVec3 idBitMsg::ReadDir( int numBits ) const {
 }
 
 ID_FORCE_INLINE int idBitMsg::ReadDeltaChar( int oldValue ) const {
-	return (signed char)ReadDelta( oldValue, -8 );
+	return ( signed char )ReadDelta( oldValue, -8 );
 }
 
 ID_FORCE_INLINE int idBitMsg::ReadDeltaByte( int oldValue ) const {
-	return (unsigned char)ReadDelta( oldValue, 8 );
+	return ( unsigned char )ReadDelta( oldValue, 8 );
 }
 
 ID_FORCE_INLINE int idBitMsg::ReadDeltaShort( int oldValue ) const {
-	return (short)ReadDelta( oldValue, -16 );
+	return ( short )ReadDelta( oldValue, -16 );
 }
 
 ID_FORCE_INLINE int idBitMsg::ReadDeltaLong( int oldValue ) const {
@@ -417,7 +417,7 @@ ID_FORCE_INLINE int idBitMsg::ReadDeltaLong( int oldValue ) const {
 
 ID_FORCE_INLINE float idBitMsg::ReadDeltaFloat( float oldValue ) const {
 	float value;
-	*reinterpret_cast<int *>(&value) = ReadDelta( *reinterpret_cast<int *>(&oldValue), 32 );
+	*reinterpret_cast<int *>( &value ) = ReadDelta( *reinterpret_cast<int *>( &oldValue ), 32 );
 	return value;
 }
 
@@ -438,8 +438,8 @@ ID_FORCE_INLINE float idBitMsg::ReadDeltaFloat( float oldValue, int exponentBits
 
 class idBitMsgDelta {
 public:
-					idBitMsgDelta();
-					~idBitMsgDelta() {}
+	idBitMsgDelta();
+	~idBitMsgDelta() {}
 
 	void			Init( const idBitMsg *base, idBitMsg *newBase, idBitMsg *delta );
 	void			Init( const idBitMsg *base, idBitMsg *newBase, const idBitMsg *delta );
@@ -497,8 +497,8 @@ public:
 
 private:
 	const idBitMsg *base;			// base
-	idBitMsg *		newBase;		// new base
-	idBitMsg *		writeDelta;		// delta from base to new base for writing
+	idBitMsg 		*newBase;		// new base
+	idBitMsg 		*writeDelta;		// delta from base to new base for writing
 	const idBitMsg *readDelta;		// delta from base to new base for reading
 	mutable bool	changed;		// true if the new base is different from the base
 
@@ -556,7 +556,7 @@ ID_FORCE_INLINE void idBitMsgDelta::WriteLong( int c ) {
 }
 
 ID_FORCE_INLINE void idBitMsgDelta::WriteFloat( float f ) {
-	WriteBits( *reinterpret_cast<int *>(&f), 32 );
+	WriteBits( *reinterpret_cast<int *>( &f ), 32 );
 }
 
 ID_FORCE_INLINE void idBitMsgDelta::WriteFloat( float f, int exponentBits, int mantissaBits ) {
@@ -569,7 +569,7 @@ ID_FORCE_INLINE void idBitMsgDelta::WriteAngle8( float f ) {
 }
 
 ID_FORCE_INLINE void idBitMsgDelta::WriteAngle16( float f ) {
-	WriteBits( ANGLE2SHORT(f), 16 );
+	WriteBits( ANGLE2SHORT( f ), 16 );
 }
 
 ID_FORCE_INLINE void idBitMsgDelta::WriteDir( const idVec3 &dir, int numBits ) {
@@ -593,7 +593,7 @@ ID_FORCE_INLINE void idBitMsgDelta::WriteDeltaLong( int oldValue, int newValue )
 }
 
 ID_FORCE_INLINE void idBitMsgDelta::WriteDeltaFloat( float oldValue, float newValue ) {
-	WriteDelta( *reinterpret_cast<int *>(&oldValue), *reinterpret_cast<int *>(&newValue), 32 );
+	WriteDelta( *reinterpret_cast<int *>( &oldValue ), *reinterpret_cast<int *>( &newValue ), 32 );
 }
 
 ID_FORCE_INLINE void idBitMsgDelta::WriteDeltaFloat( float oldValue, float newValue, int exponentBits, int mantissaBits ) {
@@ -603,19 +603,19 @@ ID_FORCE_INLINE void idBitMsgDelta::WriteDeltaFloat( float oldValue, float newVa
 }
 
 ID_FORCE_INLINE int idBitMsgDelta::ReadChar( void ) const {
-	return (signed char)ReadBits( -8 );
+	return ( signed char )ReadBits( -8 );
 }
 
 ID_FORCE_INLINE int idBitMsgDelta::ReadByte( void ) const {
-	return (unsigned char)ReadBits( 8 );
+	return ( unsigned char )ReadBits( 8 );
 }
 
 ID_FORCE_INLINE int idBitMsgDelta::ReadShort( void ) const {
-	return (short)ReadBits( -16 );
+	return ( short )ReadBits( -16 );
 }
 
 ID_FORCE_INLINE int idBitMsgDelta::ReadUShort( void ) const {
-	return (unsigned short)ReadBits( 16 );
+	return ( unsigned short )ReadBits( 16 );
 }
 
 ID_FORCE_INLINE int idBitMsgDelta::ReadLong( void ) const {
@@ -624,7 +624,7 @@ ID_FORCE_INLINE int idBitMsgDelta::ReadLong( void ) const {
 
 ID_FORCE_INLINE float idBitMsgDelta::ReadFloat( void ) const {
 	float value;
-	*reinterpret_cast<int *>(&value) = ReadBits( 32 );
+	*reinterpret_cast<int *>( &value ) = ReadBits( 32 );
 	return value;
 }
 
@@ -646,15 +646,15 @@ ID_FORCE_INLINE idVec3 idBitMsgDelta::ReadDir( int numBits ) const {
 }
 
 ID_FORCE_INLINE int idBitMsgDelta::ReadDeltaChar( int oldValue ) const {
-	return (signed char)ReadDelta( oldValue, -8 );
+	return ( signed char )ReadDelta( oldValue, -8 );
 }
 
 ID_FORCE_INLINE int idBitMsgDelta::ReadDeltaByte( int oldValue ) const {
-	return (unsigned char)ReadDelta( oldValue, 8 );
+	return ( unsigned char )ReadDelta( oldValue, 8 );
 }
 
 ID_FORCE_INLINE int idBitMsgDelta::ReadDeltaShort( int oldValue ) const {
-	return (short)ReadDelta( oldValue, -16 );
+	return ( short )ReadDelta( oldValue, -16 );
 }
 
 ID_FORCE_INLINE int idBitMsgDelta::ReadDeltaLong( int oldValue ) const {
@@ -663,7 +663,7 @@ ID_FORCE_INLINE int idBitMsgDelta::ReadDeltaLong( int oldValue ) const {
 
 ID_FORCE_INLINE float idBitMsgDelta::ReadDeltaFloat( float oldValue ) const {
 	float value;
-	*reinterpret_cast<int *>(&value) = ReadDelta( *reinterpret_cast<int *>(&oldValue), 32 );
+	*reinterpret_cast<int *>( &value ) = ReadDelta( *reinterpret_cast<int *>( &oldValue ), 32 );
 	return value;
 }
 

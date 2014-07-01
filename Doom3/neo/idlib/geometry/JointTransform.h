@@ -2,9 +2,9 @@
 ===========================================================================
 
 Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
 
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
 
 Doom 3 Source Code is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -69,8 +69,8 @@ public:
 	idVec3			operator*( const idVec3 &v ) const;							// only rotate
 	idVec3			operator*( const idVec4 &v ) const;							// rotate and translate
 
-	idJointMat &	operator*=( const idJointMat &a );							// transform
-	idJointMat &	operator/=( const idJointMat &a );							// untransform
+	idJointMat 	&operator*=( const idJointMat &a );							// transform
+	idJointMat 	&operator/=( const idJointMat &a );							// untransform
 
 	bool			Compare( const idJointMat &a ) const;						// exact compare, no epsilon
 	bool			Compare( const idJointMat &a, const float epsilon ) const;	// compare with epsilon
@@ -80,11 +80,11 @@ public:
 	idMat3			ToMat3( void ) const;
 	idVec3			ToVec3( void ) const;
 	idJointQuat		ToJointQuat( void ) const;
-	const float *	ToFloatPtr( void ) const;
-	float *			ToFloatPtr( void );
+	const float 	*ToFloatPtr( void ) const;
+	float 			*ToFloatPtr( void );
 
 private:
-	float			mat[3*4];
+	float			mat[3 * 4];
 };
 
 ID_FORCE_INLINE void idJointMat::SetRotation( const idMat3 &m ) {
@@ -120,85 +120,72 @@ ID_FORCE_INLINE idVec3 idJointMat::operator*( const idVec4 &v ) const {
 
 ID_FORCE_INLINE idJointMat &idJointMat::operator*=( const idJointMat &a ) {
 	float dst[3];
-
 	dst[0] = mat[0 * 4 + 0] * a.mat[0 * 4 + 0] + mat[1 * 4 + 0] * a.mat[0 * 4 + 1] + mat[2 * 4 + 0] * a.mat[0 * 4 + 2];
 	dst[1] = mat[0 * 4 + 0] * a.mat[1 * 4 + 0] + mat[1 * 4 + 0] * a.mat[1 * 4 + 1] + mat[2 * 4 + 0] * a.mat[1 * 4 + 2];
 	dst[2] = mat[0 * 4 + 0] * a.mat[2 * 4 + 0] + mat[1 * 4 + 0] * a.mat[2 * 4 + 1] + mat[2 * 4 + 0] * a.mat[2 * 4 + 2];
 	mat[0 * 4 + 0] = dst[0];
 	mat[1 * 4 + 0] = dst[1];
 	mat[2 * 4 + 0] = dst[2];
-
 	dst[0] = mat[0 * 4 + 1] * a.mat[0 * 4 + 0] + mat[1 * 4 + 1] * a.mat[0 * 4 + 1] + mat[2 * 4 + 1] * a.mat[0 * 4 + 2];
 	dst[1] = mat[0 * 4 + 1] * a.mat[1 * 4 + 0] + mat[1 * 4 + 1] * a.mat[1 * 4 + 1] + mat[2 * 4 + 1] * a.mat[1 * 4 + 2];
 	dst[2] = mat[0 * 4 + 1] * a.mat[2 * 4 + 0] + mat[1 * 4 + 1] * a.mat[2 * 4 + 1] + mat[2 * 4 + 1] * a.mat[2 * 4 + 2];
 	mat[0 * 4 + 1] = dst[0];
 	mat[1 * 4 + 1] = dst[1];
 	mat[2 * 4 + 1] = dst[2];
-
 	dst[0] = mat[0 * 4 + 2] * a.mat[0 * 4 + 0] + mat[1 * 4 + 2] * a.mat[0 * 4 + 1] + mat[2 * 4 + 2] * a.mat[0 * 4 + 2];
 	dst[1] = mat[0 * 4 + 2] * a.mat[1 * 4 + 0] + mat[1 * 4 + 2] * a.mat[1 * 4 + 1] + mat[2 * 4 + 2] * a.mat[1 * 4 + 2];
 	dst[2] = mat[0 * 4 + 2] * a.mat[2 * 4 + 0] + mat[1 * 4 + 2] * a.mat[2 * 4 + 1] + mat[2 * 4 + 2] * a.mat[2 * 4 + 2];
 	mat[0 * 4 + 2] = dst[0];
 	mat[1 * 4 + 2] = dst[1];
 	mat[2 * 4 + 2] = dst[2];
-
 	dst[0] = mat[0 * 4 + 3] * a.mat[0 * 4 + 0] + mat[1 * 4 + 3] * a.mat[0 * 4 + 1] + mat[2 * 4 + 3] * a.mat[0 * 4 + 2];
 	dst[1] = mat[0 * 4 + 3] * a.mat[1 * 4 + 0] + mat[1 * 4 + 3] * a.mat[1 * 4 + 1] + mat[2 * 4 + 3] * a.mat[1 * 4 + 2];
 	dst[2] = mat[0 * 4 + 3] * a.mat[2 * 4 + 0] + mat[1 * 4 + 3] * a.mat[2 * 4 + 1] + mat[2 * 4 + 3] * a.mat[2 * 4 + 2];
 	mat[0 * 4 + 3] = dst[0];
 	mat[1 * 4 + 3] = dst[1];
 	mat[2 * 4 + 3] = dst[2];
-
 	mat[0 * 4 + 3] += a.mat[0 * 4 + 3];
 	mat[1 * 4 + 3] += a.mat[1 * 4 + 3];
 	mat[2 * 4 + 3] += a.mat[2 * 4 + 3];
-
 	return *this;
 }
 
 ID_FORCE_INLINE idJointMat &idJointMat::operator/=( const idJointMat &a ) {
 	float dst[3];
-
 	mat[0 * 4 + 3] -= a.mat[0 * 4 + 3];
 	mat[1 * 4 + 3] -= a.mat[1 * 4 + 3];
 	mat[2 * 4 + 3] -= a.mat[2 * 4 + 3];
-
 	dst[0] = mat[0 * 4 + 0] * a.mat[0 * 4 + 0] + mat[1 * 4 + 0] * a.mat[1 * 4 + 0] + mat[2 * 4 + 0] * a.mat[2 * 4 + 0];
 	dst[1] = mat[0 * 4 + 0] * a.mat[0 * 4 + 1] + mat[1 * 4 + 0] * a.mat[1 * 4 + 1] + mat[2 * 4 + 0] * a.mat[2 * 4 + 1];
 	dst[2] = mat[0 * 4 + 0] * a.mat[0 * 4 + 2] + mat[1 * 4 + 0] * a.mat[1 * 4 + 2] + mat[2 * 4 + 0] * a.mat[2 * 4 + 2];
 	mat[0 * 4 + 0] = dst[0];
 	mat[1 * 4 + 0] = dst[1];
 	mat[2 * 4 + 0] = dst[2];
-
 	dst[0] = mat[0 * 4 + 1] * a.mat[0 * 4 + 0] + mat[1 * 4 + 1] * a.mat[1 * 4 + 0] + mat[2 * 4 + 1] * a.mat[2 * 4 + 0];
 	dst[1] = mat[0 * 4 + 1] * a.mat[0 * 4 + 1] + mat[1 * 4 + 1] * a.mat[1 * 4 + 1] + mat[2 * 4 + 1] * a.mat[2 * 4 + 1];
 	dst[2] = mat[0 * 4 + 1] * a.mat[0 * 4 + 2] + mat[1 * 4 + 1] * a.mat[1 * 4 + 2] + mat[2 * 4 + 1] * a.mat[2 * 4 + 2];
 	mat[0 * 4 + 1] = dst[0];
 	mat[1 * 4 + 1] = dst[1];
 	mat[2 * 4 + 1] = dst[2];
-
 	dst[0] = mat[0 * 4 + 2] * a.mat[0 * 4 + 0] + mat[1 * 4 + 2] * a.mat[1 * 4 + 0] + mat[2 * 4 + 2] * a.mat[2 * 4 + 0];
 	dst[1] = mat[0 * 4 + 2] * a.mat[0 * 4 + 1] + mat[1 * 4 + 2] * a.mat[1 * 4 + 1] + mat[2 * 4 + 2] * a.mat[2 * 4 + 1];
 	dst[2] = mat[0 * 4 + 2] * a.mat[0 * 4 + 2] + mat[1 * 4 + 2] * a.mat[1 * 4 + 2] + mat[2 * 4 + 2] * a.mat[2 * 4 + 2];
 	mat[0 * 4 + 2] = dst[0];
 	mat[1 * 4 + 2] = dst[1];
 	mat[2 * 4 + 2] = dst[2];
-
 	dst[0] = mat[0 * 4 + 3] * a.mat[0 * 4 + 0] + mat[1 * 4 + 3] * a.mat[1 * 4 + 0] + mat[2 * 4 + 3] * a.mat[2 * 4 + 0];
 	dst[1] = mat[0 * 4 + 3] * a.mat[0 * 4 + 1] + mat[1 * 4 + 3] * a.mat[1 * 4 + 1] + mat[2 * 4 + 3] * a.mat[2 * 4 + 1];
 	dst[2] = mat[0 * 4 + 3] * a.mat[0 * 4 + 2] + mat[1 * 4 + 3] * a.mat[1 * 4 + 2] + mat[2 * 4 + 3] * a.mat[2 * 4 + 2];
 	mat[0 * 4 + 3] = dst[0];
 	mat[1 * 4 + 3] = dst[1];
 	mat[2 * 4 + 3] = dst[2];
-
 	return *this;
 }
 
 ID_FORCE_INLINE bool idJointMat::Compare( const idJointMat &a ) const {
 	int i;
-
-	for ( i = 0; i < 12; i++ ) {
-		if ( mat[i] != a.mat[i] ) {
+	for( i = 0; i < 12; i++ ) {
+		if( mat[i] != a.mat[i] ) {
 			return false;
 		}
 	}
@@ -207,9 +194,8 @@ ID_FORCE_INLINE bool idJointMat::Compare( const idJointMat &a ) const {
 
 ID_FORCE_INLINE bool idJointMat::Compare( const idJointMat &a, const float epsilon ) const {
 	int i;
-
-	for ( i = 0; i < 12; i++ ) {
-		if ( idMath::Fabs( mat[i] - a.mat[i] ) > epsilon ) {
+	for( i = 0; i < 12; i++ ) {
+		if( idMath::Fabs( mat[i] - a.mat[i] ) > epsilon ) {
 			return false;
 		}
 	}

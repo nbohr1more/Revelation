@@ -2,9 +2,9 @@
 ===========================================================================
 
 Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
 
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
 
 Doom 3 Source Code is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -40,13 +40,13 @@ If you have questions concerning this license or the applicable additional terms
 class idSIMD_SSE : public idSIMD_MMX {
 public:
 #if defined(MACOS_X) && defined(__i386__)
-	virtual const char * VPCALL GetName( void ) const;
-	virtual void VPCALL Dot( float *dst,			const idPlane &constant,const idDrawVert *src,	const int count );	
-	virtual	void VPCALL MinMax( idVec3 &min,		idVec3 &max,			const idDrawVert *src,	const int *indexes,		const int count );	
-	virtual void VPCALL Dot( float *dst,			const idVec3 &constant,	const idPlane *src,		const int count );	
+	virtual const char *VPCALL GetName( void ) const;
+	virtual void VPCALL Dot( float *dst,			const idPlane &constant, const idDrawVert *src,	const int count );
+	virtual	void VPCALL MinMax( idVec3 &min,		idVec3 &max,			const idDrawVert *src,	const int *indexes,		const int count );
+	virtual void VPCALL Dot( float *dst,			const idVec3 &constant,	const idPlane *src,		const int count );
 
 #elif defined(_WIN32)
-	virtual const char * VPCALL GetName( void ) const;
+	virtual const char *VPCALL GetName( void ) const;
 
 	virtual void VPCALL Add( float *dst,			const float constant,	const float *src,		const int count );
 	virtual void VPCALL Add( float *dst,			const float *src0,		const float *src1,		const int count );
@@ -64,9 +64,9 @@ public:
 	virtual void VPCALL Dot( float *dst,			const idVec3 &constant,	const idVec3 *src,		const int count );
 	virtual void VPCALL Dot( float *dst,			const idVec3 &constant,	const idPlane *src,		const int count );
 	virtual void VPCALL Dot( float *dst,			const idVec3 &constant,	const idDrawVert *src,	const int count );
-	virtual void VPCALL Dot( float *dst,			const idPlane &constant,const idVec3 *src,		const int count );
-	virtual void VPCALL Dot( float *dst,			const idPlane &constant,const idPlane *src,		const int count );
-	virtual void VPCALL Dot( float *dst,			const idPlane &constant,const idDrawVert *src,	const int count );
+	virtual void VPCALL Dot( float *dst,			const idPlane &constant, const idVec3 *src,		const int count );
+	virtual void VPCALL Dot( float *dst,			const idPlane &constant, const idPlane *src,		const int count );
+	virtual void VPCALL Dot( float *dst,			const idPlane &constant, const idDrawVert *src,	const int count );
 	virtual void VPCALL Dot( float *dst,			const idVec3 *src0,		const idVec3 *src1,		const int count );
 	virtual void VPCALL Dot( float &dot,			const float *src1,		const float *src2,		const int count );
 
@@ -130,7 +130,7 @@ public:
 	virtual int  VPCALL CreateVertexProgramShadowCache( idVec4 *vertexCache, const idDrawVert *verts, const int numVerts );
 
 	virtual void VPCALL UpSamplePCMTo44kHz( float *dest, const short *pcm, const int numSamples, const int kHz, const int numChannels );
-	virtual void VPCALL UpSampleOGGTo44kHz( float *dest, const float * const *ogg, const int numSamples, const int kHz, const int numChannels );
+	virtual void VPCALL UpSampleOGGTo44kHz( float *dest, const float *const *ogg, const int numSamples, const int kHz, const int numChannels );
 	virtual void VPCALL MixSoundTwoSpeakerMono( float *mixBuffer, const float *samples, const int numSamples, const float lastV[2], const float currentV[2] );
 	virtual void VPCALL MixSoundTwoSpeakerStereo( float *mixBuffer, const float *samples, const int numSamples, const float lastV[2], const float currentV[2] );
 	virtual void VPCALL MixSoundSixSpeakerMono( float *mixBuffer, const float *samples, const int numSamples, const float lastV[6], const float currentV[6] );

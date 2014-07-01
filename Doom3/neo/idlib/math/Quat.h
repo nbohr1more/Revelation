@@ -2,9 +2,9 @@
 ===========================================================================
 
 Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
 
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
 
 Doom 3 Source Code is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -52,24 +52,24 @@ public:
 	float			z;
 	float			w;
 
-					idQuat( void );
-					idQuat( float x, float y, float z, float w );
+	idQuat( void );
+	idQuat( float x, float y, float z, float w );
 
 	void 			Set( float x, float y, float z, float w );
 
 	float			operator[]( int index ) const;
-	float &			operator[]( int index );
+	float 			&operator[]( int index );
 	idQuat			operator-() const;
-	idQuat &		operator=( const idQuat &a );
+	idQuat 		&operator=( const idQuat &a );
 	idQuat			operator+( const idQuat &a ) const;
-	idQuat &		operator+=( const idQuat &a );
+	idQuat 		&operator+=( const idQuat &a );
 	idQuat			operator-( const idQuat &a ) const;
-	idQuat &		operator-=( const idQuat &a );
+	idQuat 		&operator-=( const idQuat &a );
 	idQuat			operator*( const idQuat &a ) const;
 	idVec3			operator*( const idVec3 &a ) const;
 	idQuat			operator*( float a ) const;
-	idQuat &		operator*=( const idQuat &a );
-	idQuat &		operator*=( float a );
+	idQuat 		&operator*=( const idQuat &a );
+	idQuat 		&operator*=( float a );
 
 	friend idQuat	operator*( const float a, const idQuat &b );
 	friend idVec3	operator*( const idVec3 &a, const idQuat &b );
@@ -81,7 +81,7 @@ public:
 
 	idQuat			Inverse( void ) const;
 	float			Length( void ) const;
-	idQuat &		Normalize( void );
+	idQuat 		&Normalize( void );
 
 	float			CalcW( void ) const;
 	int				GetDimension( void ) const;
@@ -92,11 +92,11 @@ public:
 	idMat4			ToMat4( void ) const;
 	idCQuat			ToCQuat( void ) const;
 	idVec3			ToAngularVelocity( void ) const;
-	const float *	ToFloatPtr( void ) const;
-	float *			ToFloatPtr( void );
-	const char *	ToString( int precision = 2 ) const;
+	const float 	*ToFloatPtr( void ) const;
+	float 			*ToFloatPtr( void );
+	const char 	*ToString( int precision = 2 ) const;
 
-	idQuat &		Slerp( const idQuat &from, const idQuat &to, float t );
+	idQuat 		&Slerp( const idQuat &from, const idQuat &to, float t );
 };
 
 ID_FORCE_INLINE idQuat::idQuat( void ) {
@@ -114,7 +114,7 @@ ID_FORCE_INLINE float idQuat::operator[]( int index ) const {
 	return ( &x )[ index ];
 }
 
-ID_FORCE_INLINE float& idQuat::operator[]( int index ) {
+ID_FORCE_INLINE float &idQuat::operator[]( int index ) {
 	assert( ( index >= 0 ) && ( index < 4 ) );
 	return ( &x )[ index ];
 }
@@ -128,7 +128,6 @@ ID_FORCE_INLINE idQuat &idQuat::operator=( const idQuat &a ) {
 	y = a.y;
 	z = a.z;
 	w = a.w;
-
 	return *this;
 }
 
@@ -136,12 +135,11 @@ ID_FORCE_INLINE idQuat idQuat::operator+( const idQuat &a ) const {
 	return idQuat( x + a.x, y + a.y, z + a.z, w + a.w );
 }
 
-ID_FORCE_INLINE idQuat& idQuat::operator+=( const idQuat &a ) {
+ID_FORCE_INLINE idQuat &idQuat::operator+=( const idQuat &a ) {
 	x += a.x;
 	y += a.y;
 	z += a.z;
 	w += a.w;
-
 	return *this;
 }
 
@@ -149,20 +147,19 @@ ID_FORCE_INLINE idQuat idQuat::operator-( const idQuat &a ) const {
 	return idQuat( x - a.x, y - a.y, z - a.z, w - a.w );
 }
 
-ID_FORCE_INLINE idQuat& idQuat::operator-=( const idQuat &a ) {
+ID_FORCE_INLINE idQuat &idQuat::operator-=( const idQuat &a ) {
 	x -= a.x;
 	y -= a.y;
 	z -= a.z;
 	w -= a.w;
-
 	return *this;
 }
 
 ID_FORCE_INLINE idQuat idQuat::operator*( const idQuat &a ) const {
-	return idQuat(	w*a.x + x*a.w + y*a.z - z*a.y,
-					w*a.y + y*a.w + z*a.x - x*a.z,
-					w*a.z + z*a.w + x*a.y - y*a.x,
-					w*a.w - x*a.x - y*a.y - z*a.z );
+	return idQuat(	w * a.x + x * a.w + y * a.z - z * a.y,
+					w * a.y + y * a.w + z * a.x - x * a.z,
+					w * a.z + z * a.w + x * a.y - y * a.x,
+					w * a.w - x * a.x - y * a.y - z * a.z );
 }
 
 ID_FORCE_INLINE idVec3 idQuat::operator*( const idVec3 &a ) const {
@@ -171,21 +168,19 @@ ID_FORCE_INLINE idVec3 idQuat::operator*( const idVec3 &a ) const {
 	return ( ToMat3() * a );
 #else
 	// result = this->Inverse() * idQuat( a.x, a.y, a.z, 0.0f ) * (*this)
-	float xxzz = x*x - z*z;
-	float wwyy = w*w - y*y;
-
-	float xw2 = x*w*2.0f;
-	float xy2 = x*y*2.0f;
-	float xz2 = x*z*2.0f;
-	float yw2 = y*w*2.0f;
-	float yz2 = y*z*2.0f;
-	float zw2 = z*w*2.0f;
-
+	float xxzz = x * x - z * z;
+	float wwyy = w * w - y * y;
+	float xw2 = x * w * 2.0f;
+	float xy2 = x * y * 2.0f;
+	float xz2 = x * z * 2.0f;
+	float yw2 = y * w * 2.0f;
+	float yz2 = y * z * 2.0f;
+	float zw2 = z * w * 2.0f;
 	return idVec3(
-		(xxzz + wwyy)*a.x		+ (xy2 + zw2)*a.y		+ (xz2 - yw2)*a.z,
-		(xy2 - zw2)*a.x			+ (y*y+w*w-x*x-z*z)*a.y	+ (yz2 + xw2)*a.z,
-		(xz2 + yw2)*a.x			+ (yz2 - xw2)*a.y		+ (wwyy - xxzz)*a.z
-	);
+			   ( xxzz + wwyy ) * a.x		+ ( xy2 + zw2 ) * a.y		+ ( xz2 - yw2 ) * a.z,
+			   ( xy2 - zw2 ) * a.x			+ ( y * y + w * w - x * x - z * z ) * a.y	+ ( yz2 + xw2 ) * a.z,
+			   ( xz2 + yw2 ) * a.x			+ ( yz2 - xw2 ) * a.y		+ ( wwyy - xxzz ) * a.z
+		   );
 #endif
 }
 
@@ -201,18 +196,16 @@ ID_FORCE_INLINE idVec3 operator*( const idVec3 &a, const idQuat &b ) {
 	return b * a;
 }
 
-ID_FORCE_INLINE idQuat& idQuat::operator*=( const idQuat &a ) {
+ID_FORCE_INLINE idQuat &idQuat::operator*=( const idQuat &a ) {
 	*this = *this * a;
-
 	return *this;
 }
 
-ID_FORCE_INLINE idQuat& idQuat::operator*=( float a ) {
+ID_FORCE_INLINE idQuat &idQuat::operator*=( float a ) {
 	x *= a;
 	y *= a;
 	z *= a;
 	w *= a;
-
 	return *this;
 }
 
@@ -221,16 +214,16 @@ ID_FORCE_INLINE bool idQuat::Compare( const idQuat &a ) const {
 }
 
 ID_FORCE_INLINE bool idQuat::Compare( const idQuat &a, const float epsilon ) const {
-	if ( idMath::Fabs( x - a.x ) > epsilon ) {
+	if( idMath::Fabs( x - a.x ) > epsilon ) {
 		return false;
 	}
-	if ( idMath::Fabs( y - a.y ) > epsilon ) {
+	if( idMath::Fabs( y - a.y ) > epsilon ) {
 		return false;
 	}
-	if ( idMath::Fabs( z - a.z ) > epsilon ) {
+	if( idMath::Fabs( z - a.z ) > epsilon ) {
 		return false;
 	}
-	if ( idMath::Fabs( w - a.w ) > epsilon ) {
+	if( idMath::Fabs( w - a.w ) > epsilon ) {
 		return false;
 	}
 	return true;
@@ -257,17 +250,15 @@ ID_FORCE_INLINE idQuat idQuat::Inverse( void ) const {
 
 ID_FORCE_INLINE float idQuat::Length( void ) const {
 	float len;
-
 	len = x * x + y * y + z * z + w * w;
 	return idMath::Sqrt( len );
 }
 
-ID_FORCE_INLINE idQuat& idQuat::Normalize( void ) {
+ID_FORCE_INLINE idQuat &idQuat::Normalize( void ) {
 	float len;
 	float ilength;
-
 	len = this->Length();
-	if ( len ) {
+	if( len ) {
 		ilength = 1 / len;
 		x *= ilength;
 		y *= ilength;
@@ -309,13 +300,13 @@ public:
 	float			y;
 	float			z;
 
-					idCQuat( void );
-					idCQuat( float x, float y, float z );
+	idCQuat( void );
+	idCQuat( float x, float y, float z );
 
 	void 			Set( float x, float y, float z );
 
 	float			operator[]( int index ) const;
-	float &			operator[]( int index );
+	float 			&operator[]( int index );
 
 	bool			Compare( const idCQuat &a ) const;						// exact compare, no epsilon
 	bool			Compare( const idCQuat &a, const float epsilon ) const;	// compare with epsilon
@@ -329,9 +320,9 @@ public:
 	idMat3			ToMat3( void ) const;
 	idMat4			ToMat4( void ) const;
 	idQuat			ToQuat( void ) const;
-	const float *	ToFloatPtr( void ) const;
-	float *			ToFloatPtr( void );
-	const char *	ToString( int precision = 2 ) const;
+	const float 	*ToFloatPtr( void ) const;
+	float 			*ToFloatPtr( void );
+	const char 	*ToString( int precision = 2 ) const;
 };
 
 ID_FORCE_INLINE idCQuat::idCQuat( void ) {
@@ -354,7 +345,7 @@ ID_FORCE_INLINE float idCQuat::operator[]( int index ) const {
 	return ( &x )[ index ];
 }
 
-ID_FORCE_INLINE float& idCQuat::operator[]( int index ) {
+ID_FORCE_INLINE float &idCQuat::operator[]( int index ) {
 	assert( ( index >= 0 ) && ( index < 3 ) );
 	return ( &x )[ index ];
 }
@@ -364,13 +355,13 @@ ID_FORCE_INLINE bool idCQuat::Compare( const idCQuat &a ) const {
 }
 
 ID_FORCE_INLINE bool idCQuat::Compare( const idCQuat &a, const float epsilon ) const {
-	if ( idMath::Fabs( x - a.x ) > epsilon ) {
+	if( idMath::Fabs( x - a.x ) > epsilon ) {
 		return false;
 	}
-	if ( idMath::Fabs( y - a.y ) > epsilon ) {
+	if( idMath::Fabs( y - a.y ) > epsilon ) {
 		return false;
 	}
-	if ( idMath::Fabs( z - a.z ) > epsilon ) {
+	if( idMath::Fabs( z - a.z ) > epsilon ) {
 		return false;
 	}
 	return true;

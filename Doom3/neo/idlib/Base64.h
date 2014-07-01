@@ -2,9 +2,9 @@
 ===========================================================================
 
 Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
 
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
 
 Doom 3 Source Code is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -39,9 +39,9 @@ If you have questions concerning this license or the applicable additional terms
 
 class idBase64 {
 public:
-				idBase64( void );
-				idBase64( const idStr &s );
-				~idBase64( void );
+	idBase64( void );
+	idBase64( const idStr &s );
+	~idBase64( void );
 
 	void		Encode( const byte *from, int size );
 	void		Encode( const idStr &src );
@@ -55,7 +55,7 @@ public:
 	void 		operator=( const idStr &s );
 
 private:
-	byte *		data;
+	byte 		*data;
 	int			len;
 	int			alloced;
 
@@ -78,7 +78,7 @@ ID_FORCE_INLINE idBase64::~idBase64( void ) {
 }
 
 ID_FORCE_INLINE const char *idBase64::c_str( void ) const {
-	return (const char *)data;
+	return ( const char * )data;
 }
 
 ID_FORCE_INLINE void idBase64::Init( void ) {
@@ -88,14 +88,14 @@ ID_FORCE_INLINE void idBase64::Init( void ) {
 }
 
 ID_FORCE_INLINE void idBase64::Release( void ) {
-	if ( data ) {
+	if( data ) {
 		delete[] data;
 	}
 	Init();
 }
 
 ID_FORCE_INLINE void idBase64::EnsureAlloced( int size ) {
-	if ( size > alloced ) {
+	if( size > alloced ) {
 		Release();
 	}
 	data = new byte[size];
@@ -103,8 +103,8 @@ ID_FORCE_INLINE void idBase64::EnsureAlloced( int size ) {
 }
 
 ID_FORCE_INLINE void idBase64::operator=( const idStr &s ) {
-	EnsureAlloced( s.Length()+1 ); // trailing \0 - beware, this does a Release
-	strcpy( (char *)data, s.c_str() );
+	EnsureAlloced( s.Length() + 1 ); // trailing \0 - beware, this does a Release
+	strcpy( ( char * )data, s.c_str() );
 	len = s.Length();
 }
 

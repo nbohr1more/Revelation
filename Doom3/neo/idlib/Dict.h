@@ -2,9 +2,9 @@
 ===========================================================================
 
 Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
 
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
 
 Doom 3 Source Code is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -49,46 +49,58 @@ class idKeyValue {
 	friend class idDict;
 
 public:
-	const idStr &		GetKey( void ) const { return *key; }
-	const idStr &		GetValue( void ) const { return *value; }
+	const idStr 		&GetKey( void ) const {
+		return *key;
+	}
+	const idStr 		&GetValue( void ) const {
+		return *value;
+	}
 
-	size_t				Allocated( void ) const { return key->Allocated() + value->Allocated(); }
-	size_t				Size( void ) const { return sizeof( *this ) + key->Size() + value->Size(); }
+	size_t				Allocated( void ) const {
+		return key->Allocated() + value->Allocated();
+	}
+	size_t				Size( void ) const {
+		return sizeof( *this ) + key->Size() + value->Size();
+	}
 
-	bool				operator==( const idKeyValue &kv ) const { return ( key == kv.key && value == kv.value ); }
+	bool				operator==( const idKeyValue &kv ) const {
+		return ( key == kv.key && value == kv.value );
+	}
 
 private:
-	const idPoolStr *	key;
-	const idPoolStr *	value;
+	const idPoolStr 	*key;
+	const idPoolStr 	*value;
 };
 
 class idDict {
 public:
-						idDict( void );
-						idDict( const idDict &other );	// allow declaration with assignment
-						~idDict( void );
+	idDict( void );
+	idDict( const idDict &other );	// allow declaration with assignment
+	~idDict( void );
 
-						// set the granularity for the index
+	// set the granularity for the index
 	void				SetGranularity( int granularity );
-						// set hash size
+	// set hash size
 	void				SetHashSize( int hashSize );
-						// clear existing key/value pairs and copy all key/value pairs from other
-	idDict &			operator=( const idDict &other );
-						// copy from other while leaving existing key/value pairs in place
+	// clear existing key/value pairs and copy all key/value pairs from other
+	idDict 			&operator=( const idDict &other );
+	// copy from other while leaving existing key/value pairs in place
 	void				Copy( const idDict &other );
-						// clear existing key/value pairs and transfer key/value pairs from other
+	// clear existing key/value pairs and transfer key/value pairs from other
 	void				TransferKeyValues( idDict &other );
-						// parse dict from parser
+	// parse dict from parser
 	bool				Parse( idParser &parser );
-						// copy key/value pairs from other dict not present in this dict
+	// copy key/value pairs from other dict not present in this dict
 	void				SetDefaults( const idDict *dict );
-						// clear dict freeing up memory
+	// clear dict freeing up memory
 	void				Clear( void );
-						// print the dict
+	// print the dict
 	void				Print() const;
 
 	size_t				Allocated( void ) const;
-	size_t				Size( void ) const { return sizeof( *this ) + Allocated(); }
+	size_t				Size( void ) const {
+		return sizeof( *this ) + Allocated();
+	}
 
 	void				Set( const char *key, const char *value );
 	void				SetFloat( const char *key, float val );
@@ -100,8 +112,8 @@ public:
 	void				SetAngles( const char *key, const idAngles &val );
 	void				SetMatrix( const char *key, const idMat3 &val );
 
-						// these return default values of 0.0, 0 and false
-	const char *		GetString( const char *key, const char *defaultString = "" ) const;
+	// these return default values of 0.0, 0 and false
+	const char 		*GetString( const char *key, const char *defaultString = "" ) const;
 	float				GetFloat( const char *key, const char *defaultString = "0" ) const;
 	int					GetInt( const char *key, const char *defaultString = "0" ) const;
 	bool				GetBool( const char *key, const char *defaultString = "0" ) const;
@@ -123,25 +135,25 @@ public:
 	bool				GetMatrix( const char *key, const char *defaultString, idMat3 &out ) const;
 
 	int					GetNumKeyVals( void ) const;
-	const idKeyValue *	GetKeyVal( int index ) const;
-						// returns the key/value pair with the given key
-						// returns NULL if the key/value pair does not exist
-	const idKeyValue *	FindKey( const char *key ) const;
-						// returns the index to the key/value pair with the given key
-						// returns -1 if the key/value pair does not exist
+	const idKeyValue 	*GetKeyVal( int index ) const;
+	// returns the key/value pair with the given key
+	// returns NULL if the key/value pair does not exist
+	const idKeyValue 	*FindKey( const char *key ) const;
+	// returns the index to the key/value pair with the given key
+	// returns -1 if the key/value pair does not exist
 	int					FindKeyIndex( const char *key ) const;
-						// delete the key/value pair with the given key
+	// delete the key/value pair with the given key
 	void				Delete( const char *key );
-						// finds the next key/value pair with the given key prefix.
-						// lastMatch can be used to do additional searches past the first match.
-	const idKeyValue *	MatchPrefix( const char *prefix, const idKeyValue *lastMatch = NULL ) const;
-						// randomly chooses one of the key/value pairs with the given key prefix and returns it's value
-	const char *		RandomPrefix( const char *prefix, idRandom &random ) const;
+	// finds the next key/value pair with the given key prefix.
+	// lastMatch can be used to do additional searches past the first match.
+	const idKeyValue 	*MatchPrefix( const char *prefix, const idKeyValue *lastMatch = NULL ) const;
+	// randomly chooses one of the key/value pairs with the given key prefix and returns it's value
+	const char 		*RandomPrefix( const char *prefix, idRandom &random ) const;
 
 	void				WriteToFileHandle( idFile *f ) const;
 	void				ReadFromFileHandle( idFile *f );
 
-						// returns a unique checksum for this dictionary's content
+	// returns a unique checksum for this dictionary's content
 	int					Checksum( void ) const;
 
 	static void			Init( void );
@@ -180,7 +192,7 @@ ID_FORCE_INLINE void idDict::SetGranularity( int granularity ) {
 }
 
 ID_FORCE_INLINE void idDict::SetHashSize( int hashSize ) {
-	if ( args.Num() == 0 ) {
+	if( args.Num() == 0 ) {
 		argHash.Clear( hashSize, 16 );
 	}
 }
@@ -219,7 +231,7 @@ ID_FORCE_INLINE void idDict::SetMatrix( const char *key, const idMat3 &val ) {
 
 ID_FORCE_INLINE bool idDict::GetString( const char *key, const char *defaultString, const char **out ) const {
 	const idKeyValue *kv = FindKey( key );
-	if ( kv ) {
+	if( kv ) {
 		*out = kv->GetValue();
 		return true;
 	}
@@ -229,7 +241,7 @@ ID_FORCE_INLINE bool idDict::GetString( const char *key, const char *defaultStri
 
 ID_FORCE_INLINE bool idDict::GetString( const char *key, const char *defaultString, idStr &out ) const {
 	const idKeyValue *kv = FindKey( key );
-	if ( kv ) {
+	if( kv ) {
 		out = kv->GetValue();
 		return true;
 	}
@@ -239,7 +251,7 @@ ID_FORCE_INLINE bool idDict::GetString( const char *key, const char *defaultStri
 
 ID_FORCE_INLINE const char *idDict::GetString( const char *key, const char *defaultString ) const {
 	const idKeyValue *kv = FindKey( key );
-	if ( kv ) {
+	if( kv ) {
 		return kv->GetValue();
 	}
 	return defaultString;
@@ -292,7 +304,7 @@ ID_FORCE_INLINE int idDict::GetNumKeyVals( void ) const {
 }
 
 ID_FORCE_INLINE const idKeyValue *idDict::GetKeyVal( int index ) const {
-	if ( index >= 0 && index < args.Num() ) {
+	if( index >= 0 && index < args.Num() ) {
 		return &args[ index ];
 	}
 	return NULL;

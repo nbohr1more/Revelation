@@ -2,9 +2,9 @@
 ===========================================================================
 
 Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
 
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
 
 Doom 3 Source Code is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -44,7 +44,7 @@ If you have questions concerning this license or the applicable additional terms
 //
 //===============================================================
 
-typedef void (*deriveFunction_t)( const float t, const void *userData, const float *state, float *derivatives );
+typedef void ( *deriveFunction_t )( const float t, const void *userData, const float *state, float *derivatives );
 
 class idODE {
 
@@ -56,7 +56,7 @@ public:
 protected:
 	int					dimension;		// dimension in floats allocated for
 	deriveFunction_t	derive;			// derive function
-	const void *		userData;		// client data
+	const void 		*userData;		// client data
 };
 
 //===============================================================
@@ -68,13 +68,13 @@ protected:
 class idODE_Euler : public idODE {
 
 public:
-						idODE_Euler( const int dim, const deriveFunction_t dr, const void *ud );
+	idODE_Euler( const int dim, const deriveFunction_t dr, const void *ud );
 	virtual				~idODE_Euler( void );
 
 	virtual float		Evaluate( const float *state, float *newState, float t0, float t1 );
 
 protected:
-	float *				derivatives;	// space to store derivatives
+	float 				*derivatives;	// space to store derivatives
 };
 
 //===============================================================
@@ -86,14 +86,14 @@ protected:
 class idODE_Midpoint : public idODE {
 
 public:
-						idODE_Midpoint( const int dim, const deriveFunction_t dr, const void *ud );
+	idODE_Midpoint( const int dim, const deriveFunction_t dr, const void *ud );
 	virtual				~idODE_Midpoint( void );
 
 	virtual float		Evaluate( const float *state, float *newState, float t0, float t1 );
 
 protected:
-	float *				tmpState;
-	float *				derivatives;	// space to store derivatives
+	float 				*tmpState;
+	float 				*derivatives;	// space to store derivatives
 };
 
 //===============================================================
@@ -105,17 +105,17 @@ protected:
 class idODE_RK4 : public idODE {
 
 public:
-						idODE_RK4( const int dim, const deriveFunction_t dr, const void *ud );
+	idODE_RK4( const int dim, const deriveFunction_t dr, const void *ud );
 	virtual				~idODE_RK4( void );
 
 	virtual float		Evaluate( const float *state, float *newState, float t0, float t1 );
 
 protected:
-	float *				tmpState;
-	float *				d1;				// derivatives
-	float *				d2;
-	float *				d3;
-	float *				d4;
+	float 				*tmpState;
+	float 				*d1;				// derivatives
+	float 				*d2;
+	float 				*d3;
+	float 				*d4;
 };
 
 //===============================================================
@@ -127,7 +127,7 @@ protected:
 class idODE_RK4Adaptive : public idODE {
 
 public:
-						idODE_RK4Adaptive( const int dim, const deriveFunction_t dr, const void *ud );
+	idODE_RK4Adaptive( const int dim, const deriveFunction_t dr, const void *ud );
 	virtual				~idODE_RK4Adaptive( void );
 
 	virtual float		Evaluate( const float *state, float *newState, float t0, float t1 );
@@ -135,12 +135,12 @@ public:
 
 protected:
 	float				maxError;		// maximum allowed error
-	float *				tmpState;
-	float *				d1;				// derivatives
-	float *				d1half;
-	float *				d2;
-	float *				d3;
-	float *				d4;
+	float 				*tmpState;
+	float 				*d1;				// derivatives
+	float 				*d1half;
+	float 				*d2;
+	float 				*d3;
+	float 				*d4;
 };
 
 #endif /* !__MATH_ODE_H__ */

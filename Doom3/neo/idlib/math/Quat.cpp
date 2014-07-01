@@ -2,9 +2,9 @@
 ===========================================================================
 
 Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
 
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
 
 Doom 3 Source Code is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -46,12 +46,11 @@ idQuat::ToRotation
 idRotation idQuat::ToRotation( void ) const {
 	idVec3 vec;
 	float angle;
-
 	vec.x = x;
 	vec.y = y;
 	vec.z = z;
 	angle = idMath::ACos( w );
-	if ( angle == 0.0f ) {
+	if( angle == 0.0f ) {
 		vec.Set( 0.0f, 0.0f, 1.0f );
 	} else {
 		//vec *= (1.0f / sin( angle ));
@@ -73,35 +72,27 @@ idMat3 idQuat::ToMat3( void ) const {
 	float	xx, yy, yz;
 	float	xy, xz, zz;
 	float	x2, y2, z2;
-
 	x2 = x + x;
 	y2 = y + y;
 	z2 = z + z;
-
 	xx = x * x2;
 	xy = x * y2;
 	xz = x * z2;
-
 	yy = y * y2;
 	yz = y * z2;
 	zz = z * z2;
-
 	wx = w * x2;
 	wy = w * y2;
 	wz = w * z2;
-
 	mat[ 0 ][ 0 ] = 1.0f - ( yy + zz );
 	mat[ 0 ][ 1 ] = xy - wz;
 	mat[ 0 ][ 2 ] = xz + wy;
-
 	mat[ 1 ][ 0 ] = xy + wz;
 	mat[ 1 ][ 1 ] = 1.0f - ( xx + zz );
 	mat[ 1 ][ 2 ] = yz - wx;
-
 	mat[ 2 ][ 0 ] = xz - wy;
 	mat[ 2 ][ 1 ] = yz + wx;
 	mat[ 2 ][ 2 ] = 1.0f - ( xx + yy );
-
 	return mat;
 }
 
@@ -120,7 +111,7 @@ idQuat::ToCQuat
 =====================
 */
 idCQuat idQuat::ToCQuat( void ) const {
-	if ( w < 0.0f ) {
+	if( w < 0.0f ) {
 		return idCQuat( -x, -y, -z );
 	}
 	return idCQuat( x, y, z );
@@ -133,7 +124,6 @@ idQuat::ToAngularVelocity
 */
 idVec3 idQuat::ToAngularVelocity( void ) const {
 	idVec3 vec;
-
 	vec.x = x;
 	vec.y = y;
 	vec.z = z;
@@ -160,31 +150,26 @@ Spherical linear interpolation between two quaternions.
 idQuat &idQuat::Slerp( const idQuat &from, const idQuat &to, float t ) {
 	idQuat	temp;
 	float	omega, cosom, sinom, scale0, scale1;
-
-	if ( t <= 0.0f ) {
+	if( t <= 0.0f ) {
 		*this = from;
 		return *this;
 	}
-
-	if ( t >= 1.0f ) {
+	if( t >= 1.0f ) {
 		*this = to;
 		return *this;
 	}
-
-	if ( from == to ) {
+	if( from == to ) {
 		*this = to;
 		return *this;
 	}
-
 	cosom = from.x * to.x + from.y * to.y + from.z * to.z + from.w * to.w;
-	if ( cosom < 0.0f ) {
+	if( cosom < 0.0f ) {
 		temp = -to;
 		cosom = -cosom;
 	} else {
 		temp = to;
 	}
-
-	if ( ( 1.0f - cosom ) > 1e-6f ) {
+	if( ( 1.0f - cosom ) > 1e-6f ) {
 #if 0
 		omega = acos( cosom );
 		sinom = 1.0f / sin( omega );
@@ -201,7 +186,6 @@ idQuat &idQuat::Slerp( const idQuat &from, const idQuat &to, float t ) {
 		scale0 = 1.0f - t;
 		scale1 = t;
 	}
-
 	*this = ( scale0 * from ) + ( scale1 * temp );
 	return *this;
 }

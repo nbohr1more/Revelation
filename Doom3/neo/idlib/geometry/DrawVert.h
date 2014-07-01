@@ -2,9 +2,9 @@
 ===========================================================================
 
 Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
 
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
 
 Doom 3 Source Code is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -48,7 +48,7 @@ public:
 	float			padding;
 #endif
 	float			operator[]( const int index ) const;
-	float &			operator[]( const int index );
+	float 			&operator[]( const int index );
 
 	void			Clear( void );
 
@@ -63,11 +63,11 @@ public:
 
 ID_FORCE_INLINE float idDrawVert::operator[]( const int index ) const {
 	assert( index >= 0 && index < 5 );
-	return ((float *)(&xyz))[index];
+	return ( ( float * )( &xyz ) )[index];
 }
 ID_FORCE_INLINE float	&idDrawVert::operator[]( const int index ) {
 	assert( index >= 0 && index < 5 );
-	return ((float *)(&xyz))[index];
+	return ( ( float * )( &xyz ) )[index];
 }
 
 ID_FORCE_INLINE void idDrawVert::Clear( void ) {
@@ -90,18 +90,18 @@ ID_FORCE_INLINE void idDrawVert::LerpAll( const idDrawVert &a, const idDrawVert 
 	normal = a.normal + f * ( b.normal - a.normal );
 	tangents[0] = a.tangents[0] + f * ( b.tangents[0] - a.tangents[0] );
 	tangents[1] = a.tangents[1] + f * ( b.tangents[1] - a.tangents[1] );
-	color[0] = (byte)( a.color[0] + f * ( b.color[0] - a.color[0] ) );
-	color[1] = (byte)( a.color[1] + f * ( b.color[1] - a.color[1] ) );
-	color[2] = (byte)( a.color[2] + f * ( b.color[2] - a.color[2] ) );
-	color[3] = (byte)( a.color[3] + f * ( b.color[3] - a.color[3] ) );
+	color[0] = ( byte )( a.color[0] + f * ( b.color[0] - a.color[0] ) );
+	color[1] = ( byte )( a.color[1] + f * ( b.color[1] - a.color[1] ) );
+	color[2] = ( byte )( a.color[2] + f * ( b.color[2] - a.color[2] ) );
+	color[3] = ( byte )( a.color[3] + f * ( b.color[3] - a.color[3] ) );
 }
 
 ID_FORCE_INLINE void idDrawVert::SetColor( dword color ) {
-	*reinterpret_cast<dword *>(this->color) = color;
+	*reinterpret_cast<dword *>( this->color ) = color;
 }
 
 ID_FORCE_INLINE dword idDrawVert::GetColor( void ) const {
-	return *reinterpret_cast<const dword *>(this->color);
+	return *reinterpret_cast<const dword *>( this->color );
 }
 
 #endif /* !__DRAWVERT_H__ */

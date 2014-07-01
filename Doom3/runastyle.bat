@@ -10,16 +10,16 @@ SET OPTIONS=--add-brackets
 rem carefull here do not enable everything 
 rem astyle can fuck up asm code majorly.
 rem idlib has one place that comes to mind in the SIMD code.
-astyle %STYLE% %OPTIONS% -r neo/game/*.cpp
-astyle %STYLE% %OPTIONS% -r neo/game/*.h
+rem astyle %STYLE% %OPTIONS% -r neo/game/*.cpp
+rem astyle %STYLE% %OPTIONS% -r neo/game/*.h
 rem astyle %STYLE% %OPTIONS% -r neo/d3xp/*.cpp
 rem astyle %STYLE% %OPTIONS% -r neo/d3xp/*.h
 rem astyle %STYLE% %OPTIONS% -r neo/cm/*.cpp
 rem astyle %STYLE% %OPTIONS% -r neo/cm/*.h
 rem astyle %STYLE% %OPTIONS% -r neo/framework/*.cpp
 rem astyle %STYLE% %OPTIONS% -r neo/framework/*.h
-rem astyle %STYLE% %OPTIONS% -r neo/idlib/*.cpp
-rem astyle %STYLE% %OPTIONS% -r neo/idlib/*.h
+astyle %STYLE% %OPTIONS% -r neo/idlib/*.cpp
+astyle %STYLE% %OPTIONS% -r neo/idlib/*.h
 rem astyle %STYLE% %OPTIONS% -r neo/libs/*.cpp
 rem astyle %STYLE% %OPTIONS% -r neo/libs/*.h
 rem astyle %STYLE% %OPTIONS% -r neo/renderer/*.cpp

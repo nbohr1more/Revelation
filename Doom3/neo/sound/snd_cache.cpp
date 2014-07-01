@@ -400,7 +400,7 @@ void idSoundSample::Load( void ) {
 	hardwareBuffer = false;
 	timestamp = GetNewTimeStamp();
 	if( timestamp == FILE_NOT_FOUND_TIMESTAMP ) {
-		common->Warning( "Couldn't load sound '%s' using default", name.c_str() );
+		common->DWarning( "Couldn't load sound '%s' using default", name.c_str() );
 		MakeDefault();
 		return;
 	}
@@ -408,7 +408,7 @@ void idSoundSample::Load( void ) {
 	idWaveFile	fh;
 	waveformatex_t info;
 	if( fh.Open( name, &info ) == -1 ) {
-		common->Warning( "Couldn't load sound '%s' using default", name.c_str() );
+		common->DWarning( "Couldn't load sound '%s' using default", name.c_str() );
 		MakeDefault();
 		return;
 	}
@@ -560,7 +560,7 @@ void idSoundSample::Reload( bool force ) {
 		newTimestamp = GetNewTimeStamp();
 		if( newTimestamp == FILE_NOT_FOUND_TIMESTAMP ) {
 			if( !defaultSound ) {
-				common->Warning( "Couldn't load sound '%s' using default", name.c_str() );
+				common->DWarning( "Couldn't load sound '%s' using default", name.c_str() );
 				MakeDefault();
 			}
 			return;

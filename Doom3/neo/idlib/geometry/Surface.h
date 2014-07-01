@@ -2,9 +2,9 @@
 ===========================================================================
 
 Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
 
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
 
 Doom 3 Source Code is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -48,48 +48,60 @@ typedef struct surfaceEdge_s {
 
 class idSurface {
 public:
-							idSurface( void );
-							explicit idSurface( const idSurface &surf );
-							explicit idSurface( const idDrawVert *verts, const int numVerts, const int *indexes, const int numIndexes );
-							~idSurface( void );
+	idSurface( void );
+	explicit idSurface( const idSurface &surf );
+	explicit idSurface( const idDrawVert *verts, const int numVerts, const int *indexes, const int numIndexes );
+	~idSurface( void );
 
-	const idDrawVert &		operator[]( const int index ) const;
-	idDrawVert &			operator[]( const int index );
-	idSurface &				operator+=( const idSurface &surf );
+	const idDrawVert 		&operator[]( const int index ) const;
+	idDrawVert 			&operator[]( const int index );
+	idSurface 				&operator+=( const idSurface &surf );
 
-	int						GetNumIndexes( void ) const { return indexes.Num(); }
-	const int *				GetIndexes( void ) const { return indexes.Ptr(); }
-	int						GetNumVertices( void ) const { return verts.Num(); }
-	const idDrawVert *		GetVertices( void ) const { return verts.Ptr(); }
-	const int *				GetEdgeIndexes( void ) const { return edgeIndexes.Ptr(); }
-	const surfaceEdge_t *	GetEdges( void ) const { return edges.Ptr(); }
+	int						GetNumIndexes( void ) const {
+		return indexes.Num();
+	}
+	const int 				*GetIndexes( void ) const {
+		return indexes.Ptr();
+	}
+	int						GetNumVertices( void ) const {
+		return verts.Num();
+	}
+	const idDrawVert 		*GetVertices( void ) const {
+		return verts.Ptr();
+	}
+	const int 				*GetEdgeIndexes( void ) const {
+		return edgeIndexes.Ptr();
+	}
+	const surfaceEdge_t 	*GetEdges( void ) const {
+		return edges.Ptr();
+	}
 
 	void					Clear( void );
 	void					SwapTriangles( idSurface &surf );
 	void					TranslateSelf( const idVec3 &translation );
 	void					RotateSelf( const idMat3 &rotation );
 
-							// splits the surface into a front and back surface, the surface itself stays unchanged
-							// frontOnPlaneEdges and backOnPlaneEdges optionally store the indexes to the edges that lay on the split plane
-							// returns a SIDE_?
+	// splits the surface into a front and back surface, the surface itself stays unchanged
+	// frontOnPlaneEdges and backOnPlaneEdges optionally store the indexes to the edges that lay on the split plane
+	// returns a SIDE_?
 	int						Split( const idPlane &plane, const float epsilon, idSurface **front, idSurface **back, int *frontOnPlaneEdges = NULL, int *backOnPlaneEdges = NULL ) const;
-							// cuts off the part at the back side of the plane, returns true if some part was at the front
-							// if there is nothing at the front the number of points is set to zero
+	// cuts off the part at the back side of the plane, returns true if some part was at the front
+	// if there is nothing at the front the number of points is set to zero
 	bool					ClipInPlace( const idPlane &plane, const float epsilon = ON_EPSILON, const bool keepOn = false );
 
-							// returns true if each triangle can be reached from any other triangle by a traversal
+	// returns true if each triangle can be reached from any other triangle by a traversal
 	bool					IsConnected( void ) const;
-							// returns true if the surface is closed
+	// returns true if the surface is closed
 	bool					IsClosed( void ) const;
-							// returns true if the surface is a convex hull
+	// returns true if the surface is a convex hull
 	bool					IsPolytope( const float epsilon = 0.1f ) const;
 
 	float					PlaneDistance( const idPlane &plane ) const;
 	int						PlaneSide( const idPlane &plane, const float epsilon = ON_EPSILON ) const;
 
-							// returns true if the line intersects one of the surface triangles
+	// returns true if the line intersects one of the surface triangles
 	bool					LineIntersection( const idVec3 &start, const idVec3 &end, bool backFaceCull = false ) const;
-							// intersection point is start + dir * scale
+	// intersection point is start + dir * scale
 	bool					RayIntersection( const idVec3 &start, const idVec3 &dir, float &scale, bool backFaceCull = false ) const;
 
 protected:
@@ -174,7 +186,7 @@ ID_FORCE_INLINE idSurface &idSurface::operator+=( const idSurface &surf ) {
 	m = indexes.Num();
 	verts.Append( surf.verts );			// merge verts where possible ?
 	indexes.Append( surf.indexes );
-	for ( i = m; i < indexes.Num(); i++ ) {
+	for( i = m; i < indexes.Num(); i++ ) {
 		indexes[i] += n;
 	}
 	GenerateEdgeIndexes();
@@ -211,7 +223,7 @@ idSurface::TranslateSelf
 =================
 */
 ID_FORCE_INLINE void idSurface::TranslateSelf( const idVec3 &translation ) {
-	for ( int i = 0; i < verts.Num(); i++ ) {
+	for( int i = 0; i < verts.Num(); i++ ) {
 		verts[i].xyz += translation;
 	}
 }
@@ -222,7 +234,7 @@ idSurface::RotateSelf
 =================
 */
 ID_FORCE_INLINE void idSurface::RotateSelf( const idMat3 &rotation ) {
-	for ( int i = 0; i < verts.Num(); i++ ) {
+	for( int i = 0; i < verts.Num(); i++ ) {
 		verts[i].xyz *= rotation;
 		verts[i].normal *= rotation;
 		verts[i].tangents[0] *= rotation;

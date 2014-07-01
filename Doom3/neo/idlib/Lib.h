@@ -2,9 +2,9 @@
 ===========================================================================
 
 Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
 
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
 
 Doom 3 Source Code is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -49,16 +49,16 @@ If you have questions concerning this license or the applicable additional terms
 
 class idLib {
 public:
-	static class idSys *		sys;
-	static class idCommon *		common;
-	static class idCVarSystem *	cvarSystem;
-	static class idFileSystem *	fileSystem;
+	static class idSys 		*sys;
+	static class idCommon 		*common;
+	static class idCVarSystem 	*cvarSystem;
+	static class idFileSystem 	*fileSystem;
 	static int					frameNumber;
 
 	static void					Init( void );
 	static void					ShutDown( void );
 
-	// wrapper to idCommon functions 
+	// wrapper to idCommon functions
 	static void					Error( const char *fmt, ... );
 	static void					Warning( const char *fmt, ... );
 };
@@ -137,7 +137,7 @@ void	Swap_Init( void );
 bool	Swap_IsBigEndian( void );
 
 // for base64
-void	SixtetsForInt( byte *out, int src);
+void	SixtetsForInt( byte *out, int src );
 int		IntForSixtets( byte *in );
 
 
@@ -151,12 +151,18 @@ class idException {
 public:
 	char error[MAX_STRING_CHARS];
 
-	idException( const char *text = "" ) { strcpy( error, text ); }
+	idException( const char *text = "" ) {
+		strcpy( error, text );
+	}
 };
 
 // move from Math.h to keep gcc happy
-template<class T> ID_FORCE_INLINE T	Max( T x, T y ) { return ( x > y ) ? x : y; }
-template<class T> ID_FORCE_INLINE T	Min( T x, T y ) { return ( x < y ) ? x : y; }
+template<class T> ID_FORCE_INLINE T	Max( T x, T y ) {
+	return ( x > y ) ? x : y;
+}
+template<class T> ID_FORCE_INLINE T	Min( T x, T y ) {
+	return ( x < y ) ? x : y;
+}
 
 /*
 ===============================================================================

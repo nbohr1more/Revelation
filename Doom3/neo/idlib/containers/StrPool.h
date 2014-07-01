@@ -2,9 +2,9 @@
 ===========================================================================
 
 Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
 
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
 
 Doom 3 Source Code is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -43,36 +43,52 @@ class idPoolStr : public idStr {
 	friend class idStrPool;
 
 public:
-						idPoolStr() { numUsers = 0; }
-						~idPoolStr() { assert( numUsers == 0 ); }
+	idPoolStr() {
+		numUsers = 0;
+	}
+	~idPoolStr() {
+		assert( numUsers == 0 );
+	}
 
-						// returns total size of allocated memory
-	size_t				Allocated( void ) const { return idStr::Allocated(); }
-						// returns total size of allocated memory including size of string pool type
-	size_t				Size( void ) const { return sizeof( *this ) + Allocated(); }
-						// returns a pointer to the pool this string was allocated from
-	const idStrPool *	GetPool( void ) const { return pool; }
+	// returns total size of allocated memory
+	size_t				Allocated( void ) const {
+		return idStr::Allocated();
+	}
+	// returns total size of allocated memory including size of string pool type
+	size_t				Size( void ) const {
+		return sizeof( *this ) + Allocated();
+	}
+	// returns a pointer to the pool this string was allocated from
+	const idStrPool 	*GetPool( void ) const {
+		return pool;
+	}
 
 private:
-	idStrPool *			pool;
+	idStrPool 			*pool;
 	mutable int			numUsers;
 };
 
 class idStrPool {
 public:
-						idStrPool() { caseSensitive = true; }
+	idStrPool() {
+		caseSensitive = true;
+	}
 
 	void				SetCaseSensitive( bool caseSensitive );
 
-	int					Num( void ) const { return pool.Num(); }
+	int					Num( void ) const {
+		return pool.Num();
+	}
 	size_t				Allocated( void ) const;
 	size_t				Size( void ) const;
 
-	const idPoolStr *	operator[]( int index ) const { return pool[index]; }
+	const idPoolStr 	*operator[]( int index ) const {
+		return pool[index];
+	}
 
-	const idPoolStr *	AllocString( const char *string );
+	const idPoolStr 	*AllocString( const char *string );
 	void				FreeString( const idPoolStr *poolStr );
-	const idPoolStr *	CopyString( const idPoolStr *poolStr );
+	const idPoolStr 	*CopyString( const idPoolStr *poolStr );
 	void				Clear( void );
 
 private:
@@ -98,26 +114,24 @@ idStrPool::AllocString
 ID_FORCE_INLINE const idPoolStr *idStrPool::AllocString( const char *string ) {
 	int i, hash;
 	idPoolStr *poolStr;
-
 	hash = poolHash.GenerateKey( string, caseSensitive );
-	if ( caseSensitive ) {
-		for ( i = poolHash.First( hash ); i != -1; i = poolHash.Next( i ) ) {
-			if ( pool[i]->Cmp( string ) == 0 ) {
+	if( caseSensitive ) {
+		for( i = poolHash.First( hash ); i != -1; i = poolHash.Next( i ) ) {
+			if( pool[i]->Cmp( string ) == 0 ) {
 				pool[i]->numUsers++;
 				return pool[i];
 			}
 		}
 	} else {
-		for ( i = poolHash.First( hash ); i != -1; i = poolHash.Next( i ) ) {
-			if ( pool[i]->Icmp( string ) == 0 ) {
+		for( i = poolHash.First( hash ); i != -1; i = poolHash.Next( i ) ) {
+			if( pool[i]->Icmp( string ) == 0 ) {
 				pool[i]->numUsers++;
 				return pool[i];
 			}
 		}
 	}
-
 	poolStr = new idPoolStr;
-	*static_cast<idStr *>(poolStr) = string;
+	*static_cast<idStr *>( poolStr ) = string;
 	poolStr->pool = this;
 	poolStr->numUsers = 1;
 	poolHash.Add( hash, pool.Append( poolStr ) );
@@ -131,22 +145,20 @@ idStrPool::FreeString
 */
 ID_FORCE_INLINE void idStrPool::FreeString( const idPoolStr *poolStr ) {
 	int i, hash;
-
 	assert( poolStr->numUsers >= 1 );
 	assert( poolStr->pool == this );
-
 	poolStr->numUsers--;
-	if ( poolStr->numUsers <= 0 ) {
+	if( poolStr->numUsers <= 0 ) {
 		hash = poolHash.GenerateKey( poolStr->c_str(), caseSensitive );
-		if ( caseSensitive ) { 
-			for ( i = poolHash.First( hash ); i != -1; i = poolHash.Next( i ) ) {
-				if ( pool[i]->Cmp( poolStr->c_str() ) == 0 ) {
+		if( caseSensitive ) {
+			for( i = poolHash.First( hash ); i != -1; i = poolHash.Next( i ) ) {
+				if( pool[i]->Cmp( poolStr->c_str() ) == 0 ) {
 					break;
 				}
 			}
 		} else {
-			for ( i = poolHash.First( hash ); i != -1; i = poolHash.Next( i ) ) {
-				if ( pool[i]->Icmp( poolStr->c_str() ) == 0 ) {
+			for( i = poolHash.First( hash ); i != -1; i = poolHash.Next( i ) ) {
+				if( pool[i]->Icmp( poolStr->c_str() ) == 0 ) {
 					break;
 				}
 			}
@@ -165,10 +177,8 @@ idStrPool::CopyString
 ================
 */
 ID_FORCE_INLINE const idPoolStr *idStrPool::CopyString( const idPoolStr *poolStr ) {
-
 	assert( poolStr->numUsers >= 1 );
-
-	if ( poolStr->pool == this ) {
+	if( poolStr->pool == this ) {
 		// the string is from this pool so just increase the user count
 		poolStr->numUsers++;
 		return poolStr;
@@ -185,8 +195,7 @@ idStrPool::Clear
 */
 ID_FORCE_INLINE void idStrPool::Clear( void ) {
 	int i;
-
-	for ( i = 0; i < pool.Num(); i++ ) {
+	for( i = 0; i < pool.Num(); i++ ) {
 		pool[i]->numUsers = 0;
 	}
 	pool.DeleteContents( true );
@@ -201,9 +210,8 @@ idStrPool::Allocated
 ID_FORCE_INLINE size_t idStrPool::Allocated( void ) const {
 	int i;
 	size_t size;
-
 	size = pool.Allocated() + poolHash.Allocated();
-	for ( i = 0; i < pool.Num(); i++ ) {
+	for( i = 0; i < pool.Num(); i++ ) {
 		size += pool[i]->Allocated();
 	}
 	return size;
@@ -217,9 +225,8 @@ idStrPool::Size
 ID_FORCE_INLINE size_t idStrPool::Size( void ) const {
 	int i;
 	size_t size;
-
 	size = pool.Size() + poolHash.Size();
-	for ( i = 0; i < pool.Num(); i++ ) {
+	for( i = 0; i < pool.Num(); i++ ) {
 		size += pool[i]->Size();
 	}
 	return size;

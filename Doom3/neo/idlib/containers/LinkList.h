@@ -2,9 +2,9 @@
 ===========================================================================
 
 Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
 
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
 
 Doom 3 Source Code is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -42,8 +42,8 @@ Circular linked list template
 template< class type >
 class idLinkList {
 public:
-						idLinkList();
-						~idLinkList();
+	idLinkList();
+	~idLinkList();
 
 	bool				IsListEmpty( void ) const;
 	bool				InList( void ) const;
@@ -57,21 +57,21 @@ public:
 
 	void				Remove( void );
 
-	type *				Next( void ) const;
-	type *				Prev( void ) const;
+	type 				*Next( void ) const;
+	type 				*Prev( void ) const;
 
-	type *				Owner( void ) const;
+	type 				*Owner( void ) const;
 	void				SetOwner( type *object );
 
-	idLinkList *		ListHead( void ) const;
-	idLinkList *		NextNode( void ) const;
-	idLinkList *		PrevNode( void ) const;
+	idLinkList 		*ListHead( void ) const;
+	idLinkList 		*NextNode( void ) const;
+	idLinkList 		*PrevNode( void ) const;
 
 private:
-	idLinkList *		head;
-	idLinkList *		next;
-	idLinkList *		prev;
-	type *				owner;
+	idLinkList 		*head;
+	idLinkList 		*next;
+	idLinkList 		*prev;
+	type 				*owner;
 };
 
 /*
@@ -84,7 +84,7 @@ Node is initialized to be the head of an empty list
 template< class type >
 idLinkList<type>::idLinkList() {
 	owner	= NULL;
-	head	= this;	
+	head	= this;
 	next	= this;
 	prev	= this;
 }
@@ -137,12 +137,10 @@ template< class type >
 int idLinkList<type>::Num( void ) const {
 	idLinkList<type>	*node;
 	int					num;
-
 	num = 0;
 	for( node = head->next; node != head; node = node->next ) {
 		num++;
 	}
-
 	return num;
 }
 
@@ -155,7 +153,7 @@ If node is the head of the list, clears the list.  Otherwise it just removes the
 */
 template< class type >
 void idLinkList<type>::Clear( void ) {
-	if ( head == this ) {
+	if( head == this ) {
 		while( next != this ) {
 			next->Remove();
 		}
@@ -175,7 +173,6 @@ template< class type >
 void idLinkList<type>::Remove( void ) {
 	prev->next = next;
 	next->prev = prev;
-
 	next = this;
 	prev = this;
 	head = this;
@@ -192,7 +189,6 @@ then the new node is placed at the end of the list.
 template< class type >
 void idLinkList<type>::InsertBefore( idLinkList &node ) {
 	Remove();
-
 	next		= &node;
 	prev		= node.prev;
 	node.prev	= this;
@@ -211,7 +207,6 @@ then the new node is placed at the beginning of the list.
 template< class type >
 void idLinkList<type>::InsertAfter( idLinkList &node ) {
 	Remove();
-
 	prev		= &node;
 	next		= node.next;
 	node.next	= this;
@@ -265,7 +260,7 @@ Returns the next object in the list, or NULL if at the end.
 */
 template< class type >
 type *idLinkList<type>::Next( void ) const {
-	if ( !next || ( next == head ) ) {
+	if( !next || ( next == head ) ) {
 		return NULL;
 	}
 	return next->owner;
@@ -280,7 +275,7 @@ Returns the previous object in the list, or NULL if at the beginning.
 */
 template< class type >
 type *idLinkList<type>::Prev( void ) const {
-	if ( !prev || ( prev == head ) ) {
+	if( !prev || ( prev == head ) ) {
 		return NULL;
 	}
 	return prev->owner;
@@ -295,7 +290,7 @@ Returns the next node in the list, or NULL if at the end.
 */
 template< class type >
 idLinkList<type> *idLinkList<type>::NextNode( void ) const {
-	if ( next == head ) {
+	if( next == head ) {
 		return NULL;
 	}
 	return next;
@@ -310,7 +305,7 @@ Returns the previous node in the list, or NULL if at the beginning.
 */
 template< class type >
 idLinkList<type> *idLinkList<type>::PrevNode( void ) const {
-	if ( prev == head ) {
+	if( prev == head ) {
 		return NULL;
 	}
 	return prev;

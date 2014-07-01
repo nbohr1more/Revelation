@@ -2,9 +2,9 @@
 ===========================================================================
 
 Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
 
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
 
 Doom 3 Source Code is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -30,35 +30,33 @@ If you have questions concerning this license or the applicable additional terms
 #pragma hdrstop
 
 #if !defined( ID_REDIRECT_NEWDELETE ) && !defined( MACOS_X )
-	#define USE_STRING_DATA_ALLOCATOR
+#define USE_STRING_DATA_ALLOCATOR
 #endif
 
 #ifdef USE_STRING_DATA_ALLOCATOR
-static idDynamicBlockAlloc<char, 1<<18, 128>	stringDataAllocator;
+static idDynamicBlockAlloc < char, 1 << 18, 128 >	stringDataAllocator;
 #endif
 
-idVec4	g_color_table[16] =
-{
-	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
-	idVec4(1.0f, 0.0f, 0.0f, 1.0f), // S_COLOR_RED
-	idVec4(0.0f, 1.0f, 0.0f, 1.0f), // S_COLOR_GREEN
-	idVec4(1.0f, 1.0f, 0.0f, 1.0f), // S_COLOR_YELLOW
-	idVec4(0.0f, 0.0f, 1.0f, 1.0f), // S_COLOR_BLUE
-	idVec4(0.0f, 1.0f, 1.0f, 1.0f), // S_COLOR_CYAN
-	idVec4(1.0f, 0.0f, 1.0f, 1.0f), // S_COLOR_MAGENTA
-	idVec4(1.0f, 1.0f, 1.0f, 1.0f), // S_COLOR_WHITE
-	idVec4(0.5f, 0.5f, 0.5f, 1.0f), // S_COLOR_GRAY
-	idVec4(0.0f, 0.0f, 0.0f, 1.0f), // S_COLOR_BLACK
-	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
-	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
-	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
-	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
-	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
-	idVec4(0.0f, 0.0f, 0.0f, 1.0f),
+idVec4	g_color_table[16] = {
+	idVec4( 0.0f, 0.0f, 0.0f, 1.0f ),
+	idVec4( 1.0f, 0.0f, 0.0f, 1.0f ), // S_COLOR_RED
+	idVec4( 0.0f, 1.0f, 0.0f, 1.0f ), // S_COLOR_GREEN
+	idVec4( 1.0f, 1.0f, 0.0f, 1.0f ), // S_COLOR_YELLOW
+	idVec4( 0.0f, 0.0f, 1.0f, 1.0f ), // S_COLOR_BLUE
+	idVec4( 0.0f, 1.0f, 1.0f, 1.0f ), // S_COLOR_CYAN
+	idVec4( 1.0f, 0.0f, 1.0f, 1.0f ), // S_COLOR_MAGENTA
+	idVec4( 1.0f, 1.0f, 1.0f, 1.0f ), // S_COLOR_WHITE
+	idVec4( 0.5f, 0.5f, 0.5f, 1.0f ), // S_COLOR_GRAY
+	idVec4( 0.0f, 0.0f, 0.0f, 1.0f ), // S_COLOR_BLACK
+	idVec4( 0.0f, 0.0f, 0.0f, 1.0f ),
+	idVec4( 0.0f, 0.0f, 0.0f, 1.0f ),
+	idVec4( 0.0f, 0.0f, 0.0f, 1.0f ),
+	idVec4( 0.0f, 0.0f, 0.0f, 1.0f ),
+	idVec4( 0.0f, 0.0f, 0.0f, 1.0f ),
+	idVec4( 0.0f, 0.0f, 0.0f, 1.0f ),
 };
 
-const char *units[2][4] =
-{
+const char *units[2][4] = {
 	{ "B", "KB", "MB", "GB" },
 	{ "B/s", "KB/s", "MB/s", "GB/s" }
 };
@@ -68,7 +66,7 @@ const char *units[2][4] =
 idStr::ColorForIndex
 ============
 */
-idVec4 & idStr::ColorForIndex( int i ) {
+idVec4 &idStr::ColorForIndex( int i ) {
 	return g_color_table[ i & 15 ];
 }
 
@@ -81,37 +79,31 @@ void idStr::ReAllocate( int amount, bool keepold ) {
 	char	*newbuffer;
 	int		newsize;
 	int		mod;
-
 	//assert( data );
 	assert( amount > 0 );
-
 	mod = amount % STR_ALLOC_GRAN;
-	if ( !mod ) {
+	if( !mod ) {
 		newsize = amount;
-	}
-	else {
+	} else {
 		newsize = amount + STR_ALLOC_GRAN - mod;
 	}
 	alloced = newsize;
-
 #ifdef USE_STRING_DATA_ALLOCATOR
 	newbuffer = stringDataAllocator.Alloc( alloced );
 #else
 	newbuffer = new char[ alloced ];
 #endif
-	if ( keepold && data ) {
+	if( keepold && data ) {
 		data[ len ] = '\0';
 		strcpy( newbuffer, data );
 	}
-
-	if ( data && data != baseBuffer ) {
+	if( data && data != baseBuffer ) {
 #ifdef USE_STRING_DATA_ALLOCATOR
 		stringDataAllocator.Free( data );
 #else
 		delete [] data;
 #endif
 	}
-
 	data = newbuffer;
 }
 
@@ -121,7 +113,7 @@ idStr::FreeData
 ============
 */
 void idStr::FreeData( void ) {
-	if ( data && data != baseBuffer ) {
+	if( data && data != baseBuffer ) {
 #ifdef USE_STRING_DATA_ALLOCATOR
 		stringDataAllocator.Free( data );
 #else
@@ -140,36 +132,27 @@ void idStr::operator=( const char *text ) {
 	int l;
 	int diff;
 	int i;
-
-	if ( !text ) {
+	if( !text ) {
 		// safe behaviour if NULL
 		EnsureAlloced( 1, false );
 		data[ 0 ] = '\0';
 		len = 0;
 		return;
 	}
-
-	if ( text == data ) {
+	if( text == data ) {
 		return; // copying same thing
 	}
-
 	// check if we're aliasing
-	if ( text >= data && text <= data + len ) {
+	if( text >= data && text <= data + len ) {
 		diff = text - data;
-
-		assert( strlen( text ) < (unsigned)len );
-
-		for ( i = 0; text[ i ]; i++ ) {
+		assert( strlen( text ) < ( unsigned )len );
+		for( i = 0; text[ i ]; i++ ) {
 			data[ i ] = text[ i ];
 		}
-
 		data[ i ] = '\0';
-
 		len -= diff;
-
 		return;
 	}
-
 	l = strlen( text );
 	EnsureAlloced( l + 1, false );
 	strcpy( data, text );
@@ -185,12 +168,11 @@ returns -1 if not found otherwise the index of the char
 */
 int idStr::FindChar( const char *str, const char c, int start, int end ) {
 	int i;
-
-	if ( end == -1 ) {
+	if( end == -1 ) {
 		end = strlen( str ) - 1;
 	}
-	for ( i = start; i <= end; i++ ) {
-		if ( str[i] == c ) {
+	for( i = start; i <= end; i++ ) {
+		if( str[i] == c ) {
 			return i;
 		}
 	}
@@ -206,26 +188,25 @@ returns -1 if not found otherwise the index of the text
 */
 int idStr::FindText( const char *str, const char *text, bool casesensitive, int start, int end ) {
 	int l, i, j;
-
-	if ( end == -1 ) {
+	if( end == -1 ) {
 		end = strlen( str );
 	}
 	l = end - strlen( text );
-	for ( i = start; i <= l; i++ ) {
-		if ( casesensitive ) {
-			for ( j = 0; text[j]; j++ ) {
-				if ( str[i+j] != text[j] ) {
+	for( i = start; i <= l; i++ ) {
+		if( casesensitive ) {
+			for( j = 0; text[j]; j++ ) {
+				if( str[i + j] != text[j] ) {
 					break;
 				}
 			}
 		} else {
-			for ( j = 0; text[j]; j++ ) {
-				if ( ::toupper( str[i+j] ) != ::toupper( text[j] ) ) {
+			for( j = 0; text[j]; j++ ) {
+				if( ::toupper( str[i + j] ) != ::toupper( text[j] ) ) {
 					break;
 				}
 			}
 		}
-		if ( !text[j] ) {
+		if( !text[j] ) {
 			return i;
 		}
 	}
@@ -249,80 +230,73 @@ Several metacharacter may be used in the filter.
 bool idStr::Filter( const char *filter, const char *name, bool casesensitive ) {
 	idStr buf;
 	int i, found, index;
-
-	while(*filter) {
-		if (*filter == '*') {
+	while( *filter ) {
+		if( *filter == '*' ) {
 			filter++;
 			buf.Empty();
-			for (i = 0; *filter; i++) {
-				if ( *filter == '*' || *filter == '?' || (*filter == '[' && *(filter+1) != '[') ) {
+			for( i = 0; *filter; i++ ) {
+				if( *filter == '*' || *filter == '?' || ( *filter == '[' && *( filter + 1 ) != '[' ) ) {
 					break;
 				}
 				buf += *filter;
-				if ( *filter == '[' ) {
+				if( *filter == '[' ) {
 					filter++;
 				}
 				filter++;
 			}
-			if ( buf.Length() ) {
-				index = idStr(name).Find( buf.c_str(), casesensitive );
-				if ( index == -1 ) {
+			if( buf.Length() ) {
+				index = idStr( name ).Find( buf.c_str(), casesensitive );
+				if( index == -1 ) {
 					return false;
 				}
-				name += index + strlen(buf);
+				name += index + strlen( buf );
 			}
-		}
-		else if (*filter == '?') {
+		} else if( *filter == '?' ) {
 			filter++;
 			name++;
-		}
-		else if (*filter == '[') {
-			if ( *(filter+1) == '[' ) {
-				if ( *name != '[' ) {
+		} else if( *filter == '[' ) {
+			if( *( filter + 1 ) == '[' ) {
+				if( *name != '[' ) {
 					return false;
 				}
 				filter += 2;
 				name++;
-			}
-			else {
+			} else {
 				filter++;
 				found = false;
-				while(*filter && !found) {
-					if (*filter == ']' && *(filter+1) != ']') {
+				while( *filter && !found ) {
+					if( *filter == ']' && *( filter + 1 ) != ']' ) {
 						break;
 					}
-					if (*(filter+1) == '-' && *(filter+2) && (*(filter+2) != ']' || *(filter+3) == ']')) {
-						if (casesensitive) {
-							if (*name >= *filter && *name <= *(filter+2)) {
+					if( *( filter + 1 ) == '-' && *( filter + 2 ) && ( *( filter + 2 ) != ']' || *( filter + 3 ) == ']' ) ) {
+						if( casesensitive ) {
+							if( *name >= *filter && *name <= *( filter + 2 ) ) {
 								found = true;
 							}
-						}
-						else {
-							if ( ::toupper(*name) >= ::toupper(*filter) && ::toupper(*name) <= ::toupper(*(filter+2)) ) {
+						} else {
+							if( ::toupper( *name ) >= ::toupper( *filter ) && ::toupper( *name ) <= ::toupper( *( filter + 2 ) ) ) {
 								found = true;
 							}
 						}
 						filter += 3;
-					}
-					else {
-						if (casesensitive) {
-							if (*filter == *name) {
+					} else {
+						if( casesensitive ) {
+							if( *filter == *name ) {
 								found = true;
 							}
-						}
-						else {
-							if ( ::toupper(*filter) == ::toupper(*name) ) {
+						} else {
+							if( ::toupper( *filter ) == ::toupper( *name ) ) {
 								found = true;
 							}
 						}
 						filter++;
 					}
 				}
-				if (!found) {
+				if( !found ) {
 					return false;
 				}
-				while(*filter) {
-					if ( *filter == ']' && *(filter+1) != ']' ) {
+				while( *filter ) {
+					if( *filter == ']' && *( filter + 1 ) != ']' ) {
 						break;
 					}
 					filter++;
@@ -330,15 +304,13 @@ bool idStr::Filter( const char *filter, const char *name, bool casesensitive ) {
 				filter++;
 				name++;
 			}
-		}
-		else {
-			if (casesensitive) {
-				if (*filter != *name) {
+		} else {
+			if( casesensitive ) {
+				if( *filter != *name ) {
 					return false;
 				}
-			}
-			else {
-				if ( ::toupper(*filter) != ::toupper(*name) ) {
+			} else {
+				if( ::toupper( *filter ) != ::toupper( *name ) ) {
 					return false;
 				}
 			}
@@ -358,16 +330,14 @@ idStr::StripMediaName
 */
 void idStr::StripMediaName( const char *name, idStr &mediaName ) {
 	char c;
-
 	mediaName.Empty();
-
-	for ( c = *name; c; c = *(++name) ) {
+	for( c = *name; c; c = *( ++name ) ) {
 		// truncate at an extension
-		if ( c == '.' ) {
+		if( c == '.' ) {
 			break;
 		}
 		// convert backslashes to forward slashes
-		if ( c == '\\' ) {
+		if( c == '\\' ) {
 			mediaName.Append( '/' );
 		} else {
 			mediaName.Append( idStr::ToLower( c ) );
@@ -384,29 +354,26 @@ bool idStr::CheckExtension( const char *name, const char *ext ) {
 	const char *s1 = name + Length( name ) - 1;
 	const char *s2 = ext + Length( ext ) - 1;
 	int c1, c2, d;
-
 	do {
 		c1 = *s1--;
 		c2 = *s2--;
-
 		d = c1 - c2;
 		while( d ) {
-			if ( c1 <= 'Z' && c1 >= 'A' ) {
-				d += ('a' - 'A');
-				if ( !d ) {
+			if( c1 <= 'Z' && c1 >= 'A' ) {
+				d += ( 'a' - 'A' );
+				if( !d ) {
 					break;
 				}
 			}
-			if ( c2 <= 'Z' && c2 >= 'A' ) {
-				d -= ('a' - 'A');
-				if ( !d ) {
+			if( c2 <= 'Z' && c2 >= 'A' ) {
+				d -= ( 'a' - 'A' );
+				if( !d ) {
 					break;
 				}
 			}
 			return false;
 		}
 	} while( s1 > name && s2 > ext );
-
 	return ( s1 >= name );
 }
 
@@ -420,23 +387,29 @@ const char *idStr::FloatArrayToString( const float *array, const int length, con
 	static char str[4][16384];	// in case called by nested functions
 	int i, n;
 	char format[16], *s;
-
 	// use an array of string so that multiple calls won't collide
 	s = str[ index ];
-	index = (index + 1) & 3;
-
+	index = ( index + 1 ) & 3;
 	idStr::snPrintf( format, sizeof( format ), "%%.%df", precision );
 	n = idStr::snPrintf( s, sizeof( str[0] ), format, array[0] );
-	if ( precision > 0 ) {
-		while( n > 0 && s[n-1] == '0' ) s[--n] = '\0';
-		while( n > 0 && s[n-1] == '.' ) s[--n] = '\0';
+	if( precision > 0 ) {
+		while( n > 0 && s[n - 1] == '0' ) {
+			s[--n] = '\0';
+		}
+		while( n > 0 && s[n - 1] == '.' ) {
+			s[--n] = '\0';
+		}
 	}
 	idStr::snPrintf( format, sizeof( format ), " %%.%df", precision );
-	for ( i = 1; i < length; i++ ) {
+	for( i = 1; i < length; i++ ) {
 		n += idStr::snPrintf( s + n, sizeof( str[0] ) - n, format, array[i] );
-		if ( precision > 0 ) {
-			while( n > 0 && s[n-1] == '0' ) s[--n] = '\0';
-			while( n > 0 && s[n-1] == '.' ) s[--n] = '\0';
+		if( precision > 0 ) {
+			while( n > 0 && s[n - 1] == '0' ) {
+				s[--n] = '\0';
+			}
+			while( n > 0 && s[n - 1] == '.' ) {
+				s[--n] = '\0';
+			}
 		}
 	}
 	return s;
@@ -451,13 +424,11 @@ returns -1 if not found otherwise the index of the char
 */
 int idStr::Last( const char c ) const {
 	int i;
-	
 	for( i = Length(); i > 0; i-- ) {
-		if ( data[ i - 1 ] == c ) {
+		if( data[ i - 1 ] == c ) {
 			return i - 1;
 		}
 	}
-
 	return -1;
 }
 
@@ -480,10 +451,9 @@ idStr::StripLeading
 */
 void idStr::StripLeading( const char *string ) {
 	int l;
-
 	l = strlen( string );
-	if ( l > 0 ) {
-		while ( !Cmpn( string, l ) ) {
+	if( l > 0 ) {
+		while( !Cmpn( string, l ) ) {
 			memmove( data, data + l, len - l + 1 );
 			len -= l;
 		}
@@ -497,9 +467,8 @@ idStr::StripLeadingOnce
 */
 bool idStr::StripLeadingOnce( const char *string ) {
 	int l;
-
 	l = strlen( string );
-	if ( ( l > 0 ) && !Cmpn( string, l ) ) {
+	if( ( l > 0 ) && !Cmpn( string, l ) ) {
 		memmove( data, data + l, len - l + 1 );
 		len -= l;
 		return true;
@@ -514,7 +483,6 @@ idStr::StripTrailing
 */
 void idStr::StripTrailing( const char c ) {
 	int i;
-	
 	for( i = Length(); i > 0 && data[ i - 1 ] == c; i-- ) {
 		data[ i - 1 ] = '\0';
 		len--;
@@ -528,10 +496,9 @@ idStr::StripLeading
 */
 void idStr::StripTrailing( const char *string ) {
 	int l;
-
 	l = strlen( string );
-	if ( l > 0 ) {
-		while ( ( len >= l ) && !Cmpn( string, data + len - l, l ) ) {
+	if( l > 0 ) {
+		while( ( len >= l ) && !Cmpn( string, data + len - l, l ) ) {
 			len -= l;
 			data[len] = '\0';
 		}
@@ -545,9 +512,8 @@ idStr::StripTrailingOnce
 */
 bool idStr::StripTrailingOnce( const char *string ) {
 	int l;
-
 	l = strlen( string );
-	if ( ( l > 0 ) && ( len >= l ) && !Cmpn( string, data + len - l, l ) ) {
+	if( ( l > 0 ) && ( len >= l ) && !Cmpn( string, data + len - l, l ) ) {
 		len -= l;
 		data[len] = '\0';
 		return true;
@@ -563,10 +529,8 @@ idStr::Replace
 void idStr::Replace( const char *old, const char *nw ) {
 	int		oldLen, newLen, i, j, count;
 	idStr	oldString( data );
-
 	oldLen = strlen( old );
 	newLen = strlen( nw );
-
 	// Work out how big the new string will be
 	count = 0;
 	for( i = 0; i < oldString.Length(); i++ ) {
@@ -575,10 +539,8 @@ void idStr::Replace( const char *old, const char *nw ) {
 			i += oldLen - 1;
 		}
 	}
-
 	if( count ) {
 		EnsureAlloced( len + ( ( newLen - oldLen ) * count ) + 2, false );
-
 		// Replace the old data with the new data
 		for( i = 0, j = 0; i < oldString.Length(); i++ ) {
 			if( !idStr::Cmpn( &oldString[i], old, oldLen ) ) {
@@ -602,18 +564,14 @@ idStr::Mid
 */
 const char *idStr::Mid( int start, int len, idStr &result ) const {
 	int i;
-
 	result.Empty();
-
 	i = Length();
-	if ( i == 0 || len <= 0 || start >= i ) {
+	if( i == 0 || len <= 0 || start >= i ) {
 		return NULL;
 	}
-
-	if ( start + len >= i ) {
+	if( start + len >= i ) {
 		len = i - start;
 	}
-
 	result.Append( &data[ start ], len );
 	return result;
 }
@@ -626,16 +584,13 @@ idStr::Mid
 idStr idStr::Mid( int start, int len ) const {
 	int i;
 	idStr result;
-
 	i = Length();
-	if ( i == 0 || len <= 0 || start >= i ) {
+	if( i == 0 || len <= 0 || start >= i ) {
 		return result;
 	}
-
-	if ( start + len >= i ) {
+	if( start + len >= i ) {
 		len = i - start;
 	}
-
 	result.Append( &data[ start ], len );
 	return result;
 }
@@ -647,9 +602,8 @@ idStr::StripTrailingWhitespace
 */
 void idStr::StripTrailingWhitespace( void ) {
 	int i;
-	
 	// cast to unsigned char to prevent stripping off high-ASCII characters
-	for( i = Length(); i > 0 && (unsigned char)(data[ i - 1 ]) <= ' '; i-- ) {
+	for( i = Length(); i > 0 && ( unsigned char )( data[ i - 1 ] ) <= ' '; i-- ) {
 		data[ i - 1 ] = '\0';
 		len--;
 	}
@@ -662,25 +616,19 @@ idStr::StripQuotes
 Removes the quotes from the beginning and end of the string
 ============
 */
-idStr& idStr::StripQuotes ( void )
-{
-	if ( data[0] != '\"' )
-	{
+idStr &idStr::StripQuotes( void ) {
+	if( data[0] != '\"' ) {
 		return *this;
 	}
-	
 	// Remove the trailing quote first
-	if ( data[len-1] == '\"' )
-	{
-		data[len-1] = '\0';
+	if( data[len - 1] == '\"' ) {
+		data[len - 1] = '\0';
 		len--;
 	}
-
 	// Strip the leading quote now
-	len--;	
+	len--;
 	memmove( &data[ 0 ], &data[ 1 ], len );
 	data[len] = '\0';
-	
 	return *this;
 }
 
@@ -701,21 +649,20 @@ int idStr::FileNameHash( void ) const {
 	int		i;
 	long	hash;
 	char	letter;
-
 	hash = 0;
 	i = 0;
 	while( data[i] != '\0' ) {
 		letter = idStr::ToLower( data[i] );
-		if ( letter == '.' ) {
+		if( letter == '.' ) {
 			break;				// don't include extension
 		}
-		if ( letter =='\\' ) {
+		if( letter == '\\' ) {
 			letter = '/';
 		}
-		hash += (long)(letter)*(i+119);
+		hash += ( long )( letter ) * ( i + 119 );
 		i++;
 	}
-	hash &= (FILE_HASH_SIZE-1);
+	hash &= ( FILE_HASH_SIZE - 1 );
 	return hash;
 }
 
@@ -726,9 +673,8 @@ idStr::BackSlashesToSlashes
 */
 idStr &idStr::BackSlashesToSlashes( void ) {
 	int i;
-
-	for ( i = 0; i < len; i++ ) {
-		if ( data[ i ] == '\\' ) {
+	for( i = 0; i < len; i++ ) {
+		if( data[ i ] == '\\' ) {
 			data[ i ] = '/';
 		}
 	}
@@ -742,7 +688,7 @@ idStr::SetFileExtension
 */
 idStr &idStr::SetFileExtension( const char *extension ) {
 	StripFileExtension();
-	if ( *extension != '.' ) {
+	if( *extension != '.' ) {
 		Append( '.' );
 	}
 	Append( extension );
@@ -756,9 +702,8 @@ idStr::StripFileExtension
 */
 idStr &idStr::StripFileExtension( void ) {
 	int i;
-
-	for ( i = len-1; i >= 0; i-- ) {
-		if ( data[i] == '.' ) {
+	for( i = len - 1; i >= 0; i-- ) {
+		if( data[i] == '.' ) {
 			data[i] = '\0';
 			len = i;
 			break;
@@ -774,15 +719,13 @@ idStr::StripAbsoluteFileExtension
 */
 idStr &idStr::StripAbsoluteFileExtension( void ) {
 	int i;
-
-	for ( i = 0; i < len; i++ ) {
-		if ( data[i] == '.' ) {
+	for( i = 0; i < len; i++ ) {
+		if( data[i] == '.' ) {
 			data[i] = '\0';
 			len = i;
 			break;
 		}
 	}
-
 	return *this;
 }
 
@@ -793,14 +736,13 @@ idStr::DefaultFileExtension
 */
 idStr &idStr::DefaultFileExtension( const char *extension ) {
 	int i;
-
 	// do nothing if the string already has an extension
-	for ( i = len-1; i >= 0; i-- ) {
-		if ( data[i] == '.' ) {
+	for( i = len - 1; i >= 0; i-- ) {
+		if( data[i] == '.' ) {
 			return *this;
 		}
 	}
-	if ( *extension != '.' ) {
+	if( *extension != '.' ) {
 		Append( '.' );
 	}
 	Append( extension );
@@ -813,11 +755,10 @@ idStr::DefaultPath
 ==================
 */
 idStr &idStr::DefaultPath( const char *basepath ) {
-	if ( ( ( *this )[ 0 ] == '/' ) || ( ( *this )[ 0 ] == '\\' ) ) {
+	if( ( ( *this )[ 0 ] == '/' ) || ( ( *this )[ 0 ] == '\\' ) ) {
 		// absolute path location
 		return *this;
 	}
-
 	*this = basepath + *this;
 	return *this;
 }
@@ -830,22 +771,19 @@ idStr::AppendPath
 void idStr::AppendPath( const char *text ) {
 	int pos;
 	int i = 0;
-
-	if ( text && text[i] ) {
+	if( text && text[i] ) {
 		pos = len;
 		EnsureAlloced( len + strlen( text ) + 2 );
-
-		if ( pos ) {
-			if ( data[ pos-1 ] != '/' ) {
+		if( pos ) {
+			if( data[ pos - 1 ] != '/' ) {
 				data[ pos++ ] = '/';
 			}
 		}
-		if ( text[i] == '/' ) {
+		if( text[i] == '/' ) {
 			i++;
 		}
-
-		for ( ; text[ i ]; i++ ) {
-			if ( text[ i ] == '\\' ) {
+		for( ; text[ i ]; i++ ) {
+			if( text[ i ] == '\\' ) {
 				data[ pos++ ] = '/';
 			} else {
 				data[ pos++ ] = text[ i ];
@@ -863,16 +801,13 @@ idStr::StripFilename
 */
 idStr &idStr::StripFilename( void ) {
 	int pos;
-
 	pos = Length() - 1;
 	while( ( pos > 0 ) && ( ( *this )[ pos ] != '/' ) && ( ( *this )[ pos ] != '\\' ) ) {
 		pos--;
 	}
-
-	if ( pos < 0 ) {
+	if( pos < 0 ) {
 		pos = 0;
 	}
-
 	CapLength( pos );
 	return *this;
 }
@@ -884,12 +819,10 @@ idStr::StripPath
 */
 idStr &idStr::StripPath( void ) {
 	int pos;
-
 	pos = Length();
 	while( ( pos > 0 ) && ( ( *this )[ pos - 1 ] != '/' ) && ( ( *this )[ pos - 1 ] != '\\' ) ) {
 		pos--;
 	}
-
 	*this = Right( Length() - pos );
 	return *this;
 }
@@ -901,7 +834,6 @@ idStr::ExtractFilePath
 */
 void idStr::ExtractFilePath( idStr &dest ) const {
 	int pos;
-
 	//
 	// back up until a \ or the start
 	//
@@ -909,7 +841,6 @@ void idStr::ExtractFilePath( idStr &dest ) const {
 	while( ( pos > 0 ) && ( ( *this )[ pos - 1 ] != '/' ) && ( ( *this )[ pos - 1 ] != '\\' ) ) {
 		pos--;
 	}
-
 	Left( pos, dest );
 }
 
@@ -920,7 +851,6 @@ idStr::ExtractFileName
 */
 void idStr::ExtractFileName( idStr &dest ) const {
 	int pos;
-
 	//
 	// back up until a \ or the start
 	//
@@ -928,7 +858,6 @@ void idStr::ExtractFileName( idStr &dest ) const {
 	while( ( pos > 0 ) && ( ( *this )[ pos - 1 ] != '/' ) && ( ( *this )[ pos - 1 ] != '\\' ) ) {
 		pos--;
 	}
-
 	Right( Length() - pos, dest );
 }
 
@@ -940,7 +869,6 @@ idStr::ExtractFileBase
 void idStr::ExtractFileBase( idStr &dest ) const {
 	int pos;
 	int start;
-
 	//
 	// back up until a \ or the start
 	//
@@ -948,12 +876,10 @@ void idStr::ExtractFileBase( idStr &dest ) const {
 	while( ( pos > 0 ) && ( ( *this )[ pos - 1 ] != '/' ) && ( ( *this )[ pos - 1 ] != '\\' ) ) {
 		pos--;
 	}
-
 	start = pos;
 	while( ( pos < Length() ) && ( ( *this )[ pos ] != '.' ) ) {
 		pos++;
 	}
-
 	Mid( start, pos - start, dest );
 }
 
@@ -964,7 +890,6 @@ idStr::ExtractFileExtension
 */
 void idStr::ExtractFileExtension( idStr &dest ) const {
 	int pos;
-
 	//
 	// back up until a . or the start
 	//
@@ -972,8 +897,7 @@ void idStr::ExtractFileExtension( idStr &dest ) const {
 	while( ( pos > 0 ) && ( ( *this )[ pos - 1 ] != '.' ) ) {
 		pos--;
 	}
-
-	if ( !pos ) {
+	if( !pos ) {
 		// no extension
 		dest.Empty();
 	} else {
@@ -1000,22 +924,19 @@ Checks a string to see if it contains only numerical values.
 bool idStr::IsNumeric( const char *s ) {
 	int		i;
 	bool	dot;
-
-	if ( *s == '-' ) {
+	if( *s == '-' ) {
 		s++;
 	}
-
 	dot = false;
-	for ( i = 0; s[i]; i++ ) {
-		if ( !isdigit( s[i] ) ) {
-			if ( ( s[ i ] == '.' ) && !dot ) {
+	for( i = 0; s[i]; i++ ) {
+		if( !isdigit( s[i] ) ) {
+			if( ( s[ i ] == '.' ) && !dot ) {
 				dot = true;
 				continue;
 			}
 			return false;
 		}
 	}
-
 	return true;
 }
 
@@ -1027,39 +948,35 @@ Checks if a string has any lowercase chars
 ============
 */
 bool idStr::HasLower( const char *s ) {
-	if ( !s ) {
+	if( !s ) {
 		return false;
 	}
-	
-	while ( *s ) {
-		if ( CharIsLower( *s ) ) {
+	while( *s ) {
+		if( CharIsLower( *s ) ) {
 			return true;
 		}
 		s++;
 	}
-	
 	return false;
 }
 
 /*
 ============
 idStr::HasUpper
-	
+
 Checks if a string has any uppercase chars
 ============
 */
 bool idStr::HasUpper( const char *s ) {
-	if ( !s ) {
+	if( !s ) {
 		return false;
 	}
-	
-	while ( *s ) {
-		if ( CharIsUpper( *s ) ) {
+	while( *s ) {
+		if( CharIsUpper( *s ) ) {
 			return true;
 		}
 		s++;
 	}
-	
 	return false;
 }
 
@@ -1070,17 +987,14 @@ idStr::Cmp
 */
 int idStr::Cmp( const char *s1, const char *s2 ) {
 	int c1, c2, d;
-
 	do {
 		c1 = *s1++;
 		c2 = *s2++;
-
 		d = c1 - c2;
-		if ( d ) {
+		if( d ) {
 			return ( INTSIGNBITNOTSET( d ) << 1 ) - 1;
 		}
 	} while( c1 );
-
 	return 0;		// strings are equal
 }
 
@@ -1091,23 +1005,18 @@ idStr::Cmpn
 */
 int idStr::Cmpn( const char *s1, const char *s2, int n ) {
 	int c1, c2, d;
-
 	assert( n >= 0 );
-
 	do {
 		c1 = *s1++;
 		c2 = *s2++;
-
-		if ( !n-- ) {
+		if( !n-- ) {
 			return 0;		// strings are equal until end point
 		}
-
 		d = c1 - c2;
-		if ( d ) {
+		if( d ) {
 			return ( INTSIGNBITNOTSET( d ) << 1 ) - 1;
 		}
 	} while( c1 );
-
 	return 0;		// strings are equal
 }
 
@@ -1118,29 +1027,26 @@ idStr::Icmp
 */
 int idStr::Icmp( const char *s1, const char *s2 ) {
 	int c1, c2, d;
-
 	do {
 		c1 = *s1++;
 		c2 = *s2++;
-
 		d = c1 - c2;
 		while( d ) {
-			if ( c1 <= 'Z' && c1 >= 'A' ) {
-				d += ('a' - 'A');
-				if ( !d ) {
+			if( c1 <= 'Z' && c1 >= 'A' ) {
+				d += ( 'a' - 'A' );
+				if( !d ) {
 					break;
 				}
 			}
-			if ( c2 <= 'Z' && c2 >= 'A' ) {
-				d -= ('a' - 'A');
-				if ( !d ) {
+			if( c2 <= 'Z' && c2 >= 'A' ) {
+				d -= ( 'a' - 'A' );
+				if( !d ) {
 					break;
 				}
 			}
 			return ( INTSIGNBITNOTSET( d ) << 1 ) - 1;
 		}
 	} while( c1 );
-
 	return 0;		// strings are equal
 }
 
@@ -1151,35 +1057,30 @@ idStr::Icmpn
 */
 int idStr::Icmpn( const char *s1, const char *s2, int n ) {
 	int c1, c2, d;
-
 	assert( n >= 0 );
-
 	do {
 		c1 = *s1++;
 		c2 = *s2++;
-
-		if ( !n-- ) {
+		if( !n-- ) {
 			return 0;		// strings are equal until end point
 		}
-
 		d = c1 - c2;
 		while( d ) {
-			if ( c1 <= 'Z' && c1 >= 'A' ) {
-				d += ('a' - 'A');
-				if ( !d ) {
+			if( c1 <= 'Z' && c1 >= 'A' ) {
+				d += ( 'a' - 'A' );
+				if( !d ) {
 					break;
 				}
 			}
-			if ( c2 <= 'Z' && c2 >= 'A' ) {
-				d -= ('a' - 'A');
-				if ( !d ) {
+			if( c2 <= 'Z' && c2 >= 'A' ) {
+				d -= ( 'a' - 'A' );
+				if( !d ) {
 					break;
 				}
 			}
 			return ( INTSIGNBITNOTSET( d ) << 1 ) - 1;
 		}
 	} while( c1 );
-
 	return 0;		// strings are equal
 }
 
@@ -1190,35 +1091,32 @@ idStr::Icmp
 */
 int idStr::IcmpNoColor( const char *s1, const char *s2 ) {
 	int c1, c2, d;
-
 	do {
-		while ( idStr::IsColor( s1 ) ) {
+		while( idStr::IsColor( s1 ) ) {
 			s1 += 2;
 		}
-		while ( idStr::IsColor( s2 ) ) {
+		while( idStr::IsColor( s2 ) ) {
 			s2 += 2;
 		}
 		c1 = *s1++;
 		c2 = *s2++;
-
 		d = c1 - c2;
 		while( d ) {
-			if ( c1 <= 'Z' && c1 >= 'A' ) {
-				d += ('a' - 'A');
-				if ( !d ) {
+			if( c1 <= 'Z' && c1 >= 'A' ) {
+				d += ( 'a' - 'A' );
+				if( !d ) {
 					break;
 				}
 			}
-			if ( c2 <= 'Z' && c2 >= 'A' ) {
-				d -= ('a' - 'A');
-				if ( !d ) {
+			if( c2 <= 'Z' && c2 >= 'A' ) {
+				d -= ( 'a' - 'A' );
+				if( !d ) {
 					break;
 				}
 			}
 			return ( INTSIGNBITNOTSET( d ) << 1 ) - 1;
 		}
 	} while( c1 );
-
 	return 0;		// strings are equal
 }
 
@@ -1229,65 +1127,61 @@ idStr::IcmpPath
 */
 int idStr::IcmpPath( const char *s1, const char *s2 ) {
 	int c1, c2, d;
-
 #if 0
-//#if !defined( _WIN32 )
+	//#if !defined( _WIN32 )
 	idLib::common->Printf( "WARNING: IcmpPath used on a case-sensitive filesystem?\n" );
 #endif
-
 	do {
 		c1 = *s1++;
 		c2 = *s2++;
-
 		d = c1 - c2;
 		while( d ) {
-			if ( c1 <= 'Z' && c1 >= 'A' ) {
-				d += ('a' - 'A');
-				if ( !d ) {
+			if( c1 <= 'Z' && c1 >= 'A' ) {
+				d += ( 'a' - 'A' );
+				if( !d ) {
 					break;
 				}
 			}
-			if ( c1 == '\\' ) {
-				d += ('/' - '\\');
-				if ( !d ) {
+			if( c1 == '\\' ) {
+				d += ( '/' - '\\' );
+				if( !d ) {
 					break;
 				}
 			}
-			if ( c2 <= 'Z' && c2 >= 'A' ) {
-				d -= ('a' - 'A');
-				if ( !d ) {
+			if( c2 <= 'Z' && c2 >= 'A' ) {
+				d -= ( 'a' - 'A' );
+				if( !d ) {
 					break;
 				}
 			}
-			if ( c2 == '\\' ) {
-				d -= ('/' - '\\');
-				if ( !d ) {
+			if( c2 == '\\' ) {
+				d -= ( '/' - '\\' );
+				if( !d ) {
 					break;
 				}
 			}
 			// make sure folders come first
 			while( c1 ) {
-				if ( c1 == '/' || c1 == '\\' ) {
+				if( c1 == '/' || c1 == '\\' ) {
 					break;
 				}
 				c1 = *s1++;
 			}
 			while( c2 ) {
-				if ( c2 == '/' || c2 == '\\' ) {
+				if( c2 == '/' || c2 == '\\' ) {
 					break;
 				}
 				c2 = *s2++;
 			}
-			if ( c1 && !c2 ) {
+			if( c1 && !c2 ) {
 				return -1;
-			} else if ( !c1 && c2 ) {
+			} else if( !c1 && c2 ) {
 				return 1;
 			}
 			// same folder depth so use the regular compare
 			return ( INTSIGNBITNOTSET( d ) << 1 ) - 1;
 		}
 	} while( c1 );
-
 	return 0;
 }
 
@@ -1298,93 +1192,86 @@ idStr::IcmpnPath
 */
 int idStr::IcmpnPath( const char *s1, const char *s2, int n ) {
 	int c1, c2, d;
-
 #if 0
-//#if !defined( _WIN32 )
+	//#if !defined( _WIN32 )
 	idLib::common->Printf( "WARNING: IcmpPath used on a case-sensitive filesystem?\n" );
 #endif
-
 	assert( n >= 0 );
-
 	do {
 		c1 = *s1++;
 		c2 = *s2++;
-
-		if ( !n-- ) {
+		if( !n-- ) {
 			return 0;		// strings are equal until end point
 		}
-
 		d = c1 - c2;
 		while( d ) {
-			if ( c1 <= 'Z' && c1 >= 'A' ) {
-				d += ('a' - 'A');
-				if ( !d ) {
+			if( c1 <= 'Z' && c1 >= 'A' ) {
+				d += ( 'a' - 'A' );
+				if( !d ) {
 					break;
 				}
 			}
-			if ( c1 == '\\' ) {
-				d += ('/' - '\\');
-				if ( !d ) {
+			if( c1 == '\\' ) {
+				d += ( '/' - '\\' );
+				if( !d ) {
 					break;
 				}
 			}
-			if ( c2 <= 'Z' && c2 >= 'A' ) {
-				d -= ('a' - 'A');
-				if ( !d ) {
+			if( c2 <= 'Z' && c2 >= 'A' ) {
+				d -= ( 'a' - 'A' );
+				if( !d ) {
 					break;
 				}
 			}
-			if ( c2 == '\\' ) {
-				d -= ('/' - '\\');
-				if ( !d ) {
+			if( c2 == '\\' ) {
+				d -= ( '/' - '\\' );
+				if( !d ) {
 					break;
 				}
 			}
 			// make sure folders come first
 			while( c1 ) {
-				if ( c1 == '/' || c1 == '\\' ) {
+				if( c1 == '/' || c1 == '\\' ) {
 					break;
 				}
 				c1 = *s1++;
 			}
 			while( c2 ) {
-				if ( c2 == '/' || c2 == '\\' ) {
+				if( c2 == '/' || c2 == '\\' ) {
 					break;
 				}
 				c2 = *s2++;
 			}
-			if ( c1 && !c2 ) {
+			if( c1 && !c2 ) {
 				return -1;
-			} else if ( !c1 && c2 ) {
+			} else if( !c1 && c2 ) {
 				return 1;
 			}
 			// same folder depth so use the regular compare
 			return ( INTSIGNBITNOTSET( d ) << 1 ) - 1;
 		}
 	} while( c1 );
-
 	return 0;
 }
 
 /*
 =============
 idStr::Copynz
- 
+
 Safe strncpy that ensures a trailing zero
 =============
 */
 void idStr::Copynz( char *dest, const char *src, int destsize ) {
-	if ( !src ) {
+	if( !src ) {
 		idLib::common->Warning( "idStr::Copynz: NULL src" );
 		return;
 	}
-	if ( destsize < 1 ) {
-		idLib::common->Warning( "idStr::Copynz: destsize < 1" ); 
+	if( destsize < 1 ) {
+		idLib::common->Warning( "idStr::Copynz: destsize < 1" );
 		return;
 	}
-
-	strncpy( dest, src, destsize-1 );
-    dest[destsize-1] = 0;
+	strncpy( dest, src, destsize - 1 );
+	dest[destsize - 1] = 0;
 }
 
 /*
@@ -1396,9 +1283,8 @@ idStr::Append
 */
 void idStr::Append( char *dest, int size, const char *src ) {
 	int		l1;
-
 	l1 = strlen( dest );
-	if ( l1 >= size ) {
+	if( l1 >= size ) {
 		idLib::common->Error( "idStr::Append: already overflowed" );
 	}
 	idStr::Copynz( dest + l1, src, size - l1 );
@@ -1412,22 +1298,19 @@ idStr::LengthWithoutColors
 int idStr::LengthWithoutColors( const char *s ) {
 	int len;
 	const char *p;
-
-	if ( !s ) {
+	if( !s ) {
 		return 0;
 	}
-
 	len = 0;
 	p = s;
 	while( *p ) {
-		if ( idStr::IsColor( p ) ) {
+		if( idStr::IsColor( p ) ) {
 			p += 2;
 			continue;
 		}
 		p++;
 		len++;
 	}
-
 	return len;
 }
 
@@ -1440,20 +1323,17 @@ char *idStr::RemoveColors( char *string ) {
 	char *d;
 	char *s;
 	int c;
-
 	s = string;
 	d = string;
-	while( (c = *s) != 0 ) {
-		if ( idStr::IsColor( s ) ) {
+	while( ( c = *s ) != 0 ) {
+		if( idStr::IsColor( s ) ) {
 			s++;
-		}		
-		else {
+		} else {
 			*d++ = c;
 		}
 		s++;
 	}
 	*d = '\0';
-
 	return string;
 }
 
@@ -1462,18 +1342,17 @@ char *idStr::RemoveColors( char *string ) {
 idStr::snPrintf
 ================
 */
-int idStr::snPrintf( char *dest, int size, const char *fmt, ...) {
+int idStr::snPrintf( char *dest, int size, const char *fmt, ... ) {
 	int len;
 	va_list argptr;
 	char buffer[32000];	// big, but small enough to fit in PPC stack
-
 	va_start( argptr, fmt );
 	len = vsprintf( buffer, fmt, argptr );
 	va_end( argptr );
-	if ( len >= sizeof( buffer ) ) {
+	if( len >= sizeof( buffer ) ) {
 		idLib::common->Error( "idStr::snPrintf: overflowed buffer" );
 	}
-	if ( len >= size ) {
+	if( len >= size ) {
 		idLib::common->Warning( "idStr::snPrintf: overflow of %i in %i\n", len, size );
 		len = size;
 	}
@@ -1492,7 +1371,7 @@ C99 standard: vsnprintf returns the number of characters (excluding the trailing
 snprintf and vsnprintf do not write more than size bytes (including the trailing '\0')
 
 win32: _vsnprintf returns the number of characters written, not including the terminating null character,
-or a negative value if an output error occurs. If the number of characters to write exceeds count, then count 
+or a negative value if an output error occurs. If the number of characters to write exceeds count, then count
 characters are written and -1 is returned and no trailing '\0' is added.
 
 idStr::vsnPrintf: always appends a trailing '\0', returns number of characters written (not including terminal \0)
@@ -1501,18 +1380,17 @@ or returns -1 on failure or if the buffer would be overflowed.
 */
 int idStr::vsnPrintf( char *dest, int size, const char *fmt, va_list argptr ) {
 	int ret;
-
 #ifdef _WIN32
 #undef _vsnprintf
-	ret = _vsnprintf( dest, size-1, fmt, argptr );
+	ret = _vsnprintf( dest, size - 1, fmt, argptr );
 #define _vsnprintf	use_idStr_vsnPrintf
 #else
 #undef vsnprintf
 	ret = vsnprintf( dest, size, fmt, argptr );
 #define vsnprintf	use_idStr_vsnPrintf
 #endif
-	dest[size-1] = '\0';
-	if ( ret < 0 || ret >= size ) {
+	dest[size - 1] = '\0';
+	if( ret < 0 || ret >= size ) {
 		return -1;
 	}
 	return ret;
@@ -1529,12 +1407,10 @@ int sprintf( idStr &string, const char *fmt, ... ) {
 	int l;
 	va_list argptr;
 	char buffer[32000];
-	
 	va_start( argptr, fmt );
-	l = idStr::vsnPrintf( buffer, sizeof(buffer)-1, fmt, argptr );
+	l = idStr::vsnPrintf( buffer, sizeof( buffer ) - 1, fmt, argptr );
 	va_end( argptr );
-	buffer[sizeof(buffer)-1] = '\0';
-
+	buffer[sizeof( buffer ) - 1] = '\0';
 	string = buffer;
 	return l;
 }
@@ -1549,10 +1425,8 @@ Sets the value of the string using a vprintf interface.
 int vsprintf( idStr &string, const char *fmt, va_list argptr ) {
 	int l;
 	char buffer[32000];
-	
-	l = idStr::vsnPrintf( buffer, sizeof(buffer)-1, fmt, argptr );
-	buffer[sizeof(buffer)-1] = '\0';
-	
+	l = idStr::vsnPrintf( buffer, sizeof( buffer ) - 1, fmt, argptr );
+	buffer[sizeof( buffer ) - 1] = '\0';
 	string = buffer;
 	return l;
 }
@@ -1570,14 +1444,11 @@ char *va( const char *fmt, ... ) {
 	static int index = 0;
 	static char string[4][16384];	// in case called by nested functions
 	char *buf;
-
 	buf = string[index];
-	index = (index + 1) & 3;
-
+	index = ( index + 1 ) & 3;
 	va_start( argptr, fmt );
 	vsprintf( buf, fmt, argptr );
 	va_end( argptr );
-
 	return buf;
 }
 
@@ -1590,7 +1461,7 @@ idStr::BestUnit
 */
 int idStr::BestUnit( const char *format, float value, Measure_t measure ) {
 	int unit = 1;
-	while ( unit <= 3 && ( 1 << ( unit * 10 ) < value ) ) {
+	while( unit <= 3 && ( 1 << ( unit * 10 ) < value ) ) {
 		unit++;
 	}
 	unit--;
@@ -1610,7 +1481,7 @@ void idStr::SetUnit( const char *format, float value, int unit, Measure_t measur
 	value /= 1 << ( unit * 10 );
 	sprintf( *this, format, value );
 	*this += " ";
-	*this += units[ measure ][ unit ];	
+	*this += units[ measure ][ unit ];
 }
 
 /*
@@ -1654,8 +1525,8 @@ idStr::ShowMemoryUsage_f
 void idStr::ShowMemoryUsage_f( const idCmdArgs &args ) {
 #ifdef USE_STRING_DATA_ALLOCATOR
 	idLib::common->Printf( "%6d KB string memory (%d KB free in %d blocks, %d empty base blocks)\n",
-		stringDataAllocator.GetBaseBlockMemory() >> 10, stringDataAllocator.GetFreeBlockMemory() >> 10,
-			stringDataAllocator.GetNumFreeBlocks(), stringDataAllocator.GetNumEmptyBaseBlocks() );
+						   stringDataAllocator.GetBaseBlockMemory() >> 10, stringDataAllocator.GetFreeBlockMemory() >> 10,
+						   stringDataAllocator.GetNumFreeBlocks(), stringDataAllocator.GetNumEmptyBaseBlocks() );
 #endif
 }
 
@@ -1676,68 +1547,55 @@ formatList_t formatList[] = {
 	{ 1000, 0 }
 };
 
-int numFormatList = sizeof(formatList) / sizeof( formatList[0] );
+int numFormatList = sizeof( formatList ) / sizeof( formatList[0] );
 
 
 idStr idStr::FormatNumber( int number ) {
 	idStr string;
 	bool hit;
-
 	// reset
-	for ( int i = 0; i < numFormatList; i++ ) {
+	for( int i = 0; i < numFormatList; i++ ) {
 		formatList_t *li = formatList + i;
 		li->count = 0;
 	}
-
 	// main loop
 	do {
 		hit = false;
-
-		for ( int i = 0; i < numFormatList; i++ ) {
+		for( int i = 0; i < numFormatList; i++ ) {
 			formatList_t *li = formatList + i;
-
-			if ( number >= li->gran ) {
+			if( number >= li->gran ) {
 				li->count++;
 				number -= li->gran;
 				hit = true;
 				break;
 			}
 		}
-	} while ( hit );
-
+	} while( hit );
 	// print out
 	bool found = false;
-
-	for ( int i = 0; i < numFormatList; i++ ) {
+	for( int i = 0; i < numFormatList; i++ ) {
 		formatList_t *li = formatList + i;
-
-		if ( li->count ) {
-			if ( !found ) {
+		if( li->count ) {
+			if( !found ) {
 				string += va( "%i,", li->count );
 			} else {
 				string += va( "%3.3i,", li->count );
 			}
 			found = true;
-		}
-		else if ( found ) {
+		} else if( found ) {
 			string += va( "%3.3i,", li->count );
 		}
 	}
-
-	if ( found ) {
+	if( found ) {
 		string += va( "%3.3i", number );
-	}
-	else {
+	} else {
 		string += va( "%i", number );
 	}
-
 	// pad to proper size
 	int count = 11 - string.Length();
-
-	for ( int i = 0; i < count; i++ ) {
+	for( int i = 0; i < count; i++ ) {
 		string.Insert( " ", 0 );
 	}
-
 	return string;
 }
 

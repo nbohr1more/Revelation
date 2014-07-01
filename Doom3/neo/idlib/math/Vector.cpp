@@ -2,9 +2,9 @@
 ===========================================================================
 
 Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company. 
+Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
 
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).  
+This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
 
 Doom 3 Source Code is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -60,12 +60,12 @@ Linearly inperpolates one vector to another.
 =============
 */
 void idVec2::Lerp( const idVec2 &v1, const idVec2 &v2, const float l ) {
-	if ( l <= 0.0f ) {
-		(*this) = v1;
-	} else if ( l >= 1.0f ) {
-		(*this) = v2;
+	if( l <= 0.0f ) {
+		( *this ) = v1;
+	} else if( l >= 1.0f ) {
+		( *this ) = v2;
 	} else {
-		(*this) = v1 + l * ( v2 - v1 );
+		( *this ) = v1 + l * ( v2 - v1 );
 	}
 }
 
@@ -83,16 +83,14 @@ idVec3::ToYaw
 */
 float idVec3::ToYaw( void ) const {
 	float yaw;
-	
-	if ( ( y == 0.0f ) && ( x == 0.0f ) ) {
+	if( ( y == 0.0f ) && ( x == 0.0f ) ) {
 		yaw = 0.0f;
 	} else {
 		yaw = RAD2DEG( atan2( y, x ) );
-		if ( yaw < 0.0f ) {
+		if( yaw < 0.0f ) {
 			yaw += 360.0f;
 		}
 	}
-
 	return yaw;
 }
 
@@ -104,9 +102,8 @@ idVec3::ToPitch
 float idVec3::ToPitch( void ) const {
 	float	forward;
 	float	pitch;
-	
-	if ( ( x == 0.0f ) && ( y == 0.0f ) ) {
-		if ( z > 0.0f ) {
+	if( ( x == 0.0f ) && ( y == 0.0f ) ) {
+		if( z > 0.0f ) {
 			pitch = 90.0f;
 		} else {
 			pitch = 270.0f;
@@ -114,11 +111,10 @@ float idVec3::ToPitch( void ) const {
 	} else {
 		forward = ( float )idMath::Sqrt( x * x + y * y );
 		pitch = RAD2DEG( atan2( z, forward ) );
-		if ( pitch < 0.0f ) {
+		if( pitch < 0.0f ) {
 			pitch += 360.0f;
 		}
 	}
-
 	return pitch;
 }
 
@@ -131,27 +127,24 @@ idAngles idVec3::ToAngles( void ) const {
 	float forward;
 	float yaw;
 	float pitch;
-	
-	if ( ( x == 0.0f ) && ( y == 0.0f ) ) {
+	if( ( x == 0.0f ) && ( y == 0.0f ) ) {
 		yaw = 0.0f;
-		if ( z > 0.0f ) {
+		if( z > 0.0f ) {
 			pitch = 90.0f;
 		} else {
 			pitch = 270.0f;
 		}
 	} else {
 		yaw = RAD2DEG( atan2( y, x ) );
-		if ( yaw < 0.0f ) {
+		if( yaw < 0.0f ) {
 			yaw += 360.0f;
 		}
-
 		forward = ( float )idMath::Sqrt( x * x + y * y );
 		pitch = RAD2DEG( atan2( z, forward ) );
-		if ( pitch < 0.0f ) {
+		if( pitch < 0.0f ) {
 			pitch += 360.0f;
 		}
 	}
-
 	return idAngles( -pitch, yaw, 0.0f );
 }
 
@@ -164,23 +157,21 @@ idPolar3 idVec3::ToPolar( void ) const {
 	float forward;
 	float yaw;
 	float pitch;
-	
-	if ( ( x == 0.0f ) && ( y == 0.0f ) ) {
+	if( ( x == 0.0f ) && ( y == 0.0f ) ) {
 		yaw = 0.0f;
-		if ( z > 0.0f ) {
+		if( z > 0.0f ) {
 			pitch = 90.0f;
 		} else {
 			pitch = 270.0f;
 		}
 	} else {
 		yaw = RAD2DEG( atan2( y, x ) );
-		if ( yaw < 0.0f ) {
+		if( yaw < 0.0f ) {
 			yaw += 360.0f;
 		}
-
 		forward = ( float )idMath::Sqrt( x * x + y * y );
 		pitch = RAD2DEG( atan2( z, forward ) );
-		if ( pitch < 0.0f ) {
+		if( pitch < 0.0f ) {
 			pitch += 360.0f;
 		}
 	}
@@ -195,10 +186,9 @@ idVec3::ToMat3
 idMat3 idVec3::ToMat3( void ) const {
 	idMat3	mat;
 	float	d;
-
 	mat[0] = *this;
 	d = x * x + y * y;
-	if ( !d ) {
+	if( !d ) {
 		mat[1][0] = 1.0f;
 		mat[1][1] = 0.0f;
 		mat[1][2] = 0.0f;
@@ -209,7 +199,6 @@ idMat3 idVec3::ToMat3( void ) const {
 		mat[1][2] = 0.0f;
 	}
 	mat[2] = Cross( mat[1] );
-
 	return mat;
 }
 
@@ -230,12 +219,12 @@ Linearly inperpolates one vector to another.
 =============
 */
 void idVec3::Lerp( const idVec3 &v1, const idVec3 &v2, const float l ) {
-	if ( l <= 0.0f ) {
-		(*this) = v1;
-	} else if ( l >= 1.0f ) {
-		(*this) = v2;
+	if( l <= 0.0f ) {
+		( *this ) = v1;
+	} else if( l >= 1.0f ) {
+		( *this ) = v2;
 	} else {
-		(*this) = v1 + l * ( v2 - v1 );
+		( *this ) = v1 + l * ( v2 - v1 );
 	}
 }
 
@@ -251,17 +240,15 @@ Vectors are expected to be normalized.
 
 void idVec3::SLerp( const idVec3 &v1, const idVec3 &v2, const float t ) {
 	float omega, cosom, sinom, scale0, scale1;
-
-	if ( t <= 0.0f ) {
-		(*this) = v1;
+	if( t <= 0.0f ) {
+		( *this ) = v1;
 		return;
-	} else if ( t >= 1.0f ) {
-		(*this) = v2;
+	} else if( t >= 1.0f ) {
+		( *this ) = v2;
 		return;
 	}
-
 	cosom = v1 * v2;
-	if ( ( 1.0f - cosom ) > LERP_DELTA ) {
+	if( ( 1.0f - cosom ) > LERP_DELTA ) {
 		omega = acos( cosom );
 		sinom = sin( omega );
 		scale0 = sin( ( 1.0f - t ) * omega ) / sinom;
@@ -270,8 +257,7 @@ void idVec3::SLerp( const idVec3 &v1, const idVec3 &v2, const float t ) {
 		scale0 = 1.0f - t;
 		scale1 = t;
 	}
-
-	(*this) = ( v1 * scale0 + v2 * scale1 );
+	( *this ) = ( v1 * scale0 + v2 * scale1 );
 }
 
 /*
@@ -284,7 +270,7 @@ Projects the z component onto a sphere.
 void idVec3::ProjectSelfOntoSphere( const float radius ) {
 	float rsqr = radius * radius;
 	float len = Length();
-	if ( len  < rsqr * 0.5f ) {
+	if( len  < rsqr * 0.5f ) {
 		z = sqrt( rsqr - len );
 	} else {
 		z = rsqr / ( 2.0f * sqrt( len ) );
@@ -316,12 +302,12 @@ Linearly inperpolates one vector to another.
 =============
 */
 void idVec4::Lerp( const idVec4 &v1, const idVec4 &v2, const float l ) {
-	if ( l <= 0.0f ) {
-		(*this) = v1;
-	} else if ( l >= 1.0f ) {
-		(*this) = v2;
+	if( l <= 0.0f ) {
+		( *this ) = v1;
+	} else if( l >= 1.0f ) {
+		( *this ) = v2;
 	} else {
-		(*this) = v1 + l * ( v2 - v1 );
+		( *this ) = v1 + l * ( v2 - v1 );
 	}
 }
 
@@ -347,10 +333,10 @@ idVec5::Lerp
 =============
 */
 void idVec5::Lerp( const idVec5 &v1, const idVec5 &v2, const float l ) {
-	if ( l <= 0.0f ) {
-		(*this) = v1;
-	} else if ( l >= 1.0f ) {
-		(*this) = v2;
+	if( l <= 0.0f ) {
+		( *this ) = v1;
+	} else if( l >= 1.0f ) {
+		( *this ) = v2;
 	} else {
 		x = v1.x + l * ( v2.x - v1.x );
 		y = v1.y + l * ( v2.y - v1.y );
@@ -383,8 +369,8 @@ const char *idVec6::ToString( int precision ) const {
 //
 //===============================================================
 
-float	idVecX::temp[VECX_MAX_TEMP+4];
-float *	idVecX::tempPtr = (float *) ( ( (int) idVecX::temp + 15 ) & ~15 );
+float	idVecX::temp[VECX_MAX_TEMP + 4];
+float 	*idVecX::tempPtr = ( float * )( ( ( int ) idVecX::temp + 15 ) & ~15 );
 int		idVecX::tempIndex = 0;
 
 /*
