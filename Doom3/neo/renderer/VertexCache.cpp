@@ -34,7 +34,7 @@ static const int  EXPAND_HEADERS = 32;
 
 // turned r_useArbBufferRange off by default, does nasty things to AMD cards.
 idCVar idVertexCache::r_showVertexCache( "r_showVertexCache", "0", CVAR_INTEGER | CVAR_RENDERER, "show vertex cache" );
-idCVar idVertexCache::r_useArbBufferRange( "r_useArbBufferRange", "1", CVAR_BOOL | CVAR_RENDERER, "use ARB_map_buffer_range for optimization" );
+idCVar idVertexCache::r_useArbBufferRange( "r_useArbBufferRange", "0", CVAR_BOOL | CVAR_RENDERER, "use ARB_map_buffer_range for optimization" );
 idCVar idVertexCache::r_reuseVertexCacheSooner( "r_reuseVertexCacheSooner", "1", CVAR_BOOL | CVAR_RENDERER, "reuse vertex buffers as soon as possible after freeing" );
 
 idVertexCache     vertexCache;
@@ -77,15 +77,9 @@ void idVertexCache::ActuallyFree( vertCache_t *block ) {
 		staticAllocTotal -= block->size;
 		staticCountTotal--;
 		// only free the buffer if its still active.
-		if( glIsBuffer( block->vbo ) == GL_TRUE  && stillActive ) {
-			common->DPrintf( "Destroying Vertex Buffer Object\n" );
-			glDeleteBuffers( 1, &block->vbo );
-			stillActive = false;
-		}
-
 		if( virtualMemory && stillActive ) {
 			common->DPrintf( "Destroying Virtual Memory\n" );
-			delete [] block->virtMem;
+			delete[] block->virtMem;
 			block->virtMem = NULL;
 			stillActive = false;
 		}

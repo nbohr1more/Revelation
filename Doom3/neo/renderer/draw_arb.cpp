@@ -374,7 +374,6 @@ RB_RenderViewLight
 ==================
 */
 static void RB_RenderViewLight( viewLight_t *vLight ) {
-	backEnd.vLight = vLight;
 	// do fogging later
 	if( vLight->lightShader->IsFogLight() ) {
 		return;
@@ -382,6 +381,9 @@ static void RB_RenderViewLight( viewLight_t *vLight ) {
 	if( vLight->lightShader->IsBlendLight() ) {
 		return;
 	}
+	backEnd.vLight = vLight;
+	// turn on depthbounds testing for shadows
+	GL_DepthBoundsTest( vLight->scissorRect.zmin, vLight->scissorRect.zmax );
 	// clear the stencil buffer if needed
 	if( vLight->globalShadows || vLight->localShadows ) {
 		backEnd.currentScissor = vLight->scissorRect;
@@ -406,6 +408,8 @@ static void RB_RenderViewLight( viewLight_t *vLight ) {
 	if( r_skipTranslucent.GetBool() ) {
 		return;
 	}
+	// turn off depthbounds testing for translucent surfaces
+	GL_DepthBoundsTest( 0.0f, 0.0f );
 	// disable stencil testing for translucent interactions, because
 	// the shadow isn't calculated at their point, and the shadow
 	// behind them may be depth fighting with a back side, so there

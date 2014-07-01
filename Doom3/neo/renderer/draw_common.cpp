@@ -422,6 +422,7 @@ Sets variables that can be used by all vertex programs
 static void RB_SetProgramEnvironment( void ) {
 	float	parm[4];
 	int		pot;
+	// completely skip the stage if we don't have the capability
 	if( !glConfig.ARBVertexProgramAvailable || tr.backEndRenderer != BE_ARB2 ) {
 		return;
 	}
@@ -461,6 +462,7 @@ Sets variables related to the current space that can be used by all vertex progr
 ==================
 */
 static void RB_SetProgramEnvironmentSpace( void ) {
+	// completely skip the stage if we don't have the capability
 	if( !glConfig.ARBVertexProgramAvailable || tr.backEndRenderer != BE_ARB2 ) {
 		return;
 	}
@@ -661,8 +663,8 @@ static void RB_STD_T_RenderShaderPasses( const drawSurf_t *surf ) {
 	}
 	// change the matrix if needed
 	if( surf->space != backEnd.currentSpace ) {
-		glLoadMatrixf( surf->space->modelViewMatrix );
 		backEnd.currentSpace = surf->space;
+		glLoadMatrixf( surf->space->modelViewMatrix );
 		RB_SetProgramEnvironmentSpace();
 	}
 	// change the scissor if needed
@@ -737,7 +739,7 @@ Draw non-light dependent passes
 =====================
 */
 static int RB_STD_DrawShaderPasses( drawSurf_t **drawSurfs, int numDrawSurfs ) {
-	int	i;
+	int	shaderPasses;
 	// only obey skipAmbient if we are rendering a view
 	if( backEnd.viewDef->viewEntitys && r_skipAmbient.GetBool() ) {
 		return numDrawSurfs;
@@ -765,27 +767,25 @@ static int RB_STD_DrawShaderPasses( drawSurf_t **drawSurfs, int numDrawSurfs ) {
 	// because we want to defer the matrix load because many
 	// surfaces won't draw any ambient passes
 	backEnd.currentSpace = NULL;
-	for( i = 0  ; i < numDrawSurfs ; i++ ) {
-		if( drawSurfs[i]->material->SuppressInSubview() ) {
+	for( shaderPasses = 0  ; shaderPasses < numDrawSurfs ; shaderPasses++ ) {
+		if( drawSurfs[shaderPasses]->material->SuppressInSubview() ) {
 			continue;
 		}
-		if( backEnd.viewDef->isXraySubview && drawSurfs[i]->space->entityDef ) {
-			if( drawSurfs[i]->space->entityDef->parms.xrayIndex != 2 ) {
+		if( backEnd.viewDef->isXraySubview && drawSurfs[shaderPasses]->space->entityDef ) {
+			if( drawSurfs[shaderPasses]->space->entityDef->parms.xrayIndex != 2 ) {
 				continue;
 			}
 		}
 		// we need to draw the post process shaders after we have drawn the fog lights
-		if( drawSurfs[i]->material->GetSort() >= SS_POST_PROCESS && !backEnd.currentRenderCopied ) {
+		if( drawSurfs[shaderPasses]->material->GetSort() >= SS_POST_PROCESS && !backEnd.currentRenderCopied ) {
 			break;
 		}
-		RB_STD_T_RenderShaderPasses( drawSurfs[i] );
+		RB_STD_T_RenderShaderPasses( drawSurfs[shaderPasses] );
 	}
 	GL_Cull( CT_FRONT_SIDED );
 	glColor3f( 1, 1, 1 );
-	return i;
+	return shaderPasses;
 }
-
-
 
 /*
 ==============================================================================
@@ -847,6 +847,10 @@ static void RB_T_Shadow( const drawSurf_t *surf ) {
 	} else {
 		// must draw everything
 		numIndexes = tri->numIndexes;
+	}
+	// Moved depthbounds test here
+	if( r_useDepthBoundsTest.GetBool() ) {
+		GL_DepthBoundsTest( surf->scissorRect.zmin, surf->scissorRect.zmax );
 	}
 	// debug visualization
 	if( r_showShadows.GetInteger() ) {
@@ -944,6 +948,10 @@ static void RB_T_Shadow( const drawSurf_t *surf ) {
 	// restore cull the same as the original GPL code
 	// revelator dont it breaks rendering.
 	GL_Cull( CT_FRONT_SIDED );
+	// Moved depthbounds test here
+	if( r_useDepthBoundsTest.GetBool() ) {
+		GL_DepthBoundsTest( 0.0f, 0.0f );
+	}
 }
 
 /*
@@ -981,17 +989,9 @@ void RB_StencilShadowPass( const drawSurf_t *drawSurfs ) {
 		glEnable( GL_POLYGON_OFFSET_FILL );
 	}
 	glStencilFunc( GL_ALWAYS, 1, 255 );
-	// Moved depthbounds test here
-	if( r_useDepthBoundsTest.GetBool() ) {
-		GL_DepthBoundsTest( drawSurfs->scissorRect.zmin, drawSurfs->scissorRect.zmax );
-	}
 	RB_RenderDrawSurfChainWithFunction( drawSurfs, RB_T_Shadow );
 	if( r_shadowPolygonFactor.GetFloat() || r_shadowPolygonOffset.GetFloat() ) {
 		glDisable( GL_POLYGON_OFFSET_FILL );
-	}
-	// Moved depthbounds test here
-	if( r_useDepthBoundsTest.GetBool() ) {
-		GL_DepthBoundsTest( 0.0f, 0.0f );
 	}
 	glEnableClientState( GL_TEXTURE_COORD_ARRAY );
 	glStencilFunc( GL_GEQUAL, 128, 255 );

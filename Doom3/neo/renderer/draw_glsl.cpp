@@ -239,6 +239,8 @@ void RB_GLSL_DrawInteractions( void ) {
 		if( !vLight->localInteractions && !vLight->globalInteractions && !vLight->translucentInteractions ) {
 			continue;
 		}
+		// turn on depthbounds testing for shadows
+		GL_DepthBoundsTest( vLight->scissorRect.zmin, vLight->scissorRect.zmax );
 		// clear the stencil buffer if needed
 		if( vLight->globalShadows || vLight->localShadows ) {
 			backEnd.currentScissor = vLight->scissorRect;
@@ -274,6 +276,8 @@ void RB_GLSL_DrawInteractions( void ) {
 		if( r_skipTranslucent.GetBool() ) {
 			continue;
 		}
+		// turn off depthbounds testing for translucent surfaces
+		GL_DepthBoundsTest( 0.0f, 0.0f );
 		glStencilFunc( GL_ALWAYS, 128, 255 );
 		backEnd.depthFunc = GLS_DEPTHFUNC_LESS;
 		RB_GLSL_CreateDrawInteractions( vLight->translucentInteractions );

@@ -567,6 +567,7 @@ RB_ClearMatrixInteractions
 =================
 */
 static void RB_ClearMatrixInteractions( idVec4 matrix[2] ) {
+	// first stage
 	matrix[0][0] = 1.0f;
 	matrix[0][1] = 0.0f;
 	matrix[0][2] = 0.0f;
@@ -576,6 +577,7 @@ static void RB_ClearMatrixInteractions( idVec4 matrix[2] ) {
 	matrix[1][1] = 1.0f;
 	matrix[1][2] = 0.0f;
 	matrix[1][3] = 0.0f;
+	// thats all she wrote folks
 }
 
 /*
@@ -671,6 +673,7 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void ( *DrawIntera
 	const idMaterial	*lightShader = vLight->lightShader;
 	const float			*lightRegs = vLight->shaderRegisters;
 	bool				lightDepthBoundsDisabled = false;
+	bool				useLightDepthBounds = true;
 	drawInteraction_t	inter;
 	if( r_skipInteractions.GetBool() || !surf->geo || !surf->geo->ambientCache ) {
 		return;
@@ -694,7 +697,8 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void ( *DrawIntera
 				}
 			}
 		} else {
-			lightDepthBoundsDisabled = false;
+			// if we got here disable depthbounds testing
+			useLightDepthBounds = false;
 		}
 		// model-view-projection
 		glLoadMatrixf( surf->space->modelViewMatrix );
@@ -813,10 +817,8 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void ( *DrawIntera
 		RB_LeaveDepthHack();
 	}
 	// Once again into the night
-	if( lightDepthBoundsDisabled ) {
+	if( useLightDepthBounds && lightDepthBoundsDisabled ) {
 		GL_DepthBoundsTest( vLight->scissorRect.zmin, vLight->scissorRect.zmax );
-	} else {
-		GL_DepthBoundsTest( 0.0f, 0.0f );
 	}
 }
 

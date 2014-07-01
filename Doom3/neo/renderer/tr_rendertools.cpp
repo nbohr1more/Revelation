@@ -481,7 +481,6 @@ void RB_ShowLightCount( void ) {
 	}
 }
 
-
 /*
 =================
 RB_ShowSilhouette

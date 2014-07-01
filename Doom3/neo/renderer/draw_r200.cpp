@@ -252,6 +252,8 @@ void RB_R200_DrawInteractions( void ) {
 			continue;
 		}
 		backEnd.vLight = vLight;
+		// turn on depthbounds testing for shadows
+		GL_DepthBoundsTest( vLight->scissorRect.zmin, vLight->scissorRect.zmax );
 		// clear the stencil buffer if needed
 		if( vLight->globalShadows || vLight->localShadows ) {
 			backEnd.currentScissor = vLight->scissorRect;
@@ -287,6 +289,8 @@ void RB_R200_DrawInteractions( void ) {
 		if( r_skipTranslucent.GetBool() ) {
 			continue;
 		}
+		// turn off depthbounds testing for translucent surfaces
+		GL_DepthBoundsTest( 0.0f, 0.0f );
 		// disable stencil testing for translucent interactions, because
 		// the shadow isn't calculated at their point, and the shadow
 		// behind them may be depth fighting with a back side, so there
