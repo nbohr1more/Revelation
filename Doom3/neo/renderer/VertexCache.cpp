@@ -34,7 +34,7 @@ static const int  EXPAND_HEADERS = 32;
 
 // turned r_useArbBufferRange off by default, does nasty things to AMD cards.
 idCVar idVertexCache::r_showVertexCache( "r_showVertexCache", "0", CVAR_INTEGER | CVAR_RENDERER, "show vertex cache" );
-idCVar idVertexCache::r_useArbBufferRange( "r_useArbBufferRange", "0", CVAR_BOOL | CVAR_RENDERER, "use ARB_map_buffer_range for optimization" );
+idCVar idVertexCache::r_useArbBufferRange( "r_useArbBufferRange", "1", CVAR_BOOL | CVAR_RENDERER, "use ARB_map_buffer_range for optimization" );
 idCVar idVertexCache::r_reuseVertexCacheSooner( "r_reuseVertexCacheSooner", "1", CVAR_BOOL | CVAR_RENDERER, "reuse vertex buffers as soon as possible after freeing" );
 
 idVertexCache     vertexCache;
@@ -408,18 +408,15 @@ void idVertexCache::Free( vertCache_t *block ) {
 ===========
 idVertexCache::MapBufferRange
 
-MH's Version fast on Nvidia But fails on AMD.
+MH's Version fast on Nvidia But may fail on AMD.
 ===========
 */
 vertCache_t *idVertexCache::MapBufferRange( vertCache_t *buffer, void *data, int size ) {
-	GLbitfield	access = ( GL_MAP_WRITE_BIT | ( ( buffer->offset == 0 ) ? GL_MAP_INVALIDATE_BUFFER_BIT : GL_MAP_UNSYNCHRONIZED_BIT | GL_MAP_INVALIDATE_RANGE_BIT | GL_MAP_FLUSH_EXPLICIT_BIT ) );
+	GLbitfield	access = ( GL_MAP_WRITE_BIT | ( ( buffer->offset == 0 ) ? GL_MAP_INVALIDATE_BUFFER_BIT : GL_MAP_UNSYNCHRONIZED_BIT | GL_MAP_INVALIDATE_RANGE_BIT ) );
 	GLvoid      *ptr = glMapBufferRange( GL_ARRAY_BUFFER, static_cast<GLintptr>( buffer->offset ), static_cast<GLsizeiptr>( size ), access );
-	// AMD fix added glFlushMappedBufferRange to clear explicit bits.
 	if( ptr ) {
 		SIMDProcessor->Memcpy( static_cast<byte *>( ptr ), data, size );
-		glFlushMappedBufferRange( GL_ARRAY_BUFFER, static_cast<GLintptr>( buffer->offset ), static_cast<GLsizeiptr>( size ) );
 		glUnmapBuffer( GL_ARRAY_BUFFER );
-		return buffer;
 	} else {
 		glBufferSubData( GL_ARRAY_BUFFER, static_cast<GLintptrARB>( buffer->offset ), static_cast<GLsizeiptr>( size ), data );
 	}
@@ -440,7 +437,6 @@ vertCache_t *idVertexCache::MapBuffer( vertCache_t *buffer, void *data, int size
 	if( ptr ) {
 		SIMDProcessor->Memcpy( static_cast<byte *>( ptr ), data, size );
 		glUnmapBufferARB( GL_ARRAY_BUFFER );
-		return buffer;
 	} else {
 		glBufferSubDataARB( GL_ARRAY_BUFFER, static_cast<GLintptrARB>( buffer->offset ), static_cast<GLsizeiptr>( size ), data );
 	}

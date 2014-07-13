@@ -585,8 +585,8 @@ idCVarSystemLocal::Register
 ============
 */
 void idCVarSystemLocal::Register( idCVar *cvar ) {
-	int hash;
-	idInternalCVar *internal;
+	int				hash;
+	idInternalCVar	*internal;
 	cvar->SetInternalVar( cvar );
 	internal = FindInternal( cvar->GetName() );
 	if( internal ) {

@@ -2485,7 +2485,7 @@ LPCSTR String_ToLower( LPCSTR psString ) {
 		common->Printf( "String_ToLower(): Warning, input string was %d bytes too large, performing strlwr() inline!\n", strlen( psString ) - ( iBufferSize - 1 ) );
 		return strlwr( const_cast<char *>( psString ) );
 	}
-	iIndex = ++ iIndex & 7;
+	iIndex = ( iIndex + 1 ) & 7;
 	strcpy( sString[iIndex], psString );
 	strlwr( sString[iIndex] );
 	return sString[iIndex];
@@ -2497,7 +2497,7 @@ bool FindNextBrush( brush_t *pPrevFoundBrush ) {	// can be NULL for fresh search
 	entity_t *pLastFoundEnt;
 	brush_t  *pLastFoundBrush;
 	CWaitCursor waitcursor;
-	Select_Deselect( true );	// bool bDeSelectToListBack
+	Select_Deselect( true );
 	// see whether to start search from prev_brush->next by checking if prev_brush is still in the active list...
 	//
 	brush_t *pStartBrush = active_brushes.next;

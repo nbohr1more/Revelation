@@ -5608,7 +5608,7 @@ void idPlayer::Think( void ) {
 		if( !gameLocal.isMultiplayer ) {
 			SetCurrentHeartRate();
 			float scale = g_damageScale.GetFloat();
-			if( g_useDynamicProtection.GetBool() && scale < 1.0f && gameLocal.time - lastDmgTime > 500 ) {
+			if( g_useDynamicProtection.GetBool() && gameLocal.time - lastDmgTime > 500 ) {
 				if( scale < 1.0f ) {
 					scale += 0.05f;
 				}

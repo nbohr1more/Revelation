@@ -53,12 +53,12 @@ public:
 		return argc;
 	}
 	// Argv() will return an empty string, not NULL if arg >= argc.
-	const char 			*Argv( int arg ) const {
+	const char 				*Argv( int arg ) const {
 		return ( arg >= 0 && arg < argc ) ? argv[arg] : "";
 	}
 	// Returns a single string containing argv(start) to argv(end)
 	// escapeArgs is a fugly way to put the string back into a state ready to tokenize again
-	const char 			*Args( int start = 1, int end = -1, bool escapeArgs = false ) const;
+	const char 				*Args( int start = 1, int end = -1, bool escapeArgs = false ) const;
 
 	// Takes a null terminated string and breaks the string up into arg tokens.
 	// Does not need to be /n terminated.
@@ -69,7 +69,7 @@ public:
 	void					Clear( void ) {
 		argc = 0;
 	}
-	const char 			**GetArgs( int *argc );
+	const char 				**GetArgs( int *argc );
 
 private:
 	static const int		MAX_COMMAND_ARGS = 64;

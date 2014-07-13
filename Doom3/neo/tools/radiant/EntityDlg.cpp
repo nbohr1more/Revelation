@@ -391,8 +391,9 @@ void CEntityDlg::OnLbnSelchangeListkeyval() {
 	if( index != LB_ERR ) {
 		CString str;
 		listKeyVal.GetText( index, str );
-		int i;
-		for( i = 0; str[i] != '\t' && str[i] != '\0'; i++ ) {
+		int i = 0;
+		while( str[i] != '\t' && str[i] != '\0' ) {
+			i++;
 		}
 		idStr key = str.Left( i );
 		while( str[i] == '\t' && str[i] != '\0' ) {

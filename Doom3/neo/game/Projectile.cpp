@@ -69,10 +69,9 @@ idProjectile::idProjectile( void ) {
 	thrust_end			= 0;
 	smokeFly			= NULL;
 	smokeFlyTime		= 0;
-	state				= SPAWNED;
-	lightOffset			= vec3_zero;
 	lightStartTime		= 0;
 	lightEndTime		= 0;
+	lightOffset			= vec3_zero;
 	lightColor			= vec3_zero;
 	state				= SPAWNED;
 	damagePower			= 1.0f;

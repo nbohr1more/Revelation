@@ -46,7 +46,7 @@ public:
 
 	idWinding2D 	&operator=( const idWinding2D &winding );
 	const idVec2 	&operator[]( const int index ) const;
-	idVec2 		&operator[]( const int index );
+	idVec2 			&operator[]( const int index );
 
 	void			Clear( void );
 	void			AddPoint( const idVec2 &point );

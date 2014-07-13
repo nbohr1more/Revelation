@@ -415,7 +415,6 @@ void idTestModel::PrevAnim( const idCmdArgs &args ) {
 	starttime = gameLocal.time;
 	animtime = animator.AnimLength( anim );
 	animname = animator.AnimFullName( anim );
-	headAnim = 0;
 	if( headAnimator ) {
 		headAnimator->ClearAllAnims( gameLocal.time, 0 );
 		headAnim = headAnimator->GetAnim( animname );
