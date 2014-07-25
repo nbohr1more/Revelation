@@ -68,7 +68,7 @@ void RB_SetDefaultGLState( void ) {
 	glCullFace( GL_FRONT_AND_BACK );
 	glShadeModel( GL_SMOOTH );
 	if( r_useScissor.GetBool() ) {
-		glScissor( 0, 0, glConfig.vidWidth, glConfig.vidHeight );
+		GL_Scissor( 0, 0, glConfig.vidWidth, glConfig.vidHeight );
 	}
 	for( i = glConfig.maxTextureUnits - 1 ; i >= 0 ; i-- ) {
 		GL_SelectTexture( i );
@@ -159,6 +159,26 @@ void GL_Cull( int cullType ) {
 		}
 	}
 	backEnd.glState.faceCulling = cullType;
+}
+
+/*
+====================
+GL_Scissor
+====================
+*/
+void GL_Scissor( int x /* left*/, int y /* bottom */, int w, int h )
+{
+	glScissor( x, y, w, h );
+}
+
+/*
+====================
+GL_Viewport
+====================
+*/
+void GL_Viewport( int x /* left */, int y /* bottom */, int w, int h )
+{
+	glViewport( x, y, w, h );
 }
 
 /*
@@ -382,7 +402,7 @@ void RB_SetGL2D( void ) {
 	// set 2D virtual screen size
 	glViewport( 0, 0, glConfig.vidWidth, glConfig.vidHeight );
 	if( r_useScissor.GetBool() ) {
-		glScissor( 0, 0, glConfig.vidWidth, glConfig.vidHeight );
+		GL_Scissor( 0, 0, glConfig.vidWidth, glConfig.vidHeight );
 	}
 	glMatrixMode( GL_PROJECTION );
 	glLoadIdentity();
@@ -396,8 +416,6 @@ void RB_SetGL2D( void ) {
 	glDisable( GL_DEPTH_TEST );
 	glDisable( GL_STENCIL_TEST );
 }
-
-
 
 /*
 =============

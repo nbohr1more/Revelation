@@ -18,12 +18,12 @@ rem astyle %STYLE% %OPTIONS% -r neo/cm/*.cpp
 rem astyle %STYLE% %OPTIONS% -r neo/cm/*.h
 rem astyle %STYLE% %OPTIONS% -r neo/framework/*.cpp
 rem astyle %STYLE% %OPTIONS% -r neo/framework/*.h
-astyle %STYLE% %OPTIONS% -r neo/idlib/*.cpp
-astyle %STYLE% %OPTIONS% -r neo/idlib/*.h
+rem astyle %STYLE% %OPTIONS% -r neo/idlib/*.cpp
+rem astyle %STYLE% %OPTIONS% -r neo/idlib/*.h
 rem astyle %STYLE% %OPTIONS% -r neo/libs/*.cpp
 rem astyle %STYLE% %OPTIONS% -r neo/libs/*.h
-rem astyle %STYLE% %OPTIONS% -r neo/renderer/*.cpp
-rem astyle %STYLE% %OPTIONS% -r neo/renderer/*.h
+astyle %STYLE% %OPTIONS% -r neo/renderer/*.cpp
+astyle %STYLE% %OPTIONS% -r neo/renderer/*.h
 rem astyle %STYLE% %OPTIONS% -r neo/sound/*.cpp
 rem astyle %STYLE% %OPTIONS% -r neo/sound/*.h
 rem astyle %STYLE% %OPTIONS% -r neo/sys/*.cpp

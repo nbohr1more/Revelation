@@ -999,13 +999,13 @@ ID_FORCE_INLINE float idCurve_Spline<type>::TimeForIndex( const int index ) cons
 	int n = this->times.Num() - 1;
 	if( index < 0 ) {
 		if( boundaryType == BT_CLOSED ) {
-			return ( index / this->times.Num() ) * ( this->times[n] + closeTime ) - ( this->times[n] + closeTime - this->times[this->times.Num() + index % this->times.Num()] );
+			return ( index / ( const int )this->times.Num() ) * ( this->times[n] + closeTime ) - ( this->times[n] + closeTime - this->times[this->times.Num() + index % this->times.Num()] );
 		} else {
 			return this->times[0] + index * ( this->times[1] - this->times[0] );
 		}
 	} else if( index > n ) {
 		if( boundaryType == BT_CLOSED ) {
-			return ( index / this->times.Num() ) * ( this->times[n] + closeTime ) + this->times[index % this->times.Num()];
+			return ( index / ( const int )this->times.Num() ) * ( this->times[n] + closeTime ) + this->times[index % this->times.Num()];
 		} else {
 			return this->times[n] + ( index - n ) * ( this->times[n] - this->times[n - 1] );
 		}

@@ -80,10 +80,9 @@ private:
 	bool				readonly;
 	bool				numeric;
 	idStr				sourceFile;
-	idSliderWindow 	*scroller;
+	idSliderWindow 		*scroller;
 	idList<int>			breaks;
 	float				sizeBias;
-	int					textIndex;
 	int					lastTextLength;
 	bool				forceScroll;
 	idWinBool			password;

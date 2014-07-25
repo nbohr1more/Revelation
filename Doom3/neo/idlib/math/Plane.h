@@ -32,7 +32,7 @@ If you have questions concerning this license or the applicable additional terms
 /*
 ===============================================================================
 
-	3D plane with equation: a * x + b * y + c * z + d = 0
+3D plane with equation: a * x + b * y + c * z + d = 0
 
 ===============================================================================
 */
@@ -71,37 +71,38 @@ class idMat3;
 class idPlane {
 public:
 	idPlane( void );
-	idPlane( float a, float b, float c, float d );
-	idPlane( const idVec3 &normal, const float dist );
+	explicit idPlane( float a, float b, float c, float d );													// changed to explicit type
+	explicit idPlane( const idVec3 &normal, const float dist );												// changed to explicit type
+	explicit idPlane( const idVec3& v0, const idVec3& v1, const idVec3& v2, bool fixDegenerate = false );	// needed by new R_CalcInteractionFacing
 
 	float			operator[]( int index ) const;
 	float 			&operator[]( int index );
-	idPlane			operator-() const;						// flips plane
-	idPlane 		&operator=( const idVec3 &v );			// sets normal and sets idPlane::d to zero
-	idPlane			operator+( const idPlane &p ) const;	// add plane equations
-	idPlane			operator-( const idPlane &p ) const;	// subtract plane equations
-	idPlane 		&operator*=( const idMat3 &m );			// Normal() *= m
+	idPlane			operator-() const;																		// flips plane
+	idPlane 		&operator=( const idVec3 &v );															// sets normal and sets idPlane::d to zero
+	idPlane			operator+( const idPlane &p ) const;													// add plane equations
+	idPlane			operator-( const idPlane &p ) const;													// subtract plane equations
+	idPlane 		&operator*=( const idMat3 &m );															// Normal() *= m
 
-	bool			Compare( const idPlane &p ) const;						// exact compare, no epsilon
-	bool			Compare( const idPlane &p, const float epsilon ) const;	// compare with epsilon
-	bool			Compare( const idPlane &p, const float normalEps, const float distEps ) const;	// compare with epsilon
-	bool			operator==(	const idPlane &p ) const;					// exact compare, no epsilon
-	bool			operator!=(	const idPlane &p ) const;					// exact compare, no epsilon
+	bool			Compare( const idPlane &p ) const;														// exact compare, no epsilon
+	bool			Compare( const idPlane &p, const float epsilon ) const;									// compare with epsilon
+	bool			Compare( const idPlane &p, const float normalEps, const float distEps ) const;			// compare with epsilon
+	bool			operator==(	const idPlane &p ) const;													// exact compare, no epsilon
+	bool			operator!=(	const idPlane &p ) const;													// exact compare, no epsilon
 
-	void			Zero( void );							// zero plane
-	void			SetNormal( const idVec3 &normal );		// sets the normal
-	const idVec3 	&Normal( void ) const;					// reference to const normal
-	idVec3 		&Normal( void );							// reference to normal
-	float			Normalize( bool fixDegenerate = true );	// only normalizes the plane normal, does not adjust d
-	bool			FixDegenerateNormal( void );			// fix degenerate normal
-	bool			FixDegeneracies( float distEpsilon );	// fix degenerate normal and dist
-	float			Dist( void ) const;						// returns: -d
-	void			SetDist( const float dist );			// sets: d = -dist
-	int				Type( void ) const;						// returns plane type
+	void			Zero( void );																			// zero plane
+	void			SetNormal( const idVec3 &normal );														// sets the normal
+	const idVec3 	&Normal( void ) const;																	// reference to const normal
+	idVec3 			&Normal( void );																		// reference to normal
+	float			Normalize( bool fixDegenerate = true );													// only normalizes the plane normal, does not adjust d
+	bool			FixDegenerateNormal( void );															// fix degenerate normal
+	bool			FixDegeneracies( float distEpsilon );													// fix degenerate normal and dist
+	float			Dist( void ) const;																		// returns: -d
+	void			SetDist( const float dist );															// sets: d = -dist
+	int				Type( void ) const;																		// returns plane type
 
 	bool			FromPoints( const idVec3 &p1, const idVec3 &p2, const idVec3 &p3, bool fixDegenerate = true );
 	bool			FromVecs( const idVec3 &dir1, const idVec3 &dir2, const idVec3 &p, bool fixDegenerate = true );
-	void			FitThroughPoint( const idVec3 &p );	// assumes normal is valid
+	void			FitThroughPoint( const idVec3 &p );														// assumes normal is valid
 	bool			HeightFit( const idVec3 *points, const int numPoints );
 	idPlane			Translate( const idVec3 &translation ) const;
 	idPlane 		&TranslateSelf( const idVec3 &translation );
@@ -119,10 +120,10 @@ public:
 	int				GetDimension( void ) const;
 
 	const idVec4 	&ToVec4( void ) const;
-	idVec4 		&ToVec4( void );
+	idVec4 			&ToVec4( void );
 	const float 	*ToFloatPtr( void ) const;
 	float 			*ToFloatPtr( void );
-	const char 	*ToString( int precision = 2 ) const;
+	const char 		*ToString( int precision = 2 ) const;
 
 private:
 	float			a;
@@ -142,6 +143,10 @@ ID_FORCE_INLINE idPlane::idPlane( float a, float b, float c, float d ) {
 	this->b = b;
 	this->c = c;
 	this->d = d;
+}
+
+ID_FORCE_INLINE idPlane::idPlane( const idVec3& v0, const idVec3& v1, const idVec3& v2, bool fixDegenerate ) {
+	FromPoints( v0, v1, v2, fixDegenerate );
 }
 
 ID_FORCE_INLINE idPlane::idPlane( const idVec3 &normal, const float dist ) {

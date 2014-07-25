@@ -126,7 +126,7 @@ void RB_SimpleSurfaceSetup( const drawSurf_t *drawSurf ) {
 	// change the scissor if needed
 	if( r_useScissor.GetBool() && !backEnd.currentScissor.Equals( drawSurf->scissorRect ) ) {
 		backEnd.currentScissor = drawSurf->scissorRect;
-		glScissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
+		GL_Scissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
 				   backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
 				   backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
 				   backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
@@ -142,7 +142,7 @@ void RB_SimpleWorldSetup( void ) {
 	backEnd.currentSpace = &backEnd.viewDef->worldSpace;
 	glLoadMatrixf( backEnd.viewDef->worldSpace.modelViewMatrix );
 	backEnd.currentScissor = backEnd.viewDef->scissor;
-	glScissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
+	GL_Scissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
 			   backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
 			   backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
 			   backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
@@ -1989,7 +1989,7 @@ void RB_RenderDebugTools( drawSurf_t **drawSurfs, int numDrawSurfs ) {
 	}
 	GL_State( GLS_DEFAULT );
 	backEnd.currentScissor = backEnd.viewDef->scissor;
-	glScissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
+	GL_Scissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
 			   backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
 			   backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
 			   backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );

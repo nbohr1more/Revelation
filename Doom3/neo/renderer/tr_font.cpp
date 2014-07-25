@@ -82,11 +82,10 @@ Loads 3 point sizes, 12, 24, and 48
 bool idRenderSystemLocal::RegisterFont( const char *fontName, fontInfoEx_t &font ) {
 	void			*faceData;
 	ID_TIME_T		ftime;
-	int				i, len, fontCount, eof;
+	int				i, len, fontCount, fontEof;
 	char			name[1024];
 	int				pointSize = 12;
 	memset( &font, 0, sizeof( font ) );
-	memset( &eof, 0, sizeof( int ) );
 	for( fontCount = 0; fontCount < 3; fontCount++ ) {
 		if( fontCount == 0 ) {
 			pointSize = 12;
@@ -128,7 +127,9 @@ bool idRenderSystemLocal::RegisterFont( const char *fontName, fontInfoEx_t &font
 			outFont->glyphs[i].t			= readFloat();
 			outFont->glyphs[i].s2			= readFloat();
 			outFont->glyphs[i].t2			= readFloat();
-			eof								= readInt(); // V512 unused
+			fontEof							= readInt(); 
+			// V512 unused but cant remove so just null it out.
+			memset( &fontEof, 0, sizeof( int ) );
 			//FIXME: the +6, -6 skips the embedded fonts/
 			memcpy( outFont->glyphs[i].shaderName, &fdFile[fdOffset + 6], 32 - 6 );
 			fdOffset += 32;

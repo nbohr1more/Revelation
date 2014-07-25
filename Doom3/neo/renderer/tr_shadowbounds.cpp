@@ -47,39 +47,28 @@ struct MyArray {
 			v[i] = cpy.v[i];
 		}
 	}
-
 	void push_back( const T &i ) {
 		v[s] = i;
 		s++;
-		//if(s > max_size)
-		//	max_size = int(s);
 	}
-
 	T &operator[]( int i ) {
 		return v[i];
 	}
-
 	const T &operator[]( int i ) const {
 		return v[i];
 	}
-
 	unsigned int size() const {
 		return s;
 	}
-
 	void empty() {
 		s = 0;
 	}
-
 	T v[N];
 	int s;
-	//	static int max_size;
 };
 
 typedef MyArray<int, 4> MyArrayInt;
-//int MyArrayInt::max_size = 0;
 typedef MyArray<idVec4, 16> MyArrayVec4;
-//int MyArrayVec4::max_size = 0;
 
 struct poly {
 	MyArrayInt vi;
@@ -88,7 +77,6 @@ struct poly {
 };
 
 typedef MyArray<poly, 9> MyArrayPoly;
-//int MyArrayPoly::max_size = 0;
 
 struct edge {
 	int vi[2];
@@ -96,7 +84,6 @@ struct edge {
 };
 
 typedef MyArray<edge, 15> MyArrayEdge;
-//int MyArrayEdge::max_size = 0;
 
 MyArrayInt four_ints( int a, int b, int c, int d ) {
 	MyArrayInt vi;
@@ -454,19 +441,15 @@ idScreenRect R_CalcIntersectionScissor( const idRenderLightLocal *lightDef,
 	idMat4 lmodel = make_idMat4( lightDef->modelMatrix );
 	// compute light polyhedron
 	polyhedron lvol = PolyhedronFromBounds( lightDef->frustumTris->bounds );
-	// transform it into world space
-	//lvol.transform( lmodel );
-	// debug //
+	// debug
 	if( r_useInteractionScissors.GetInteger() == -2 ) {
 		draw_polyhedron( viewDef, lvol, colorRed );
 	}
 	// compute object polyhedron
 	polyhedron vol = PolyhedronFromBounds( entityDef->referenceBounds );
-	//viewDef->renderWorld->DebugBounds( colorRed, lightDef->frustumTris->bounds );
-	//viewDef->renderWorld->DebugBox( colorBlue, idBox( model->Bounds(), entityDef->parms.origin, entityDef->parms.axis ) );
 	// transform it into world space
 	vol.transform( omodel );
-	// debug //
+	// debug
 	if( r_useInteractionScissors.GetInteger() == -2 ) {
 		draw_polyhedron( viewDef, vol, colorBlue );
 	}
@@ -486,7 +469,7 @@ idScreenRect R_CalcIntersectionScissor( const idRenderLightLocal *lightDef,
 	polyhedron_edges( lvol, in_segs );
 	// clip them by the shadow volume
 	clip_segments( sv, in_segs, out_segs );
-	// debug //
+	// debug
 	if( r_useInteractionScissors.GetInteger() == -2 ) {
 		draw_segments( viewDef, out_segs, colorGreen );
 	}
@@ -527,7 +510,7 @@ idScreenRect R_CalcIntersectionScissor( const idRenderLightLocal *lightDef,
 	rect.y2 = outbounds[1].y * h2 + h2 + y;
 	rect.Expand();
 	rect.Intersect( lightDef->viewLight->scissorRect );
-	// debug //
+	// debug
 	if( r_useInteractionScissors.GetInteger() == -2 && !rect.IsEmpty() ) {
 		viewDef->renderWorld->DebugScreenRect( colorYellow, rect, viewDef );
 	}

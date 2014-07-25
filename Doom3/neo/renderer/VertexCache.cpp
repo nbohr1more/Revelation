@@ -73,15 +73,13 @@ void idVertexCache::ActuallyFree( vertCache_t *block ) {
 	}
 	// temp blocks are in a shared space that won't be freed
 	if( block->tag != TAG_TEMP ) {
-		bool stillActive = true;
 		staticAllocTotal -= block->size;
 		staticCountTotal--;
 		// only free the buffer if its still active.
-		if( virtualMemory && stillActive ) {
+		if( virtualMemory ) {
 			common->DPrintf( "Destroying Virtual Memory\n" );
 			delete[] block->virtMem;
 			block->virtMem = NULL;
-			stillActive = false;
 		}
 	}
 	block->tag = TAG_FREE;     // mark as free

@@ -508,7 +508,7 @@ ListHuffmanFrequencies_f
 */
 void ListHuffmanFrequencies_f( const idCmdArgs &args ) {
 	int		i;
-	float compression;
+	float	compression;
 	compression = ( float )( !totalUncompressedLength ) ? 100 : 100 * totalCompressedLength / totalUncompressedLength;
 	common->Printf( "// compression ratio = %d%%\n", ( int )compression );
 	common->Printf( "static int huffmanFrequencies[] = {\n" );

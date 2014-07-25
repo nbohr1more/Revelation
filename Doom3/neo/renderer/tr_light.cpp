@@ -1279,44 +1279,70 @@ R_RemoveUnecessaryViewLights
 =====================
 */
 void R_RemoveUnecessaryViewLights( void ) {
-	viewLight_t		*vLight;
+	// was missing :)
+	int numViewLights = 0;
 	// go through each visible light
-	for( vLight = tr.viewDef->viewLights ; vLight ; vLight = vLight->next ) {
+	for ( viewLight_t *vLight = tr.viewDef->viewLights ; vLight ; vLight = vLight->next ) {
+		numViewLights++;
 		// if the light didn't have any lit surfaces visible, there is no need to
-		// draw any of the shadows.  We still keep the vLight for debugging
+		// draw any of the shadows. We still keep the vLight for debugging
 		// draws
-		if( !vLight->localInteractions && !vLight->globalInteractions && !vLight->translucentInteractions ) {
-			vLight->localShadows = NULL;
-			vLight->globalShadows = NULL;
+		if ( !vLight->localInteractions && !vLight->globalInteractions && !vLight->translucentInteractions ) {
+			 vLight->localShadows = NULL;
+			 vLight->globalShadows = NULL;
 		}
 	}
-	if( r_useShadowSurfaceScissor.GetBool() ) {
+	if ( r_useShadowSurfaceScissor.GetBool() ) {
 		// shrink the light scissor rect to only intersect the surfaces that will actually be drawn.
 		// This doesn't seem to actually help, perhaps because the surface scissor
 		// rects aren't actually the surface, but only the portal clippings.
-		for( vLight = tr.viewDef->viewLights ; vLight ; vLight = vLight->next ) {
+		for ( viewLight_t *vLight = tr.viewDef->viewLights ; vLight ; vLight = vLight->next ) {
 			const drawSurf_t	*surf;
 			idScreenRect		surfRect;
-			if( !vLight->lightShader->LightCastsShadows() ) {
+			if ( !vLight->lightShader->LightCastsShadows() ) {
 				continue;
 			}
 			surfRect.Clear();
-			for( surf = vLight->globalInteractions ; surf ; surf = surf->nextOnLight ) {
+			for ( surf = vLight->globalInteractions ; surf ; surf = surf->nextOnLight ) {
 				surfRect.Union( surf->scissorRect );
 			}
-			for( surf = vLight->localShadows ; surf ; surf = surf->nextOnLight ) {
-				const_cast<drawSurf_t *>( surf )->scissorRect.Intersect( surfRect );
+			for ( surf = vLight->localShadows ; surf ; surf = surf->nextOnLight ) {
+				const_cast<drawSurf_t *>(surf)->scissorRect.Intersect( surfRect );
 			}
-			for( surf = vLight->localInteractions ; surf ; surf = surf->nextOnLight ) {
+
+			for ( surf = vLight->localInteractions ; surf ; surf = surf->nextOnLight ) {
 				surfRect.Union( surf->scissorRect );
 			}
-			for( surf = vLight->globalShadows ; surf ; surf = surf->nextOnLight ) {
-				const_cast<drawSurf_t *>( surf )->scissorRect.Intersect( surfRect );
+			for ( surf = vLight->globalShadows ; surf ; surf = surf->nextOnLight ) {
+				const_cast<drawSurf_t *>(surf)->scissorRect.Intersect( surfRect );
 			}
-			for( surf = vLight->translucentInteractions ; surf ; surf = surf->nextOnLight ) {
+			for ( surf = vLight->translucentInteractions ; surf ; surf = surf->nextOnLight ) {
 				surfRect.Union( surf->scissorRect );
 			}
 			vLight->scissorRect.Intersect( surfRect );
 		}
+	}
+	// sort the viewLights list so the largest lights come first, which will reduce
+	// the chance of GPU pipeline bubbles
+	struct sortLight_t {
+		viewLight_t *vLight;
+		int			screenArea;
+		static int sort( const void * a, const void * b ) {
+			return ((sortLight_t *)a)->screenArea - ((sortLight_t *)b)->screenArea;
+		}
+	};
+	sortLight_t *sortLights = (sortLight_t *)_alloca( sizeof( sortLight_t ) * numViewLights );
+	int numSortLightsFilled = 0;
+	for ( viewLight_t *vLight = tr.viewDef->viewLights; vLight != NULL; vLight = vLight->next ) {
+		sortLights[ numSortLightsFilled ].vLight = vLight;
+		sortLights[ numSortLightsFilled ].screenArea = vLight->scissorRect.GetArea();
+		numSortLightsFilled++;
+	}
+	qsort( sortLights, numSortLightsFilled, sizeof( sortLights[0] ), sortLight_t::sort );
+	// rebuild the linked list in order
+	tr.viewDef->viewLights = NULL;
+	for ( int i = 0; i < numSortLightsFilled; i++ ) {
+		sortLights[i].vLight->next = tr.viewDef->viewLights;
+		tr.viewDef->viewLights = sortLights[i].vLight;
 	}
 }

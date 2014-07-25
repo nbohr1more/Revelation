@@ -670,7 +670,7 @@ static void RB_STD_T_RenderShaderPasses( const drawSurf_t *surf ) {
 	// change the scissor if needed
 	if( r_useScissor.GetBool() && !backEnd.currentScissor.Equals( surf->scissorRect ) ) {
 		backEnd.currentScissor = surf->scissorRect;
-		glScissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
+		GL_Scissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
 				   backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
 				   backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
 				   backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
@@ -753,8 +753,8 @@ static int RB_STD_DrawShaderPasses( drawSurf_t **drawSurfs, int numDrawSurfs ) {
 		// only dump if in a 3d view
 		if( backEnd.viewDef->viewEntitys && ( tr.backEndRenderer == BE_ARB2 || tr.backEndRenderer == BE_GLSL ) ) {
 			globalImages->currentRenderImage->CopyFramebuffer( backEnd.viewDef->viewport.x1,
-			backEnd.viewDef->viewport.y1,  backEnd.viewDef->viewport.x2 -  backEnd.viewDef->viewport.x1 + 1,
-			backEnd.viewDef->viewport.y2 -  backEnd.viewDef->viewport.y1 + 1, true );
+					backEnd.viewDef->viewport.y1,  backEnd.viewDef->viewport.x2 -  backEnd.viewDef->viewport.x1 + 1,
+					backEnd.viewDef->viewport.y2 -  backEnd.viewDef->viewport.y1 + 1, true );
 		}
 		backEnd.currentRenderCopied = true;
 	}
@@ -1126,8 +1126,8 @@ static void RB_T_BasicFog( const drawSurf_t *surf ) {
 		local[3] += 0.5;
 		glTexGenfv( GL_S, GL_OBJECT_PLANE, local.ToFloatPtr() );
 		local[0] =
-		local[1] =
-		local[2] = 0;
+			local[1] =
+				local[2] = 0;
 		local[3] = 0.5;
 		glTexGenfv( GL_T, GL_OBJECT_PLANE, local.ToFloatPtr() );
 		GL_SelectTexture( 1 );
@@ -1281,7 +1281,7 @@ static void RB_STD_LightScale( void ) {
 	}
 	// the scissor may be smaller than the viewport for subviews
 	if( r_useScissor.GetBool() ) {
-		glScissor( backEnd.viewDef->viewport.x1 + backEnd.viewDef->scissor.x1,
+		GL_Scissor( backEnd.viewDef->viewport.x1 + backEnd.viewDef->scissor.x1,
 				   backEnd.viewDef->viewport.y1 + backEnd.viewDef->scissor.y1,
 				   backEnd.viewDef->scissor.x2 - backEnd.viewDef->scissor.x1 + 1,
 				   backEnd.viewDef->scissor.y2 - backEnd.viewDef->scissor.y1 + 1 );

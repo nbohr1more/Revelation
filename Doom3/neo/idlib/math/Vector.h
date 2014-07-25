@@ -1388,16 +1388,16 @@ public:
 	float			operator[]( const int index ) const;
 	float 			&operator[]( const int index );
 	idVecX			operator-() const;
-	idVecX 		&operator=( const idVecX &a );
+	idVecX 			&operator=( const idVecX &a );
 	idVecX			operator*( const float a ) const;
 	idVecX			operator/( const float a ) const;
 	float			operator*( const idVecX &a ) const;
 	idVecX			operator-( const idVecX &a ) const;
 	idVecX			operator+( const idVecX &a ) const;
-	idVecX 		&operator*=( const float a );
-	idVecX 		&operator/=( const float a );
-	idVecX 		&operator+=( const idVecX &a );
-	idVecX 		&operator-=( const idVecX &a );
+	idVecX 			&operator*=( const float a );
+	idVecX 			&operator/=( const float a );
+	idVecX 			&operator+=( const idVecX &a );
+	idVecX 			&operator-=( const idVecX &a );
 
 	friend idVecX	operator*( const float a, const idVecX b );
 

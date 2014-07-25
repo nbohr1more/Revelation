@@ -72,7 +72,7 @@ static void RB_RenderInteraction( const drawSurf_t *surf ) {
 	// change the scissor if needed
 	if( r_useScissor.GetBool() && !backEnd.currentScissor.Equals( surf->scissorRect ) ) {
 		backEnd.currentScissor = surf->scissorRect;
-		glScissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
+		GL_Scissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
 				   backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
 				   backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
 				   backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
@@ -487,7 +487,7 @@ static void RB_RenderViewLight( viewLight_t *vLight ) {
 	if( vLight->globalShadows || vLight->localShadows ) {
 		backEnd.currentScissor = vLight->scissorRect;
 		if( r_useScissor.GetBool() ) {
-			glScissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
+			GL_Scissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
 					   backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
 					   backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
 					   backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );

@@ -230,7 +230,7 @@ void RB_RenderDrawSurfListWithFunction( drawSurf_t **drawSurfs, int numDrawSurfs
 		// change the scissor if needed
 		if( r_useScissor.GetBool() && !backEnd.currentScissor.Equals( drawSurf->scissorRect ) ) {
 			backEnd.currentScissor = drawSurf->scissorRect;
-			glScissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
+			GL_Scissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
 					   backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
 					   backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
 					   backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
@@ -266,7 +266,7 @@ void RB_RenderDrawSurfChainWithFunction( const drawSurf_t *drawSurfs, void ( *tr
 		// change the scissor if needed
 		if( r_useScissor.GetBool() && !backEnd.currentScissor.Equals( drawSurf->scissorRect ) ) {
 			backEnd.currentScissor = drawSurf->scissorRect;
-			glScissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
+			GL_Scissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
 					   backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
 					   backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
 					   backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
@@ -538,7 +538,7 @@ void RB_BeginDrawingView( void ) {
 				backEnd.viewDef->viewport.x2 + 1 - backEnd.viewDef->viewport.x1,
 				backEnd.viewDef->viewport.y2 + 1 - backEnd.viewDef->viewport.y1 );
 	// the scissor may be smaller than the viewport for subviews
-	glScissor( tr.viewportOffset[0] + backEnd.viewDef->viewport.x1 + backEnd.viewDef->scissor.x1,
+	GL_Scissor( tr.viewportOffset[0] + backEnd.viewDef->viewport.x1 + backEnd.viewDef->scissor.x1,
 			   tr.viewportOffset[1] + backEnd.viewDef->viewport.y1 + backEnd.viewDef->scissor.y1,
 			   backEnd.viewDef->scissor.x2 + 1 - backEnd.viewDef->scissor.x1,
 			   backEnd.viewDef->scissor.y2 + 1 - backEnd.viewDef->scissor.y1 );
@@ -615,7 +615,7 @@ void R_SetDrawInteraction( const shaderStage_t *surfaceStage, const float *surfa
 			// it doesn't currently look worth it.
 			if( color[i] < 0.0f ) {
 				color[i] = 0.0f;
-			} else if( color[i] > 1.0f) {
+			} else if( color[i] > 1.0f ) {
 				color[i] = 1.0f;
 			}
 		}
@@ -683,7 +683,7 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void ( *DrawIntera
 		backEnd.currentSpace = surf->space;
 		// Disable the depth bounds test because translucent surfaces don't work with
 		// the depth bounds tests since they do not write depth during the depth pass.
-		if ( !vLight->translucentInteractions ) {
+		if( !vLight->translucentInteractions ) {
 			// turn off the light depth bounds test if this model is rendered with a depth hack
 			if( !surf->space->weaponDepthHack && surf->space->modelDepthHack == 0.0f ) {
 				if( lightDepthBoundsDisabled ) {
@@ -706,7 +706,7 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void ( *DrawIntera
 	// change the scissor if needed
 	if( r_useScissor.GetBool() && !backEnd.currentScissor.Equals( surf->scissorRect ) ) {
 		backEnd.currentScissor = surf->scissorRect;
-		glScissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
+		GL_Scissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
 				   backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
 				   backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
 				   backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
@@ -759,54 +759,54 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void ( *DrawIntera
 		for( int surfaceStageNum = 0 ; surfaceStageNum < surfaceShader->GetNumStages() ; surfaceStageNum++ ) {
 			const shaderStage_t	*surfaceStage = surfaceShader->GetStage( surfaceStageNum );
 			switch( surfaceStage->lighting ) {
-				case SL_AMBIENT: {
-					// ignore ambient stages while drawing interactions
+			case SL_AMBIENT: {
+				// ignore ambient stages while drawing interactions
+				break;
+			}
+			case SL_BUMP: {
+				// ignore stage that fails the condition
+				if( !surfaceRegs[ surfaceStage->conditionRegister ] ) {
 					break;
 				}
-				case SL_BUMP: {
-					// ignore stage that fails the condition
-					if( !surfaceRegs[ surfaceStage->conditionRegister ] ) {
-						break;
-					}
-					// draw any previous interaction
+				// draw any previous interaction
+				RB_SubmitInteraction( &inter, DrawInteraction );
+				inter.diffuseImage = NULL;
+				inter.specularImage = NULL;
+				R_SetDrawInteraction( surfaceStage, surfaceRegs, &inter.bumpImage, inter.bumpMatrix, NULL );
+				break;
+			}
+			case SL_DIFFUSE: {
+				// ignore stage that fails the condition
+				if( !surfaceRegs[ surfaceStage->conditionRegister ] ) {
+					break;
+				}
+				if( inter.diffuseImage ) {
 					RB_SubmitInteraction( &inter, DrawInteraction );
-					inter.diffuseImage = NULL;
-					inter.specularImage = NULL;
-					R_SetDrawInteraction( surfaceStage, surfaceRegs, &inter.bumpImage, inter.bumpMatrix, NULL );
+				}
+				R_SetDrawInteraction( surfaceStage, surfaceRegs, &inter.diffuseImage, inter.diffuseMatrix, inter.diffuseColor.ToFloatPtr() );
+				inter.diffuseColor[0] *= lightColor[0];
+				inter.diffuseColor[1] *= lightColor[1];
+				inter.diffuseColor[2] *= lightColor[2];
+				inter.diffuseColor[3] *= lightColor[3];
+				inter.vertexColor = surfaceStage->vertexColor;
+				break;
+			}
+			case SL_SPECULAR: {
+				// ignore stage that fails the condition
+				if( !surfaceRegs[ surfaceStage->conditionRegister ] ) {
 					break;
 				}
-				case SL_DIFFUSE: {
-					// ignore stage that fails the condition
-					if( !surfaceRegs[ surfaceStage->conditionRegister ] ) {
-						break;
-					}
-					if( inter.diffuseImage ) {
-						RB_SubmitInteraction( &inter, DrawInteraction );
-					}
-					R_SetDrawInteraction( surfaceStage, surfaceRegs, &inter.diffuseImage, inter.diffuseMatrix, inter.diffuseColor.ToFloatPtr() );
-					inter.diffuseColor[0] *= lightColor[0];
-					inter.diffuseColor[1] *= lightColor[1];
-					inter.diffuseColor[2] *= lightColor[2];
-					inter.diffuseColor[3] *= lightColor[3];
-					inter.vertexColor = surfaceStage->vertexColor;
-					break;
+				if( inter.specularImage ) {
+					RB_SubmitInteraction( &inter, DrawInteraction );
 				}
-				case SL_SPECULAR: {
-					// ignore stage that fails the condition
-					if( !surfaceRegs[ surfaceStage->conditionRegister ] ) {
-						break;
-					}
-					if( inter.specularImage ) {
-						RB_SubmitInteraction( &inter, DrawInteraction );
-					}
-					R_SetDrawInteraction( surfaceStage, surfaceRegs, &inter.specularImage, inter.specularMatrix, inter.specularColor.ToFloatPtr() );
-					inter.specularColor[0] *= lightColor[0];
-					inter.specularColor[1] *= lightColor[1];
-					inter.specularColor[2] *= lightColor[2];
-					inter.specularColor[3] *= lightColor[3];
-					inter.vertexColor = surfaceStage->vertexColor;
-					break;
-				}
+				R_SetDrawInteraction( surfaceStage, surfaceRegs, &inter.specularImage, inter.specularMatrix, inter.specularColor.ToFloatPtr() );
+				inter.specularColor[0] *= lightColor[0];
+				inter.specularColor[1] *= lightColor[1];
+				inter.specularColor[2] *= lightColor[2];
+				inter.specularColor[3] *= lightColor[3];
+				inter.vertexColor = surfaceStage->vertexColor;
+				break;
+			}
 			}
 		}
 		// draw the final interaction

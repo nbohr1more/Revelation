@@ -592,15 +592,15 @@ static void AddTriangleToIsland_r( const srfTriangles_t *tri, int triangleNum, b
 		if( usedList[i] ) {
 			continue;
 		}
-		if( tri->indexes[i * 3 + 0] == a || 
-			tri->indexes[i * 3 + 1] == a || 
-			tri->indexes[i * 3 + 2] == a || 
-			tri->indexes[i * 3 + 0] == b || 
-			tri->indexes[i * 3 + 1] == b || 
-			tri->indexes[i * 3 + 2] == b || 
-			tri->indexes[i * 3 + 0] == c || 
-			tri->indexes[i * 3 + 1] == c || 
-			tri->indexes[i * 3 + 2] == c ) {
+		if( tri->indexes[i * 3 + 0] == a ||
+				tri->indexes[i * 3 + 1] == a ||
+				tri->indexes[i * 3 + 2] == a ||
+				tri->indexes[i * 3 + 0] == b ||
+				tri->indexes[i * 3 + 1] == b ||
+				tri->indexes[i * 3 + 2] == b ||
+				tri->indexes[i * 3 + 0] == c ||
+				tri->indexes[i * 3 + 1] == c ||
+				tri->indexes[i * 3 + 2] == c ) {
 			AddTriangleToIsland_r( tri, i, usedList, island );
 		}
 	}

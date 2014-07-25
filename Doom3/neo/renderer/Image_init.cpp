@@ -137,9 +137,9 @@ static void R_RampImage( idImage *image ) {
 	byte	data[256][4];
 	for( x = 0 ; x < 256 ; x++ ) {
 		data[x][0] =
-		data[x][1] =
-		data[x][2] =
-		data[x][3] = x;
+			data[x][1] =
+				data[x][2] =
+					data[x][3] = x;
 	}
 	image->GenerateImage( ( byte * )data, 256, 1, TF_NEAREST, false, TR_CLAMP, TD_HIGH_QUALITY );
 }
@@ -165,9 +165,9 @@ static void R_SpecularTableImage( idImage *image ) {
 		f = f * f;
 		int		b = ( int )( f * 255 );
 		data[x][0] =
-		data[x][1] =
-		data[x][2] =
-		data[x][3] = b;
+			data[x][1] =
+				data[x][2] =
+					data[x][3] = b;
 	}
 	image->GenerateImage( ( byte * )data, 256, 1, TF_LINEAR, false, TR_CLAMP, TD_HIGH_QUALITY );
 }
@@ -193,9 +193,9 @@ static void R_Specular2DTableImage( idImage *image ) {
 				break;
 			}
 			data[y][x][0] =
-			data[y][x][1] =
-			data[y][x][2] =
-			data[y][x][3] = b;
+				data[y][x][1] =
+					data[y][x][2] =
+						data[y][x][3] = b;
 		}
 	}
 	image->GenerateImage( ( byte * )data, 256, 256, TF_LINEAR, false, TR_CLAMP, TD_HIGH_QUALITY );
@@ -215,8 +215,8 @@ static void R_AlphaRampImage( idImage *image ) {
 	byte	data[256][4];
 	for( x = 0 ; x < 256 ; x++ ) {
 		data[x][0] =
-		data[x][1] =
-		data[x][2] = 255;
+			data[x][1] =
+				data[x][2] = 255;
 		data[x][3] = x;
 	}
 	image->GenerateImage( ( byte * )data, 256, 1, TF_NEAREST, false, TR_CLAMP, TD_HIGH_QUALITY );
@@ -249,21 +249,21 @@ void idImage::MakeDefault() {
 		// white border
 		for( x = 0 ; x < DEFAULT_SIZE ; x++ ) {
 			data[0][x][0] =
-			data[0][x][1] =
-			data[0][x][2] =
-			data[0][x][3] = 255;
+				data[0][x][1] =
+					data[0][x][2] =
+						data[0][x][3] = 255;
 			data[x][0][0] =
-			data[x][0][1] =
-			data[x][0][2] =
-			data[x][0][3] = 255;
+				data[x][0][1] =
+					data[x][0][2] =
+						data[x][0][3] = 255;
 			data[DEFAULT_SIZE - 1][x][0] =
-			data[DEFAULT_SIZE - 1][x][1] =
-			data[DEFAULT_SIZE - 1][x][2] =
-			data[DEFAULT_SIZE - 1][x][3] = 255;
+				data[DEFAULT_SIZE - 1][x][1] =
+					data[DEFAULT_SIZE - 1][x][2] =
+						data[DEFAULT_SIZE - 1][x][3] = 255;
 			data[x][DEFAULT_SIZE - 1][0] =
-			data[x][DEFAULT_SIZE - 1][1] =
-			data[x][DEFAULT_SIZE - 1][2] =
-			data[x][DEFAULT_SIZE - 1][3] = 255;
+				data[x][DEFAULT_SIZE - 1][1] =
+					data[x][DEFAULT_SIZE - 1][2] =
+						data[x][DEFAULT_SIZE - 1][3] = 255;
 		}
 	} else {
 		for( y = 0 ; y < DEFAULT_SIZE ; y++ ) {
@@ -306,21 +306,21 @@ static void R_BorderClampImage( idImage *image ) {
 	memset( data, 255, sizeof( data ) );
 	for( int i = 0 ; i < BORDER_CLAMP_SIZE ; i++ ) {
 		data[i][0][0] =
-		data[i][0][1] =
-		data[i][0][2] =
-		data[i][0][3] =
-		data[i][BORDER_CLAMP_SIZE - 1][0] =
-		data[i][BORDER_CLAMP_SIZE - 1][1] =
-		data[i][BORDER_CLAMP_SIZE - 1][2] =
-		data[i][BORDER_CLAMP_SIZE - 1][3] =
-		data[0][i][0] =
-		data[0][i][1] =
-		data[0][i][2] =
-		data[0][i][3] =
-		data[BORDER_CLAMP_SIZE - 1][i][0] =
-		data[BORDER_CLAMP_SIZE - 1][i][1] =
-		data[BORDER_CLAMP_SIZE - 1][i][2] =
-		data[BORDER_CLAMP_SIZE - 1][i][3] = 0;
+			data[i][0][1] =
+				data[i][0][2] =
+					data[i][0][3] =
+						data[i][BORDER_CLAMP_SIZE - 1][0] =
+							data[i][BORDER_CLAMP_SIZE - 1][1] =
+								data[i][BORDER_CLAMP_SIZE - 1][2] =
+									data[i][BORDER_CLAMP_SIZE - 1][3] =
+										data[0][i][0] =
+											data[0][i][1] =
+												data[0][i][2] =
+														data[0][i][3] =
+																data[BORDER_CLAMP_SIZE - 1][i][0] =
+																		data[BORDER_CLAMP_SIZE - 1][i][1] =
+																				data[BORDER_CLAMP_SIZE - 1][i][2] =
+																						data[BORDER_CLAMP_SIZE - 1][i][3] = 0;
 	}
 	image->GenerateImage( ( byte * )data, BORDER_CLAMP_SIZE, BORDER_CLAMP_SIZE, TF_LINEAR, false, TR_CLAMP_TO_BORDER, TD_DEFAULT );
 	if( !glConfig.isInitialized ) {
@@ -1190,8 +1190,8 @@ void idImageManager::SetNormalPalette( void ) {
 	}
 	// color 255 will be the "nullnormal" color for no reflection
 	temptable[255 * 3 + 0] =
-	temptable[255 * 3 + 1] =
-	temptable[255 * 3 + 2] = 128;
+		temptable[255 * 3 + 1] =
+			temptable[255 * 3 + 2] = 128;
 	if( !glConfig.sharedTexturePaletteAvailable ) {
 		return;
 	}

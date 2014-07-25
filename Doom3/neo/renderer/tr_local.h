@@ -60,6 +60,9 @@ public:
 	void		Expand();								// expand by one pixel each way to fix roundoffs
 	void		Intersect( const idScreenRect &rect );
 	void		Union( const idScreenRect &rect );
+	short		GetWidth() const { return x2 - x1 + 1; }
+	short		GetHeight() const {	return y2 - y1 + 1; }
+	int			GetArea() const  { return GetWidth() * GetHeight(); }
 	bool		Equals( const idScreenRect &rect ) const;
 	bool		IsEmpty() const;
 };
@@ -195,7 +198,7 @@ public:
 
 	float					modelMatrix[16];		// this is just a rearrangement of parms.axis and parms.origin
 
-	idRenderWorldLocal 	*world;
+	idRenderWorldLocal 		*world;
 	int						index;					// in world lightdefs
 
 	int						areaNum;				// if not -1, we may be able to cull all the light's
@@ -218,13 +221,13 @@ public:
 
 	idPlane					frustum[6];				// in global space, positive side facing out, last two are front/back
 	idWinding 				*frustumWindings[6];		// used for culling
-	srfTriangles_t 		*frustumTris;			// triangulated frustumWindings[]
+	srfTriangles_t 			*frustumTris;			// triangulated frustumWindings[]
 
 	int						numShadowFrustums;		// one for projected lights, usually six for point lights
 	shadowFrustum_t			shadowFrustums[6];
 
 	int						viewCount;				// if == tr.viewCount, the light is on the viewDef->viewLights list
-	struct viewLight_s 	*viewLight;
+	struct viewLight_s 		*viewLight;
 
 	areaReference_t 		*references;				// each area the light is present in will have a lightRef
 	idInteraction 			*firstInteraction;		// doubly linked list
@@ -1003,6 +1006,8 @@ void	GL_ClearStateDelta( void );
 void	GL_State( int stateVector );
 void	GL_TexEnv( int env );
 void	GL_Cull( int cullType );
+void	GL_Scissor( int x /* left*/, int y /* bottom */, int w, int h );
+void	GL_Viewport( int x /* left */, int y /* bottom */, int w, int h );
 
 const int GLS_SRCBLEND_ZERO						= 0x00000001;
 const int GLS_SRCBLEND_ONE						= 0x0;

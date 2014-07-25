@@ -1210,8 +1210,7 @@ jinit_memory_mgr( j_common_ptr cinfo )
 	if( ( long ) test_mac != MAX_ALLOC_CHUNK ||	( MAX_ALLOC_CHUNK % SIZEOF( ALIGN_TYPE ) ) != 0 )
 	{
 		ERREXIT( cinfo, JERR_BAD_ALLOC_CHUNK );
-	}
-	
+	}	
 	max_to_use = jpeg_mem_init( cinfo ); /* system-dependent initialization */
 	
 	/* Attempt to allocate memory manager's control block */
