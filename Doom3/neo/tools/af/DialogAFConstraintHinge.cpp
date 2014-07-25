@@ -66,7 +66,7 @@ IMPLEMENT_DYNAMIC( DialogAFConstraintHinge, CDialog )
 DialogAFConstraintHinge::DialogAFConstraintHinge
 ================
 */
-DialogAFConstraintHinge::DialogAFConstraintHinge( CWnd *pParent )
+DialogAFConstraintHinge::DialogAFConstraintHinge( CWnd *pParent /*=NULL*/ )
 	: CDialog( DialogAFConstraintHinge::IDD, pParent )
 	, m_anchor_x( 0 )
 	, m_anchor_y( 0 )

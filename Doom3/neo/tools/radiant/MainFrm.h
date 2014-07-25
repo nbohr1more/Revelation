@@ -38,7 +38,7 @@ If you have questions concerning this license or the applicable additional terms
 #include "ZWnd.h"
 #include "CamWnd.h"
 #include "TextureBar.h"
-
+#include "externals.h"
 
 const int RAD_SHIFT =   0x01;
 const int RAD_ALT =     0x02;

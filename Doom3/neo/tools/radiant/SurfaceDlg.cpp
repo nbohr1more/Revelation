@@ -42,8 +42,11 @@ static char THIS_FILE[] = __FILE__;
 
 /////////////////////////////////////////////////////////////////////////////
 // CSurfaceDlg dialog
+
 CSurfaceDlg g_dlgSurface;
-CSurfaceDlg::CSurfaceDlg( CWnd *pParent )
+
+
+CSurfaceDlg::CSurfaceDlg( CWnd *pParent /*=NULL*/ )
 	: CDialog( CSurfaceDlg::IDD, pParent ) {
 	//{{AFX_DATA_INIT(CSurfaceDlg)
 	m_nHorz = 3;
@@ -60,6 +63,7 @@ CSurfaceDlg::CSurfaceDlg( CWnd *pParent )
 	m_absolute = FALSE;
 	//}}AFX_DATA_INIT
 }
+
 
 void CSurfaceDlg::DoDataExchange( CDataExchange *pDX ) {
 	CDialog::DoDataExchange( pDX );
@@ -90,6 +94,7 @@ void CSurfaceDlg::DoDataExchange( CDataExchange *pDX ) {
 	DDX_Check( pDX, IDC_CHECK_ABSOLUTE, m_absolute );
 	//}}AFX_DATA_MAP
 }
+
 
 BEGIN_MESSAGE_MAP( CSurfaceDlg, CDialog )
 	//{{AFX_MSG_MAP(CSurfaceDlg)
@@ -155,7 +160,6 @@ if one face selected -> will read this face texdef, else current texdef
 if only patches selected, will read the patch texdef
 ===============
 */
-extern void Face_GetScale_BrushPrimit( face_t *face, float *s, float *t, float *rot );
 void CSurfaceDlg::SetTexMods() {
 	UpdateData( TRUE );
 	m_strMaterial = g_qeglobals.d_texturewin.texdef.name;
@@ -188,9 +192,11 @@ void CSurfaceDlg::SetTexMods() {
 	UpdateData( FALSE );
 }
 
+
 bool g_bNewFace = false;
 bool g_bNewApplyHandling = false;
 bool g_bGatewayhack = false;
+
 
 /*
 =================
@@ -262,6 +268,8 @@ void UpdateSurfaceDialog() {
 	g_pParentWnd->UpdateTextureBar();
 }
 
+bool ByeByeSurfaceDialog();
+
 void DoSurface( void ) {
 	g_bNewFace = ( g_PrefsDlg.m_bFace != FALSE );
 	g_bNewApplyHandling = ( g_PrefsDlg.m_bNewApplyHandling != FALSE );
@@ -308,6 +316,8 @@ BOOL CSurfaceDlg::OnInitDialog() {
 	CDialog::OnInitDialog();
 	g_surfwin = GetSafeHwnd();
 	SetTexMods();
+	//m_wndHScale.SetRange(0, 100);
+	//m_wndVScale.SetRange(0, 100);
 	m_wndHShift.SetRange( 0, 100 );
 	m_wndVShift.SetRange( 0, 100 );
 	m_wndRotate.SetRange( 0, 100 );
@@ -345,7 +355,14 @@ void CSurfaceDlg::OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags ) {
 	CDialog::OnKeyDown( nChar, nRepCnt, nFlags );
 }
 
+void CSurfaceDlg::OnVScroll( UINT nSBCode, UINT nPos, CScrollBar *pScrollBar ) {
+	//UpdateSpinners(nSBCode, nPos, pScrollBar);
+	//Sys_UpdateWindows(W_CAMERA);
+}
+
+
 void CSurfaceDlg::OnOK() {
+	//GetTexMods();
 	UpdateData( TRUE );
 	if( m_strMaterial.Find( ":" ) >= 0 ) {
 		const idMaterial *mat = declManager->FindMaterial( m_strMaterial );
@@ -388,6 +405,7 @@ void CSurfaceDlg::OnBtnCancel() {
 			common->Printf( "Warning : non brush primitive mode call to CSurfaceDlg::GetTexMods broken\n" );
 			common->Printf( "          ( Select_SetTexture not called )\n" );
 		}
+		//		Select_SetTexture(&g_qeglobals.d_texturewin.texdef);
 	}
 	g_surfwin = NULL;
 	DestroyWindow();
@@ -435,6 +453,11 @@ void CSurfaceDlg::OnBtnPatchnatural() {
 }
 
 void CSurfaceDlg::OnBtnPatchreset() {
+	//CTextureLayout dlg;
+	//if (dlg.DoModal() == IDOK) {
+	//	Patch_ResetTexturing(dlg.m_fX, dlg.m_fY);
+	//}
+	//Sys_UpdateWindows(W_ALL);
 }
 
 void CSurfaceDlg::OnBtnAxial() {
@@ -446,8 +469,20 @@ void CSurfaceDlg::OnBtnBrushfit() {
 
 void CSurfaceDlg::OnBtnFacefit() {
 	UpdateData( TRUE );
+	/*
+		brush_t *b;
+		for (b=selected_brushes.next ; b != &selected_brushes ; b=b->next) {
+			if (!b->patchBrush) {
+				for (face_t* pFace = b->brush_faces; pFace; pFace = pFace->next) {
+					g_ptrSelectedFaces.Add(pFace);
+					g_ptrSelectedFaceBrushes.Add(b);
+				}
+			}
+		}
+	*/
 	Select_FitTexture( m_fHeight, m_fWidth );
 	g_pParentWnd->GetCamera()->MarkWorldDirty();
+	//SetTexMods();
 	g_changed_surface = true;
 	Sys_UpdateWindows( W_ALL );
 }

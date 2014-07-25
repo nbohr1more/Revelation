@@ -43,7 +43,7 @@ IMPLEMENT_DYNAMIC( DialogAFName, CDialog )
 DialogAFName::DialogAFName
 ================
 */
-DialogAFName::DialogAFName( CWnd *pParent )
+DialogAFName::DialogAFName( CWnd *pParent /*=NULL*/ )
 	: CDialog( DialogAFName::IDD, pParent )
 	, m_combo( NULL ) {
 }

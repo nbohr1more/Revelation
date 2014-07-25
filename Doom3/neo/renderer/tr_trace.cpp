@@ -41,16 +41,16 @@ If we resort the vertexes so all silverts come first, we can save some work here
 =================
 */
 localTrace_t R_LocalTrace( const idVec3 &start, const idVec3 &end, const float radius, const srfTriangles_t *tri ) {
-	int			i, j;
-	byte 		*cullBits;
-	idPlane		planes[4];
+	int				i, j;
+	byte 			*cullBits;
+	idPlane			planes[4];
 	localTrace_t	hit;
-	int			c_testEdges, c_testPlanes, c_intersect;
-	idVec3		startDir;
-	byte		totalOr;
-	float		radiusSqr;
+	int				c_testEdges, c_testPlanes, c_intersect;
+	idVec3			startDir;
+	byte			totalOr;
+	float			radiusSqr;
 #ifdef TEST_TRACE
-	idTimer		trace_timer;
+	idTimer			trace_timer;
 	trace_timer.Start();
 #endif
 	hit.fraction = 1.0f;
@@ -70,12 +70,12 @@ localTrace_t R_LocalTrace( const idVec3 &start, const idVec3 &end, const float r
 	SIMDProcessor->TracePointCull( cullBits, totalOr, radius, planes, tri->verts, tri->numVerts );
 	// if we don't have points on both sides of both the ray planes, no intersection
 	if( ( totalOr ^ ( totalOr >> 4 ) ) & 3 ) {
-		//common->Printf( "nothing crossed the trace planes\n" );
+		common->DPrintf( "nothing crossed the trace planes\n" );
 		return hit;
 	}
 	// if we don't have any points between front and end, no intersection
 	if( ( totalOr ^ ( totalOr >> 1 ) ) & 4 ) {
-		//common->Printf( "trace didn't reach any triangles\n" );
+		common->DPrintf( "trace didn't reach any triangles\n" );
 		return hit;
 	}
 	// scan for triangles that cross both planes
@@ -238,7 +238,7 @@ localTrace_t R_LocalTrace( const idVec3 &start, const idVec3 &end, const float r
 #ifdef TEST_TRACE
 	trace_timer.Stop();
 	common->Printf( "testVerts:%i c_testPlanes:%i c_testEdges:%i c_intersect:%i msec:%1.4f\n",
-					tri->numVerts, c_testPlanes, c_testEdges, c_intersect, trace_timer.Milliseconds() );
+		tri->numVerts, c_testPlanes, c_testEdges, c_intersect, trace_timer.Milliseconds() );
 #endif
 	return hit;
 }
@@ -249,8 +249,8 @@ RB_DrawExpandedTriangles
 =================
 */
 void RB_DrawExpandedTriangles( const srfTriangles_t *tri, const float radius, const idVec3 &vieworg ) {
-	int i, j, k;
-	idVec3 dir[6], normal, point;
+	int		i, j, k;
+	idVec3	dir[6], normal, point;
 	for( i = 0; i < tri->numIndexes; i += 3 ) {
 		idVec3 p[3] = { tri->verts[ tri->indexes[ i + 0 ] ].xyz, tri->verts[ tri->indexes[ i + 1 ] ].xyz, tri->verts[ tri->indexes[ i + 2 ] ].xyz };
 		dir[0] = p[0] - p[1];

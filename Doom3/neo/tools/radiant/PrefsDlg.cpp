@@ -115,7 +115,7 @@ static char THIS_FILE[] = __FILE__;
 // CPrefsDlg dialog
 
 
-CPrefsDlg::CPrefsDlg( CWnd *pParent )
+CPrefsDlg::CPrefsDlg( CWnd *pParent /*=NULL*/ )
 	: CDialog( CPrefsDlg::IDD, pParent ) {
 	//{{AFX_DATA_INIT(CPrefsDlg)
 	m_bLoadLast = FALSE;

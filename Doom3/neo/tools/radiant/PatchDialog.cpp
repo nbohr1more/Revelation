@@ -44,7 +44,7 @@ static char THIS_FILE[] = __FILE__;
 
 CPatchDialog g_PatchDialog;
 
-CPatchDialog::CPatchDialog( CWnd *pParent )
+CPatchDialog::CPatchDialog( CWnd *pParent /*=NULL*/ )
 	: CDialog( CPatchDialog::IDD, pParent ) {
 	//{{AFX_DATA_INIT(CPatchDialog)
 	m_strName = _T( "" );
@@ -88,6 +88,7 @@ void CPatchDialog::DoDataExchange( CDataExchange *pDX ) {
 	//}}AFX_DATA_MAP
 }
 
+
 BEGIN_MESSAGE_MAP( CPatchDialog, CDialog )
 	//{{AFX_MSG_MAP(CPatchDialog)
 	ON_BN_CLICKED( IDC_BTN_PATCHDETAILS, OnBtnPatchdetails )
@@ -126,6 +127,12 @@ void CPatchDialog::OnBtnPatchnatural() {
 }
 
 void CPatchDialog::OnBtnPatchreset() {
+	//CTextureLayout dlg;
+	//if (dlg.DoModal() == IDOK)
+	//{
+	//  Patch_ResetTexturing(dlg.m_fX, dlg.m_fY);
+	//}
+	//Sys_UpdateWindows(W_ALL);
 }
 
 void CPatchDialog::OnSelchangeComboCol() {
@@ -163,6 +170,8 @@ BOOL CPatchDialog::OnInitDialog() {
 	return TRUE;  // return TRUE unless you set the focus to a control
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
+
+
 
 void CPatchDialog::GetPatchInfo() {
 	m_Patch = SinglePatchSelected();

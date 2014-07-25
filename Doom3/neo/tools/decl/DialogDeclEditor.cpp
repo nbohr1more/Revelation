@@ -63,7 +63,7 @@ IMPLEMENT_DYNAMIC( DialogDeclEditor, CDialog )
 DialogDeclEditor::DialogDeclEditor
 ================
 */
-DialogDeclEditor::DialogDeclEditor( CWnd *pParent )
+DialogDeclEditor::DialogDeclEditor( CWnd *pParent /*=NULL*/ )
 	: CDialog( DialogDeclEditor::IDD, pParent )
 	, findDlg( NULL )
 	, matchCase( false )

@@ -30,6 +30,7 @@ If you have questions concerning this license or the applicable additional terms
 #pragma hdrstop
 
 #include "qe3.h"
+#include "select.h"
 #include "../../renderer/model_local.h"	// for idRenderModelPrt
 
 // externs
@@ -37,8 +38,6 @@ CPtrArray	g_SelectedFaces;
 CPtrArray	g_SelectedFaceBrushes;
 CPtrArray	&g_ptrSelectedFaces = g_SelectedFaces;
 CPtrArray	&g_ptrSelectedFaceBrushes = g_SelectedFaceBrushes;
-
-extern void Brush_Resize( brush_t *b, idVec3 vMin, idVec3 vMax );
 
 /*
  =======================================================================================================================
@@ -301,10 +300,6 @@ void Select_Ray( idVec3 origin, idVec3 dir, int flags ) {
 		// selected_face = t.face; selected_face_brush = t.brush;
 		Sys_UpdateWindows( W_ALL );
 		g_qeglobals.d_select_mode = sel_brush;
-		//common->Printf("before\n");
-		//extern void Face_Info_BrushPrimit(face_t *face);
-		//Face_Info_BrushPrimit(t.face);
-		//common->Printf("after\n");
 		//
 		// Texture_SetTexture requires a brushprimit_texdef fitted to the default width=2
 		// height=2 texture
@@ -651,8 +646,6 @@ void VectorRotate3Origin( const idVec3 &vIn, const idVec3 &vRotation, const idVe
  =======================================================================================================================
  =======================================================================================================================
  */
-extern void Brush_Rotate( brush_t *b, idMat3 matrix, idVec3 origin, bool bBuild );
-
 void Select_ApplyMatrix( bool bSnap, bool rotateOrigins ) {
 	brush_t *b;
 	face_t	*f;
@@ -1343,9 +1336,6 @@ void Select_ShiftTexture( float x, float y, bool autoAdjust ) {
 	Sys_UpdateWindows( W_CAMERA );
 }
 
-extern void	Face_SetExplicitScale_BrushPrimit( face_t *face, float s, float t );
-extern void Face_ScaleTexture_BrushPrimit( face_t *face, float sS, float sT );
-
 /*
  =======================================================================================================================
  =======================================================================================================================
@@ -1398,8 +1388,6 @@ void Select_ScaleTexture( float x, float y, bool update, bool absolute ) {
 		Sys_UpdateWindows( W_CAMERA );
 	}
 }
-
-extern void Face_RotateTexture_BrushPrimit( face_t *face, float amount, idVec3 origin );
 
 /*
  =======================================================================================================================

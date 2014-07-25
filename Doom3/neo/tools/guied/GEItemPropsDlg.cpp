@@ -617,7 +617,7 @@ int rvGEItemPropsKeysPage::HandleMessage( UINT msg, WPARAM wParam, LPARAM lParam
 			mDict->Set( "guied_temp", "" );
 			const idKeyValue *key = mDict->FindKey( "guied_temp" );
 			idStr old = key->GetValue();
-			while( true ) {
+			while( 1 ) {
 				if( DialogBoxParam( gApp.GetInstance(), MAKEINTRESOURCE( IDD_GUIED_ITEMKEY ), mPage, ModifyItemKeyDlg_WndProc, ( LPARAM )key ) ) {
 					idStr finalValue;
 					finalValue = key->GetValue();
@@ -658,7 +658,7 @@ int rvGEItemPropsKeysPage::HandleMessage( UINT msg, WPARAM wParam, LPARAM lParam
 				ListView_GetItem( list, &item );
 				const idKeyValue *key = ( const idKeyValue * )item.lParam;
 				assert( key );
-				while( true ) {
+				while( 1 ) {
 					if( DialogBoxParam( gApp.GetInstance(), MAKEINTRESOURCE( IDD_GUIED_ITEMKEY ), mPage, ModifyItemKeyDlg_WndProc, ( LPARAM )key ) ) {
 						idStr finalValue;
 						finalValue = key->GetValue();

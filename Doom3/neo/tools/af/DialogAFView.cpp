@@ -70,7 +70,7 @@ IMPLEMENT_DYNAMIC( DialogAFView, CDialog )
 DialogAFView::DialogAFView
 ================
 */
-DialogAFView::DialogAFView( CWnd *pParent )
+DialogAFView::DialogAFView( CWnd *pParent /*=NULL*/ )
 	: CDialog( DialogAFView::IDD, pParent )
 
 {

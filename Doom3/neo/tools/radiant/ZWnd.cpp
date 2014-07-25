@@ -42,15 +42,12 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CZWnd
 IMPLEMENT_DYNCREATE( CZWnd, CWnd );
-
-
 CZWnd::CZWnd() {
 	m_pZClip = NULL;
 }
 
 CZWnd::~CZWnd() {
 }
-
 
 BEGIN_MESSAGE_MAP( CZWnd, CWnd )
 	//{{AFX_MSG_MAP(CZWnd)
@@ -127,6 +124,8 @@ void CZWnd::OnRButtonDown( UINT nFlags, CPoint point ) {
 
 void CZWnd::OnPaint() {
 	CPaintDC dc( this ); // device context for painting
+	//if (!wglMakeCurrent(m_dcZ, m_hglrcZ))
+	//if (!wglMakeCurrent(dc.m_hDC, m_hglrcZ))
 	if( !wglMakeCurrent( dc.m_hDC, win32.hGLRC ) ) {
 		common->Printf( "ERROR: wglMakeCurrent failed..\n " );
 		common->Printf( "Please restart " EDITOR_WINDOWTEXT " if the Z view is not working\n" );
@@ -236,7 +235,6 @@ BOOL CZWnd::PreCreateWindow( CREATESTRUCT &cs ) {
 	}
 	return CWnd::PreCreateWindow( cs );
 }
-
 
 void CZWnd::OnKeyUp( UINT nChar, UINT nRepCnt, UINT nFlags ) {
 	g_pParentWnd->HandleKey( nChar, nRepCnt, nFlags, false );

@@ -57,6 +57,7 @@ void AddPointToBounds( const idVec3 &v, idVec3 &mins, idVec3 &maxs ) {
 	}
 }
 
+
 static void FloorBounds( idVec3 &mins, idVec3 &maxs ) {
 	for( int i = 0 ; i < 3 ; i++ ) {
 		mins[i] = floor( mins[i] + 0.5 );
@@ -64,15 +65,14 @@ static void FloorBounds( idVec3 &mins, idVec3 &maxs ) {
 	}
 }
 
+
 static LPCSTR vtos( idVec3 &v3 ) {
 	return va( "%.3ff,%.3f,%.3f", v3[0], v3[1], v3[2] );
 }
-
 struct PairBrushFace_t {
-	face_t	*pFace;
+	face_t		*pFace;
 	brush_t	*pBrush;
 };
-
 idList < PairBrushFace_t > FacesToCaulk;
 void Select_AutoCaulk() {
 	common->Printf( "Caulking...\n" );
@@ -86,6 +86,7 @@ void Select_AutoCaulk() {
 			continue;    // apparently this means it's a model, so skip it...
 		}
 		// new check, we can't caulk a brush that has any "system/" faces...
+		//
 		bool bSystemFacePresent = false;
 		for( pSelectedFace = pSelectedBrush->brush_faces; pSelectedFace; pSelectedFace = pSelectedFace->next ) {
 			if( !idStr::Icmpn( pSelectedFace->d_texture->GetName(), "system/", 7 ) ) {
@@ -110,19 +111,19 @@ void Select_AutoCaulk() {
 				if( FilterBrush( pScannedBrush ) ) {
 					continue;
 				}
-				// basic-reject first to see if brushes can even possibly touch (coplanar counts as touching)
 				int i;
 				for( i = 0 ; i < 3 ; i++ ) {
 					if( pSelectedBrush->mins[i] > pScannedBrush->maxs[i] ||
 						pSelectedBrush->maxs[i] < pScannedBrush->mins[i] ) {
-						break;
+							break;
 					}
 				}
 				if( i != 3 ) {
 					continue;    // can't be touching
 				}
 				// ok, now for the clever stuff, we need to detect only those faces that are both coplanar and smaller
-				// or equal to the face they're coplanar with...
+				//	or equal to the face they're coplanar with...
+				//
 				for( pSelectedFace = pSelectedBrush->brush_faces; pSelectedFace; pSelectedFace = pSelectedFace->next ) {
 					idWinding *pSelectedWinding = pSelectedFace->face_winding;
 					if( !pSelectedWinding ) {
@@ -130,10 +131,12 @@ void Select_AutoCaulk() {
 					}
 					for( face_t *pScannedFace = pScannedBrush->brush_faces; pScannedFace; pScannedFace = pScannedFace->next ) {
 						// don't even try caulking against a system face, because these are often transparent and will leave holes
+						//
 						if( !idStr::Icmpn( pScannedFace->d_texture->GetName(), "system/", 7 ) ) {
 							continue;
 						}
 						// and don't try caulking against something inherently transparent...
+						//
 						if( pScannedFace->d_texture->TestMaterialFlag( QER_TRANS ) ) {
 							continue;
 						}
@@ -144,24 +147,29 @@ void Select_AutoCaulk() {
 						// brush faces are in parallel planes to each other, so check that their normals
 						//	are opposite, by adding them together and testing for zero...
 						// (if normals are opposite, then faces can be against/touching each other?)
+						//
 						idVec3 v3ZeroTest;
 						idVec3 v3Zero;
-						v3Zero.Zero();
+						v3Zero.Zero();	//static idVec3 v3Zero={0,0,0};
 						VectorAdd( pSelectedFace->plane.Normal(), pScannedFace->plane.Normal(), v3ZeroTest );
 						if( v3ZeroTest == v3Zero ) {
 							// planes are facing each other...
+							//
 							// coplanar? (this is some maths of Gil's, which I don't even pretend to understand)
+							//
 							float fTotalDist = 0;
 							for( int _i = 0; _i < 3; _i++ ) {
 								fTotalDist += fabs(	DotProduct( pSelectedFace->plane.Normal(), ( *pSelectedWinding )[0] ) -
 													DotProduct( pSelectedFace->plane.Normal(), ( *pScannedWinding )[i] ) );
 							}
-							if( fTotalDist > 0.01f ) {
+							if( fTotalDist > 0.01 ) {
 								continue;
 							}
 							// every point in the selected face must be within (or equal to) the bounds of the
 							//	scanned face...
+							//
 							// work out the bounds first...
+							//
 							idVec3 v3ScannedBoundsMins, v3ScannedBoundsMaxs;
 							ClearBounds( v3ScannedBoundsMins, v3ScannedBoundsMaxs );
 							int iPoint;
@@ -169,13 +177,15 @@ void Select_AutoCaulk() {
 								AddPointToBounds( ( *pScannedWinding )[iPoint].ToVec3(), v3ScannedBoundsMins, v3ScannedBoundsMaxs );
 							}
 							// floor 'em... (or .001 differences mess things up...
+							//
 							FloorBounds( v3ScannedBoundsMins, v3ScannedBoundsMaxs );
 							// now check points from selected face...
+							//
 							bool bWithin = true;
 							for( iPoint = 0; iPoint < pSelectedWinding->GetNumPoints(); iPoint++ ) {
 								for( int iXYZ = 0; iXYZ < 3; iXYZ++ ) {
 									float f = floor( ( *pSelectedWinding )[iPoint][iXYZ] + 0.5 );
-									if( !( f >= v3ScannedBoundsMins[iXYZ] && f <= v3ScannedBoundsMaxs[iXYZ] ) ) {
+									if( ! (	f >= v3ScannedBoundsMins[iXYZ] && f <= v3ScannedBoundsMaxs[iXYZ] ) ) {
 										bWithin = false;
 									}
 								}
@@ -193,17 +203,21 @@ void Select_AutoCaulk() {
 		}
 	}
 	// apply caulk...
+	//
 	int iFacesCaulked = 0;
 	if( FacesToCaulk.Num() ) {
 		LPCSTR psCaulkName = "textures/common/caulk";
 		const idMaterial *pCaulk = Texture_ForName( psCaulkName );
 		if( pCaulk ) {
+			//
 			// and call some other junk that Radiant wants so so we can use it later...
+			//
 			texdef_t tex;
 			memset( &tex, 0, sizeof( tex ) );
 			tex.scale[0] = 1;
 			tex.scale[1] = 1;
 			tex.SetName( pCaulk->GetName() );
+			//Texture_SetTexture (&tex);
 			for( int iListEntry = 0; iListEntry < FacesToCaulk.Num(); iListEntry++ ) {
 				PairBrushFace_t &PairBrushFace = FacesToCaulk[iListEntry];
 				face_t *pFace = PairBrushFace.pFace;

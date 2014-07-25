@@ -277,7 +277,7 @@ void EClass_InsertSortedList( eclass_t *&pList, eclass_t *e ) {
 			return;
 		}
 		s = s->next;
-	} while( true );
+	} while( 1 );
 }
 
 /*
@@ -307,7 +307,7 @@ void Eclass_InsertAlphabetized( eclass_t *e ) {
 			return;
 		}
 		s = s->next;
-	} while( true );
+	} while( 1 );
 #endif
 }
 

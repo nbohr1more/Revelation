@@ -27,10 +27,10 @@ If you have questions concerning this license or the applicable additional terms
 */
 #ifndef IDRECTANGLE_H_
 #define IDRECTANGLE_H_
+#include "../tools/radiant/externals.h"
 //
 // simple rectangle
 //
-extern void RotateVector( idVec3 &v, idVec3 origin, float a, float c, float s );
 class idRectangle {
 public:
 	float x;    // horiz position

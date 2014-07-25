@@ -33,12 +33,14 @@ If you have questions concerning this license or the applicable additional terms
 #include "cmdlib.h"
 
 #define PATHSEPERATOR   '/'
+
 // rad additions
 // 11.29.99
 PFN_ERR *g_pfnError = NULL;
 PFN_PRINTF *g_pfnPrintf = NULL;
 PFN_ERR_NUM *g_pfnErrorNum = NULL;
 PFN_PRINTF_NUM *g_pfnPrintfNum = NULL;
+
 
 void Error( const char *pFormat, ... ) {
 	if( g_pfnError ) {

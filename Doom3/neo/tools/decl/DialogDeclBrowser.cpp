@@ -66,7 +66,10 @@ toolTip_t DialogDeclBrowser::toolTips[] = {
 	{ 0, NULL }
 };
 
+
 static DialogDeclBrowser *g_DeclDialog = NULL;
+
+
 IMPLEMENT_DYNAMIC( DialogDeclBrowser, CDialog )
 
 /*
@@ -74,7 +77,7 @@ IMPLEMENT_DYNAMIC( DialogDeclBrowser, CDialog )
 DialogDeclBrowser::DialogDeclBrowser
 ================
 */
-DialogDeclBrowser::DialogDeclBrowser( CWnd *pParent )
+DialogDeclBrowser::DialogDeclBrowser( CWnd *pParent /*=NULL*/ )
 	: CDialog( DialogDeclBrowser::IDD, pParent )
 	, m_pchTip( NULL )
 	, m_pwchTip( NULL ) {
@@ -402,6 +405,11 @@ void DeclBrowserInit( const idDict *spawnArgs ) {
 	}
 	if( g_DeclDialog->GetSafeHwnd() == NULL ) {
 		g_DeclDialog->Create( IDD_DIALOG_DECLBROWSER );
+		/*
+				// FIXME: restore position
+				CRect rct;
+				g_DeclDialog->SetWindowPos( NULL, rct.left, rct.top, 0, 0, SWP_NOSIZE );
+		*/
 	}
 	idKeyInput::ClearStates();
 	g_DeclDialog->ShowWindow( SW_SHOW );
@@ -421,15 +429,9 @@ void DeclBrowserRun( void ) {
 #else
 	MSG *msg = &m_msgCur;
 #endif
-	BOOL bDoingBackgroundProcessing = TRUE;
-	while (bDoingBackgroundProcessing) { 
-		while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
-			// pump message
-			if( !AfxGetApp()->PumpMessage() ) {
-				bDoingBackgroundProcessing = FALSE;
-				::PostQuitMessage(0); 
-				break; 
-			}
+	while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
+		// pump message
+		if( !AfxGetApp()->PumpMessage() ) {
 		}
 	}
 }
@@ -485,6 +487,7 @@ BEGIN_MESSAGE_MAP( DialogDeclBrowser, CDialog )
 END_MESSAGE_MAP()
 
 // DialogDeclBrowser message handlers
+
 /*
 ================
 DialogDeclBrowser::OnActivate
@@ -830,7 +833,11 @@ DialogDeclBrowser::OnBnClickedOk
 ================
 */
 void DialogDeclBrowser::OnBnClickedOk() {
-	// never return on OK as windows will map this at times when you don't want
+	// with a modeless dialog once it is closed and re-activated windows seems
+	// to enjoy mapping ENTER back to the default button ( OK ) even if you have
+	// it NOT set as the default.. in this case use cancel button exit and ignore
+	// default IDOK handling.
+	// OnOK();
 }
 
 /*

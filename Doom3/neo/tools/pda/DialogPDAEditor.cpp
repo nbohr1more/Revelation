@@ -46,11 +46,14 @@ If you have questions concerning this license or the applicable additional terms
 /////////////////////////////////////////////////////////////////////////////
 // CCDialogPDAEditor dialog
 CDialogPDAEditor *g_PDAEditorDialog = NULL;
-CDialogPDAEditor::CDialogPDAEditor( CWnd *pParent )
+
+
+CDialogPDAEditor::CDialogPDAEditor( CWnd *pParent /*=NULL*/ )
 	: CDialog( CDialogPDAEditor::IDD, pParent ) {
 	//{{AFX_DATA_INIT(CDialogPDAEditor)
 	//}}AFX_DATA_INIT
 }
+
 
 void CDialogPDAEditor::DoDataExchange( CDataExchange *pDX ) {
 	CDialog::DoDataExchange( pDX );
@@ -68,6 +71,7 @@ void CDialogPDAEditor::DoDataExchange( CDataExchange *pDX ) {
 	DDX_Control( pDX, IDC_BUTTON_SAVE, saveButton );
 	//}}AFX_DATA_MAP
 }
+
 
 BEGIN_MESSAGE_MAP( CDialogPDAEditor, CDialog )
 	//{{AFX_MSG_MAP(CDialogPDAEditor)
@@ -103,7 +107,11 @@ void PDAEditorInit( const idDict *spawnArgs ) {
 	}
 	if( g_PDAEditorDialog->GetSafeHwnd() == NULL ) {
 		g_PDAEditorDialog->Create( IDD_DIALOG_PDA_EDITOR );
-		// FIXME: restore position
+		/*
+				// FIXME: restore position
+				CRect rct;
+				g_PDAEditorDialog->SetWindowPos( NULL, rct.left, rct.top, 0,0, SWP_NOSIZE );
+		*/
 	}
 	idKeyInput::ClearStates();
 	g_PDAEditorDialog->ShowWindow( SW_SHOW );
@@ -122,15 +130,9 @@ void PDAEditorRun( void ) {
 #else
 	MSG *msg = &m_msgCur;
 #endif
-	BOOL bDoingBackgroundProcessing = TRUE;
-	while (bDoingBackgroundProcessing) { 
-		while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
-			// pump message
-			if( !AfxGetApp()->PumpMessage() ) {
-				bDoingBackgroundProcessing = FALSE;
-				::PostQuitMessage(0); 
-				break; 
-			}
+	while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
+		// pump message
+		if( !AfxGetApp()->PumpMessage() ) {
 		}
 	}
 }
@@ -143,10 +145,6 @@ void PDAEditorShutdown( void ) {
 void CDialogPDAEditor::OnActivate( UINT nState, CWnd *pWndOther, BOOL bMinimized ) {
 	CDialog::OnActivate( nState, pWndOther, bMinimized );
 	if( nState != WA_INACTIVE ) {
-		common->ActivateTool( true );
-		if( ::IsWindowVisible( win32.hWnd ) ) {
-			::ShowWindow( win32.hWnd, SW_HIDE );
-		}
 	}
 }
 
@@ -169,8 +167,8 @@ BOOL CDialogPDAEditor::OnInitDialog() {
 	// Indicate the PDA dialog is opened
 	com_editors |= EDITOR_PDA;
 	PopulatePDAList();
-	return TRUE;	// return TRUE unless you set the focus to a control
-					// EXCEPTION: OCX Property Pages should return FALSE
+	return TRUE;  // return TRUE unless you set the focus to a control
+	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
 BOOL CDialogPDAEditor::PreTranslateMessage( MSG *pMsg ) {
@@ -303,7 +301,6 @@ void CDialogPDAEditor::OnBtnClickedPDAAdd() {
 }
 
 void CDialogPDAEditor::OnBtnClickedPDADel() {
-	// FIXME: implement
 }
 
 void CDialogPDAEditor::OnBtnClickedEmailAdd() {
@@ -364,38 +361,35 @@ void CDialogPDAEditor::OnBtnClickedEmailEdit() {
 }
 
 void CDialogPDAEditor::OnBtnClickedEmailDel() {
-	// FIXME: implement
 }
 
 void CDialogPDAEditor::OnBtnClickedAudioAdd() {
-	// FIXME: implement
 }
 
 void CDialogPDAEditor::OnBtnClickedAudioEdit() {
-	// FIXME: implement
 }
 
 void CDialogPDAEditor::OnBtnClickedAudioDel() {
-	// FIXME: implement
 }
 
 void CDialogPDAEditor::OnBtnClickedVideoAdd() {
-	// FIXME: implement
 }
 
 void CDialogPDAEditor::OnBtnClickedVideoEdit() {
-	// FIXME: implement
 }
 
 void CDialogPDAEditor::OnBtnClickedVideoDel() {
-	// FIXME: implement
 }
 
-CDialogPDAEditEmail::CDialogPDAEditEmail( CWnd *pParent )
+
+
+
+CDialogPDAEditEmail::CDialogPDAEditEmail( CWnd *pParent /*=NULL*/ )
 	: CDialog( CDialogPDAEditEmail::IDD, pParent ) {
 	//{{AFX_DATA_INIT(CDialogPDAEditEmail)
 	//}}AFX_DATA_INIT
 }
+
 
 void CDialogPDAEditEmail::DoDataExchange( CDataExchange *pDX ) {
 	CDialog::DoDataExchange( pDX );
@@ -407,6 +401,7 @@ void CDialogPDAEditEmail::DoDataExchange( CDataExchange *pDX ) {
 	DDX_Text( pDX, IDC_EDIT_BODY, body );
 	//}}AFX_DATA_MAP
 }
+
 
 BEGIN_MESSAGE_MAP( CDialogPDAEditEmail, CDialog )
 	//{{AFX_MSG_MAP(CDialogPDAEditEmail)

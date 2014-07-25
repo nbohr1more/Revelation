@@ -55,7 +55,7 @@ IMPLEMENT_DYNAMIC( DialogAFConstraintSlider, CDialog )
 DialogAFConstraintSlider::DialogAFConstraintSlider
 ================
 */
-DialogAFConstraintSlider::DialogAFConstraintSlider( CWnd *pParent )
+DialogAFConstraintSlider::DialogAFConstraintSlider( CWnd *pParent /*=NULL*/ )
 	: CDialog( DialogAFConstraintSlider::IDD, pParent )
 	, m_axisPitch( 0 )
 	, m_axisYaw( 0 )

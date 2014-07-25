@@ -60,7 +60,7 @@ IMPLEMENT_DYNAMIC( DialogDeclNew, CDialog )
 DialogDeclNew::DialogDeclNew
 ================
 */
-DialogDeclNew::DialogDeclNew( CWnd *pParent )
+DialogDeclNew::DialogDeclNew( CWnd *pParent /*=NULL*/ )
 	: CDialog( DialogDeclNew::IDD, pParent )
 	, declTree( NULL )
 	, newDecl( NULL ) {

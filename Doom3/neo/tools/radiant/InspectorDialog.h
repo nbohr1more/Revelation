@@ -53,12 +53,11 @@ protected:
 public:
 	virtual BOOL OnInitDialog();
 	void AssignModel();
-	CTabCtrl tabInspector;
-	//idGLConsoleWidget consoleWnd;
-	CConsoleDlg consoleWnd;
-	CNewTexWnd texWnd;
+	CTabCtrl		tabInspector;
+	CConsoleDlg		consoleWnd;
+	CNewTexWnd		texWnd;
 	CDialogTextures mediaDlg;
-	CEntityDlg entityDlg;
+	CEntityDlg		entityDlg;
 	void SetMode( int mode, bool updateTabs = true );
 	void UpdateEntitySel( eclass_t *ent );
 	void UpdateSelectedEntity();

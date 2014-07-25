@@ -59,7 +59,7 @@ CEntKeyFindReplace::CEntKeyFindReplace(	CString *p_strFindKey,
 										CString *p_strReplaceValue,
 										bool	 *p_bWholeStringMatchOnly,
 										bool	 *p_bSelectAllMatchingEnts,
-										CWnd	 *pParent )
+										CWnd	 *pParent /*=NULL*/ )
 	: CDialog( CEntKeyFindReplace::IDD, pParent ) {
 	m_pStrFindKey		= p_strFindKey;
 	m_pStrFindValue		= p_strFindValue;
@@ -77,6 +77,7 @@ CEntKeyFindReplace::CEntKeyFindReplace(	CString *p_strFindKey,
 	//}}AFX_DATA_INIT
 }
 
+
 void CEntKeyFindReplace::DoDataExchange( CDataExchange *pDX ) {
 	CDialog::DoDataExchange( pDX );
 	//{{AFX_DATA_MAP(CEntKeyFindReplace)
@@ -88,6 +89,7 @@ void CEntKeyFindReplace::DoDataExchange( CDataExchange *pDX ) {
 	DDX_Check( pDX, IDC_CHECK_SELECTALLMATCHING, m_bSelectAllMatchingEnts );
 	//}}AFX_DATA_MAP
 }
+
 
 BEGIN_MESSAGE_MAP( CEntKeyFindReplace, CDialog )
 	//{{AFX_MSG_MAP(CEntKeyFindReplace)
@@ -132,8 +134,19 @@ void CEntKeyFindReplace::OnFind() {
 	if( m_strFindKey.IsEmpty() && m_strFindValue.IsEmpty() ) {
 		ErrorBox( "Empty FIND fields!" );
 	} else {
-		CopyFields();
-		EndDialog( ID_RET_FIND );
+		//		if (m_strFindKey.IsEmpty() && m_bSelectAllMatchingEnts)
+		//		{
+		//			if (GetYesNo("Warning! Having a blank FIND <key> and ticking \"Select all matching ents\" can take a LONG time to do (and is probably a wrong choice anyway?)\n\nProceed?"))
+		//			{
+		//				CopyFields();
+		//				EndDialog(ID_RET_FIND);
+		//			}
+		//		}
+		//		else
+		{
+			CopyFields();
+			EndDialog( ID_RET_FIND );
+		}
 	}
 }
 
@@ -146,6 +159,7 @@ void CEntKeyFindReplace::CopyFields() {
 	*m_pbWholeStringMatchOnly = m_bWholeStringMatchOnly != 0;
 	*m_pbSelectAllMatchingEnts = m_bSelectAllMatchingEnts != 0;
 }
+
 
 void CEntKeyFindReplace::OnKeycopy() {
 	UpdateData( DIALOG_TO_DATA );

@@ -66,7 +66,6 @@ static	uBrush_t	*buildBrush;
 #define	NORMAL_EPSILON			0.00001f
 #define	DIST_EPSILON			0.01f
 
-
 /*
 ===========
 FindFloatPlane

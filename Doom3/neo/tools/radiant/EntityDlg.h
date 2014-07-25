@@ -30,11 +30,9 @@ If you have questions concerning this license or the applicable additional terms
 #include "afxwin.h"
 #include "PropertyList.h"
 #include "PreviewDlg.h"
+#include "externals.h"
 
 // CEntityDlg dialog
-
-
-
 class CEntityDlg : public CDialog {
 	DECLARE_DYNAMIC( CEntityDlg )
 public:
@@ -59,7 +57,6 @@ public:
 		editKey.SetWindowText( key );
 		editVal.SetWindowText( val );
 	}
-
 	void EditCurvePoints();
 	void AddCurvePoints();
 	void InsertCurvePoint();
@@ -89,16 +86,15 @@ public:
 	void SelectCurvePointByRay( const idVec3 &org, const idVec3 &dir, int buttons );
 	void UpdateEntityCurve();
 
-
 private:
-	entity_t *editEntity;
-	bool multipleEntities;
-	CPropertyList listKeyVal;
-	CPropertyList listVars;
-	CComboBox comboClass;
-	idDict *dict;
+	entity_t		*editEntity;
+	bool			multipleEntities;
+	CPropertyList	listKeyVal;
+	CPropertyList	listVars;
+	CComboBox		comboClass;
+	idDict			*dict;
 	const idMD5Anim *currentAnimation;
-	int currentAnimationFrame;
+	int				currentAnimationFrame;
 
 	const char *AngleKey();
 

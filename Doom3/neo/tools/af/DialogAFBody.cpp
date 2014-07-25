@@ -124,7 +124,7 @@ IMPLEMENT_DYNAMIC( DialogAFBody, CDialog )
 DialogAFBody::DialogAFBody
 ================
 */
-DialogAFBody::DialogAFBody( CWnd *pParent )
+DialogAFBody::DialogAFBody( CWnd *pParent /*=NULL*/ )
 	: CDialog( DialogAFBody::IDD, pParent )
 	, constraintDlg( NULL )
 	, numJoints( 0 )

@@ -504,7 +504,6 @@ void CSG_Subtract( void ) {
 			if( s->owner->eclass->fixedsize || s->pPatch || s->hiddenBrush || s->modelHandle > 0 ) {
 				continue;
 			}
-			//face_t *pFace = s->brush_faces;
 			if( s->brush_faces->d_texture && ( s->brush_faces->d_texture->GetContentFlags()& CONTENTS_NOCSG ) ) {
 				continue;
 			}

@@ -3036,7 +3036,6 @@ void CXYWnd::PaintSizeInfo( int nDim1, int nDim2, idVec3 vMinBounds, idVec3 vMax
 /* XY_Draw */
 long		g_lCount = 0;
 long		g_lTotal = 0;
-extern void DrawBrushEntityName( brush_t *b );
 
 /*
  =======================================================================================================================
@@ -3697,7 +3696,7 @@ void CXYWnd::Paste() {
 		g_Clipboard.SeekToBegin();
 		int		nLen = g_Clipboard.GetLength();
 		char	*pBuffer = new char[nLen + 1];
-		memset( pBuffer, 0, sizeof( *pBuffer ) * ( nLen + 1 ) );
+		memset( pBuffer, 0, sizeof( pBuffer ) );
 		g_Clipboard.Read( pBuffer, nLen );
 		pBuffer[nLen] = '\0';
 		Map_ImportBuffer( pBuffer, !( GetAsyncKeyState( VK_SHIFT ) & 0x8000 ) );
@@ -3846,10 +3845,8 @@ bool CXYWnd::AreaSelectOK() {
  */
 BOOL CXYWnd::OnEraseBkgnd( CDC *pDC ) {
 	return TRUE;
-	// return CWnd::OnEraseBkgnd(pDC);
 }
 
-extern void AssignModel();
 void CXYWnd::OnDropNewmodel() {
 	CPoint point;
 	GetCursorPos( &point );

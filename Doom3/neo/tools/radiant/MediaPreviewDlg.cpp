@@ -37,7 +37,7 @@ If you have questions concerning this license or the applicable additional terms
 // CMediaPreviewDlg dialog
 
 IMPLEMENT_DYNAMIC( CMediaPreviewDlg, CDialog )
-CMediaPreviewDlg::CMediaPreviewDlg( CWnd *pParent )
+CMediaPreviewDlg::CMediaPreviewDlg( CWnd *pParent /*=NULL*/ )
 	: CDialog( CMediaPreviewDlg::IDD, pParent ) {
 	mode = MATERIALS;
 	media = "";

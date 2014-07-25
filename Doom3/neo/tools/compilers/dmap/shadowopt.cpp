@@ -484,8 +484,7 @@ void GenerateSilPlanes( void ) {
 		for( j = 0 ; j < numSilPlanes ; j++ ) {
 			float d = v1 * silPlanes[j].normal;
 			float d2 = v2 * silPlanes[j].normal;
-			if( fabs( d ) < EDGE_PLANE_EPSILON
-					&& fabs( d2 ) < EDGE_PLANE_EPSILON ) {
+			if( fabs( d ) < EDGE_PLANE_EPSILON && fabs( d2 ) < EDGE_PLANE_EPSILON ) {
 				silEdges[i].nextEdge = silPlanes[j].edges;
 				silPlanes[j].edges = &silEdges[i];
 				break;
@@ -1024,12 +1023,12 @@ void CleanupOptimizedShadowTris( srfTriangles_t *tri ) {
 			// if there is a reversed quad match, we can throw both of them out
 			// this is not a robust check, it relies on the exact ordering of
 			// quad indexes
-			if( tri->indexes[i + 0] == tri->indexes[j + 1] && 
-				tri->indexes[i + 1] == tri->indexes[j + 0] && 
-				tri->indexes[i + 2] == tri->indexes[j + 3] && 
-				tri->indexes[i + 3] == tri->indexes[j + 5] && 
-				tri->indexes[i + 4] == tri->indexes[j + 1] && 
-				tri->indexes[i + 5] == tri->indexes[j + 3] ) {
+			if( tri->indexes[i + 0] == tri->indexes[j + 1] &&
+					tri->indexes[i + 1] == tri->indexes[j + 0] &&
+					tri->indexes[i + 2] == tri->indexes[j + 3] &&
+					tri->indexes[i + 3] == tri->indexes[j + 5] &&
+					tri->indexes[i + 4] == tri->indexes[j + 1] &&
+					tri->indexes[i + 5] == tri->indexes[j + 3] ) {
 				break;
 			}
 		}

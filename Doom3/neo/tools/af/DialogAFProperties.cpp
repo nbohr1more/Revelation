@@ -70,7 +70,7 @@ IMPLEMENT_DYNAMIC( DialogAFProperties, CDialog )
 DialogAFProperties::DialogAFProperties
 ================
 */
-DialogAFProperties::DialogAFProperties( CWnd *pParent )
+DialogAFProperties::DialogAFProperties( CWnd *pParent /*=NULL*/ )
 	: CDialog( DialogAFProperties::IDD, pParent )
 	, m_selfCollision( false )
 	, m_linearFriction( 0 )

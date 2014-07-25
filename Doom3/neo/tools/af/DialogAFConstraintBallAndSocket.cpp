@@ -74,7 +74,7 @@ IMPLEMENT_DYNAMIC( DialogAFConstraintBallAndSocket, CDialog )
 DialogAFConstraintBallAndSocket::DialogAFConstraintBallAndSocket
 ================
 */
-DialogAFConstraintBallAndSocket::DialogAFConstraintBallAndSocket( CWnd *pParent )
+DialogAFConstraintBallAndSocket::DialogAFConstraintBallAndSocket( CWnd *pParent /*=NULL*/ )
 	: CDialog( DialogAFConstraintBallAndSocket::IDD, pParent )
 	, m_anchor_x( 0 )
 	, m_anchor_y( 0 )

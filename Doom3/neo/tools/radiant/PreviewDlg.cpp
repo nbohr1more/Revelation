@@ -42,7 +42,7 @@ extern HTREEITEM FindTreeItem( CTreeCtrl *tree, HTREEITEM root, const char *text
 // CPreviewDlg dialog
 
 IMPLEMENT_DYNAMIC( CPreviewDlg, CDialog )
-CPreviewDlg::CPreviewDlg( CWnd *pParent )
+CPreviewDlg::CPreviewDlg( CWnd *pParent /*=NULL*/ )
 	: CDialog( CPreviewDlg::IDD, pParent ) {
 	currentMode = MODELS;
 	disablePreview = false;

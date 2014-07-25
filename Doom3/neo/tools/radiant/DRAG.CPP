@@ -86,16 +86,12 @@ static void AxializeVector( idVec3 &v ) {
 	}
 }
 
-extern bool UpdateActiveDragPoint( const idVec3 &move );
-extern void SetActiveDrag( CDragPoint *p );
-
 /*
 ================
 Draw_Setup
 ================
 */
-static void Drag_Setup( int x, int y, int buttons,
-						const idVec3 &xaxis, const idVec3 &yaxis, const idVec3 &origin, const idVec3 &dir ) {
+static void Drag_Setup( int x, int y, int buttons, const idVec3 &xaxis, const idVec3 &yaxis, const idVec3 &origin, const idVec3 &dir ) {
 	qertrace_t	t;
 	face_t		*f;
 	drag_first = true;

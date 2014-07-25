@@ -56,7 +56,7 @@ void CFindTextureDlg::updateTextures( const char *p ) {
 	}
 }
 
-CFindTextureDlg::CFindTextureDlg( CWnd *pParent )
+CFindTextureDlg::CFindTextureDlg( CWnd *pParent /*=NULL*/ )
 	: CDialog( CFindTextureDlg::IDD, pParent ) {
 	//{{AFX_DATA_INIT(CFindTextureDlg)
 	m_bSelectedOnly = FALSE;

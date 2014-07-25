@@ -108,7 +108,7 @@ void WINAPI Pointfile_Check( void ) {
 			s_num_points++;
 		}
 		glVertex3fv( v.ToFloatPtr() );
-	} while( true );
+	} while( 1 );
 	glEnd();
 	glLineWidth( 0.5 );
 	glEndList();

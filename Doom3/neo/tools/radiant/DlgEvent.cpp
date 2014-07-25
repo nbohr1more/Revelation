@@ -42,7 +42,7 @@ static char THIS_FILE[] = __FILE__;
 // CDlgEvent dialog
 
 
-CDlgEvent::CDlgEvent( CWnd *pParent )
+CDlgEvent::CDlgEvent( CWnd *pParent /*=NULL*/ )
 	: CDialog( CDlgEvent::IDD, pParent ) {
 	//{{AFX_DATA_INIT(CDlgEvent)
 	m_strParm = _T( "" );

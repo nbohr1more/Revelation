@@ -49,7 +49,7 @@ IMPLEMENT_DYNAMIC( DialogAFConstraintFixed, CDialog )
 DialogAFConstraintFixed::DialogAFConstraintFixed
 ================
 */
-DialogAFConstraintFixed::DialogAFConstraintFixed( CWnd *pParent )
+DialogAFConstraintFixed::DialogAFConstraintFixed( CWnd *pParent /*=NULL*/ )
 	: CDialog( DialogAFConstraintFixed::IDD, pParent )
 	, constraint( NULL )
 	, file( NULL ) {

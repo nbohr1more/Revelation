@@ -37,7 +37,7 @@ If you have questions concerning this license or the applicable additional terms
 // CEditViewDlg dialog
 
 IMPLEMENT_DYNAMIC( CEditViewDlg, CDialog )
-CEditViewDlg::CEditViewDlg( CWnd *pParent )
+CEditViewDlg::CEditViewDlg( CWnd *pParent /*=NULL*/ )
 	: CDialog( CEditViewDlg::IDD, pParent ) {
 	findDlg = NULL;
 }

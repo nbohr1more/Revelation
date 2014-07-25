@@ -37,7 +37,7 @@ If you have questions concerning this license or the applicable additional terms
 // CGetString dialog
 
 
-CGetString::CGetString( LPCSTR pPrompt, CString *pFeedback, CWnd *pParent )
+CGetString::CGetString( LPCSTR pPrompt, CString *pFeedback, CWnd *pParent /*=NULL*/ )
 	: CDialog( CGetString::IDD, pParent ) {
 	m_strEditBox = _T( "" );
 	m_pFeedback = pFeedback;

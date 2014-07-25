@@ -129,7 +129,9 @@ const int EditEnableID[] = {
 
 const int EditIDCount = sizeof( EditEnableID ) / sizeof( const int );
 
+
 CDialogParticleEditor *g_ParticleDialog = NULL;
+
 
 /*
 ================
@@ -148,6 +150,11 @@ void ParticleEditorInit( const idDict *spawnArgs ) {
 	}
 	if( g_ParticleDialog->GetSafeHwnd() == NULL ) {
 		g_ParticleDialog->Create( IDD_DIALOG_PARTICLE_EDITOR );
+		/*
+		// FIXME: restore position
+		CRect rct;
+		g_AFDialog->SetWindowPos( NULL, rct.left, rct.top, 0, 0, SWP_NOSIZE );
+		*/
 	}
 	idKeyInput::ClearStates();
 	g_ParticleDialog->ShowWindow( SW_SHOW );
@@ -161,6 +168,7 @@ void ParticleEditorInit( const idDict *spawnArgs ) {
 	cvarSystem->SetCVarBool( "r_useCachedDynamicModels", false );
 }
 
+
 /*
 ================
 ParticleEditorRun
@@ -172,15 +180,9 @@ void ParticleEditorRun( void ) {
 #else
 	MSG *msg = &m_msgCur;
 #endif
-	BOOL bDoingBackgroundProcessing = TRUE;
-	while (bDoingBackgroundProcessing) { 
-		while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
-			// pump message
-			if( !AfxGetApp()->PumpMessage() ) {
-				bDoingBackgroundProcessing = FALSE;
-				::PostQuitMessage(0); 
-				break; 
-			}
+	while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
+		// pump message
+		if( !AfxGetApp()->PumpMessage() ) {
 		}
 	}
 }
@@ -195,9 +197,11 @@ void ParticleEditorShutdown( void ) {
 	g_ParticleDialog = NULL;
 }
 
+
 // CDialogParticleEditor dialog
+
 IMPLEMENT_DYNAMIC( CDialogParticleEditor, CDialog )
-CDialogParticleEditor::CDialogParticleEditor( CWnd *pParent )
+CDialogParticleEditor::CDialogParticleEditor( CWnd *pParent /*=NULL*/ )
 	: CDialog( CDialogParticleEditor::IDD, pParent )
 	, matName( _T( "" ) )
 	, animFrames( _T( "" ) )
@@ -316,6 +320,7 @@ void CDialogParticleEditor::DoDataExchange( CDataExchange *pDX ) {
 	DDX_Control( pDX, IDC_BUTTON_VECTOR, vectorControl );
 }
 
+
 BEGIN_MESSAGE_MAP( CDialogParticleEditor, CDialog )
 	ON_BN_CLICKED( IDC_BUTTON_ADDSTAGE, OnBnClickedButtonAddstage )
 	ON_BN_CLICKED( IDC_BUTTON_REMOVESTAGE, OnBnClickedButtonRemovestage )
@@ -362,12 +367,15 @@ BEGIN_MESSAGE_MAP( CDialogParticleEditor, CDialog )
 	ON_WM_HSCROLL()
 END_MESSAGE_MAP()
 
+
 // CDialogParticleEditor message handlers
+
 void CDialogParticleEditor::OnBnClickedParticleMode() {
 	particleMode = !particleMode;
 	cvarSystem->SetCVarInteger( "g_editEntityMode", ( particleMode ) ? 4 : 0 );
 	EnableEditControls();
 }
+
 
 void CDialogParticleEditor::OnBnClickedButtonSaveAs() {
 	idDeclParticle *idp = GetCurParticle();
@@ -405,6 +413,7 @@ void CDialogParticleEditor::OnBnClickedButtonSaveAs() {
 		}
 	}
 }
+
 
 void CDialogParticleEditor::OnBnClickedButtonSaveParticles() {
 	cmdSystem->BufferCommandText( CMD_EXEC_NOW, "saveParticles" );
@@ -773,6 +782,7 @@ void CDialogParticleEditor::SetSelectedModel( const char *val ) {
 	}
 }
 
+
 void CDialogParticleEditor::OnBnClickedButtonHidestage() {
 	HideStage();
 }
@@ -793,6 +803,7 @@ void CDialogParticleEditor::OnBnClickedEntityColor() {
 	DlgVarsToCurStage();
 	CurStageToDlgVars();
 }
+
 
 void CDialogParticleEditor::AddStage() {
 	idDeclParticle *idp = GetCurParticle();
@@ -1286,6 +1297,7 @@ void CDialogParticleEditor::OnHScroll( UINT nSBCode, UINT nPos, CScrollBar *pScr
 	}
 }
 
+
 BOOL CDialogParticleEditor::PreTranslateMessage( MSG *pMsg ) {
 	if( pMsg->message >= WM_MOUSEFIRST && pMsg->message <= WM_MOUSELAST ) {
 		toolTipCtrl.RelayEvent( pMsg );
@@ -1415,4 +1427,6 @@ void CDialogParticleEditor::OnBtnDrop() {
 
 void CDialogParticleEditor::OnOK() {
 	// never return on OK as windows will map this at times when you don't want
+	// ENTER closing the dialog
+	// CDialog::OnOK();
 }

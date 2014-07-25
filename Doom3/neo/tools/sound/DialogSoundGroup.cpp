@@ -37,7 +37,7 @@ If you have questions concerning this license or the applicable additional terms
 // CDialogSoundGroup dialog
 
 
-CDialogSoundGroup::CDialogSoundGroup( CWnd *pParent )
+CDialogSoundGroup::CDialogSoundGroup( CWnd *pParent /*=NULL*/ )
 	: CDialog( CDialogSoundGroup::IDD, pParent ) {
 	//{{AFX_DATA_INIT(CDialogSoundGroup)
 	// NOTE: the ClassWizard will add member initialization here

@@ -33,12 +33,8 @@ If you have questions concerning this license or the applicable additional terms
 #include "DialogInfo.h"
 #include "CapDialog.h"
 
-// externs
-extern void MemFile_fprintf( CMemFile *pMemFile, const char *pText, ... );
-extern face_t *Face_Alloc( void );
 void _Write3DMatrix( FILE *f, int y, int x, int z, float *m );
 void _Write3DMatrix( CMemFile *f, int y, int x, int z, float *m );
-extern void SamplePatch( float ctrl[3][3][5], int baseCol, int baseRow, int width, int horzSub, int vertSub, idDrawVert *outVerts, idDrawVert *drawVerts );
 patchMesh_t *Patch_GenerateGeneric( int width, int height, int orientation, const idVec3 &mins, const idVec3 &maxs );
 
 
@@ -315,7 +311,7 @@ void Patch_Weld( patchMesh_t *p, patchMesh_t *p2 ) {
 	if( p->width == p2->width ) {
 		int	row		= 0;
 		int	row2	= 0;
-		while( true ) {
+		while( 1 ) {
 			bool	match	= true;
 			// need to see if any of the corners match then run down or up based
 			// on the match edges
@@ -367,7 +363,7 @@ void Patch_Weld( patchMesh_t *p, patchMesh_t *p2 ) {
 	if( p->width == p2->height ) {
 		int	row		= 0;
 		int	col2	= 0;
-		while( true ) {
+		while( 1 ) {
 			bool	match	= true;
 			int		col1	= 0;
 			int		adj1	= 1;
@@ -417,7 +413,7 @@ void Patch_Weld( patchMesh_t *p, patchMesh_t *p2 ) {
 	if( p->height == p2->width ) {
 		int	col		= 0;
 		int	row2	= 0;
-		while( true ) {
+		while( 1 ) {
 			bool	match	= true;
 			int		row1	= 0;
 			int		adj1	= 1;
@@ -429,6 +425,7 @@ void Patch_Weld( patchMesh_t *p, patchMesh_t *p2 ) {
 				adj2 = -1;
 			} else if( p->ctrl( col, p->height - 1 ).xyz.Compare( p2->ctrl( p2->width - 1, row2 ).xyz, WELD_EPSILON ) ) {
 				col2 = p2->width - 1;
+				adj2 = -1;
 				row1 = p2->height - 1;
 				adj2 = -1;
 			} else if( p->ctrl( col, p->height - 1 ).xyz.Compare( p2->ctrl( 0, row2 ).xyz, WELD_EPSILON ) ) {
@@ -466,7 +463,7 @@ void Patch_Weld( patchMesh_t *p, patchMesh_t *p2 ) {
 	if( p->height == p2->height ) {
 		int	col		= 0;
 		int	col2	= 0;
-		while( true ) {
+		while( 1 ) {
 			bool	match	= true;
 			int		row1	= 0;
 			int		adj1	= 1;
@@ -2016,7 +2013,9 @@ void DrawPatchMesh( patchMesh_t *pm, bool bPoints, int *list, bool bShade = fals
 	int		nDrawMode	= g_pParentWnd->GetCamera()->Camera().draw_mode;
 	// patches use two display lists, one for camera one for xy
 	if( *list <= 0 ) {
-		*list = glGenLists( 1 );
+		if( *list <= 0 ) {
+			*list = glGenLists( 1 );
+		}
 		if( *list > 0 ) {
 			glNewList( *list, GL_COMPILE_AND_EXECUTE );
 		}

@@ -29,9 +29,7 @@ If you have questions concerning this license or the applicable additional terms
 #ifndef __SPLINES_H__
 #define __SPLINES_H__
 
-extern void glBox( idVec4 &color, idVec3 &point, float size );
-extern void glLabeledPoint( idVec4 &color, idVec3 &point, float size, const char *label );
-
+#include "externals.h"
 
 class idPointListInterface {
 public:
@@ -46,14 +44,14 @@ public:
 	virtual void		addPoint( const float x, const float y, const float z ) {}
 	virtual void		addPoint( const idVec3 &v ) {}
 	virtual void		removePoint( int index ) {}
-	virtual idVec3 		*getPoint( int index ) {
+	virtual idVec3 	*getPoint( int index ) {
 		return NULL;
 	}
 
 	int					numSelectedPoints() {
 		return selectedPoints.Num();
 	}
-	idVec3 				*getSelectedPoint( int index );
+	idVec3 			*getSelectedPoint( int index );
 	int					selectPointByRay( const idVec3 &origin, const idVec3 &direction, bool single );
 	int					isPointSelected( int index );
 	int					selectPoint( int index, bool single );
@@ -262,7 +260,7 @@ public:
 	virtual void		parse( idParser *src ) {};
 	virtual void		write( idFile *f, const char *name );
 	virtual bool		parseToken( const idStr &key, idParser *src );
-	const char 			*getName() {
+	const char 		*getName() {
 		return name.c_str();
 	}
 	void				setName( const char *p ) {
@@ -275,7 +273,7 @@ public:
 		editMode = false;
 	}
 	virtual void		draw() {};
-	const char 			*typeStr() {
+	const char 		*typeStr() {
 		return positionStr[static_cast<int>( type )];
 	}
 	void				calcVelocity( float distance ) {
@@ -325,7 +323,7 @@ public:
 	virtual int			numPoints() {
 		return 1;
 	}
-	virtual idVec3 		*getPoint( int index ) {
+	virtual idVec3 	*getPoint( int index ) {
 		assert( index == 0 );
 		return &pos;
 	}
@@ -362,7 +360,7 @@ public:
 	virtual int			numPoints() {
 		return 2;
 	}
-	virtual idVec3 		*getPoint( int index );
+	virtual idVec3 	*getPoint( int index );
 	virtual void		addPoint( const float x, const float y, const float z );
 	virtual void		addPoint( const idVec3 &v );
 	virtual void		draw( bool editMode );
@@ -492,10 +490,10 @@ public:
 	eventType			getType() {
 		return type;
 	}
-	const char 			*typeStr() {
+	const char 		*typeStr() {
 		return eventStr[static_cast<int>( type )];
 	}
-	const char 			*getParam() {
+	const char 		*getParam() {
 		return paramStr.c_str();
 	}
 	long				getTime() {
@@ -583,7 +581,7 @@ public:
 	void				stopEdit();
 	void				startEdit( bool camera );
 	bool				waitEvent( int index );
-	const char 			*getName() {
+	const char 		*getName() {
 		return name.c_str();
 	}
 	void				setName( const char *p ) {
@@ -611,9 +609,8 @@ protected:
 	bool				editMode;
 };
 
-extern bool			g_splineMode;
-extern idCameraDef	*g_splineList;
+extern bool g_splineMode;
 
-extern void glLabeledPoint( idVec4 &color, idVec3 &point, float size, const char *label );
+extern idCameraDef *g_splineList;
 
 #endif /* !__SPLINES_H__ */

@@ -61,7 +61,7 @@ IMPLEMENT_DYNAMIC( DialogEntityDefEditor, CDialog )
 DialogEntityDefEditor::DialogEntityDefEditor
 ================
 */
-DialogEntityDefEditor::DialogEntityDefEditor( CWnd *pParent )
+DialogEntityDefEditor::DialogEntityDefEditor( CWnd *pParent /*=NULL*/ )
 	: CDialog( DialogEntityDefEditor::IDD, pParent )
 	, decl( NULL )
 	, firstLine( 0 ) {
@@ -202,7 +202,7 @@ void DialogEntityDefEditor::PopulateLists( const char *declText, const int textL
 	src.LoadMemory( declText, textLength, decl->GetFileName(), firstLine );
 	src.SetFlags( DECL_LEXER_FLAGS );
 	src.SkipUntilString( "{" );
-	while( true ) {
+	while( 1 ) {
 		if( !src.ReadToken( &token ) ) {
 			break;
 		}

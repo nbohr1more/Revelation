@@ -80,7 +80,7 @@ IMPLEMENT_DYNAMIC( DialogAFConstraintUniversal, CDialog )
 DialogAFConstraintUniversal::DialogAFConstraintUniversal
 ================
 */
-DialogAFConstraintUniversal::DialogAFConstraintUniversal( CWnd *pParent )
+DialogAFConstraintUniversal::DialogAFConstraintUniversal( CWnd *pParent /*=NULL*/ )
 	: CDialog( DialogAFConstraintUniversal::IDD, pParent )
 	, m_anchor_x( 0 )
 	, m_anchor_y( 0 )

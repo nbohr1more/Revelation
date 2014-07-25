@@ -49,10 +49,11 @@ public:
 		ASSERT( list );
 		m_Tabs.SetImageList( list );
 	}
+
 	bool IsDocked( CWnd *wnd );
 
 protected:
-	int PreTranslateMessage( MSG *msg );
+	int CTabsDlg::PreTranslateMessage( MSG *msg );
 
 	// Implementation
 protected:

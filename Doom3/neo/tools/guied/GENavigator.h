@@ -68,7 +68,7 @@ protected:
 	WNDPROC			mListWndProc;
 };
 
-ID_FORCE_INLINE HWND rvGENavigator::GetWindow( void ) {
+ID_INLINE HWND rvGENavigator::GetWindow( void ) {
 	return mWnd;
 }
 

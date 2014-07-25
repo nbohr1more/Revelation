@@ -1078,6 +1078,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Release|Win32'">true</ExcludedFromBuild>
     </CustomBuildStep>
+    <ClInclude Include="tools\radiant\externals.h" />
     <ClInclude Include="ui\BindWindow.h" />
     <ClInclude Include="ui\ChoiceWindow.h" />
     <ClInclude Include="ui\DeviceContext.h" />
@@ -1486,7 +1487,7 @@
     <ClCompile Include="tools\compilers\dmap\optimize.cpp" />
     <ClCompile Include="tools\compilers\dmap\output.cpp" />
     <ClCompile Include="tools\compilers\dmap\portals.cpp" />
-    <ClCompile Include="tools\compilers\dmap\shadowopt3.cpp" />
+    <ClCompile Include="tools\compilers\dmap\shadowopt.cpp" />
     <ClCompile Include="tools\compilers\dmap\tritjunction.cpp" />
     <ClCompile Include="tools\compilers\dmap\tritools.cpp" />
     <ClCompile Include="tools\compilers\dmap\ubrush.cpp" />

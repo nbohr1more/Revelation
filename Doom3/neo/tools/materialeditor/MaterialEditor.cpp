@@ -85,16 +85,10 @@ void MaterialEditorInit( void ) {
 * Called every frame by the doom engine to allow the material editor to process messages.
 */
 void MaterialEditorRun( void ) {
-	MSG		*msg = AfxGetCurrentMessage();
-	BOOL	bDoingBackgroundProcessing = TRUE;
-	while (bDoingBackgroundProcessing) { 
-		while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
-			// pump message
-			if( !AfxGetApp()->PumpMessage() ) {
-				bDoingBackgroundProcessing = FALSE;
-				::PostQuitMessage(0); 
-				break; 
-			}
+	MSG *msg = AfxGetCurrentMessage();
+	while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
+		// pump message
+		if( !AfxGetApp()->PumpMessage() ) {
 		}
 	}
 }

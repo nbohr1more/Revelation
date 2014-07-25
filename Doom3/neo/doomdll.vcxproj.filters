@@ -462,6 +462,9 @@
     <ClInclude Include="sys\win32\win_local.h">
       <Filter>Sys\win32</Filter>
     </ClInclude>
+    <ClInclude Include="tools\radiant\externals.h">
+      <Filter>Tools\Radiant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cm\CollisionModel_contacts.cpp">
@@ -948,9 +951,6 @@
       <Filter>Tools\Compilers\DMap</Filter>
     </ClCompile>
     <ClCompile Include="tools\compilers\dmap\portals.cpp">
-      <Filter>Tools\Compilers\DMap</Filter>
-    </ClCompile>
-    <ClCompile Include="tools\compilers\dmap\shadowopt3.cpp">
       <Filter>Tools\Compilers\DMap</Filter>
     </ClCompile>
     <ClCompile Include="tools\compilers\dmap\tritjunction.cpp">
@@ -1562,6 +1562,9 @@
     </ClCompile>
     <ClCompile Include="renderer\draw_glsl.cpp">
       <Filter>Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="tools\compilers\dmap\shadowopt.cpp">
+      <Filter>Tools\Compilers\DMap</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -43,7 +43,7 @@ static char THIS_FILE[] = __FILE__;
 // CNewProjDlg dialog
 
 
-CNewProjDlg::CNewProjDlg( CWnd *pParent )
+CNewProjDlg::CNewProjDlg( CWnd *pParent /*=NULL*/ )
 	: CDialog( CNewProjDlg::IDD, pParent ) {
 	//{{AFX_DATA_INIT(CNewProjDlg)
 	m_strName = _T( "" );

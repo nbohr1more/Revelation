@@ -41,14 +41,13 @@ static char THIS_FILE[] = __FILE__;
 /////////////////////////////////////////////////////////////////////////////
 // CCameraTargetDlg dialog
 
-CCameraTargetDlg::CCameraTargetDlg( CWnd *pParent )
+CCameraTargetDlg::CCameraTargetDlg( CWnd *pParent /*=NULL*/ )
 	: CDialog( CCameraTargetDlg::IDD, pParent ) {
 	//{{AFX_DATA_INIT(CCameraTargetDlg)
 	m_nType = 0;
 	m_strName = _T( "" );
 	//}}AFX_DATA_INIT
 }
-
 
 void CCameraTargetDlg::DoDataExchange( CDataExchange *pDX ) {
 	CDialog::DoDataExchange( pDX );
@@ -69,5 +68,4 @@ END_MESSAGE_MAP()
 
 void CCameraTargetDlg::OnPopupNewcameraFixed() {
 	// TODO: Add your command handler code here
-	assert( false );
 }

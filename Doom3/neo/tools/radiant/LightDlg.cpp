@@ -253,7 +253,7 @@ CLightInfo::CLightInfo() {
 CLightDlg *g_LightDialog = NULL;
 
 
-CLightDlg::CLightDlg( CWnd *pParent )
+CLightDlg::CLightDlg( CWnd *pParent /*=NULL*/ )
 	: CDialog( CLightDlg::IDD, pParent ) {
 	//{{AFX_DATA_INIT(CLightDlg)
 	m_bEqualRadius = FALSE;
@@ -740,15 +740,9 @@ void LightEditorRun( void ) {
 #else
 	MSG *msg = &m_msgCur;
 #endif
-	BOOL bDoingBackgroundProcessing = TRUE;
-	while (bDoingBackgroundProcessing) { 
-		while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
-			// pump message
-			if( !AfxGetApp()->PumpMessage() ) {
-				bDoingBackgroundProcessing = FALSE;
-				::PostQuitMessage(0); 
-				break; 
-			}
+	while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
+		// pump message
+		if( !AfxGetApp()->PumpMessage() ) {
 		}
 	}
 }

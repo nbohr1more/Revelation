@@ -42,9 +42,8 @@ If you have questions concerning this license or the applicable additional terms
 void	Select_Ungroup();
 
 // CEntityDlg dialog
-
 IMPLEMENT_DYNAMIC( CEntityDlg, CDialog )
-CEntityDlg::CEntityDlg( CWnd *pParent )
+CEntityDlg::CEntityDlg( CWnd *pParent /*=NULL*/ )
 	: CDialog( CEntityDlg::IDD, pParent ) {
 	editEntity = NULL;
 	multipleEntities = false;
@@ -89,8 +88,6 @@ void CEntityDlg::DoDataExchange( CDataExchange *pDX ) {
 	DDX_Control( pDX, IDC_ENTITY_STOP_ANIM , btnStopAnim );
 }
 
-
-
 BOOL CEntityDlg::OnInitDialog() {
 	CDialog::OnInitDialog();
 	listKeyVal.SetUpdateInspectors( true );
@@ -105,7 +102,6 @@ int CEntityDlg::OnToolHitTest( CPoint point, TOOLINFO *pTI ) const {
 	// TODO: Add your specialized code here and/or call the base class
 	return CDialog::OnToolHitTest( point, pTI );
 }
-
 
 void CEntityDlg::AddClassNames() {
 	comboClass.ResetContent();
@@ -313,7 +309,6 @@ void CEntityDlg::SetKeyValPairs( bool updateAnims ) {
 						break;
 					case EVAR_BOOL :
 						pi->m_nItemType = PIT_EDIT;
-						//pi->m_cmbItems = "0|1";
 						break;
 					case EVAR_COLOR :
 						pi->m_nItemType = PIT_COLOR;
@@ -391,9 +386,8 @@ void CEntityDlg::OnLbnSelchangeListkeyval() {
 	if( index != LB_ERR ) {
 		CString str;
 		listKeyVal.GetText( index, str );
-		int i = 0;
-		while( str[i] != '\t' && str[i] != '\0' ) {
-			i++;
+		int i;
+		for( i = 0; str[i] != '\t' && str[i] != '\0'; i++ ) {
 		}
 		idStr key = str.Left( i );
 		while( str[i] == '\t' && str[i] != '\0' ) {
@@ -408,7 +402,6 @@ void CEntityDlg::OnLbnSelchangeListkeyval() {
 static int TabOrder[] = {
 	IDC_COMBO_CLASS,
 	IDC_BUTTON_CREATE,
-	//IDC_EDIT_INFO,
 	IDC_LIST_KEYVAL,
 	IDC_EDIT_KEY,
 	IDC_EDIT_VAL,
@@ -450,7 +443,6 @@ void CEntityDlg::DelProp() {
 	SetKeyValPairs();
 	Sys_UpdateWindows( W_ENTITY | W_XY | W_CAMERA );
 }
-
 
 BOOL CEntityDlg::PreTranslateMessage( MSG *pMsg ) {
 	if( pMsg->hwnd == editVal.GetSafeHwnd() ) {
@@ -537,7 +529,6 @@ BOOL CEntityDlg::PreTranslateMessage( MSG *pMsg ) {
 	}
 	return CDialog::PreTranslateMessage( pMsg );
 }
-
 
 /*
  =======================================================================================================================
@@ -899,7 +890,6 @@ void CEntityDlg::CreateEntity() {
 	// create it
 	if( ( GetAsyncKeyState( VK_CONTROL ) & 0x8000 ) ) {
 		// MAJOR hack for xian
-		extern void Brush_CopyList( brush_t * pFrom, brush_t * pTo );
 		brush_t temp_brushes;
 		temp_brushes.next = &temp_brushes;
 		Brush_CopyList( &selected_brushes, &temp_brushes );
@@ -956,6 +946,7 @@ void CEntityDlg::OnLbnDblclkListkeyval() {
 }
 
 void CEntityDlg::OnLbnSelchangeListVars() {
+	// Nothing yet
 }
 
 void CEntityDlg::OnLbnDblclkListVars() {
@@ -973,7 +964,6 @@ void CEntityDlg::OnLbnDblclkListVars() {
 	}
 }
 
-
 void CEntityDlg::UpdateKeyVal( const char *key, const char *val ) {
 	if( editEntity ) {
 		editEntity->epairs.Set( key, val );
@@ -982,7 +972,6 @@ void CEntityDlg::UpdateKeyVal( const char *key, const char *val ) {
 		Entity_UpdateSoundEmitter( editEntity );
 	}
 }
-
 
 void CEntityDlg::OnNMReleasedcaptureSlider1( NMHDR *pNMHDR, LRESULT *pResult ) {
 	if( !editEntity ) {
@@ -1048,7 +1037,7 @@ void CEntityDlg::OnTimer( UINT nIDEvent ) {
 		return;
 	}
 	if( currentAnimation ) {
-		currentAnimationFrame = ( ( currentAnimationFrame + 1 ) % gameEdit->ANIM_GetNumFrames( currentAnimation ) );
+		currentAnimationFrame = ( ( currentAnimationFrame++ ) % gameEdit->ANIM_GetNumFrames( currentAnimation ) );
 		editEntity->epairs.SetInt( "frame" , currentAnimationFrame );
 		slFrameSlider.SetPos( currentAnimationFrame );
 		UpdateFromAnimationFrame( false/*don't update key/value display*/ );
@@ -1184,7 +1173,6 @@ void CEntityDlg::DeleteCurvePoint() {
 	Sys_UpdateWindows( W_XY | W_CAMERA );
 }
 
-
 void CEntityDlg::UpdateEntityCurve() {
 	if( editEntity == NULL ) {
 		return;
@@ -1201,7 +1189,6 @@ void CEntityDlg::UpdateEntityCurve() {
 	}
 	Sys_UpdateWindows( W_ENTITY );
 }
-
 
 void CEntityDlg::SelectCurvePointByRay( const idVec3 &org, const idVec3 &dir, int buttons ) {
 	int		i, besti;

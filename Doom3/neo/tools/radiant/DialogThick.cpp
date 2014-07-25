@@ -43,7 +43,7 @@ static char THIS_FILE[] = __FILE__;
 // CDialogThick dialog
 
 
-CDialogThick::CDialogThick( CWnd *pParent )
+CDialogThick::CDialogThick( CWnd *pParent /*=NULL*/ )
 	: CDialog( CDialogThick::IDD, pParent ) {
 	//{{AFX_DATA_INIT(CDialogThick)
 	m_bSeams = TRUE;

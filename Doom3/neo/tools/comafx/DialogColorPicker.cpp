@@ -365,7 +365,7 @@ HSVType RGBType::toHSV() {
 // CDialogColorPicker dialog
 
 
-CDialogColorPicker::CDialogColorPicker( COLORREF c, CWnd *pParent )
+CDialogColorPicker::CDialogColorPicker( COLORREF c, CWnd *pParent /*=NULL*/ )
 	: CDialog( CDialogColorPicker::IDD, pParent ) {
 	//{{AFX_DATA_INIT(CDialogColorPicker)
 	m_overBright = 0.0f;

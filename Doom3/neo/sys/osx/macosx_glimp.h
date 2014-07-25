@@ -1,5 +1,5 @@
 #include <OpenGL/OpenGL.h>
-#include <OpenGL/gl.h>
+#include <OpenGL/qgl.h>
 #include <OpenGL/glu.h>
 #ifndef GL_EXT_abgr
 #include <OpenGL/glext.h>

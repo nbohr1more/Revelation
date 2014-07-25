@@ -314,7 +314,7 @@ void BrushPrimit_Parse( brush_t *b, bool newFormat, const idVec3 origin ) {
 				f->texdef.value = atoi( token );
 			}
 		}
-	} while( true );
+	} while( 1 );
 }
 
 //

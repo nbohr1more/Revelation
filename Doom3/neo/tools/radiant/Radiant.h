@@ -37,6 +37,8 @@ If you have questions concerning this license or the applicable additional terms
 #error include 'stdafx.h' before including this file for PCH
 #endif
 
+#include "externals.h"
+
 /////////////////////////////////////////////////////////////////////////////
 // CRadiantApp:
 // See Radiant.cpp for the implementation of this class

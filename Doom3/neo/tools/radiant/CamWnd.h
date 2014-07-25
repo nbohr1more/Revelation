@@ -32,6 +32,8 @@ If you have questions concerning this license or the applicable additional terms
 #pragma once
 #endif // _MSC_VER >= 1000
 
+#include "externals.h"
+
 typedef enum {
 	cd_wire,
 	cd_solid,
@@ -80,6 +82,7 @@ protected:
 
 	// Implementation
 public:
+	void ShiftTexture_BrushPrimit( face_t *f, int x, int y );
 	CXYWnd *m_pXYFriend;
 	void SetXYFriend( CXYWnd *pWnd );
 	virtual ~CCamWnd();
@@ -134,39 +137,39 @@ protected:
 	void Cam_MouseUp( int x, int y, int buttons );
 	void Cam_MouseMoved( int x, int y, int buttons );
 	void InitCull();
-	bool CullBrush( brush_t *b, bool cubicOnly );	
+	bool CullBrush( brush_t *b, bool cubicOnly );
 	void Cam_Draw();
 	void Cam_Render();
 
 	// game renderer interaction
-	qhandle_t	worldModelDef;
+	qhandle_t		worldModelDef;
 	idRenderModel	*worldModel;		// createRawModel of the brush and patch geometry
-	bool	worldDirty;
-	bool	renderMode;
-	bool	rebuildMode;
-	bool	entityMode;
-	bool	selectMode;
-	bool	animationMode;
-	bool	soundMode;
-	void	FreeRendererState();
-	void	UpdateCaption();
-	bool	BuildBrushRenderData( brush_t *brush );
-	void	DrawEntityData();
+	bool			worldDirty;
+	bool			renderMode;
+	bool			rebuildMode;
+	bool			entityMode;
+	bool			selectMode;
+	bool			animationMode;
+	bool			soundMode;
+	void			FreeRendererState();
+	void			UpdateCaption();
+	bool			BuildBrushRenderData( brush_t *brush );
+	void			DrawEntityData();
 
-	camera_t m_Camera;
-	int	m_nCambuttonstate;
-	CPoint m_ptButton;
-	CPoint m_ptCursor;
-	CPoint m_ptLastCursor;
-	face_t *m_pSide_select;
-	idVec3 m_vCull1;
-	idVec3 m_vCull2;
-	int m_nCullv1[3];
-	int m_nCullv2[3];
-	bool m_bClipMode;
-	idVec3 saveOrg;
-	idAngles saveAng;
-	bool saveValid;
+	camera_t		m_Camera;
+	int				m_nCambuttonstate;
+	CPoint			m_ptButton;
+	CPoint			m_ptCursor;
+	CPoint			m_ptLastCursor;
+	face_t			*m_pSide_select;
+	idVec3			m_vCull1;
+	idVec3			m_vCull2;
+	int				m_nCullv1[3];
+	int				m_nCullv2[3];
+	bool			m_bClipMode;
+	idVec3			saveOrg;
+	idAngles		saveAng;
+	bool			saveValid;
 
 	// Generated message map functions
 protected:
@@ -191,12 +194,6 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-void	Tris_ToOBJ( const char *outFile, idTriList *tris, idMatList *mats );
-int		Brush_TransformModel( brush_t *brush, idTriList *tris, idMatList *mats );
-int		Brush_ToTris( brush_t *brush, idTriList *tris, idMatList *mats, bool models, bool bmodel );
-void	Select_ToOBJ();
-void	Select_ToCM();
 
 /////////////////////////////////////////////////////////////////////////////
 

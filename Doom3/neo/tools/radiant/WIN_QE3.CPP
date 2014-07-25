@@ -32,12 +32,11 @@ If you have questions concerning this license or the applicable additional terms
 #include "qe3.h"
 #include "mru.h"
 
-extern CEdit				*g_pEdit;
+extern CEdit *g_pEdit;
 
 int		screen_width;
 int		screen_height;
 bool	have_quit;
-
 int		update_bits;
 
 /*
@@ -164,7 +163,6 @@ void PrintPixels( HDC hDC ) {
  =======================================================================================================================
  */
 int WINAPI QEW_SetupPixelFormat( HDC hDC, bool zbuffer ) {
-#if 1
 	int pixelFormat = ChoosePixelFormat( hDC, &win32.pfd );
 	if( pixelFormat > 0 ) {
 		if( SetPixelFormat( hDC, pixelFormat, &win32.pfd ) == NULL ) {
@@ -174,51 +172,6 @@ int WINAPI QEW_SetupPixelFormat( HDC hDC, bool zbuffer ) {
 		Error( "ChoosePixelFormat failed." );
 	}
 	return pixelFormat;
-#else
-	static PIXELFORMATDESCRIPTOR	pfd = {
-		sizeof( PIXELFORMATDESCRIPTOR ),	// size of this pfd
-		1,						// version number
-		PFD_DRAW_TO_WINDOW |	// support window
-		PFD_SUPPORT_OPENGL |	// support OpenGL
-		PFD_DOUBLEBUFFER,		// double buffered
-		PFD_TYPE_RGBA,			// RGBA type
-		24,						// 24-bit color depth
-		0,
-		0,
-		0,
-		0,
-		0,
-		0,						// color bits ignored
-		0,						// no alpha buffer
-		0,						// shift bit ignored
-		0,						// no accumulation buffer
-		0,
-		0,
-		0,
-		0,						// accum bits ignored
-		32,						// depth bits
-		0,						// no stencil buffer
-		0,						// no auxiliary buffer
-		PFD_MAIN_PLANE,			// main layer
-		0,						// reserved
-		0,
-		0,
-		0						// layer masks ignored
-	};
-	int pixelformat = 0;
-	zbuffer = true;
-	if( !zbuffer ) {
-		pfd.cDepthBits = 0;
-	}
-	if( ( pixelformat = ChoosePixelFormat( hDC, &pfd ) ) == 0 ) {
-		printf( "%d", GetLastError() );
-		Error( "ChoosePixelFormat failed" );
-	}
-	if( !SetPixelFormat( hDC, pixelformat, &pfd ) ) {
-		Error( "SetPixelFormat failed" );
-	}
-	return pixelformat;
-#endif
 }
 
 /*
@@ -236,8 +189,7 @@ void Error( char *error, ... ) {
 	va_start( argptr, error );
 	vsprintf( text, error, argptr );
 	va_end( argptr );
-	sprintf
-	(
+	sprintf (
 		text2,
 		"%s\nGetLastError() = %i - %i\nAn unrecoverable error has occured. Would you like to edit Preferences before exiting Q3Radiant?",
 		text,
@@ -365,8 +317,6 @@ void ProjectDialog( void ) {
 		Error( "Couldn't load project file" );
 	}
 }
-
-extern void AddSlash( CString &strPath );
 
 /*
  =======================================================================================================================

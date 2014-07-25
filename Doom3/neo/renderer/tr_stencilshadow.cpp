@@ -106,7 +106,6 @@ If a high order bit is set, the point is on or inside the plane
 If a low order bit is clear, the point is inside the plane (definately positive)
 If a high order bit is clear, the point is outside the plane (definately negative)
 
-
 */
 
 #define TRIANGLE_CULLED(p1,p2,p3) (pointCull[p1] & pointCull[p2] & pointCull[p3] & 0x3f)
@@ -294,13 +293,13 @@ static void R_ProjectPointsToFarPlane( stencilRef_t *st, const idRenderEntityLoc
 	in = &st->shadowVerts[firstShadowVert];
 	for( i = firstShadowVert; i < numShadowVerts; i += 2, in += 2 ) {
 		float	w, oow;
-		in[0].w = 1;
+		in[0].w = 1.0f;
 		w = in->ToVec3() * mat[3].ToVec3() + mat[3][3];
 		if( w == 0 ) {
 			in[1] = in[0];
 			continue;
 		}
-		oow = 1.0 / w;
+		oow = 1.0f / w;
 		in[1].x = ( in->ToVec3() * mat[0].ToVec3() + mat[0][3] ) * oow;
 		in[1].y = ( in->ToVec3() * mat[1].ToVec3() + mat[1][3] ) * oow;
 		in[1].z = ( in->ToVec3() * mat[2].ToVec3() + mat[2][3] ) * oow;

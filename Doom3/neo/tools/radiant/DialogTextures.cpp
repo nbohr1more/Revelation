@@ -43,7 +43,6 @@ static char THIS_FILE[] = __FILE__;
 #endif
 
 HTREEITEM FindTreeItem( CTreeCtrl *tree, HTREEITEM root, const char *text, HTREEITEM forceParent );
-extern void Select_SetKeyVal( const char *key, const char *val );
 
 const char *CDialogTextures::TypeNames[] = {
 	"None",

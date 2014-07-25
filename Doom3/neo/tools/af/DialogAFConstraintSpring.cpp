@@ -71,7 +71,7 @@ IMPLEMENT_DYNAMIC( DialogAFConstraintSpring, CDialog )
 DialogAFConstraintSpring::DialogAFConstraintSpring
 ================
 */
-DialogAFConstraintSpring::DialogAFConstraintSpring( CWnd *pParent )
+DialogAFConstraintSpring::DialogAFConstraintSpring( CWnd *pParent /*=NULL*/ )
 	: CDialog( DialogAFConstraintSpring::IDD, pParent )
 	, m_anchor_x( 0 )
 	, m_anchor_y( 0 )

@@ -2439,7 +2439,6 @@ bool DoColor( int iIndex ) {
  =======================================================================================================================
  =======================================================================================================================
  */
-extern void Select_SetKeyVal( const char *key, const char *val );
 void CMainFrame::OnMiscSelectentitycolor() {
 	entity_t *ent = NULL;
 	if( QE_SingleBrush( true, true ) ) {
@@ -2485,7 +2484,7 @@ LPCSTR String_ToLower( LPCSTR psString ) {
 		common->Printf( "String_ToLower(): Warning, input string was %d bytes too large, performing strlwr() inline!\n", strlen( psString ) - ( iBufferSize - 1 ) );
 		return strlwr( const_cast<char *>( psString ) );
 	}
-	iIndex = ( iIndex + 1 ) & 7;
+	iIndex = ++ iIndex & 7;
 	strcpy( sString[iIndex], psString );
 	strlwr( sString[iIndex] );
 	return sString[iIndex];
@@ -2497,7 +2496,7 @@ bool FindNextBrush( brush_t *pPrevFoundBrush ) {	// can be NULL for fresh search
 	entity_t *pLastFoundEnt;
 	brush_t  *pLastFoundBrush;
 	CWaitCursor waitcursor;
-	Select_Deselect( true );
+	Select_Deselect( true );	// bool bDeSelectToListBack
 	// see whether to start search from prev_brush->next by checking if prev_brush is still in the active list...
 	//
 	brush_t *pStartBrush = active_brushes.next;
@@ -5850,6 +5849,8 @@ void CMainFrame::OnActivate( UINT nState, CWnd *pWndOther, BOOL bMinimized ) {
 		}
 		// start playing the editor sound world
 		soundSystem->SetPlayingSoundWorld( g_qeglobals.sw );
+	} else {
+		//com_editorActive = false;
 	}
 }
 
@@ -5890,8 +5891,6 @@ void CMainFrame::OnSplinesEdit() {
 	showCameraInspector();
 	Sys_UpdateWindows( W_ALL );
 }
-
-extern void testCamSpeed();
 
 /*
  =======================================================================================================================
@@ -5959,8 +5958,6 @@ void CMainFrame::OnPopupNewcameraFixed() {
 	g_qeglobals.selectObject = g_splineList->startNewCamera( idCameraPosition::FIXED );
 	OnSplinesEdit();
 }
-
-extern void Patch_AdjustSubdivisions( float hadj, float vadj );
 
 /*
  =======================================================================================================================
@@ -6071,7 +6068,6 @@ void CMainFrame::OnSelectionCombine() {
 	Sys_UpdateWindows( W_XY | W_CAMERA );
 }
 
-extern void Patch_Weld( patchMesh_t *p, patchMesh_t *p2 );
 void CMainFrame::OnPatchCombine() {
 	patchMesh_t *p, *p2;
 	p = p2 = NULL;
@@ -6128,7 +6124,6 @@ void CMainFrame::OnViewMaterialanimation() {
 	Sys_UpdateWindows( W_ALL );
 }
 
-extern void Face_SetAxialScale_BrushPrimit( face_t *face, bool y );
 void CMainFrame::OnAxialTextureByWidth() {
 	// temp test code
 	int faceCount = g_ptrSelectedFaces.GetSize();
@@ -6166,12 +6161,10 @@ void CMainFrame::OnAxialTextureArbitrary() {
 	Sys_UpdateWindows( W_CAMERA );
 }
 
-extern void Select_ToOBJ();
 void CMainFrame::OnSelectionExportToobj() {
 	Select_ToOBJ();
 }
 
-extern void Select_ToCM();
 void CMainFrame::OnSelectionExportToCM() {
 	Select_ToCM();
 }

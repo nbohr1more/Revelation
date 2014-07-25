@@ -37,6 +37,7 @@ If you have questions concerning this license or the applicable additional terms
 
 // this define to use HTREEITEM and MFC stuff in the headers
 #define QERTYPES_USE_MFC
+#include "externals.h"
 #include "qertypes.h"
 #include "cmdlib.h"
 #include "parse.h"
@@ -330,16 +331,11 @@ int  WINAPI QEW_SetupPixelFormat( HDC hDC, bool zbuffer );
 /*
 ** extern declarations
 */
-extern QEGlobals_t   g_qeglobals;
-extern int mapModified;		// for quit confirmation (0 = clean, 1 = unsaved,
-
-//++timo clean (moved into qertypes.h)
-//enum VIEWTYPE {YZ, XZ, XY};
-
-
-extern bool g_bAxialMode;
-extern int g_axialAnchor;
-extern int g_axialDest;
+extern QEGlobals_t  g_qeglobals;
+extern int			mapModified;		// for quit confirmation (0 = clean, 1 = unsaved,
+extern bool			g_bAxialMode;
+extern int			g_axialAnchor;
+extern int			g_axialDest;
 
 extern void Face_FlipTexture_BrushPrimit( face_t *face, bool y );
 extern void Brush_FlipTexture_BrushPrimit( brush_t *b, bool y );

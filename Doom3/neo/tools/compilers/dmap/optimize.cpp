@@ -802,9 +802,9 @@ LinkTriToEdge
 ====================
 */
 static void LinkTriToEdge( optTri_t *optTri, optEdge_t *edge ) {
-	if( ( edge->v1 == optTri->v[0] && edge->v2 == optTri->v[1] )
-			|| ( edge->v1 == optTri->v[1] && edge->v2 == optTri->v[2] )
-			|| ( edge->v1 == optTri->v[2] && edge->v2 == optTri->v[0] ) ) {
+	if( ( edge->v1 == optTri->v[0] && edge->v2 == optTri->v[1] ) ||
+			( edge->v1 == optTri->v[1] && edge->v2 == optTri->v[2] ) ||
+			( edge->v1 == optTri->v[2] && edge->v2 == optTri->v[0] ) ) {
 		if( edge->backTri ) {
 			common->Printf( "Warning: LinkTriToEdge: already in use\n" );
 			return;
@@ -812,9 +812,9 @@ static void LinkTriToEdge( optTri_t *optTri, optEdge_t *edge ) {
 		edge->backTri = optTri;
 		return;
 	}
-	if( ( edge->v1 == optTri->v[1] && edge->v2 == optTri->v[0] )
-			|| ( edge->v1 == optTri->v[2] && edge->v2 == optTri->v[1] )
-			|| ( edge->v1 == optTri->v[0] && edge->v2 == optTri->v[2] ) ) {
+	if( ( edge->v1 == optTri->v[1] && edge->v2 == optTri->v[0] ) ||
+			( edge->v1 == optTri->v[2] && edge->v2 == optTri->v[1] ) ||
+			( edge->v1 == optTri->v[0] && edge->v2 == optTri->v[2] ) ) {
 		if( edge->frontTri ) {
 			common->Printf( "Warning: LinkTriToEdge: already in use\n" );
 			return;
@@ -1437,8 +1437,8 @@ static void CullUnusedVerts( optIsland_t *island ) {
 			c_free++;
 		} else {
 			edge = vert->edges;
-			if( ( edge->v1 == vert && !edge->v1link )
-					|| ( edge->v2 == vert && !edge->v2link ) ) {
+			if( ( edge->v1 == vert && !edge->v1link ) ||
+					( edge->v2 == vert && !edge->v2link ) ) {
 				// is is occasionally possible to get a vert
 				// with only a single edge when colinear optimizations
 				// crunch down a complex sliver
@@ -1569,6 +1569,11 @@ static void SeparateIslands( optimizeGroup_t *opt ) {
 	}
 }
 
+/*
+====================
+DontSeparateIslands
+====================
+*/
 static void DontSeparateIslands( optimizeGroup_t *opt ) {
 	int		i;
 	optIsland_t	island;

@@ -157,7 +157,6 @@ public:
 		return m_axisVert;
 	};
 	void AnalogMouseZoom( int mouseDeltaY );
-
 	bool RogueClipMode();
 	bool ClipMode();
 	void SetClipMode( bool bMode );
@@ -174,6 +173,7 @@ public:
 	bool PointMode();
 	void AddPointPoint( UINT nFlags, idVec3 *pVec );
 	void SetPointMode( bool b );
+
 
 	virtual ~CXYWnd();
 	void SetViewType( int n );
@@ -209,48 +209,48 @@ public:
 	int m_mouseX;
 	int m_mouseY;
 
+
 	// Generated message map functions
 protected:
-	int m_nUpdateBits;
-	int m_nWidth;
-	int m_nHeight;
+	int		m_nUpdateBits;
+	int		m_nWidth;
+	int		m_nHeight;
 	float	m_fScale;
 	float	m_TopClip;
-	float m_BottomClip;
-	bool m_bDirty;
-	idVec3 m_vOrigin;
-	CPoint m_ptCursor;
-	bool m_bRButtonDown;
+	float	m_BottomClip;
+	bool	m_bDirty;
+	idVec3	m_vOrigin;
+	CPoint	m_ptCursor;
+	bool	m_bRButtonDown;
 
-	int	m_nButtonstate;
-	int m_nPressx;
-	int m_nPressy;
-	idVec3 m_vPressdelta;
-	bool m_bPress_selection;
+	int		m_nButtonstate;
+	int		m_nPressx;
+	int		m_nPressy;
+	idVec3	m_vPressdelta;
+	bool	m_bPress_selection;
 
-	int m_axisHoriz; //  <axisHoriz> and <axisVert> are one of AXIS_X, AXIS_Y, AXIS_Z and
-	int m_axisVert;	 //  reflect which axes are represented horizontally and vertically in the 2d view (XY, XZ, etc)
+	int		m_axisHoriz; //  <axisHoriz> and <axisVert> are one of AXIS_X, AXIS_Y, AXIS_Z and
+	int		m_axisVert;	 //  reflect which axes are represented horizontally and vertically in the 2d view (XY, XZ, etc)
 
 	/// Each of the following _mc fields are stored in map-coordinates, NOT screen-pixels
-	float m_mcWidth;
-	float m_mcHeight;
-	float m_mcLeft;
-	float m_mcRight;
-	float m_mcTop;
-	float m_mcBottom;
+	float	m_mcWidth;
+	float	m_mcHeight;
+	float	m_mcLeft;
+	float	m_mcRight;
+	float	m_mcTop;
+	float	m_mcBottom;
 
+	friend	CCamWnd;
 
-	friend CCamWnd;
-	//friend C3DFXCamWnd;
+	CMenu	m_mnuDrop;
+	int		m_nViewType;
 
-	CMenu m_mnuDrop;
-	int m_nViewType;
-
-	unsigned int m_nTimerID;
-	int m_nScrollFlags;
-	CPoint m_ptDrag;
-	CPoint m_ptDragAdj;
-	CPoint m_ptDragTotal;
+	unsigned int	m_nTimerID;
+	int				m_nScrollFlags;
+	CPoint	m_ptDrag;
+	CPoint	m_ptDragAdj;
+	CPoint	m_ptDragTotal;
+	CPoint	m_ptDown;
 
 	void OriginalButtonUp( UINT nFlags, CPoint point );
 	void OriginalButtonDown( UINT nFlags, CPoint point );
@@ -259,9 +259,8 @@ protected:
 	void HandleDrop();
 	void PaintSizeInfo( int nDim1, int nDim2, idVec3 vMinBounds, idVec3 vMaxBounds );
 	void DrawSelectedCentroid( int nDim1, int nDim2, idVec3 vMinBounds, idVec3 vMaxBounds );
-
 	void OnEntityCreate( unsigned int nID );
-	CPoint m_ptDown;
+
 	//{{AFX_MSG(CXYWnd)
 	afx_msg int OnCreate( LPCREATESTRUCT lpCreateStruct );
 	afx_msg void OnLButtonDown( UINT nFlags, CPoint point );
@@ -289,8 +288,6 @@ protected:
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
-
-extern void DrawPathLines();
 
 /////////////////////////////////////////////////////////////////////////////
 

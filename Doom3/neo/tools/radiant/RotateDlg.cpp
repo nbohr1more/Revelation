@@ -43,7 +43,7 @@ static char THIS_FILE[] = __FILE__;
 // CRotateDlg dialog
 
 
-CRotateDlg::CRotateDlg( CWnd *pParent )
+CRotateDlg::CRotateDlg( CWnd *pParent /*=NULL*/ )
 	: CDialog( CRotateDlg::IDD, pParent ) {
 	//{{AFX_DATA_INIT(CRotateDlg)
 	m_strX = _T( "" );

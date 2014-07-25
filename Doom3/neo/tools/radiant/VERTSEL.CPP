@@ -309,10 +309,7 @@ void SelectVertexByRay( idVec3 org, idVec3 dir ) {
 	}
 	Sys_Status( "hit vertex\n" );
 	g_qeglobals.d_move_points[g_qeglobals.d_num_move_points++] = &g_qeglobals.d_points[besti];
-	// SelectVertex (besti);
 }
-
-extern void AddPatchMovePoint( idVec3 v, bool bMulti, bool bFull );
 
 /*
  =======================================================================================================================

@@ -34,7 +34,6 @@ If you have questions concerning this license or the applicable additional terms
 #include "XYWnd.h"
 #include "CamWnd.h"
 #include "splines.h"
-#include "select.H"
 #include <GL/glu.h>
 
 #include "../../renderer/tr_local.h"
@@ -45,6 +44,8 @@ If you have questions concerning this license or the applicable additional terms
 #undef THIS_FILE
 static char THIS_FILE[] = __FILE__;
 #endif
+
+
 
 int g_axialAnchor = -1;
 int g_axialDest = -1;
@@ -119,6 +120,7 @@ BEGIN_MESSAGE_MAP( CCamWnd, CWnd )
 	ON_WM_TIMER()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
+
 /*
  =======================================================================================================================
  =======================================================================================================================
@@ -163,7 +165,7 @@ BOOL CCamWnd::PreCreateWindow( CREATESTRUCT &cs ) {
 	if( cs.style != QE3_CHILDSTYLE ) {
 		cs.style = QE3_SPLITTER_STYLE;
 	}
-	BOOL	bResult = CWnd::PreCreateWindow( cs );
+	BOOL bResult = CWnd::PreCreateWindow( cs );
 	//
 	// See if the class already exists and if not then we need to register our new
 	// window class.
@@ -338,7 +340,7 @@ int CCamWnd::OnCreate( LPCREATESTRUCT lpCreateStruct ) {
 	if( !wglUseFontBitmaps( hDC, 0, 255, g_qeglobals.d_font_list ) ) {
 		common->Warning( "wglUseFontBitmaps failed (%d).  Trying again.", GetLastError() );
 		// FIXME: This is really wacky, sometimes the first call fails, but calling it again makes it work
-		//		This probably indicates there's something wrong somewhere else in the code, but I'm not sure what
+		// This probably indicates there's something wrong somewhere else in the code, but I'm not sure what
 		if( !wglUseFontBitmaps( hDC, 0, 255, g_qeglobals.d_font_list ) ) {
 			common->Warning( "wglUseFontBitmaps failed again (%d).  Trying outlines.", GetLastError() );
 			if( !wglUseFontOutlines( hDC, 0, 255, g_qeglobals.d_font_list, 0.0f, 0.1f, WGL_FONT_LINES, NULL ) ) {
@@ -376,10 +378,12 @@ void CCamWnd::OriginalMouseUp( UINT nFlags, CPoint point ) {
  =======================================================================================================================
  */
 void CCamWnd::OriginalMouseDown( UINT nFlags, CPoint point ) {
-	CRect r;
+	// if (GetTopWindow()->GetSafeHwnd() != GetSafeHwnd()) BringWindowToTop();
+	CRect	r;
 	GetClientRect( r );
 	SetFocus();
 	SetCapture();
+	// if (!(GetAsyncKeyState(VK_MENU) & 0x8000))
 	Cam_MouseDown( point.x, r.bottom - 1 - point.y, nFlags );
 }
 
@@ -388,6 +392,7 @@ void CCamWnd::OriginalMouseDown( UINT nFlags, CPoint point ) {
  =======================================================================================================================
  */
 void CCamWnd::Cam_Init() {
+	// m_Camera.draw_mode = cd_texture;
 	m_Camera.origin[0] = 0.0f;
 	m_Camera.origin[1] = 20.0f;
 	m_Camera.origin[2] = 72.0f;
@@ -514,20 +519,29 @@ void CCamWnd::Cam_MouseControl( float dtime ) {
 	xh = xl * 2;
 	yl = m_Camera.height / 3;
 	yh = yl * 2;
-	xf *= 1.0f - idMath::Fabs( yf );
-	if( xf < 0.0f ) {
-		xf += 0.1f;
-		if( xf > 0.0f ) {
-			xf = 0.0f;
-		}
-	} else {
-		xf -= 0.1f;
+	// common->Printf("xf-%f yf-%f xl-%i xh-i% yl-i% yh-i%\n",xf,yf,xl,xh,yl,yh);
+#if 0
+	// strafe
+	if( buttony < yl && ( buttonx < xl || buttonx > xh ) ) {
+		VectorMA( camera.origin, xf * dtime * g_nMoveSpeed, camera.right, camera.origin );
+	} else
+#endif
+	{
+		xf *= 1.0f - idMath::Fabs( yf );
 		if( xf < 0.0f ) {
-			xf = 0.0f;
+			xf += 0.1f;
+			if( xf > 0.0f ) {
+				xf = 0.0f;
+			}
+		} else {
+			xf -= 0.1f;
+			if( xf < 0.0f ) {
+				xf = 0.0f;
+			}
 		}
+		VectorMA( m_Camera.origin, yf * dtime * g_PrefsDlg.m_nMoveSpeed, m_Camera.forward, m_Camera.origin );
+		m_Camera.angles[YAW] += xf * -dtime * g_PrefsDlg.m_nAngleSpeed;
 	}
-	VectorMA( m_Camera.origin, yf * dtime * g_PrefsDlg.m_nMoveSpeed, m_Camera.forward, m_Camera.origin );
-	m_Camera.angles[YAW] += xf * -dtime * g_PrefsDlg.m_nAngleSpeed;
 	Cam_BuildMatrix();
 	int nUpdate = ( g_PrefsDlg.m_bCamXYUpdate ) ? ( W_CAMERA | W_XY ) : ( W_CAMERA );
 	Sys_UpdateWindows( nUpdate );
@@ -560,7 +574,8 @@ void CCamWnd::Cam_MouseDown( int x, int y, int buttons ) {
 	// button = set single face to texture
 	//
 	int nMouseButton = g_PrefsDlg.m_nMouseButtons == 2 ? MK_RBUTTON : MK_MBUTTON;
-	if (   
+	if
+	(
 		( buttons == MK_LBUTTON ) ||
 		( buttons == ( MK_LBUTTON | MK_SHIFT ) ) ||
 		( buttons == ( MK_LBUTTON | MK_CONTROL ) ) ||
@@ -685,6 +700,26 @@ bool CCamWnd::CullBrush( brush_t *b, bool cubicOnly ) {
 	return false;
 }
 
+#if 0
+
+/*
+ =======================================================================================================================
+ =======================================================================================================================
+ */
+void CCamWnd::DrawLightRadius( brush_t *pBrush ) {
+	// if lighting
+	int nRadius = Brush_LightRadius( pBrush );
+	if( nRadius > 0 ) {
+		Brush_SetLightColor( pBrush );
+		glEnable( GL_BLEND );
+		glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );
+		glBlendFunc( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+		glDisable( GL_BLEND );
+		glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+	}
+}
+#endif
+
 /*
  =======================================================================================================================
  =======================================================================================================================
@@ -760,8 +795,13 @@ void DrawAxial( face_t *selFace ) {
  =======================================================================================================================
  */
 void CCamWnd::SetProjectionMatrix() {
-	float	xfov = 90;
-	float	yfov = 2 * atan( ( float )m_Camera.height / m_Camera.width ) * idMath::M_RAD2DEG;
+	float xfov = 90;
+	float yfov = 2 * atan( ( float )m_Camera.height / m_Camera.width ) * idMath::M_RAD2DEG;
+#if 0
+	float screenaspect = ( float )m_Camera.width / m_Camera.height;
+	glLoadIdentity();
+	gluPerspective( yfov, screenaspect, 2, 8192 );
+#else
 	float	xmin, xmax, ymin, ymax;
 	float	width, height;
 	float	zNear;
@@ -794,6 +834,7 @@ void CCamWnd::SetProjectionMatrix() {
 	projectionMatrix[11] = -1;
 	projectionMatrix[15] = 0;
 	glLoadMatrixf( projectionMatrix );
+#endif
 }
 
 void CCamWnd::Cam_Draw() {
@@ -981,6 +1022,49 @@ void CCamWnd::OnKeyUp( UINT nChar, UINT nRepCnt, UINT nFlags ) {
 //    Timo brush primitive texture shifting, using camera view to select translations::
 // =======================================================================================================================
 //
+void CCamWnd::ShiftTexture_BrushPrimit( face_t *f, int x, int y ) {
+	/*
+		idVec3	texS, texT;
+		idVec3	viewX, viewY;
+		int		XS, XT, YS, YT;
+		int		outS, outT;
+	#ifdef _DEBUG
+		if (!g_qeglobals.m_bBrushPrimitMode) {
+			common->Printf("Warning : unexpected call to CCamWnd::ShiftTexture_BrushPrimit with brush primitive mode disbaled\n");
+			return;
+		}
+	#endif
+		// compute face axis base
+		//ComputeAxisBase(f->plane.Normal(), texS, texT);
+
+		// compute camera view vectors
+		VectorCopy(m_Camera.vup, viewY);
+		VectorCopy(m_Camera.vright, viewX);
+
+		// compute best vectors
+		//ComputeBest2DVector(viewX, texS, texT, XS, XT);
+		//ComputeBest2DVector(viewY, texS, texT, YS, YT);
+
+		// check this is not a degenerate case
+		if ((XS == YS) && (XT == YT))
+		{
+	#ifdef _DEBUG
+			common->Printf("Warning : degenerate best vectors axis base in CCamWnd::ShiftTexture_BrushPrimit\n");
+	#endif
+			// forget it
+			Select_ShiftTexture_BrushPrimit(f, x, y, false);
+			return;
+		}
+
+		// compute best fitted translation in face axis base
+		outS = XS * x + YS * y;
+		outT = XT * x + YT * y;
+
+		// call actual texture shifting code
+		Select_ShiftTexture_BrushPrimit(f, outS, outT, false);
+	*/
+}
+
 
 bool IsBModel( brush_t *b ) {
 	const char *v = ValueForKey( b->owner, "model" );
@@ -998,6 +1082,8 @@ BuildEntityRenderState
 Creates or updates modelDef and lightDef for an entity
 ================
 */
+int Brush_ToTris( brush_t *brush, idTriList *tris, idMatList *mats, bool models, bool bmodel );
+
 void CCamWnd::BuildEntityRenderState( entity_t *ent, bool update ) {
 	const char	*v;
 	idDict		spawnArgs;
@@ -1224,6 +1310,7 @@ int Brush_TransformModel( brush_t *brush, idTriList *tris, idMatList *mats ) {
 	return ret;
 }
 
+
 #define	MAX_TRI_SURFACES	16384
 int Brush_ToTris( brush_t *brush, idTriList *tris, idMatList *mats, bool models, bool bmodel ) {
 	int i, j;
@@ -1289,6 +1376,8 @@ int Brush_ToTris( brush_t *brush, idTriList *tris, idMatList *mats, bool models,
 		delete cp;
 		tris->Append( tri );
 		mats->Append( pm->d_texture );
+		//surfaces[numSurfaces] = tri;
+		//materials[numSurfaces] = pm->d_texture;
 		return 1;
 	}
 	//
@@ -1391,8 +1480,8 @@ so it can be rendered by the game renderSystem
 */
 void CCamWnd::BuildRendererState() {
 	renderEntity_t	worldEntity;
-	entity_t		*ent;
-	brush_t			*brush;
+	entity_t	*ent;
+	brush_t		*brush;
 	FreeRendererState();
 	// the renderWorld holds all the references and defs
 	g_qeglobals.rw->InitFromMap( NULL );
@@ -1515,6 +1604,7 @@ void CCamWnd::FreeRendererState() {
 	}
 }
 
+
 /*
 ========================
 CCamWnd::UpdateCaption
@@ -1575,6 +1665,7 @@ void CCamWnd::ToggleEntityMode() {
 	UpdateCaption();
 }
 
+
 /*
 ===========================
 CCamWnd::ToggleRenderMode
@@ -1631,6 +1722,7 @@ void CCamWnd::MarkWorldDirty() {
 	UpdateCaption();
 }
 
+
 /*
 =========================
 CCamWnd::DrawEntityData
@@ -1638,8 +1730,6 @@ CCamWnd::DrawEntityData
   Draws entity data ( experimental )
 =========================
 */
-extern void glBox( idVec4 &color, idVec3 &point, float size );
-
 void CCamWnd::DrawEntityData() {
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
@@ -1683,6 +1773,7 @@ void CCamWnd::DrawEntityData() {
 	}
 }
 
+
 /*
  =======================================================================================================================
     Cam_Render
@@ -1692,7 +1783,7 @@ void CCamWnd::DrawEntityData() {
  */
 void CCamWnd::Cam_Render() {
 	renderView_t	refdef;
-	CPaintDC	dc( this );		// device context for painting
+	CPaintDC	dc( this );	// device context for painting
 	if( !active_brushes.next ) {
 		return;					// not valid yet
 	}
@@ -1702,9 +1793,11 @@ void CCamWnd::Cam_Render() {
 		return;
 	}
 	// save the editor state
+	//glPushAttrib( GL_ALL_ATTRIB_BITS );
 	glClearColor( 0.1f, 0.1f, 0.1f, 0.0f );
 	glScissor( 0, 0, m_Camera.width, m_Camera.height );
 	glClear( GL_COLOR_BUFFER_BIT );
+	//	wglSwapBuffers(dc.m_hDC);
 	// create the model, using explicit normals
 	if( rebuildMode && worldDirty ) {
 		BuildRendererState();
@@ -1726,11 +1819,16 @@ void CCamWnd::Cam_Render() {
 	g_qeglobals.rw->RenderScene( &refdef );
 	int	frontEnd, backEnd;
 	renderSystem->EndFrame( &frontEnd, &backEnd );
+	//common->Printf( "front:%i back:%i\n", frontEnd, backEnd );
+	//glPopAttrib();
+	//DrawEntityData();
+	//wglSwapBuffers(dc.m_hDC);
 	// get back to the editor state
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
 	Cam_BuildMatrix();
 }
+
 
 void CCamWnd::OnTimer( UINT nIDEvent ) {
 	if( animationMode || nIDEvent == 1 ) {
@@ -1743,6 +1841,7 @@ void CCamWnd::OnTimer( UINT nIDEvent ) {
 		KillTimer( 0 );
 	}
 }
+
 
 void CCamWnd::UpdateCameraView() {
 	if( QE_SingleBrush( true, true ) ) {

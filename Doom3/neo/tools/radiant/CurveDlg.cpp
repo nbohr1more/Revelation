@@ -37,7 +37,7 @@ If you have questions concerning this license or the applicable additional terms
 // CCurveDlg dialog
 
 IMPLEMENT_DYNAMIC( CCurveDlg, CDialog )
-CCurveDlg::CCurveDlg( CWnd *pParent )
+CCurveDlg::CCurveDlg( CWnd *pParent /*=NULL*/ )
 	: CDialog( CCurveDlg::IDD, pParent ) {
 }
 

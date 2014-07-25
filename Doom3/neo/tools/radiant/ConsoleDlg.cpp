@@ -33,9 +33,11 @@ If you have questions concerning this license or the applicable additional terms
 #include "Radiant.h"
 #include "ConsoleDlg.h"
 
+
 // CConsoleDlg dialog
+
 IMPLEMENT_DYNCREATE( CConsoleDlg, CDialog )
-CConsoleDlg::CConsoleDlg( CWnd *pParent )
+CConsoleDlg::CConsoleDlg( CWnd *pParent /*=NULL*/ )
 	: CDialog( CConsoleDlg::IDD ) {
 	currentHistoryPosition = -1;
 	currentCommand = "";
@@ -101,7 +103,7 @@ BOOL CConsoleDlg::PreTranslateMessage( MSG *pMsg ) {
 			ExecuteCommand();
 			return TRUE;
 		}
-		if( pMsg->message == WM_KEYDOWN ) {
+		if( pMsg->message == WM_KEYDOWN && pMsg->wParam == VK_ESCAPE ) {
 			if( pMsg->wParam == VK_ESCAPE ) {
 				g_pParentWnd->GetCamera()->SetFocus();
 				Select_Deselect();

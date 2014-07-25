@@ -36,7 +36,7 @@ If you have questions concerning this license or the applicable additional terms
 #include "../../renderer/model_local.h"	// for idRenderModelMD5
 
 void	Brush_UpdateLightPoints( brush_t *b, const idVec3 &offset );
-void Brush_DrawCurve( brush_t *b, bool bSelected, bool cam );
+void	Brush_DrawCurve( brush_t *b, bool bSelected, bool cam );
 
 // globals
 int		g_nBrushId = 0;
@@ -1021,7 +1021,7 @@ int Brush_MoveVertex( brush_t *b, const idVec3 &vertex, const idVec3 &delta, idV
 				VectorCopy( ( *w )[( k + 1 ) % w->GetNumPoints()], tmpw[2] );
 				if( !plane.FromPoints( tmpw[0].ToVec3(), tmpw[1].ToVec3(), tmpw[2].ToVec3(), false ) ) {
 					VectorCopy( ( *w )[( k + 2 ) % w->GetNumPoints()], tmpw[2] );
-					if( !plane.FromPoints( tmpw[0].ToVec3(), tmpw[1].ToVec3(), tmpw[2].ToVec3(), false ) ) {  // V639
+					if( !plane.FromPoints( tmpw[0].ToVec3(), tmpw[1].ToVec3(), tmpw[2].ToVec3() ), false ) {
 						// this should never happen otherwise the face merge did
 						// a crappy job a previous pass
 						continue;
@@ -1305,7 +1305,7 @@ brush_t *Brush_Parse( idVec3 origin ) {
 		GetToken( false );
 		f->texdef.SetName( token );
 		if( token[0] == '(' ) {
-			i = 32;
+			int i = 32;
 		}
 		GetToken( false );
 		f->texdef.shift[0] = atoi( token );
@@ -1329,7 +1329,7 @@ brush_t *Brush_Parse( idVec3 origin ) {
 			GetToken( false );
 			f->texdef.value = atoi( token );
 		}
-	} while( true );
+	} while( 1 );
 	return b;
 }
 
@@ -1349,7 +1349,7 @@ void WINAPI QERApp_MapPrintf_FILE( char *text, ... ) {
 	va_start( argptr, text );
 	vsprintf( buf, text, argptr );
 	va_end( argptr );
-	fprintf( g_File, "%s", buf );
+	fprintf( g_File, buf );
 }
 
 /*
@@ -2596,17 +2596,11 @@ void Brush_SideSelect( brush_t *b, idVec3 origin, idVec3 dir, bool shear ) {
 	}
 }
 
-extern void UpdateSelectablePoint( brush_t *b, idVec3 v, int type );
-extern void	AddSelectablePoint( brush_t *b, idVec3 v, int type, bool priority );
-extern void	ClearSelectablePoints( brush_t *b );
-
 /*
 ================
 Brush_TransformedPoint
 ================
 */
-extern void VectorSnapGrid( idVec3 &v );
-
 idMat3 Brush_RotationMatrix( brush_t *b ) {
 	idMat3 mat;
 	mat.Identity();
@@ -2897,8 +2891,6 @@ void Brush_Rotate( brush_t *b, idMat3 matrix, idVec3 origin, bool bBuild ) {
 		Brush_Build( b, false, false );
 	}
 }
-
-extern void VectorRotate3Origin( const idVec3 &vIn, const idVec3 &vRotation, const idVec3 &vOrigin, idVec3 &out );
 
 /*
 ================
@@ -4427,8 +4419,6 @@ void Brush_MakeSidedSphere( int sides ) {
 	Brush_Build( b );
 	Sys_UpdateWindows( W_ALL );
 }
-
-extern void Face_FitTexture_BrushPrimit( face_t *f, idVec3 mins, idVec3 maxs, float nHeight, float nWidth );
 
 /*
 ================

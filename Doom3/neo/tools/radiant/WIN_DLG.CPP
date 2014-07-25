@@ -317,20 +317,17 @@ void GetSelectionIndex( int *ent, int *brush ) {
 			;
 	}
 	// find brush
-	for( b2 = b->owner->brushes.onext
-			  ; b2 != b && b2 != &b->owner->brushes
-			; b2 = b2->onext, ( *brush )++ )
-		;
+	for( b2 = b->owner->brushes.onext; b2 != b && b2 != &b->owner->brushes; b2 = b2->onext, ( *brush )++ );
 }
 
 BOOL CALLBACK FindBrushDlgProc(
-	HWND hwndDlg,	// handle to dialog box
-	UINT uMsg,	// message
-	WPARAM wParam,	// first message parameter
-	LPARAM lParam 	// second message parameter
+	HWND	hwndDlg,	// handle to dialog box
+	UINT	uMsg,	// message
+	WPARAM	wParam,	// first message parameter
+	LPARAM	lParam 	// second message parameter
 ) {
-	char entstr[256];
-	char brushstr[256];
+	char	entstr[256];
+	char	brushstr[256];
 	HWND	h;
 	int		ent, brush;
 	switch( uMsg ) {
@@ -360,8 +357,6 @@ BOOL CALLBACK FindBrushDlgProc(
 	return FALSE;
 }
 
-
-
 void DoFind( void ) {
 	DialogBox( g_qeglobals.d_hInstance, ( char * )IDD_FINDBRUSH, g_pParentWnd->GetSafeHwnd(), FindBrushDlgProc );
 }
@@ -373,8 +368,6 @@ void DoFind( void ) {
 
 ===================================================
 */
-
-
 BOOL CALLBACK RotateDlgProc(
 	HWND hwndDlg,	// handle to dialog box
 	UINT uMsg,	// message
@@ -416,8 +409,6 @@ BOOL CALLBACK RotateDlgProc(
 	}
 	return FALSE;
 }
-
-
 
 void DoRotate( void ) {
 	DialogBox( g_qeglobals.d_hInstance, ( char * )IDD_ROTATE, g_pParentWnd->GetSafeHwnd(), RotateDlgProc );
@@ -468,14 +459,11 @@ BOOL CALLBACK SidesDlgProc(
 	}
 }
 
-
 void DoSides( bool bCone, bool bSphere, bool bTorus ) {
 	g_bDoCone = bCone;
 	g_bDoSphere = bSphere;
-	//g_bDoTorus = bTorus;
 	DialogBox( g_qeglobals.d_hInstance, ( char * )IDD_SIDES, g_pParentWnd->GetSafeHwnd(), SidesDlgProc );
 }
-
 
 //======================================================================
 

@@ -27,6 +27,7 @@ If you have questions concerning this license or the applicable additional terms
 */
 
 // brush.h
+#include "externals.h"
 
 brush_t 	*Brush_Alloc();
 void		Brush_Free( brush_t *b, bool bRemoveNode = true );
@@ -37,7 +38,7 @@ void		Brush_Move( brush_t *b, const idVec3 move, bool bSnap = true, bool updateO
 int			Brush_MoveVertex( brush_t *b, const idVec3 &vertex, const idVec3 &delta, idVec3 &end, bool bSnap );
 void		Brush_ResetFaceOriginals( brush_t *b );
 brush_t 	*Brush_Parse( const idVec3 origin );
-face_t 	*Brush_Ray( idVec3 origin, idVec3 dir, brush_t *b, float *dist, bool testPrimitive = false );
+face_t 		*Brush_Ray( idVec3 origin, idVec3 dir, brush_t *b, float *dist, bool testPrimitive = false );
 void		Brush_RemoveFromList( brush_t *b );
 void		Brush_AddToList( brush_t *b, brush_t *list );
 void		Brush_Build( brush_t *b, bool bSnap = true, bool bMarkMap = true, bool bConvert = false, bool updateLights = true );
@@ -67,9 +68,9 @@ const char *Brush_Name( brush_t *b );
 void		Brush_RebuildBrush( brush_t *b, idVec3 vMins, idVec3 vMaxs, bool patch = true );
 void		Brush_GetBounds( brush_t *b, idBounds &bo );
 
-face_t 	*Face_Alloc( void );
+face_t 		*Face_Alloc( void );
 void		Face_Free( face_t *f );
-face_t 	*Face_Clone( face_t *f );
+face_t 		*Face_Clone( face_t *f );
 void		Face_MakePlane( face_t *f );
 void		Face_Draw( face_t *face );
 void		Face_TextureVectors( face_t *f, float STfromXYZ[2][4] );

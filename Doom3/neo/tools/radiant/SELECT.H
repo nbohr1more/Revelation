@@ -29,6 +29,8 @@ If you have questions concerning this license or the applicable additional terms
 #ifndef __SELECT_H_
 #define __SELECT_H_
 
+#include "externals.h"
+
 typedef enum {
 	sel_brush,
 	// sel_sticky_brush,
@@ -61,6 +63,7 @@ public:
 		VectorCopy( v, vec );
 		nType = type;
 	}
+
 	bool PointWithin( idVec3 p, int nView = -1 );
 };
 
@@ -80,6 +83,7 @@ typedef struct {
 #define SF_IGNORECURVES    0x08
 #define SF_IGNOREGROUPS    0x10
 #define SF_CYCLE           0x20
+
 
 qertrace_t Test_Ray( const idVec3 &origin, const idVec3 &dir, int flags );
 CDragPoint *PointRay( const idVec3 &org, const idVec3 &dir, float *dist );

@@ -33,6 +33,7 @@ If you have questions concerning this license or the applicable additional terms
 #endif // _MSC_VER >= 1000
 // SurfaceDlg.h : header file
 //
+#include "externals.h"
 
 /////////////////////////////////////////////////////////////////////////////
 // CSurfaceDlg dialog
@@ -74,7 +75,8 @@ public:
 	float	m_fWidth;
 	BOOL	m_absolute;
 	//}}AFX_DATA
-	
+
+
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CSurfaceDlg)
@@ -90,12 +92,12 @@ protected:
 
 	void UpdateSpinners( int nScrollCode, int nPos, CScrollBar *pBar );
 	void UpdateSpinners( bool bUp, int nID );
-	bool ByeByeSurfaceDialog();
 	// Generated message map functions
 	//{{AFX_MSG(CSurfaceDlg)
 	virtual BOOL OnInitDialog();
 	afx_msg void OnHScroll( UINT nSBCode, UINT nPos, CScrollBar *pScrollBar );
 	afx_msg void OnKeyDown( UINT nChar, UINT nRepCnt, UINT nFlags );
+	afx_msg void OnVScroll( UINT nSBCode, UINT nPos, CScrollBar *pScrollBar );
 	afx_msg void OnApply();
 	virtual void OnOK();
 	afx_msg void OnClose();

@@ -51,7 +51,7 @@ void CEntityListDlg::ShowDialog() {
 	g_EntityListDlg.ShowWindow( SW_SHOW );
 }
 
-CEntityListDlg::CEntityListDlg( CWnd *pParent )
+CEntityListDlg::CEntityListDlg( CWnd *pParent /*=NULL*/ )
 	: CDialog( CEntityListDlg::IDD, pParent ) {
 	//{{AFX_DATA_INIT(CEntityListDlg)
 	//}}AFX_DATA_INIT

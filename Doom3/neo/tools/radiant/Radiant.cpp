@@ -125,14 +125,12 @@ void RadiantInit( void ) {
 		// Perform specific initializations
 		pThread->InitInstance();
 		glFinish();
+		//wglMakeCurrent(0, 0);
 		wglMakeCurrent( win32.hDC, win32.hGLRC );
 		// hide the doom window by default
 		::ShowWindow( win32.hWnd, SW_HIDE );
 	}
 }
-
-
-extern void Map_VerifyCurrentMap( const char *map );
 
 void RadiantSync( const char *mapName, const idVec3 &viewOrg, const idAngles &viewAngles ) {
 	if( g_DoomInstance == NULL ) {
@@ -156,8 +154,11 @@ void RadiantRun( void ) {
 	int show = ::IsWindowVisible( win32.hWnd );
 	try {
 		if( !exceptionErr && !show ) {
+			//glPushAttrib(GL_ALL_ATTRIB_BITS);
 			glDepthMask( true );
 			theApp.Run();
+			//glPopAttrib();
+			//wglMakeCurrent(0, 0);
 			wglMakeCurrent( win32.hDC, win32.hGLRC );
 		}
 	} catch( idException &ex ) {
@@ -236,7 +237,7 @@ BOOL CRadiantApp::InitInstance() {
 				}
 			}
 			i++;
-		} while( true );
+		} while( 1 );
 		g_qeglobals.use_ini = true;
 	} else {
 		// Change the registry key under which our settings are stored.

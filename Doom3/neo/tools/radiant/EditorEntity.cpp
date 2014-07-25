@@ -36,8 +36,6 @@ int g_entityId = 1;
 
 #define CURVE_TAG "curve_"
 
-extern void Brush_Resize( brush_t *b, idVec3 vMin, idVec3 vMax );
-
 int	GetNumKeys( entity_t *ent ) {
 	//	int iCount = 0;
 	//	for (epair_t* ep=ent->epairs ; ep ; ep=ep->next)
@@ -615,8 +613,6 @@ entity_t *Entity_PostParse( entity_t *ent, brush_t *pList ) {
 			b->modelHandle = modelHandle;
 			float		yaw = 0;
 			bool		convertAngles = GetFloatForKey( ent, "angle", &yaw );
-			extern void Brush_Rotate( brush_t * b, idMat3 matrix, idVec3 origin, bool bBuild );
-			extern void Brush_Rotate( brush_t * b, idVec3 rot, idVec3 origin, bool bBuild );
 			if( convertAngles ) {
 				idVec3	rot( 0, 0, yaw );
 				Brush_Rotate( b, rot, ent->origin, false );
@@ -750,7 +746,7 @@ entity_t *Entity_Parse( bool onlypairs, brush_t *pList ) {
 		} else {
 			ParseEpair( &ent->epairs );
 		}
-	} while( true );
+	} while( 1 );
 	if( onlypairs ) {
 		return ent;
 	}

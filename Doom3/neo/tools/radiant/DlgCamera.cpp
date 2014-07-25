@@ -64,7 +64,7 @@ void showCameraInspector() {
 // CDlgCamera dialog
 
 
-CDlgCamera::CDlgCamera( CWnd *pParent )
+CDlgCamera::CDlgCamera( CWnd *pParent /*=NULL*/ )
 	: CDialog( CDlgCamera::IDD, pParent ) {
 	//{{AFX_DATA_INIT(CDlgCamera)
 	m_strName = _T( "" );

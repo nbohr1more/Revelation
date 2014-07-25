@@ -39,6 +39,8 @@ If you have questions concerning this license or the applicable additional terms
 static char THIS_FILE[] = __FILE__;
 #endif
 
+
+
 /////////////////////////////////////////////////////////////////////////////
 // idGLWidget
 class idMiniDrawVert {
@@ -105,6 +107,7 @@ idGLWidget::idGLWidget() {
 
 idGLWidget::~idGLWidget() {
 }
+
 
 BEGIN_MESSAGE_MAP( idGLWidget, CWnd )
 	//{{AFX_MSG_MAP(idGLWidget)
@@ -230,6 +233,7 @@ void idGLDrawable::mouseMove( float x, float y ) {
 				yOffset -= ( y - pressY );
 				pressY = y;
 			}
+			//::SetCursorPos(pressX, pressY);
 		}
 	}
 }
@@ -316,9 +320,11 @@ void idGLDrawableMaterial::mouseMove( float x, float y ) {
 				yOffset -= ( y - pressY );
 				pressY = y;
 			}
+			//::SetCursorPos(pressX, pressY);
 		}
 	}
 }
+
 
 void idGLDrawableMaterial::draw( int x, int y, int w, int h ) {
 	const idMaterial *mat = material;
@@ -550,6 +556,7 @@ void idGLDrawableModel::mouseMove( float x, float y ) {
 					}
 					pressY = y;
 				}
+				//::SetCursorPos(pressX, pressY);
 			}
 		}
 	}
@@ -560,6 +567,9 @@ void idGLDrawableModel::draw( int x, int y, int w, int h ) {
 	if( !worldModel ) {
 		return;
 	}
+	if( worldModel->IsDynamicModel() != DM_STATIC ) {
+		//return;
+	}
 	rect.Set( x, y, w, h );
 	glViewport( x, y, w, h );
 	glScissor( x, y, w, h );
@@ -567,6 +577,7 @@ void idGLDrawableModel::draw( int x, int y, int w, int h ) {
 	glClearColor( 0.1f, 0.1f, 0.1f, 0.0f );
 	glClear( GL_COLOR_BUFFER_BIT );
 	if( worldDirty ) {
+		//InitWorld();
 		world->InitFromMap( NULL );
 		renderLight_t	parms;
 		idDict spawnArgs;
@@ -618,6 +629,8 @@ void idGLDrawableModel::draw( int x, int y, int w, int h ) {
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
 }
+
+
 
 void idGLWidget::OnLButtonDown( UINT nFlags, CPoint point ) {
 	SetCapture();
@@ -767,6 +780,8 @@ BEGIN_MESSAGE_MAP( idGLConsoleWidget, idGLWidget )
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
+
+
 void idGLConsoleWidget::OnKeyUp( UINT nChar, UINT nRepCnt, UINT nFlags ) {
 	sysEvent_t	ev;
 	memset( &ev, 0, sizeof( ev ) );
@@ -794,6 +809,7 @@ void idGLConsoleWidget::OnLButtonDown( UINT nFlags, CPoint point ) {
 
 BOOL idGLWidget::OnEraseBkgnd( CDC *pDC ) {
 	return FALSE;
+	//return CWnd::OnEraseBkgnd(pDC);
 }
 
 

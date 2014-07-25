@@ -33,9 +33,11 @@ If you have questions concerning this license or the applicable additional terms
 #include "Radiant.h"
 #include "CommentsDlg.h"
 
+
 // CCommentsDlg dialog
+
 IMPLEMENT_DYNAMIC( CCommentsDlg, CDialog )
-CCommentsDlg::CCommentsDlg( CWnd *pParent )
+CCommentsDlg::CCommentsDlg( CWnd *pParent /*=NULL*/ )
 	: CDialog( CCommentsDlg::IDD, pParent )
 	, strName( _T( "" ) )
 	, strPath( _T( "" ) )
@@ -52,6 +54,9 @@ void CCommentsDlg::DoDataExchange( CDataExchange *pDX ) {
 	DDX_Text( pDX, IDC_EDIT_COMMENTS, strComments );
 }
 
+
 BEGIN_MESSAGE_MAP( CCommentsDlg, CDialog )
 END_MESSAGE_MAP()
+
+
 // CCommentsDlg message handlers

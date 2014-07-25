@@ -45,6 +45,7 @@ If you have questions concerning this license or the applicable additional terms
 #endif
 
 // DialogAF
+
 #define AFTAB_VIEW				0x01
 #define AFTAB_PROPERTIES		0x02
 #define AFTAB_BODIES			0x03
@@ -62,7 +63,10 @@ toolTip_t DialogAF::toolTips[] = {
 	{ 0, NULL }
 };
 
+
 DialogAF *g_AFDialog = NULL;
+
+
 IMPLEMENT_DYNAMIC( DialogAF, CDialog )
 
 /*
@@ -70,7 +74,7 @@ IMPLEMENT_DYNAMIC( DialogAF, CDialog )
 DialogAF::DialogAF
 ================
 */
-DialogAF::DialogAF( CWnd *pParent )
+DialogAF::DialogAF( CWnd *pParent /*=NULL*/ )
 	: CDialog( DialogAF::IDD, pParent )
 	, file( NULL ) {
 	wndTabs = NULL;
@@ -255,6 +259,7 @@ BOOL DialogAF::OnInitDialog()  {
 	// EXCEPTION: OCX Property Pages should return FALSE
 }
 
+
 BEGIN_MESSAGE_MAP( DialogAF, CDialog )
 	ON_NOTIFY_EX_RANGE( TTN_NEEDTEXTW, 0, 0xFFFF, OnToolTipNotify )
 	ON_NOTIFY_EX_RANGE( TTN_NEEDTEXTA, 0, 0xFFFF, OnToolTipNotify )
@@ -273,6 +278,7 @@ BEGIN_MESSAGE_MAP( DialogAF, CDialog )
 	ON_BN_CLICKED( IDC_BUTTON_AF_TPOSE, OnBnClickedButtonAfTpose )
 END_MESSAGE_MAP()
 
+
 /*
 ================
 AFEditorInit
@@ -290,7 +296,11 @@ void AFEditorInit( const idDict *spawnArgs ) {
 	}
 	if( g_AFDialog->GetSafeHwnd() == NULL ) {
 		g_AFDialog->Create( IDD_DIALOG_AF );
-		// FIXME: restore position
+		/*
+				// FIXME: restore position
+				CRect rct;
+				g_AFDialog->SetWindowPos( NULL, rct.left, rct.top, 0, 0, SWP_NOSIZE );
+		*/
 	}
 	idKeyInput::ClearStates();
 	g_AFDialog->ShowWindow( SW_SHOW );
@@ -319,15 +329,9 @@ void AFEditorRun( void ) {
 #else
 	MSG *msg = &m_msgCur;
 #endif
-	BOOL bDoingBackgroundProcessing = TRUE;
-	while (bDoingBackgroundProcessing) { 
-		while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
-			// pump message
-			if( !AfxGetApp()->PumpMessage() ) {
-				bDoingBackgroundProcessing = FALSE;
-				::PostQuitMessage(0); 
-				break; 
-			}
+	while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
+		// pump message
+		if( !AfxGetApp()->PumpMessage() ) {
 		}
 	}
 }
@@ -342,7 +346,9 @@ void AFEditorShutdown( void ) {
 	g_AFDialog = NULL;
 }
 
+
 // DialogAF message handlers
+
 /*
 ================
 DialogAF::OnActivate
@@ -367,6 +373,7 @@ DialogAF::OnSetFocus
 ================
 */
 void DialogAF::OnSetFocus( CWnd *pOldWnd ) {
+	//SetActiveWindow();
 	CDialog::OnSetFocus( pOldWnd );
 }
 
@@ -484,7 +491,6 @@ void DialogAF::OnBnClickedButtonAfDelete() {
 	if( i != CB_ERR ) {
 		if( MessageBox( "Are you sure you want to delete the articulated figure file ?", "Delete Articulated Figure", MB_YESNO | MB_ICONQUESTION ) == IDYES ) {
 			// FIXME: delete the currently selected .af file
-			return;
 		}
 	}
 }

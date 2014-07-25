@@ -650,7 +650,7 @@ void idSplineList::parse( idParser *src ) {
 	idToken token;
 	idStr key;
 	src->ExpectTokenString( "{" );
-	while( true ) {
+	while( 1 ) {
 		if( !src->ExpectAnyToken( &token ) ) {
 			break;
 		}
@@ -1185,7 +1185,7 @@ void idCameraDef::parse( idParser *src ) {
 	idToken token;
 	src->ReadToken( &token );
 	src->ExpectTokenString( "{" );
-	while( true ) {
+	while( 1 ) {
 		src->ExpectAnyToken( &token );
 		if( token == "}" ) {
 			break;
@@ -1367,7 +1367,7 @@ void idCameraEvent::parse( idParser *src ) {
 	idToken token;
 	idStr key;
 	src->ExpectTokenString( "{" );
-	while( true ) {
+	while( 1 ) {
 		if( !src->ExpectAnyToken( &token ) ) {
 			break;
 		}
@@ -1474,6 +1474,9 @@ bool idCameraPosition::parseToken( const idStr &key, idParser *src ) {
 	} else if( !key.Icmp( "name" ) ) {
 		src->ReadToken( &token );
 		name = token;
+		return true;
+	} else if( !key.Icmp( "time" ) ) {
+		time = src->ParseInt();
 		return true;
 	} else {
 		src->Error( "unknown camera position key: %s", key.c_str() );
@@ -1623,7 +1626,7 @@ idInterpolatedPosition::parse
 void idInterpolatedPosition::parse( idParser *src ) {
 	idToken token;
 	src->ExpectTokenString( "{" );
-	while( true ) {
+	while( 1 ) {
 		if( !src->ExpectAnyToken( &token ) ) {
 			break;
 		}
@@ -1702,7 +1705,7 @@ idCameraFOV::parse
 void idCameraFOV::parse( idParser *src ) {
 	idToken token;
 	src->ExpectTokenString( "{" );
-	while( true ) {
+	while( 1 ) {
 		if( !src->ExpectAnyToken( &token ) ) {
 			break;
 		}
@@ -1754,7 +1757,7 @@ idFixedPosition::parse
 void idFixedPosition::parse( idParser *src ) {
 	idToken token;
 	src->ExpectTokenString( "{" );
-	while( true ) {
+	while( 1 ) {
 		if( !src->ExpectAnyToken( &token ) ) {
 			break;
 		}
@@ -1810,7 +1813,7 @@ idSplinePosition::parse
 void idSplinePosition::parse( idParser *src ) {
 	idToken token;
 	src->ExpectTokenString( "{" );
-	while( true ) {
+	while( 1 ) {
 		if( !src->ExpectAnyToken( &token ) ) {
 			break;
 		}

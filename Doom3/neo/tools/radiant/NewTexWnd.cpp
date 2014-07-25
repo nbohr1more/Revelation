@@ -187,7 +187,7 @@ void CNewTexWnd::OnKeyUp( UINT nChar, UINT nRepCnt, UINT nFlags ) {
  */
 const idMaterial *CNewTexWnd::NextPos() {
 	const idMaterial *mat = NULL;
-	while( true ) {
+	while( 1 ) {
 		if( currentIndex >= declManager->GetNumDecls( DECL_MATERIAL ) ) {
 			return NULL;
 		}
@@ -258,7 +258,7 @@ void CNewTexWnd::OnPaint() {
 		current.y = -8;
 		currentRow = 0;
 		currentIndex = 0;
-		while( true ) {
+		while( 1 ) {
 			const idMaterial *mat = NextPos();
 			if( mat == NULL ) {
 				break;
@@ -411,7 +411,7 @@ const idMaterial *CNewTexWnd::getMaterialAtPoint( CPoint point ) {
 	current.y = -8;
 	currentRow = 0;
 	currentIndex = 0;
-	while( true ) {
+	while( 1 ) {
 		const idMaterial *mat = NextPos();
 		if( mat == NULL ) {
 			return NULL;
@@ -656,7 +656,7 @@ void Texture_ShowInuse( void ) {
 void Texture_Cleanup( CStringList *pList ) {
 }
 
-int	 texture_mode = GL_LINEAR_MIPMAP_NEAREST;
+int				texture_mode = GL_LINEAR_MIPMAP_LINEAR;
 bool texture_showinuse = true;
 
 
@@ -737,7 +737,7 @@ void CNewTexWnd::EnsureTextureIsVisible( const char *name ) {
 	current.y = -8;
 	currentRow = 0;
 	currentIndex = 0;
-	while( true ) {
+	while( 1 ) {
 		const idMaterial *mat = NextPos();
 		if( mat == NULL ) {
 			break;

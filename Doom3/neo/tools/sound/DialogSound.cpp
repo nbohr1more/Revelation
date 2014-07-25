@@ -48,12 +48,13 @@ If you have questions concerning this license or the applicable additional terms
 
 extern HTREEITEM FindTreeItem( CTreeCtrl *tree, HTREEITEM root, const char *text, HTREEITEM forceParent );
 
+
 /////////////////////////////////////////////////////////////////////////////
 // CDialogSound dialog
 CDialogSound *g_SoundDialog = NULL;
 
 
-CDialogSound::CDialogSound( CWnd *pParent )
+CDialogSound::CDialogSound( CWnd *pParent /*=NULL*/ )
 	: CDialog( CDialogSound::IDD, pParent ) {
 	//{{AFX_DATA_INIT(CDialogSound)
 	strName = _T( "" );
@@ -77,6 +78,7 @@ CDialogSound::CDialogSound( CWnd *pParent )
 	unclamped = FALSE;
 	//}}AFX_DATA_INIT
 }
+
 
 void CDialogSound::DoDataExchange( CDataExchange *pDX ) {
 	CDialog::DoDataExchange( pDX );
@@ -177,15 +179,9 @@ void SoundEditorRun( void ) {
 #else
 	MSG *msg = &m_msgCur;
 #endif
-	BOOL bDoingBackgroundProcessing = TRUE;
-	while (bDoingBackgroundProcessing) { 
-		while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
-			// pump message
-			if( !AfxGetApp()->PumpMessage() ) {
-				bDoingBackgroundProcessing = FALSE;
-				::PostQuitMessage(0); 
-				break; 
-			}
+	while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
+		// pump message
+		if( !AfxGetApp()->PumpMessage() ) {
 		}
 	}
 }
@@ -198,10 +194,6 @@ void SoundEditorShutdown( void ) {
 void CDialogSound::OnActivate( UINT nState, CWnd *pWndOther, BOOL bMinimized ) {
 	CDialog::OnActivate( nState, pWndOther, bMinimized );
 	if( nState != WA_INACTIVE ) {
-		common->ActivateTool( true );
-		if( ::IsWindowVisible( win32.hWnd ) ) {
-			::ShowWindow( win32.hWnd, SW_HIDE );
-		}
 	}
 }
 

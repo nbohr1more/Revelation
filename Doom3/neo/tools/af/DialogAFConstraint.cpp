@@ -104,7 +104,7 @@ IMPLEMENT_DYNAMIC( DialogAFConstraint, CDialog )
 DialogAFConstraint::DialogAFConstraint
 ================
 */
-DialogAFConstraint::DialogAFConstraint( CWnd *pParent )
+DialogAFConstraint::DialogAFConstraint( CWnd *pParent /*=NULL*/ )
 	: CDialog( DialogAFConstraint::IDD, pParent )
 	, m_friction( 0 )
 	, constraint( NULL )
