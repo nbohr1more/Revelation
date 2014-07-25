@@ -231,9 +231,9 @@ void RB_RenderDrawSurfListWithFunction( drawSurf_t **drawSurfs, int numDrawSurfs
 		if( r_useScissor.GetBool() && !backEnd.currentScissor.Equals( drawSurf->scissorRect ) ) {
 			backEnd.currentScissor = drawSurf->scissorRect;
 			GL_Scissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
-					   backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
-					   backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
-					   backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
+						backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
+						backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
+						backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
 		}
 		// render it
 		triFunc_( drawSurf );
@@ -267,9 +267,9 @@ void RB_RenderDrawSurfChainWithFunction( const drawSurf_t *drawSurfs, void ( *tr
 		if( r_useScissor.GetBool() && !backEnd.currentScissor.Equals( drawSurf->scissorRect ) ) {
 			backEnd.currentScissor = drawSurf->scissorRect;
 			GL_Scissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
-					   backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
-					   backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
-					   backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
+						backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
+						backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
+						backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
 		}
 		// render it
 		triFunc_( drawSurf );
@@ -336,7 +336,7 @@ void RB_BakeTextureMatrixIntoTexgen( idPlane lightProject[3], const float *textu
 	genMatrix[1 * 4 + 3] = lightProject[2][1];
 	genMatrix[2 * 4 + 3] = lightProject[2][2];
 	genMatrix[3 * 4 + 3] = lightProject[2][3];
-	myGlMultMatrix( genMatrix, backEnd.lightTextureMatrix, final );
+	R_MultiMatrix( genMatrix, backEnd.lightTextureMatrix, final );
 	lightProject[0][0] = final[0 * 4 + 0];
 	lightProject[0][1] = final[1 * 4 + 0];
 	lightProject[0][2] = final[2 * 4 + 0];
@@ -539,9 +539,9 @@ void RB_BeginDrawingView( void ) {
 				backEnd.viewDef->viewport.y2 + 1 - backEnd.viewDef->viewport.y1 );
 	// the scissor may be smaller than the viewport for subviews
 	GL_Scissor( tr.viewportOffset[0] + backEnd.viewDef->viewport.x1 + backEnd.viewDef->scissor.x1,
-			   tr.viewportOffset[1] + backEnd.viewDef->viewport.y1 + backEnd.viewDef->scissor.y1,
-			   backEnd.viewDef->scissor.x2 + 1 - backEnd.viewDef->scissor.x1,
-			   backEnd.viewDef->scissor.y2 + 1 - backEnd.viewDef->scissor.y1 );
+				tr.viewportOffset[1] + backEnd.viewDef->viewport.y1 + backEnd.viewDef->scissor.y1,
+				backEnd.viewDef->scissor.x2 + 1 - backEnd.viewDef->scissor.x1,
+				backEnd.viewDef->scissor.y2 + 1 - backEnd.viewDef->scissor.y1 );
 	backEnd.currentScissor = backEnd.viewDef->scissor;
 	// ensures that depth writes are enabled for the depth clear
 	GL_State( GLS_DEFAULT );
@@ -707,9 +707,9 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void ( *DrawIntera
 	if( r_useScissor.GetBool() && !backEnd.currentScissor.Equals( surf->scissorRect ) ) {
 		backEnd.currentScissor = surf->scissorRect;
 		GL_Scissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
-				   backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
-				   backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
-				   backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
+					backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
+					backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
+					backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
 	}
 	// hack depth range if needed
 	if( surf->space->weaponDepthHack ) {

@@ -127,7 +127,7 @@ bool idRenderSystemLocal::RegisterFont( const char *fontName, fontInfoEx_t &font
 			outFont->glyphs[i].t			= readFloat();
 			outFont->glyphs[i].s2			= readFloat();
 			outFont->glyphs[i].t2			= readFloat();
-			fontEof							= readInt(); 
+			fontEof							= readInt();
 			// V512 unused but cant remove so just null it out.
 			memset( &fontEof, 0, sizeof( int ) );
 			//FIXME: the +6, -6 skips the embedded fonts/

@@ -146,7 +146,7 @@ void R_RenderGuiSurf( idUserInterface *gui, drawSurf_t *drawSurf ) {
 	guiModelMatrix[7] = 0;
 	guiModelMatrix[11] = 0;
 	guiModelMatrix[15] = 1;
-	myGlMultMatrix( guiModelMatrix, drawSurf->space->modelMatrix,
+	R_MultiMatrix( guiModelMatrix, drawSurf->space->modelMatrix,
 					modelMatrix );
 	tr.guiRecursionLevel++;
 	// call the gui, which will call the 2D drawing functions

@@ -166,8 +166,7 @@ void GL_Cull( int cullType ) {
 GL_Scissor
 ====================
 */
-void GL_Scissor( int x /* left*/, int y /* bottom */, int w, int h )
-{
+void GL_Scissor( int x /* left*/, int y /* bottom */, int w, int h ) {
 	glScissor( x, y, w, h );
 }
 
@@ -176,8 +175,7 @@ void GL_Scissor( int x /* left*/, int y /* bottom */, int w, int h )
 GL_Viewport
 ====================
 */
-void GL_Viewport( int x /* left */, int y /* bottom */, int w, int h )
-{
+void GL_Viewport( int x /* left */, int y /* bottom */, int w, int h ) {
 	glViewport( x, y, w, h );
 }
 

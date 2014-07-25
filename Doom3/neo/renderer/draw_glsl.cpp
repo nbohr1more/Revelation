@@ -246,9 +246,9 @@ void RB_GLSL_DrawInteractions( void ) {
 			backEnd.currentScissor = vLight->scissorRect;
 			if( r_useScissor.GetBool() ) {
 				GL_Scissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
-						   backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
-						   backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
-						   backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
+							backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
+							backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
+							backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
 			}
 			glClear( GL_STENCIL_BUFFER_BIT );
 		} else {

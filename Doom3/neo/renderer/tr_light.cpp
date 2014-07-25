@@ -256,7 +256,7 @@ viewEntity_t *R_SetEntityDefViewEntity( idRenderEntityLocal *def ) {
 	R_AxisToModelMatrix( def->parms.axis, def->parms.origin, vModel->modelMatrix );
 	// we may not have a viewDef if we are just creating shadows at entity creation time
 	if( tr.viewDef ) {
-		myGlMultMatrix( vModel->modelMatrix, tr.viewDef->worldSpace.modelViewMatrix, vModel->modelViewMatrix );
+		R_MultiMatrix( vModel->modelMatrix, tr.viewDef->worldSpace.modelViewMatrix, vModel->modelViewMatrix );
 		vModel->next = tr.viewDef->viewEntitys;
 		tr.viewDef->viewEntitys = vModel;
 	}
@@ -829,11 +829,11 @@ bool R_IssueEntityDefCallback( idRenderEntityLocal *def ) {
 	}
 	if( r_checkBounds.GetBool() ) {
 		if(	oldBounds[0][0] > def->referenceBounds[0][0] + CHECK_BOUNDS_EPSILON ||
-			oldBounds[0][1] > def->referenceBounds[0][1] + CHECK_BOUNDS_EPSILON ||
-			oldBounds[0][2] > def->referenceBounds[0][2] + CHECK_BOUNDS_EPSILON ||
-			oldBounds[1][0] < def->referenceBounds[1][0] - CHECK_BOUNDS_EPSILON ||
-			oldBounds[1][1] < def->referenceBounds[1][1] - CHECK_BOUNDS_EPSILON ||
-			oldBounds[1][2] < def->referenceBounds[1][2] - CHECK_BOUNDS_EPSILON ) {
+				oldBounds[0][1] > def->referenceBounds[0][1] + CHECK_BOUNDS_EPSILON ||
+				oldBounds[0][2] > def->referenceBounds[0][2] + CHECK_BOUNDS_EPSILON ||
+				oldBounds[1][0] < def->referenceBounds[1][0] - CHECK_BOUNDS_EPSILON ||
+				oldBounds[1][1] < def->referenceBounds[1][1] - CHECK_BOUNDS_EPSILON ||
+				oldBounds[1][2] < def->referenceBounds[1][2] - CHECK_BOUNDS_EPSILON ) {
 			common->Printf( "entity %i callback extended reference bounds\n", def->index );
 		}
 	}
@@ -885,11 +885,11 @@ idRenderModel *R_EntityDefDynamicModel( idRenderEntityLocal *def ) {
 			if( r_checkBounds.GetBool() ) {
 				idBounds b = def->cachedDynamicModel->Bounds();
 				if(	b[0][0] < def->referenceBounds[0][0] - CHECK_BOUNDS_EPSILON ||
-					b[0][1] < def->referenceBounds[0][1] - CHECK_BOUNDS_EPSILON ||
-					b[0][2] < def->referenceBounds[0][2] - CHECK_BOUNDS_EPSILON ||
-					b[1][0] > def->referenceBounds[1][0] + CHECK_BOUNDS_EPSILON ||
-					b[1][1] > def->referenceBounds[1][1] + CHECK_BOUNDS_EPSILON ||
-					b[1][2] > def->referenceBounds[1][2] + CHECK_BOUNDS_EPSILON ) {
+						b[0][1] < def->referenceBounds[0][1] - CHECK_BOUNDS_EPSILON ||
+						b[0][2] < def->referenceBounds[0][2] - CHECK_BOUNDS_EPSILON ||
+						b[1][0] > def->referenceBounds[1][0] + CHECK_BOUNDS_EPSILON ||
+						b[1][1] > def->referenceBounds[1][1] + CHECK_BOUNDS_EPSILON ||
+						b[1][2] > def->referenceBounds[1][2] + CHECK_BOUNDS_EPSILON ) {
 					common->Printf( "entity %i dynamic model exceeded reference bounds\n", def->index );
 				}
 			}
@@ -1282,41 +1282,40 @@ void R_RemoveUnecessaryViewLights( void ) {
 	// was missing :)
 	int numViewLights = 0;
 	// go through each visible light
-	for ( viewLight_t *vLight = tr.viewDef->viewLights ; vLight ; vLight = vLight->next ) {
+	for( viewLight_t *vLight = tr.viewDef->viewLights ; vLight ; vLight = vLight->next ) {
 		numViewLights++;
 		// if the light didn't have any lit surfaces visible, there is no need to
 		// draw any of the shadows. We still keep the vLight for debugging
 		// draws
-		if ( !vLight->localInteractions && !vLight->globalInteractions && !vLight->translucentInteractions ) {
-			 vLight->localShadows = NULL;
-			 vLight->globalShadows = NULL;
+		if( !vLight->localInteractions && !vLight->globalInteractions && !vLight->translucentInteractions ) {
+			vLight->localShadows = NULL;
+			vLight->globalShadows = NULL;
 		}
 	}
-	if ( r_useShadowSurfaceScissor.GetBool() ) {
+	if( r_useShadowSurfaceScissor.GetBool() ) {
 		// shrink the light scissor rect to only intersect the surfaces that will actually be drawn.
 		// This doesn't seem to actually help, perhaps because the surface scissor
 		// rects aren't actually the surface, but only the portal clippings.
-		for ( viewLight_t *vLight = tr.viewDef->viewLights ; vLight ; vLight = vLight->next ) {
+		for( viewLight_t *vLight = tr.viewDef->viewLights ; vLight ; vLight = vLight->next ) {
 			const drawSurf_t	*surf;
 			idScreenRect		surfRect;
-			if ( !vLight->lightShader->LightCastsShadows() ) {
+			if( !vLight->lightShader->LightCastsShadows() ) {
 				continue;
 			}
 			surfRect.Clear();
-			for ( surf = vLight->globalInteractions ; surf ; surf = surf->nextOnLight ) {
+			for( surf = vLight->globalInteractions ; surf ; surf = surf->nextOnLight ) {
 				surfRect.Union( surf->scissorRect );
 			}
-			for ( surf = vLight->localShadows ; surf ; surf = surf->nextOnLight ) {
-				const_cast<drawSurf_t *>(surf)->scissorRect.Intersect( surfRect );
+			for( surf = vLight->localShadows ; surf ; surf = surf->nextOnLight ) {
+				const_cast<drawSurf_t *>( surf )->scissorRect.Intersect( surfRect );
 			}
-
-			for ( surf = vLight->localInteractions ; surf ; surf = surf->nextOnLight ) {
+			for( surf = vLight->localInteractions ; surf ; surf = surf->nextOnLight ) {
 				surfRect.Union( surf->scissorRect );
 			}
-			for ( surf = vLight->globalShadows ; surf ; surf = surf->nextOnLight ) {
-				const_cast<drawSurf_t *>(surf)->scissorRect.Intersect( surfRect );
+			for( surf = vLight->globalShadows ; surf ; surf = surf->nextOnLight ) {
+				const_cast<drawSurf_t *>( surf )->scissorRect.Intersect( surfRect );
 			}
-			for ( surf = vLight->translucentInteractions ; surf ; surf = surf->nextOnLight ) {
+			for( surf = vLight->translucentInteractions ; surf ; surf = surf->nextOnLight ) {
 				surfRect.Union( surf->scissorRect );
 			}
 			vLight->scissorRect.Intersect( surfRect );
@@ -1327,13 +1326,13 @@ void R_RemoveUnecessaryViewLights( void ) {
 	struct sortLight_t {
 		viewLight_t *vLight;
 		int			screenArea;
-		static int sort( const void * a, const void * b ) {
-			return ((sortLight_t *)a)->screenArea - ((sortLight_t *)b)->screenArea;
+		static int sort( const void *a, const void *b ) {
+			return ( ( sortLight_t * )a )->screenArea - ( ( sortLight_t * )b )->screenArea;
 		}
 	};
-	sortLight_t *sortLights = (sortLight_t *)_alloca( sizeof( sortLight_t ) * numViewLights );
+	sortLight_t *sortLights = ( sortLight_t * )_alloca( sizeof( sortLight_t ) * numViewLights );
 	int numSortLightsFilled = 0;
-	for ( viewLight_t *vLight = tr.viewDef->viewLights; vLight != NULL; vLight = vLight->next ) {
+	for( viewLight_t *vLight = tr.viewDef->viewLights; vLight != NULL; vLight = vLight->next ) {
 		sortLights[ numSortLightsFilled ].vLight = vLight;
 		sortLights[ numSortLightsFilled ].screenArea = vLight->scissorRect.GetArea();
 		numSortLightsFilled++;
@@ -1341,7 +1340,7 @@ void R_RemoveUnecessaryViewLights( void ) {
 	qsort( sortLights, numSortLightsFilled, sizeof( sortLights[0] ), sortLight_t::sort );
 	// rebuild the linked list in order
 	tr.viewDef->viewLights = NULL;
-	for ( int i = 0; i < numSortLightsFilled; i++ ) {
+	for( int i = 0; i < numSortLightsFilled; i++ ) {
 		sortLights[i].vLight->next = tr.viewDef->viewLights;
 		tr.viewDef->viewLights = sortLights[i].vLight;
 	}

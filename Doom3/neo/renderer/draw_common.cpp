@@ -40,7 +40,7 @@ static void RB_SetStageTexGen( const drawSurf_t *surf ) {
 	glEnable( GL_TEXTURE_GEN_T );
 	glEnable( GL_TEXTURE_GEN_Q );
 	float	mat[16], plane[4];
-	myGlMultMatrix( surf->space->modelViewMatrix, backEnd.viewDef->projectionMatrix, mat );
+	R_MultiMatrix( surf->space->modelViewMatrix, backEnd.viewDef->projectionMatrix, mat );
 	plane[0] = mat[0 * 4 + 0];
 	plane[1] = mat[1 * 4 + 0];
 	plane[2] = mat[2 * 4 * 0];
@@ -289,8 +289,8 @@ static void RB_T_FillDepthBuffer( const drawSurf_t *surf ) {
 	if( shader->GetSort() == SS_SUBVIEW ) {
 		GL_State( GLS_SRCBLEND_DST_COLOR | GLS_DSTBLEND_ZERO | GLS_DEPTHFUNC_LESS );
 		color[0] =
-		color[1] =
-		color[2] = ( 1.0f / backEnd.overBright );
+			color[1] =
+				color[2] = ( 1.0f / backEnd.overBright );
 		color[3] = 1.0f;
 	} else {
 		// others just draw black
@@ -671,9 +671,9 @@ static void RB_STD_T_RenderShaderPasses( const drawSurf_t *surf ) {
 	if( r_useScissor.GetBool() && !backEnd.currentScissor.Equals( surf->scissorRect ) ) {
 		backEnd.currentScissor = surf->scissorRect;
 		GL_Scissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
-				   backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
-				   backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
-				   backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
+					backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
+					backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
+					backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
 	}
 	// some deforms may disable themselves by setting numIndexes = 0
 	if( !tri->numIndexes ) {
@@ -1282,9 +1282,9 @@ static void RB_STD_LightScale( void ) {
 	// the scissor may be smaller than the viewport for subviews
 	if( r_useScissor.GetBool() ) {
 		GL_Scissor( backEnd.viewDef->viewport.x1 + backEnd.viewDef->scissor.x1,
-				   backEnd.viewDef->viewport.y1 + backEnd.viewDef->scissor.y1,
-				   backEnd.viewDef->scissor.x2 - backEnd.viewDef->scissor.x1 + 1,
-				   backEnd.viewDef->scissor.y2 - backEnd.viewDef->scissor.y1 + 1 );
+					backEnd.viewDef->viewport.y1 + backEnd.viewDef->scissor.y1,
+					backEnd.viewDef->scissor.x2 - backEnd.viewDef->scissor.x1 + 1,
+					backEnd.viewDef->scissor.y2 - backEnd.viewDef->scissor.y1 + 1 );
 		backEnd.currentScissor = backEnd.viewDef->scissor;
 	}
 	// full screen blends

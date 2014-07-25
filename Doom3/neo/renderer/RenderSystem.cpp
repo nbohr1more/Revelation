@@ -235,7 +235,7 @@ void R_LockSurfaceScene( viewDef_t *parms ) {
 	// update the view origin and axis, and all
 	// the entity matricies
 	for( vModel = tr.lockSurfacesCmd.viewDef->viewEntitys ; vModel ; vModel = vModel->next ) {
-		myGlMultMatrix( vModel->modelMatrix, tr.lockSurfacesCmd.viewDef->worldSpace.modelViewMatrix, vModel->modelViewMatrix );
+		R_MultiMatrix( vModel->modelMatrix, tr.lockSurfacesCmd.viewDef->worldSpace.modelViewMatrix, vModel->modelViewMatrix );
 	}
 	// add the stored off surface commands again
 	cmd = ( drawSurfsCommand_t * )R_GetCommandBuffer( sizeof( *cmd ) );

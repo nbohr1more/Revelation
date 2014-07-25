@@ -54,17 +54,17 @@ edge silhouettes.
 */
 void R_CalcInteractionFacing( const idRenderEntityLocal *ent, const srfTriangles_t *tri, const idRenderLightLocal *light, srfCullInfo_t &cullInfo ) {
 	idVec3 localLightOrigin;
-	if ( cullInfo.facing != NULL ) {
+	if( cullInfo.facing != NULL ) {
 		return;
 	}
 	R_GlobalPointToLocal( ent->modelMatrix, light->globalLightOrigin, localLightOrigin );
 	int numFaces = tri->numIndexes / 3;
-	if ( !tri->facePlanes || !tri->facePlanesCalculated ) {
-		R_DeriveFacePlanes( const_cast<srfTriangles_t *>(tri) );
+	if( !tri->facePlanes || !tri->facePlanesCalculated ) {
+		R_DeriveFacePlanes( const_cast<srfTriangles_t *>( tri ) );
 	}
-	cullInfo.facing = (byte *) R_StaticAlloc( ( numFaces + 1 ) * sizeof( cullInfo.facing[0] ) );
+	cullInfo.facing = ( byte * ) R_StaticAlloc( ( numFaces + 1 ) * sizeof( cullInfo.facing[0] ) );
 	// exact geometric cull against face
-	for ( int i = 0, face = 0; i < tri->numIndexes; i += 3, face++ ) {
+	for( int i = 0, face = 0; i < tri->numIndexes; i += 3, face++ ) {
 		const idDrawVert	&v0 = tri->verts[tri->indexes[i + 0]];
 		const idDrawVert	&v1 = tri->verts[tri->indexes[i + 1]];
 		const idDrawVert	&v2 = tri->verts[tri->indexes[i + 2]];
@@ -87,31 +87,31 @@ vertex is clearly inside, the entire triangle will be accepted.
 */
 void R_CalcInteractionCullBits( const idRenderEntityLocal *ent, const srfTriangles_t *tri, const idRenderLightLocal *light, srfCullInfo_t &cullInfo ) {
 	int i, frontBits;
-	if ( cullInfo.cullBits != NULL ) {
+	if( cullInfo.cullBits != NULL ) {
 		return;
 	}
 	frontBits = 0;
 	// cull the triangle surface bounding box
-	for ( i = 0; i < 6; i++ ) {
+	for( i = 0; i < 6; i++ ) {
 		R_GlobalPlaneToLocal( ent->modelMatrix, -light->frustum[i], cullInfo.localClipPlanes[i] );
 		// get front bits for the whole surface
-		if ( tri->bounds.PlaneDistance( cullInfo.localClipPlanes[i] ) >= LIGHT_CLIP_EPSILON ) {
-			frontBits |= 1<<i;
+		if( tri->bounds.PlaneDistance( cullInfo.localClipPlanes[i] ) >= LIGHT_CLIP_EPSILON ) {
+			frontBits |= 1 << i;
 		}
 	}
 	// if the surface is completely inside the light frustum
-	if ( frontBits == ( ( 1 << 6 ) - 1 ) ) {
+	if( frontBits == ( ( 1 << 6 ) - 1 ) ) {
 		cullInfo.cullBits = LIGHT_CULL_ALL_FRONT;
 		return;
 	}
-	cullInfo.cullBits = (byte *) R_StaticAlloc( tri->numVerts * sizeof( cullInfo.cullBits[0] ) );
+	cullInfo.cullBits = ( byte * ) R_StaticAlloc( tri->numVerts * sizeof( cullInfo.cullBits[0] ) );
 	SIMDProcessor->Memset( cullInfo.cullBits, 0, tri->numVerts * sizeof( cullInfo.cullBits[0] ) );
-	for ( int i = 0; i < 6; i++ ) {
+	for( int i = 0; i < 6; i++ ) {
 		// if completely infront of this clipping plane
-		if ( frontBits & ( 1 << i ) ) {
+		if( frontBits & ( 1 << i ) ) {
 			continue;
 		}
-		for ( int j = 0; j < tri->numVerts; j++ ) {
+		for( int j = 0; j < tri->numVerts; j++ ) {
 			float d = cullInfo.localClipPlanes[i].Distance( tri->verts[j].xyz );
 			cullInfo.cullBits[j] |= ( d < LIGHT_CLIP_EPSILON ) << i;
 		}
@@ -267,11 +267,11 @@ static srfTriangles_t *R_CreateLightTris( const idRenderEntityLocal *ent, const 
 	indexes = NULL;
 	// it is debatable if non-shadowing lights should light back faces. we aren't at the moment
 	if( r_lightAllBackFaces.GetBool() ||
-		light->lightShader->LightEffectsBackSides() ||
-		shader->ReceivesLightingOnBackSides() ||
-		ent->parms.noSelfShadow ||
-		ent->parms.noShadow ) {
-			includeBackFaces = true;
+			light->lightShader->LightEffectsBackSides() ||
+			shader->ReceivesLightingOnBackSides() ||
+			ent->parms.noSelfShadow ||
+			ent->parms.noShadow ) {
+		includeBackFaces = true;
 	} else {
 		includeBackFaces = false;
 	}

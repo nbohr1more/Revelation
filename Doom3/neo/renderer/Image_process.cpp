@@ -374,12 +374,12 @@ smeared clamps...
 ================
 */
 byte *R_MipMap3D( const byte *in, int width, int height, int depth, bool preserveBorder ) {
-	int		i, j, k;
+	int			i, j, k;
 	const byte	*in_p;
-	byte	*out, *out_p;
-	int		row, plane;
-	byte	border[4];
-	int		newWidth, newHeight, newDepth;
+	byte		*out, *out_p;
+	int			row, plane;
+	byte		border[4];
+	int			newWidth, newHeight, newDepth;
 	if( depth == 1 ) {
 		return R_MipMap( in, width, height, preserveBorder );
 	}

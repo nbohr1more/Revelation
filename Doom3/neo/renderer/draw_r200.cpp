@@ -90,7 +90,7 @@ RB_R200_ARB_DrawInteraction
 static void RB_R200_ARB_DrawInteraction( const drawInteraction_t *din ) {
 	// check for the case we can't handle in a single pass (we could calculate this at shader parse time to optimize)
 	if( din->diffuseImage != globalImages->blackImage && din->specularImage != globalImages->blackImage &&
-		memcmp( din->specularMatrix, din->diffuseMatrix, sizeof( din->diffuseMatrix ) ) ) {
+			memcmp( din->specularMatrix, din->diffuseMatrix, sizeof( din->diffuseMatrix ) ) ) {
 		// common->Printf( "Note: Shader %s drawn as two pass on R200\n", din->surf->shader->getName() );
 		// draw the specular as a separate pass with a black diffuse map
 		drawInteraction_t d;
@@ -259,9 +259,9 @@ void RB_R200_DrawInteractions( void ) {
 			backEnd.currentScissor = vLight->scissorRect;
 			if( r_useScissor.GetBool() ) {
 				GL_Scissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
-						   backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
-						   backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
-						   backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
+							backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
+							backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,
+							backEnd.currentScissor.y2 + 1 - backEnd.currentScissor.y1 );
 			}
 			glClear( GL_STENCIL_BUFFER_BIT );
 		} else {

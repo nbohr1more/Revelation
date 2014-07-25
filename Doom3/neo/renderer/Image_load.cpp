@@ -160,9 +160,7 @@ void idImage::UploadCompressedNormalMap( int width, int height, const byte *rgba
 	}
 }
 
-
 //=======================================================================
-
 
 static byte	mipBlendColors[16][4] = {
 	{0, 0, 0, 0},
@@ -192,10 +190,10 @@ This may need to scan six cube map images
 */
 GLenum idImage::SelectInternalFormat( const byte **dataPtrs, int numDataPtrs, int width, int height,
 									  textureDepth_t minimumDepth, bool *monochromeResult ) const {
-	int		i, c;
+	int			i, c;
 	const byte	*scan;
-	int		rgbOr, rgbAnd, aOr, aAnd;
-	int		rgbDiffer, rgbaDiffer;
+	int			rgbOr, rgbAnd, aOr, aAnd;
+	int			rgbDiffer, rgbaDiffer;
 	// determine if the rgb channels are all the same
 	// and if either all rgb or all alpha are 255
 	c = width * height;

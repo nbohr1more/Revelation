@@ -473,8 +473,8 @@ static bool R_ParseImageProgram_r( idLexer &src, byte **pic, int *width, int *he
 			c = *width **height * 4;
 			for( i = 0 ; i < c ; i += 4 ) {
 				( *pic )[i + 1] =
-					( *pic )[i + 2] =
-						( *pic )[i + 3] = ( *pic )[i];
+				( *pic )[i + 2] =
+				( *pic )[i + 3] = ( *pic )[i];
 			}
 		}
 		MatchAndAppendToken( src, ")" );
@@ -491,8 +491,8 @@ static bool R_ParseImageProgram_r( idLexer &src, byte **pic, int *width, int *he
 			for( i = 0 ; i < c ; i += 4 ) {
 				( *pic )[i + 3] = ( ( *pic )[i + 0] + ( *pic )[i + 1] + ( *pic )[i + 2] ) / 3;
 				( *pic )[i + 0] =
-					( *pic )[i + 1] =
-						( *pic )[i + 2] = 255;
+				( *pic )[i + 1] =
+				( *pic )[i + 2] = 255;
 			}
 		}
 		MatchAndAppendToken( src, ")" );

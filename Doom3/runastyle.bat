@@ -30,8 +30,8 @@ rem astyle %STYLE% %OPTIONS% -r neo/sys/*.cpp
 rem astyle %STYLE% %OPTIONS% -r neo/sys/*.h
 rem astyle %STYLE% %OPTIONS% -r neo/typeinfo/*.cpp
 rem astyle %STYLE% %OPTIONS% -r neo/typeinfo/*.h
-astyle %STYLE% %OPTIONS% -r neo/tools/*.cpp
-astyle %STYLE% %OPTIONS% -r neo/tools/*.h
+rem astyle %STYLE% %OPTIONS% -r neo/tools/*.cpp
+rem astyle %STYLE% %OPTIONS% -r neo/tools/*.h
 rem astyle %STYLE% %OPTIONS% -r neo/ui/*.cpp
 rem astyle %STYLE% %OPTIONS% -r neo/ui/*.h
 

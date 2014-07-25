@@ -60,9 +60,15 @@ public:
 	void		Expand();								// expand by one pixel each way to fix roundoffs
 	void		Intersect( const idScreenRect &rect );
 	void		Union( const idScreenRect &rect );
-	short		GetWidth() const { return x2 - x1 + 1; }
-	short		GetHeight() const {	return y2 - y1 + 1; }
-	int			GetArea() const  { return GetWidth() * GetHeight(); }
+	short		GetWidth() const {
+		return x2 - x1 + 1;
+	}
+	short		GetHeight() const {
+		return y2 - y1 + 1;
+	}
+	int			GetArea() const  {
+		return GetWidth() * GetHeight();
+	}
 	bool		Equals( const idScreenRect &rect ) const;
 	bool		IsEmpty() const;
 };
@@ -1157,7 +1163,7 @@ void R_TransposeGLMatrix( const float in[16], float out[16] );
 
 void R_SetViewMatrix( viewDef_t *viewDef );
 
-void myGlMultMatrix( const float *a, const float *b, float *out );
+void R_MultiMatrix( const float *a, const float *b, float *out );
 
 /*
 ============================================================

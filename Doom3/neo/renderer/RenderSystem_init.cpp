@@ -919,7 +919,7 @@ void R_ReportImageDuplication_f( const idCmdArgs &args ) {
 /*
 ==============================================================================
 
-						THROUGHPUT BENCHMARKING
+THROUGHPUT BENCHMARKING
 
 ==============================================================================
 */
@@ -990,7 +990,7 @@ void R_Benchmark_f( const idCmdArgs &args ) {
 /*
 ==============================================================================
 
-						SCREEN SHOTS
+SCREEN SHOTS
 
 ==============================================================================
 */
@@ -1237,8 +1237,8 @@ void R_StencilShot( void ) {
 	glReadPixels( 0, 0, width, height, GL_STENCIL_INDEX , GL_UNSIGNED_BYTE, byteBuffer );
 	for( i = 0 ; i < pix ; i++ ) {
 		buffer[18 + i * 3] =
-		buffer[18 + i * 3 + 1] =
-		buffer[18 + i * 3 + 2] = byteBuffer[i];
+			buffer[18 + i * 3 + 1] =
+				buffer[18 + i * 3 + 2] = byteBuffer[i];
 	}
 	// fill in the header (this is vertically flipped, which glReadPixels emits)
 	buffer[2] = 2;		// uncompressed type
@@ -1269,13 +1269,13 @@ void R_EnvShot_f( const idCmdArgs &args ) {
 	renderView_t	ref;
 	viewDef_t		primary;
 	int				blends;
-	const char		*extensions[6] =  { "_px.tga", 
-										"_nx.tga", 
-										"_py.tga", 
+	const char		*extensions[6] =  { "_px.tga",
+										"_nx.tga",
+										"_py.tga",
 										"_ny.tga",
-										"_pz.tga", 
+										"_pz.tga",
 										"_nz.tga"
-									  };
+								  };
 	int				size;
 	if( args.Argc() != 2 && args.Argc() != 3 && args.Argc() != 4 ) {
 		common->Printf( "USAGE: envshot <basename> [size] [blends]\n" );
@@ -1397,13 +1397,13 @@ void R_MakeAmbientMap_f( const idCmdArgs &args ) {
 	renderView_t	ref;
 	viewDef_t		primary;
 	int				downSample;
-	const char		*extensions[6] =  { "_px.tga", 
-										"_nx.tga", 
+	const char		*extensions[6] =  { "_px.tga",
+										"_nx.tga",
 										"_py.tga",
 										"_ny.tga",
 										"_pz.tga",
 										"_nz.tga"
-									  };
+								  };
 	int			outSize;
 	byte		*buffers[6];
 	int			width, height;
@@ -1610,7 +1610,7 @@ void GfxInfo_f( const idCmdArgs &args ) {
 	}
 #ifdef _WIN32
 	// WGL_EXT_swap_interval
-	if( r_swapInterval.GetInteger() && glewIsSupported("WGL_EXT_swap_control") ) {
+	if( r_swapInterval.GetInteger() && glewIsSupported( "WGL_EXT_swap_control" ) ) {
 		common->Printf( "Forcing swapInterval %i\n", r_swapInterval.GetInteger() );
 	} else {
 		common->Printf( "swapInterval not forced\n" );
@@ -1760,7 +1760,7 @@ static void R_SizeDown_f( const idCmdArgs &args ) {
 ===============
 TouchGui_f
 
-  this is called from the main thread
+this is called from the main thread
 ===============
 */
 void R_TouchGui_f( const idCmdArgs &args ) {
