@@ -154,11 +154,8 @@ void RadiantRun( void ) {
 	int show = ::IsWindowVisible( win32.hWnd );
 	try {
 		if( !exceptionErr && !show ) {
-			//glPushAttrib(GL_ALL_ATTRIB_BITS);
 			glDepthMask( true );
 			theApp.Run();
-			//glPopAttrib();
-			//wglMakeCurrent(0, 0);
 			wglMakeCurrent( win32.hDC, win32.hGLRC );
 		}
 	} catch( idException &ex ) {
@@ -175,18 +172,10 @@ HINSTANCE g_hOpenGL = NULL;
 bool g_bBuildList = false;
 
 BOOL CRadiantApp::InitInstance() {
-	//g_hOpenGL32 = ::LoadLibrary("opengl32.dll");
-	// AfxEnableControlContainer();
 	// Standard initialization
 	// If you are not using these features and wish to reduce the size
 	//  of your final executable, you should remove from the following
 	//  the specific initialization routines you do not need.
-	//AfxEnableMemoryTracking(FALSE);
-#ifdef _AFXDLL
-	//Enable3dControls();			// Call this when using MFC in a shared DLL
-#else
-	//Enable3dControlsStatic();	// Call this when linking to MFC statically
-#endif
 	// If there's a .INI file in the directory use it instead of registry
 	char RadiantPath[_MAX_PATH];
 	GetModuleFileName( NULL, RadiantPath, _MAX_PATH );
@@ -245,15 +234,6 @@ BOOL CRadiantApp::InitInstance() {
 		g_qeglobals.use_ini = false;
 	}
 	LoadStdProfileSettings();  // Load standard INI file options (including MRU)
-	// Register the application's document templates.  Document templates
-	//  serve as the connection between documents, frame windows and views.
-	//	CMultiDocTemplate* pDocTemplate;
-	//	pDocTemplate = new CMultiDocTemplate(
-	//		IDR_RADIANTYPE,
-	//		RUNTIME_CLASS(CRadiantDoc),
-	//		RUNTIME_CLASS(CMainFrame), // custom MDI child frame
-	//		RUNTIME_CLASS(CRadiantView));
-	//	AddDocTemplate(pDocTemplate);
 	// create main MDI Frame window
 	g_PrefsDlg.LoadPrefs();
 	glEnableClientState( GL_VERTEX_ARRAY );
@@ -294,7 +274,6 @@ BOOL CRadiantApp::OnIdle( LONG lCount ) {
 		g_pParentWnd->RoutineProcessing();
 	}
 	return FALSE;
-	//return CWinApp::OnIdle(lCount);
 }
 
 void CRadiantApp::OnHelp() {
@@ -331,7 +310,6 @@ int CRadiantApp::Run( void ) {
 	return 0;
 }
 
-
 /*
 =============================================================
 
@@ -361,7 +339,6 @@ bool SaveWindowState( HWND hWnd, const char *pszName ) {
 	}
 	return SaveRegistryInfo( pszName, &rc, sizeof( rc ) );
 }
-
 
 bool LoadWindowState( HWND hWnd, const char *pszName ) {
 	RECT rc;

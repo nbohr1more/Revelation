@@ -804,7 +804,6 @@ void GLimp_Shutdown( void ) {
 	QGL_Shutdown();
 }
 
-
 /*
 =====================
 GLimp_SwapBuffers
@@ -817,12 +816,11 @@ void GLimp_SwapBuffers( void ) {
 	//
 	if( r_swapInterval.IsModified() ) {
 		r_swapInterval.ClearModified();
-		if( wglSwapIntervalEXT ) {
+		if( glewIsSupported("WGL_EXT_swap_control") ) {
 			wglSwapIntervalEXT( r_swapInterval.GetInteger() );
 		}
 	}
 	wglSwapBuffers( win32.hDC );
-	//Sys_DebugPrintf( "*** SwapBuffers() ***\n" );
 }
 
 /*
@@ -834,7 +832,6 @@ SMP acceleration
 */
 
 //#define	REALLOC_DC
-
 /*
 ===================
 GLimp_ActivateContext
@@ -916,9 +913,7 @@ bool GLimp_SpawnRenderThread( void ( *function )( void ) ) {
 	return true;
 }
 
-
 //#define	DEBUG_PRINTS
-
 /*
 ===================
 GLimp_BackEndSleep

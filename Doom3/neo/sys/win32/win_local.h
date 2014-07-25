@@ -32,10 +32,6 @@ If you have questions concerning this license or the applicable additional terms
 #include <windows.h>
 #include "../../libs/glew/include/wglew.h"		// windows OpenGL extensions
 
-#ifndef wglSwapBuffers
-#define wglSwapBuffers SwapBuffers
-#endif
-
 #define	MAX_OSPATH			256
 
 #define	WINDOW_STYLE	(WS_OVERLAPPED|WS_BORDER|WS_CAPTION|WS_VISIBLE | WS_THICKFRAME)

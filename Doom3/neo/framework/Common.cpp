@@ -1284,7 +1284,7 @@ void Com_ExecMachineSpec_f( const idCmdArgs &args ) {
 	if( com_machineSpec.GetInteger() == 3 ) {
 		// default to GL_LINEAR_MIPMAP_NEAREST or AMD breaks.
 		cvarSystem->SetCVarString( "image_filter", "GL_LINEAR_MIPMAP_NEAREST", CVAR_ARCHIVE );
-		cvarSystem->SetCVarInteger( "image_anisotropy", 1, CVAR_ARCHIVE );
+		cvarSystem->SetCVarInteger( "image_anisotropy", 16, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_lodbias", 0, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_forceDownSize", 0, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_roundDown", 1, CVAR_ARCHIVE );
@@ -1296,7 +1296,6 @@ void Com_ExecMachineSpec_f( const idCmdArgs &args ) {
 		cvarSystem->SetCVarInteger( "image_downSizeBumpLimit", 256, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_usePrecompressedTextures", 0, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_downsize", 0			, CVAR_ARCHIVE );
-		cvarSystem->SetCVarInteger( "image_anisotropy", 8, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_useCompression", 0, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_ignoreHighQuality", 0, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "s_maxSoundsPerShader", 0, CVAR_ARCHIVE );
@@ -1306,7 +1305,7 @@ void Com_ExecMachineSpec_f( const idCmdArgs &args ) {
 	} else if( com_machineSpec.GetInteger() == 2 ) {
 		 // default to GL_LINEAR_MIPMAP_NEAREST or AMD breaks.
 		cvarSystem->SetCVarString( "image_filter", "GL_LINEAR_MIPMAP_NEAREST", CVAR_ARCHIVE );
-		cvarSystem->SetCVarInteger( "image_anisotropy", 1, CVAR_ARCHIVE );
+		cvarSystem->SetCVarInteger( "image_anisotropy", 8, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_lodbias", 0, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_forceDownSize", 0, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_roundDown", 1, CVAR_ARCHIVE );
@@ -1318,7 +1317,6 @@ void Com_ExecMachineSpec_f( const idCmdArgs &args ) {
 		cvarSystem->SetCVarInteger( "image_downSizeBumpLimit", 256, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_usePrecompressedTextures", 1, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_downsize", 0, CVAR_ARCHIVE );
-		cvarSystem->SetCVarInteger( "image_anisotropy", 8, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_useCompression", 1, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_ignoreHighQuality", 0, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "s_maxSoundsPerShader", 0, CVAR_ARCHIVE );
@@ -1328,7 +1326,7 @@ void Com_ExecMachineSpec_f( const idCmdArgs &args ) {
 	} else if( com_machineSpec.GetInteger() == 1 ) {
 		 // default to GL_LINEAR_MIPMAP_NEAREST or AMD breaks.
 		cvarSystem->SetCVarString( "image_filter", "GL_LINEAR_MIPMAP_NEAREST", CVAR_ARCHIVE );
-		cvarSystem->SetCVarInteger( "image_anisotropy", 1, CVAR_ARCHIVE );
+		cvarSystem->SetCVarInteger( "image_anisotropy", 4, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_lodbias", 0, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_downSize", 0, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_forceDownSize", 0, CVAR_ARCHIVE );
@@ -1354,7 +1352,6 @@ void Com_ExecMachineSpec_f( const idCmdArgs &args ) {
 		cvarSystem->SetCVarInteger( "image_useAllFormats", 1, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_usePrecompressedTextures", 1, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_downSize", 1, CVAR_ARCHIVE );
-		cvarSystem->SetCVarInteger( "image_anisotropy", 0, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_useCompression", 1, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_ignoreHighQuality", 1, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "s_maxSoundsPerShader", 1, CVAR_ARCHIVE );

@@ -1145,6 +1145,15 @@ typedef BOOL (WINAPI * PFNWGLSENDPBUFFERTOVIDEONVPROC) (HPBUFFERARB hPbuffer, in
 
 #endif /* WGL_NV_video_output */
 
+/* -------------------------- WGL_sync_control ------------------------- */
+
+#ifndef WGL_sync_control
+#define WGL_sync_control 1
+
+#define wglSwapBuffers SwapBuffers
+
+#endif
+
 /* -------------------------- WGL_OML_sync_control ------------------------- */
 
 #ifndef WGL_OML_sync_control

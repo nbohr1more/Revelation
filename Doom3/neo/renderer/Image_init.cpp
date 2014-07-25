@@ -839,8 +839,8 @@ void idImageManager::ChangeTextureFilter( void ) {
 	textureMinFilter = textureFilters[i].minimize;
 	textureMaxFilter = textureFilters[i].maximize;
 	textureAnisotropy = image_anisotropy.GetFloat();
-	if( textureAnisotropy < 1 ) {
-		textureAnisotropy = 1;
+	if( textureAnisotropy < 1.0f ) {
+		textureAnisotropy = 1.0f;
 	} else if( textureAnisotropy > glConfig.maxTextureAnisotropy ) {
 		textureAnisotropy = glConfig.maxTextureAnisotropy;
 	}

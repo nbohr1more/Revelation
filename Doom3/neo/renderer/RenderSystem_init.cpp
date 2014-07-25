@@ -37,7 +37,6 @@ If you have questions concerning this license or the applicable additional terms
 #endif
 
 // functions that are not called every frame
-
 glconfig_t	glConfig;
 
 void GfxInfo_f( const idCmdArgs &args );
@@ -449,15 +448,42 @@ typedef struct vidmode_s {
 } vidmode_t;
 
 vidmode_t r_vidModes[] = {
-	{ "Mode  0: 320x240",		320,	240 },
-	{ "Mode  1: 400x300",		400,	300 },
-	{ "Mode  2: 512x384",		512,	384 },
-	{ "Mode  3: 640x480",		640,	480 },
-	{ "Mode  4: 800x600",		800,	600 },
-	{ "Mode  5: 1024x768",		1024,	768 },
-	{ "Mode  6: 1152x864",		1152,	864 },
-	{ "Mode  7: 1280x1024",		1280,	1024 },
-	{ "Mode  8: 1600x1200",		1600,	1200 },
+	{ "Mode  0: 320x240",     320,  240 },
+	{ "Mode  1: 400x300",     400,  300 },
+	{ "Mode  2: 512x384",     512,  384 },
+	{ "Mode  3: 640x480",     640,  480 },
+
+	{ "Mode  4: 720x405",     720,  405 },
+	{ "Mode  5: 720x480",     720,  480 },
+	{ "Mode  6: 720x576",     720,  576 },
+	{ "Mode  7: 800x600",     800,  600 },
+
+	{ "Mode  8: 960x540",     960,  540 },
+	{ "Mode  9: 960x600",     960,  600 },
+	{ "Mode  10: 960x720",    960,  720 },
+
+	{ "Mode  11: 1024x576",   1024, 576 },
+	{ "Mode  12: 1024x640",   1024, 640 },
+	{ "Mode  13: 1024x768",   1024, 768 },
+	{ "Mode  14: 1152x864",   1152, 864 },
+
+	{ "Mode  15: 1280x720",   1280, 720 },
+	{ "Mode  16: 1280x768",   1280, 768 },
+	{ "Mode  17: 1280x960",   1280, 960 },
+	{ "Mode  18: 1280x1024",  1280, 1024 },
+
+	{ "Mode  19: 1440x810",   1440, 810 },
+	{ "Mode  20: 1440x900",   1440, 900 },
+	{ "Mode  21: 1440x1080",  1440, 1080 },
+
+	{ "Mode  22: 1600x900",   1600, 900 },
+	{ "Mode  23: 1600x1000",  1600, 1000 },
+	{ "Mode  24: 1600x1200",  1600, 1200 },
+	{ "Mode  25: 1680x1050",  1680, 1050 },
+
+	{ "Mode  26: 1920x1080",  1920, 1080 },
+	{ "Mode  27: 1920x1200",  1920, 1200 },
+	{ "Mode  28: 1920x1440",  1920, 1440 },
 };
 static int	s_numVidModes = ( sizeof( r_vidModes ) / sizeof( r_vidModes[0] ) );
 
@@ -982,8 +1008,8 @@ If ref isn't specified, the full session UpdateScreen will be done.
 void R_ReadTiledPixels( int width, int height, byte *buffer, renderView_t *ref = NULL ) {
 	// include extra space for OpenGL padding to word boundaries
 	byte	*temp = ( byte * )R_StaticAlloc( ( glConfig.vidWidth + 3 ) * glConfig.vidHeight * 3 );
-	int	oldWidth = glConfig.vidWidth;
-	int oldHeight = glConfig.vidHeight;
+	int		oldWidth = glConfig.vidWidth;
+	int		oldHeight = glConfig.vidHeight;
 	tr.tiledViewport[0] = width;
 	tr.tiledViewport[1] = height;
 	// disable scissor, so we don't need to adjust all those rects
@@ -1211,8 +1237,8 @@ void R_StencilShot( void ) {
 	glReadPixels( 0, 0, width, height, GL_STENCIL_INDEX , GL_UNSIGNED_BYTE, byteBuffer );
 	for( i = 0 ; i < pix ; i++ ) {
 		buffer[18 + i * 3] =
-			buffer[18 + i * 3 + 1] =
-				buffer[18 + i * 3 + 2] = byteBuffer[i];
+		buffer[18 + i * 3 + 1] =
+		buffer[18 + i * 3 + 2] = byteBuffer[i];
 	}
 	// fill in the header (this is vertically flipped, which glReadPixels emits)
 	buffer[2] = 2;		// uncompressed type
@@ -1236,17 +1262,21 @@ Saves out env/<basename>_ft.tga, etc
 ==================
 */
 void R_EnvShot_f( const idCmdArgs &args ) {
-	idStr		fullname;
-	const char	*baseName;
-	int			i;
-	idMat3		axis[6];
+	idStr			fullname;
+	const char		*baseName;
+	int				i;
+	idMat3			axis[6];
 	renderView_t	ref;
-	viewDef_t	primary;
-	int			blends;
-	const char	*extensions[6] =  { "_px.tga", "_nx.tga", "_py.tga", "_ny.tga",
-									"_pz.tga", "_nz.tga"
-								 };
-	int			size;
+	viewDef_t		primary;
+	int				blends;
+	const char		*extensions[6] =  { "_px.tga", 
+										"_nx.tga", 
+										"_py.tga", 
+										"_ny.tga",
+										"_pz.tga", 
+										"_nz.tga"
+									  };
+	int				size;
 	if( args.Argc() != 2 && args.Argc() != 3 && args.Argc() != 4 ) {
 		common->Printf( "USAGE: envshot <basename> [size] [blends]\n" );
 		return;
@@ -1361,15 +1391,19 @@ Saves out env/<basename>_amb_ft.tga, etc
 ==================
 */
 void R_MakeAmbientMap_f( const idCmdArgs &args ) {
-	idStr fullname;
-	const char	*baseName;
-	int			i;
+	idStr			fullname;
+	const char		*baseName;
+	int				i;
 	renderView_t	ref;
-	viewDef_t	primary;
-	int			downSample;
-	const char	*extensions[6] =  { "_px.tga", "_nx.tga", "_py.tga", "_ny.tga",
-									"_pz.tga", "_nz.tga"
-								 };
+	viewDef_t		primary;
+	int				downSample;
+	const char		*extensions[6] =  { "_px.tga", 
+										"_nx.tga", 
+										"_py.tga",
+										"_ny.tga",
+										"_pz.tga",
+										"_nz.tga"
+									  };
 	int			outSize;
 	byte		*buffers[6];
 	int			width, height;
@@ -1429,7 +1463,6 @@ void R_MakeAmbientMap_f( const idCmdArgs &args ) {
 					dir = cubeAxis[i][0] + -( -1 + 2.0 * x / ( outSize - 1 ) ) * cubeAxis[i][1] + -( -1 + 2.0 * y / ( outSize - 1 ) ) * cubeAxis[i][2];
 					dir.Normalize();
 					total[0] = total[1] = total[2] = 0;
-					//samples = 1;
 					float	limit = map ? 0.95 : 0.25;		// small for specular, almost hemisphere for ambient
 					for( int s = 0 ; s < samples ; s++ ) {
 						// pick a random direction vector that is inside the unit sphere but not behind dir,
@@ -1448,7 +1481,6 @@ void R_MakeAmbientMap_f( const idCmdArgs &args ) {
 							}
 						}
 						byte	result[4];
-						//test = dir;
 						R_SampleCubeMap( test, width, buffers, result );
 						total[0] += result[0];
 						total[1] += result[1];
@@ -1578,9 +1610,7 @@ void GfxInfo_f( const idCmdArgs &args ) {
 	}
 #ifdef _WIN32
 	// WGL_EXT_swap_interval
-	typedef BOOL ( WINAPI * PFNWGLSWAPINTERVALEXTPROC )( int interval );
-	extern	PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT;
-	if( r_swapInterval.GetInteger() && wglSwapIntervalEXT ) {
+	if( r_swapInterval.GetInteger() && glewIsSupported("WGL_EXT_swap_control") ) {
 		common->Printf( "Forcing swapInterval %i\n", r_swapInterval.GetInteger() );
 	} else {
 		common->Printf( "swapInterval not forced\n" );

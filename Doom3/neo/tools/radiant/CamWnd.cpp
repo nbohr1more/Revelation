@@ -1797,7 +1797,6 @@ void CCamWnd::Cam_Render() {
 	glClearColor( 0.1f, 0.1f, 0.1f, 0.0f );
 	glScissor( 0, 0, m_Camera.width, m_Camera.height );
 	glClear( GL_COLOR_BUFFER_BIT );
-	//	wglSwapBuffers(dc.m_hDC);
 	// create the model, using explicit normals
 	if( rebuildMode && worldDirty ) {
 		BuildRendererState();
@@ -1819,10 +1818,6 @@ void CCamWnd::Cam_Render() {
 	g_qeglobals.rw->RenderScene( &refdef );
 	int	frontEnd, backEnd;
 	renderSystem->EndFrame( &frontEnd, &backEnd );
-	//common->Printf( "front:%i back:%i\n", frontEnd, backEnd );
-	//glPopAttrib();
-	//DrawEntityData();
-	//wglSwapBuffers(dc.m_hDC);
 	// get back to the editor state
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
