@@ -143,8 +143,8 @@ public:
 	virtual void				FatalError( const char *fmt, ... ) id_attribute( ( format( printf, 2, 3 ) ) );
 	virtual const idLangDict 	*GetLanguageDict( void );
 
-	virtual const char 		*KeysFromBinding( const char *bind );
-	virtual const char 		*BindingFromKey( const char *key );
+	virtual const char 			*KeysFromBinding( const char *bind );
+	virtual const char 			*BindingFromKey( const char *key );
 
 	virtual int					ButtonState( int key );
 	virtual int					KeyState( int key );
@@ -183,7 +183,7 @@ private:
 	int							com_errorEntered;		// 0, ERP_DROP, etc
 	bool						com_shuttingDown;
 
-	idFile 					*logFile;
+	idFile 						*logFile;
 
 	char						errorMessage[MAX_PRINT_MSG_SIZE];
 
@@ -588,7 +588,7 @@ void idCommonLocal::Error( const char *fmt, ... ) {
 	static int	lastErrorTime;
 	static int	errorCount;
 	int			currentTime;
-	int code = ERP_DROP;
+	int			code = ERP_DROP;
 	// always turn this off after an error
 	com_refreshOnPrint = false;
 	// when we are running automated scripts, make sure we
@@ -778,8 +778,8 @@ skip loading of config file (DoomConfig.cfg)
 bool idCommonLocal::SafeMode( void ) {
 	int			i;
 	for( i = 0 ; i < com_numConsoleLines ; i++ ) {
-		if( !idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "safe" )
-				|| !idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "cvar_restart" ) ) {
+		if( !idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "safe" )	|| 
+			!idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "cvar_restart" ) ) {
 			com_consoleLines[ i ].Clear();
 			return true;
 		}
@@ -807,13 +807,12 @@ void idCommonLocal::CheckToolMode( void ) {
 		else if( !idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "materialEditor" ) ) {
 			com_editors |= EDITOR_MATERIAL;
 		}
-		if( !idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "renderbump" )
-				|| !idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "editor" )
-				|| !idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "guieditor" )
-				|| !idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "debugger" )
-				|| !idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "dmap" )
-				|| !idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "materialEditor" )
-		  ) {
+		if( !idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "renderbump" ) || 
+			!idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "editor" ) || 
+			!idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "guieditor" ) || 
+			!idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "debugger" )	|| 
+			!idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "dmap" )	|| 
+			!idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "materialEditor" ) ) {
 			cvarSystem->SetCVarBool( "r_fullscreen", false );
 			return;
 		}
