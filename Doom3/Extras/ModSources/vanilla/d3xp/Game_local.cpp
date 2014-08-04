@@ -2262,6 +2262,8 @@ void idGameLocal::CalcFov( float base_fov, float &fov_x, float &fov_y ) const {
 		// auto mode => use aspect ratio from resolution, assuming screen's pixels are squares
 		ratio_x = renderSystem->GetScreenWidth();
 		ratio_y = renderSystem->GetScreenHeight();
+		cvarSystem->SetCVarFloat( "r_customWidth", ratio_x, CVAR_ARCHIVE );
+		cvarSystem->SetCVarFloat( "r_customHeight", ratio_y, CVAR_ARCHIVE );
 		break;
 	case 0 :
 		// 4:3
