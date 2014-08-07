@@ -726,14 +726,10 @@ void idInteraction::CreateInteraction( const idRenderModel *model ) {
 		MakeEmpty();
 		return;
 	}
-	// use the turbo shadow path unless models are smaller than 3 then do the expensive optimizations.
-	shadowGen_t shadowGen = ( bounds[1][0] - bounds[0][0] < 3 ) ? SG_OFFLINE : SG_DYNAMIC;
 	// really large models, like outside terrain meshes, should use
 	// the more exactly culled static shadow path instead of the turbo shadow path.
 	// FIXME: this is a HACK, we should probably have a material flag.
-	if( bounds[1][0] - bounds[0][0] > 3000 ) {
-		shadowGen = SG_STATIC;
-	}
+	shadowGen_t shadowGen = ( bounds[1][0] - bounds[0][0] > 3000 ) ? SG_STATIC : SG_DYNAMIC;
 	//
 	// create slots for each of the model's surfaces
 	//

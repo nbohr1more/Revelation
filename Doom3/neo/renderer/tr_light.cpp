@@ -256,7 +256,7 @@ viewEntity_t *R_SetEntityDefViewEntity( idRenderEntityLocal *def ) {
 	R_AxisToModelMatrix( def->parms.axis, def->parms.origin, vModel->modelMatrix );
 	// we may not have a viewDef if we are just creating shadows at entity creation time
 	if( tr.viewDef ) {
-		R_MultiMatrix( vModel->modelMatrix, tr.viewDef->worldSpace.modelViewMatrix, vModel->modelViewMatrix );
+		R_MatrixMultiply( vModel->modelMatrix, tr.viewDef->worldSpace.modelViewMatrix, vModel->modelViewMatrix );
 		vModel->next = tr.viewDef->viewEntitys;
 		tr.viewDef->viewEntitys = vModel;
 	}

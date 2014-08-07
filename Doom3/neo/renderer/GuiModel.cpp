@@ -188,7 +188,7 @@ EmitToCurrentView
 */
 void idGuiModel::EmitToCurrentView( float modelMatrix[16], bool depthHack ) {
 	float	modelViewMatrix[16];
-	R_MultiMatrix( modelMatrix, tr.viewDef->worldSpace.modelViewMatrix,
+	R_MatrixMultiply( modelMatrix, tr.viewDef->worldSpace.modelViewMatrix,
 					modelViewMatrix );
 	for( int i = 0 ; i < surfaces.Num() ; i++ ) {
 		EmitSurface( &surfaces[i], modelMatrix, modelViewMatrix, depthHack );

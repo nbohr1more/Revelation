@@ -230,12 +230,12 @@ void R_LockSurfaceScene( viewDef_t *parms ) {
 	drawSurfsCommand_t	*cmd;
 	viewEntity_t			*vModel;
 	// set the matrix for world space to eye space
-	R_SetViewMatrix( parms );
+	R_SetupViewMatrix( parms );
 	tr.lockSurfacesCmd.viewDef->worldSpace = parms->worldSpace;
 	// update the view origin and axis, and all
 	// the entity matricies
 	for( vModel = tr.lockSurfacesCmd.viewDef->viewEntitys ; vModel ; vModel = vModel->next ) {
-		R_MultiMatrix( vModel->modelMatrix, tr.lockSurfacesCmd.viewDef->worldSpace.modelViewMatrix, vModel->modelViewMatrix );
+		R_MatrixMultiply( vModel->modelMatrix, tr.lockSurfacesCmd.viewDef->worldSpace.modelViewMatrix, vModel->modelViewMatrix );
 	}
 	// add the stored off surface commands again
 	cmd = ( drawSurfsCommand_t * )R_GetCommandBuffer( sizeof( *cmd ) );

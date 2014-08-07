@@ -1141,7 +1141,7 @@ srfTriangles_t *R_CreateShadowVolume( const idRenderEntityLocal *ent, const srfT
 	// the shadow verts will go into a main memory buffer as well as a vertex
 	// cache buffer, so they can be copied back if they are purged
 	R_AllocStaticTriSurfShadowVerts( newTri, newTri->numVerts );
-	memcpy( newTri->shadowVertexes, st->shadowVerts, newTri->numVerts * sizeof( newTri->shadowVertexes[0] ) );
+	SIMDProcessor->Memcpy( newTri->shadowVertexes, st->shadowVerts, newTri->numVerts * sizeof( newTri->shadowVertexes[0] ) );
 	R_AllocStaticTriSurfIndexes( newTri, newTri->numIndexes );
 	/* sortCapIndexes */
 	if( true ) {
@@ -1150,26 +1150,26 @@ srfTriangles_t *R_CreateShadowVolume( const idRenderEntityLocal *ent, const srfT
 		newTri->numShadowIndexesNoCaps = 0;
 		for( i = 0; i < st->indexFrustumNumber; i++ ) {
 			int	c = st->indexRef[i].end - st->indexRef[i].silStart;
-			memcpy( newTri->indexes + newTri->numShadowIndexesNoCaps, st->shadowIndexes + st->indexRef[i].silStart, c * sizeof( newTri->indexes[0] ) );
+			SIMDProcessor->Memcpy( newTri->indexes + newTri->numShadowIndexesNoCaps, st->shadowIndexes + st->indexRef[i].silStart, c * sizeof( newTri->indexes[0] ) );
 			newTri->numShadowIndexesNoCaps += c;
 		}
 		// copy rear cap indexes next
 		newTri->numShadowIndexesNoFrontCaps = newTri->numShadowIndexesNoCaps;
 		for( i = 0; i < st->indexFrustumNumber; i++ ) {
 			int	c = st->indexRef[i].silStart - st->indexRef[i].rearCapStart;
-			memcpy( newTri->indexes + newTri->numShadowIndexesNoFrontCaps, st->shadowIndexes + st->indexRef[i].rearCapStart, c * sizeof( newTri->indexes[0] ) );
+			SIMDProcessor->Memcpy( newTri->indexes + newTri->numShadowIndexesNoFrontCaps, st->shadowIndexes + st->indexRef[i].rearCapStart, c * sizeof( newTri->indexes[0] ) );
 			newTri->numShadowIndexesNoFrontCaps += c;
 		}
 		// copy front cap indexes last
 		newTri->numIndexes = newTri->numShadowIndexesNoFrontCaps;
 		for( i = 0; i < st->indexFrustumNumber; i++ ) {
 			int	c = st->indexRef[i].rearCapStart - st->indexRef[i].frontCapStart;
-			memcpy( newTri->indexes + newTri->numIndexes, st->shadowIndexes + st->indexRef[i].frontCapStart, c * sizeof( newTri->indexes[0] ) );
+			SIMDProcessor->Memcpy( newTri->indexes + newTri->numIndexes, st->shadowIndexes + st->indexRef[i].frontCapStart, c * sizeof( newTri->indexes[0] ) );
 			newTri->numIndexes += c;
 		}
 	} else {
 		newTri->shadowCapPlaneBits = 63;	// we don't have optimized index lists
-		memcpy( newTri->indexes, st->shadowIndexes, newTri->numIndexes * sizeof( newTri->indexes[0] ) );
+		SIMDProcessor->Memcpy( newTri->indexes, st->shadowIndexes, newTri->numIndexes * sizeof( newTri->indexes[0] ) );
 	}
 	if( optimize == SG_OFFLINE ) {
 		CleanupOptimizedShadowTris( newTri );

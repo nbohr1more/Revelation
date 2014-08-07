@@ -385,22 +385,6 @@ void *R_ClearedFrameAlloc( int bytes ) {
 	return r;
 }
 
-
-/*
-==================
-R_FrameFree
-
-This does nothing at all, as the frame data is reused every frame
-and can only be stack allocated.
-
-The only reason for it's existance is so functions that can
-use either static or frame memory can set function pointers
-to both alloc and free.
-==================
-*/
-void R_FrameFree( void *data ) {
-}
-
 //==========================================================================
 
 void R_AxisToModelMatrix( const idMat3 &axis, const idVec3 &origin, float modelMatrix[16] ) {
@@ -428,57 +412,9 @@ void R_AxisToModelMatrix( const idMat3 &axis, const idVec3 &origin, float modelM
 // FIXME: these assume no skewing or scaling transforms
 void R_LocalPointToGlobal (const float modelMatrix[16], const idVec3 &in, idVec3 &out)
 {
-#if defined(MACOS_X) && defined(__i386__)
-	__m128 m0, m1, m2, m3;
-	__m128 in0, in1, in2;
-	float i0, i1, i2;
-	i0 = in[0];
-	i1 = in[1];
-	i2 = in[2];
-	m0 = _mm_loadu_ps( &modelMatrix[0 * 4 + 0] );
-	m1 = _mm_loadu_ps( &modelMatrix[1 * 4 + 0] );
-	m2 = _mm_loadu_ps( &modelMatrix[2 * 4 + 0] );
-	m3 = _mm_loadu_ps( &modelMatrix[3 * 4 + 0] );
-	in0 = _mm_load1_ps( &i0 );
-	in1 = _mm_load1_ps( &i1 );
-	in2 = _mm_load1_ps( &i2 );
-	m0 = _mm_mul_ps( m0, in0 );
-	m1 = _mm_mul_ps( m1, in1 );
-	m2 = _mm_mul_ps( m2, in2 );
-	m0 = _mm_add_ps( m0, m1 );
-	m0 = _mm_add_ps( m0, m2 );
-	m0 = _mm_add_ps( m0, m3 );
-	_mm_store_ss( &out[0], m0 );
-	m1 = ( __m128 ) _mm_shuffle_epi32( ( __m128i )m0, 0x55 );
-	_mm_store_ss( &out[1], m1 );
-	m2 = _mm_movehl_ps( m2, m0 );
-	_mm_store_ss( &out[2], m2 );
-#else
-	__m128	m0, m1, m2, m3;
-	__m128	in0, in1, in2;
-	float	i0, i1, i2;
-	i0 = in[0];
-	i1 = in[1];
-	i2 = in[2];
-	m0 = _mm_loadu_ps( &modelMatrix[0 * 4 + 0] );
-	m1 = _mm_loadu_ps( &modelMatrix[1 * 4 + 0] );
-	m2 = _mm_loadu_ps( &modelMatrix[2 * 4 + 0] );
-	m3 = _mm_loadu_ps( &modelMatrix[3 * 4 + 0] );
-	in0 = _mm_load1_ps (&i0);
-	in1 = _mm_load1_ps (&i1);
-	in2 = _mm_load1_ps (&i2);
-	m0 = _mm_mul_ps (m0, in0);
-	m1 = _mm_mul_ps (m1, in1);
-	m2 = _mm_mul_ps (m2, in2);
-	m0 = _mm_add_ps (m0, m1);
-	m0 = _mm_add_ps (m0, m2);
-	m0 = _mm_add_ps (m0, m3);
-	_mm_store_ss (&out[0], m0);
-	m1 = _mm_cvtepi32_ps(_mm_shuffle_epi32(_mm_cvttps_epi32(m0), 0x55));
-	_mm_store_ss (&out[1], m1);
-	m2 = _mm_movehl_ps (m2, m0);
-	_mm_store_ss (&out[2], m2);
-#endif
+	out[0] = in[0] * modelMatrix[0 * 4 + 0] + in[1] * modelMatrix[1 * 4 + 0] + in[2] * modelMatrix[2 * 4 + 0] + modelMatrix[3 * 4 + 0];
+	out[1] = in[0] * modelMatrix[0 * 4 + 1] + in[1] * modelMatrix[1 * 4 + 1] + in[2] * modelMatrix[2 * 4 + 1] + modelMatrix[3 * 4 + 1];
+	out[2] = in[0] * modelMatrix[0 * 4 + 2] + in[1] * modelMatrix[1 * 4 + 2] + in[2] * modelMatrix[2 * 4 + 2] + modelMatrix[3 * 4 + 2];
 }
 
 void R_PointTimesMatrix( const float modelMatrix[16], const idVec4 &in, idVec4 &out ) {
@@ -635,19 +571,17 @@ R_TransformModelToClip
 ==========================
 */
 void R_TransformModelToClip( const idVec3 &src, const float *modelMatrix, const float *projectionMatrix, idPlane &eye, idPlane &dst ) {
-	for( int i = 0 ; i < 4 ; i++ ) {
-		eye[ i ] =
-			src[0] * modelMatrix[ i + 0 * 4 ] +
-			src[1] * modelMatrix[ i + 1 * 4 ] +
-			src[2] * modelMatrix[ i + 2 * 4 ] +
-			1 * modelMatrix[ i + 3 * 4 ];
+	for( int i = 0; i < 4; i++ ) {
+		eye[i] = 	modelMatrix[i + 0 * 4] * src[0] +
+					modelMatrix[i + 1 * 4] * src[1] +
+					modelMatrix[i + 2 * 4] * src[2] +
+					modelMatrix[i + 3 * 4];
 	}
-	for( int j = 0 ; j < 4 ; j++ ) {
-		dst[ j ] =
-			eye[0] * projectionMatrix[ j + 0 * 4 ] +
-			eye[1] * projectionMatrix[ j + 1 * 4 ] +
-			eye[2] * projectionMatrix[ j + 2 * 4 ] +
-			eye[3] * projectionMatrix[ j + 3 * 4 ];
+	for( int i = 0; i < 4; i++ ) {
+		dst[i] = 	projectionMatrix[i + 0 * 4] * eye[0] +
+					projectionMatrix[i + 1 * 4] * eye[1] +
+					projectionMatrix[i + 2 * 4] * eye[2] +
+					projectionMatrix[i + 3 * 4] * eye[3];
 	}
 }
 
@@ -663,16 +597,13 @@ void R_GlobalToNormalizedDeviceCoordinates( const idVec3 &global, idVec3 &ndc ) 
 	idPlane	clip;
 	// _D3XP use tr.primaryView when there is no tr.viewDef
 	const viewDef_t* viewDef = ( tr.viewDef != NULL ) ? tr.viewDef : tr.primaryView;
-	for( int i = 0; i < 4; i ++ )
-	{
+	for( int i = 0; i < 4; i ++ ) {
 		view[i] = 	viewDef->worldSpace.modelViewMatrix[i + 0 * 4] * global[0] +
 					viewDef->worldSpace.modelViewMatrix[i + 1 * 4] * global[1] +
 					viewDef->worldSpace.modelViewMatrix[i + 2 * 4] * global[2] +
 					viewDef->worldSpace.modelViewMatrix[i + 3 * 4];
 	}
-
-	for( int i = 0; i < 4; i ++ )
-	{
+	for( int i = 0; i < 4; i ++ ) {
 		clip[i] = 	viewDef->projectionMatrix[i + 0 * 4] * view[0] +
 					viewDef->projectionMatrix[i + 1 * 4] * view[1] +
 					viewDef->projectionMatrix[i + 2 * 4] * view[2] +
@@ -700,10 +631,10 @@ void R_TransformClipToDevice( const idPlane &clip, idVec3 &ndc ) {
 
 /*
 ==========================
-R_MultiMatrix
+R_MatrixMultiply
 ==========================
 */
-void R_MultiMatrix( const float a[16], const float b[16], float out[16] ) {
+void R_MatrixMultiply( const float a[16], const float b[16], float out[16] ) {
 	__m128 a0 = _mm_loadu_ps( a + 0 * 4 );
 	__m128 a1 = _mm_loadu_ps( a + 1 * 4 );
 	__m128 a2 = _mm_loadu_ps( a + 2 * 4 );
@@ -756,15 +687,17 @@ void R_TransposeGLMatrix( const float in[16], float out[16] ) {
 
 /*
 =================
-R_SetViewMatrix
+R_SetupViewMatrix
 
 Sets up the world to view matrix for a given viewParm
 =================
 */
-void R_SetViewMatrix( viewDef_t *viewDef ) {
-	idVec3	origin;
-	viewEntity_t *world;
-	float	viewerMatrix[16];
+void R_SetupViewMatrix( viewDef_t *viewDef ) {
+	// transform by the camera placement
+	const idVec3	&origin = viewDef->renderView.vieworg;
+	const idMat3	&axis = viewDef->renderView.viewaxis;
+	viewEntity_t	*world;
+	float			viewerMatrix[16];
 	static float	s_flipMatrix[16] = {
 		// convert from our coordinate system (looking down X)
 		// to OpenGL's coordinate system (looking down -Z)
@@ -780,36 +713,35 @@ void R_SetViewMatrix( viewDef_t *viewDef ) {
 	world->modelMatrix[1 * 4 + 1] = 1;
 	world->modelMatrix[2 * 4 + 2] = 1;
 	// transform by the camera placement
-	origin = viewDef->renderView.vieworg;
-	viewerMatrix[0] = viewDef->renderView.viewaxis[0][0];
-	viewerMatrix[4] = viewDef->renderView.viewaxis[0][1];
-	viewerMatrix[8] = viewDef->renderView.viewaxis[0][2];
-	viewerMatrix[12] = -origin[0] * viewerMatrix[0] + -origin[1] * viewerMatrix[4] + -origin[2] * viewerMatrix[8];
-	viewerMatrix[1] = viewDef->renderView.viewaxis[1][0];
-	viewerMatrix[5] = viewDef->renderView.viewaxis[1][1];
-	viewerMatrix[9] = viewDef->renderView.viewaxis[1][2];
-	viewerMatrix[13] = -origin[0] * viewerMatrix[1] + -origin[1] * viewerMatrix[5] + -origin[2] * viewerMatrix[9];
-	viewerMatrix[2] = viewDef->renderView.viewaxis[2][0];
-	viewerMatrix[6] = viewDef->renderView.viewaxis[2][1];
-	viewerMatrix[10] = viewDef->renderView.viewaxis[2][2];
-	viewerMatrix[14] = -origin[0] * viewerMatrix[2] + -origin[1] * viewerMatrix[6] + -origin[2] * viewerMatrix[10];
-	viewerMatrix[3] = 0;
-	viewerMatrix[7] = 0;
-	viewerMatrix[11] = 0;
-	viewerMatrix[15] = 1;
+	viewerMatrix[0 * 4 + 0] = axis[0][0];
+	viewerMatrix[1 * 4 + 0] = axis[0][1];
+	viewerMatrix[2 * 4 + 0] = axis[0][2];
+	viewerMatrix[3 * 4 + 0] = -origin[0] * axis[0][0] - origin[1] * axis[0][1] - origin[2] * axis[0][2];
+	viewerMatrix[0 * 4 + 1] = axis[1][0];
+	viewerMatrix[1 * 4 + 1] = axis[1][1];
+	viewerMatrix[2 * 4 + 1] = axis[1][2];
+	viewerMatrix[3 * 4 + 1] = - origin[0] * axis[1][0] - origin[1] * axis[1][1] - origin[2] * axis[1][2];
+	viewerMatrix[0 * 4 + 2] = axis[2][0];
+	viewerMatrix[1 * 4 + 2] = axis[2][1];
+	viewerMatrix[2 * 4 + 2] = axis[2][2];
+	viewerMatrix[3 * 4 + 2] = -origin[0] * axis[2][0] - origin[1] * axis[2][1] - origin[2] * axis[2][2];
+	viewerMatrix[0 * 4 + 3] = 0.0f;
+	viewerMatrix[1 * 4 + 3] = 0.0f;
+	viewerMatrix[2 * 4 + 3] = 0.0f;
+	viewerMatrix[3 * 4 + 3] = 1.0f;
 	// convert from our coordinate system (looking down X)
 	// to OpenGL's coordinate system (looking down -Z)
-	R_MultiMatrix( viewerMatrix, s_flipMatrix, world->modelViewMatrix );
+	R_MatrixMultiply( viewerMatrix, s_flipMatrix, world->modelViewMatrix );
 }
 
 /*
 ===============
-R_SetupProjection
+R_SetupProjectionMatrix
 
 This uses the "infinite far z" trick
 ===============
 */
-void R_SetupProjection( void ) {
+void R_SetupProjectionMatrix( viewDef_t* viewDef ) {
 	float	xmin, xmax, ymin, ymax;
 	float	width, height;
 	float	zNear;
@@ -828,40 +760,43 @@ void R_SetupProjection( void ) {
 	// set up projection matrix
 	//
 	zNear	= r_znear.GetFloat();
-	if( tr.viewDef->renderView.cramZNear ) {
+	if( viewDef->renderView.cramZNear ) {
 		zNear *= 0.25;
 	}
-	ymax = zNear * tan( tr.viewDef->renderView.fov_y * idMath::PI / 360.0f );
+	ymax = zNear * tan( viewDef->renderView.fov_y * idMath::PI / 360.0f );
 	ymin = -ymax;
-	xmax = zNear * tan( tr.viewDef->renderView.fov_x * idMath::PI / 360.0f );
+	xmax = zNear * tan( viewDef->renderView.fov_x * idMath::PI / 360.0f );
 	xmin = -xmax;
 	width = xmax - xmin;
 	height = ymax - ymin;
-	jitterx = jitterx * width / ( tr.viewDef->viewport.x2 - tr.viewDef->viewport.x1 + 1 );
+	jitterx = jitterx * width / ( viewDef->viewport.x2 - viewDef->viewport.x1 + 1 );
 	xmin += jitterx;
 	xmax += jitterx;
-	jittery = jittery * height / ( tr.viewDef->viewport.y2 - tr.viewDef->viewport.y1 + 1 );
+	jittery = jittery * height / ( viewDef->viewport.y2 - viewDef->viewport.y1 + 1 );
 	ymin += jittery;
 	ymax += jittery;
-	tr.viewDef->projectionMatrix[0] = 2 * zNear / width;
-	tr.viewDef->projectionMatrix[4] = 0;
-	tr.viewDef->projectionMatrix[8] = ( xmax + xmin ) / width;	// normally 0
-	tr.viewDef->projectionMatrix[12] = 0;
-	tr.viewDef->projectionMatrix[1] = 0;
-	tr.viewDef->projectionMatrix[5] = 2 * zNear / height;
-	tr.viewDef->projectionMatrix[9] = ( ymax + ymin ) / height;	// normally 0
-	tr.viewDef->projectionMatrix[13] = 0;
+
+	viewDef->projectionMatrix[0 * 4 + 0] = 2.0f * zNear / width;
+	viewDef->projectionMatrix[1 * 4 + 0] = 0.0f;
+	viewDef->projectionMatrix[2 * 4 + 0] = ( xmax + xmin ) / width;	// normally 0
+	viewDef->projectionMatrix[3 * 4 + 0] = 0.0f;
+
+	viewDef->projectionMatrix[0 * 4 + 1] = 0.0f;
+	viewDef->projectionMatrix[1 * 4 + 1] = 2.0f * zNear / height;
+	viewDef->projectionMatrix[2 * 4 + 1] = ( ymax + ymin ) / height;	// normally 0
+	viewDef->projectionMatrix[3 * 4 + 1] = 0.0f;
 	// this is the far-plane-at-infinity formulation, and
 	// crunches the Z range slightly so w=0 vertexes do not
 	// rasterize right at the wraparound point
-	tr.viewDef->projectionMatrix[2] = 0;
-	tr.viewDef->projectionMatrix[6] = 0;
-	tr.viewDef->projectionMatrix[10] = -0.999f;
-	tr.viewDef->projectionMatrix[14] = -2.0f * zNear;
-	tr.viewDef->projectionMatrix[3] = 0;
-	tr.viewDef->projectionMatrix[7] = 0;
-	tr.viewDef->projectionMatrix[11] = -1;
-	tr.viewDef->projectionMatrix[15] = 0;
+	viewDef->projectionMatrix[0 * 4 + 2] = 0.0f;
+	viewDef->projectionMatrix[1 * 4 + 2] = 0.0f;
+	viewDef->projectionMatrix[2 * 4 + 2] = -0.999f; // adjust value to prevent imprecision issues
+	viewDef->projectionMatrix[3 * 4 + 2] = -2.0f * zNear;
+
+	viewDef->projectionMatrix[0 * 4 + 3] = 0.0f;
+	viewDef->projectionMatrix[1 * 4 + 3] = 0.0f;
+	viewDef->projectionMatrix[2 * 4 + 3] = -1.0f;
+	viewDef->projectionMatrix[3 * 4 + 3] = 0.0f;
 }
 
 /*
@@ -872,37 +807,37 @@ Setup that culling frustum planes for the current view
 FIXME: derive from modelview matrix times projection matrix
 =================
 */
-static void R_SetupViewFrustum( void ) {
+static void R_SetupViewFrustum( viewDef_t* viewDef ) {
 	int		i;
 	float	xs, xc;
 	float	ang;
-	ang = DEG2RAD( tr.viewDef->renderView.fov_x ) * 0.5f;
+	ang = DEG2RAD( viewDef->renderView.fov_x ) * 0.5f;
 	idMath::SinCos( ang, xs, xc );
-	tr.viewDef->frustum[0] = xs * tr.viewDef->renderView.viewaxis[0] + xc * tr.viewDef->renderView.viewaxis[1];
-	tr.viewDef->frustum[1] = xs * tr.viewDef->renderView.viewaxis[0] - xc * tr.viewDef->renderView.viewaxis[1];
+	viewDef->frustum[0] = xs * viewDef->renderView.viewaxis[0] + xc * viewDef->renderView.viewaxis[1];
+	viewDef->frustum[1] = xs * viewDef->renderView.viewaxis[0] - xc * viewDef->renderView.viewaxis[1];
 	ang = DEG2RAD( tr.viewDef->renderView.fov_y ) * 0.5f;
 	idMath::SinCos( ang, xs, xc );
-	tr.viewDef->frustum[2] = xs * tr.viewDef->renderView.viewaxis[0] + xc * tr.viewDef->renderView.viewaxis[2];
-	tr.viewDef->frustum[3] = xs * tr.viewDef->renderView.viewaxis[0] - xc * tr.viewDef->renderView.viewaxis[2];
+	viewDef->frustum[2] = xs * viewDef->renderView.viewaxis[0] + xc * viewDef->renderView.viewaxis[2];
+	viewDef->frustum[3] = xs * viewDef->renderView.viewaxis[0] - xc * viewDef->renderView.viewaxis[2];
 	// plane four is the front clipping plane
-	tr.viewDef->frustum[4] = /* vec3_origin - */ tr.viewDef->renderView.viewaxis[0];
+	viewDef->frustum[4] = viewDef->renderView.viewaxis[0];
 	for( i = 0; i < 5; i++ ) {
 		// flip direction so positive side faces out (FIXME: globally unify this)
-		tr.viewDef->frustum[i] = -tr.viewDef->frustum[i].Normal();
-		tr.viewDef->frustum[i][3] = -( tr.viewDef->renderView.vieworg * tr.viewDef->frustum[i].Normal() );
+		viewDef->frustum[i] = -viewDef->frustum[i].Normal();
+		viewDef->frustum[i][3] = -( viewDef->renderView.vieworg * viewDef->frustum[i].Normal() );
 	}
 	// eventually, plane five will be the rear clipping plane for fog
 	float dNear, dFar, dLeft, dUp;
 	dNear = r_znear.GetFloat();
-	if( tr.viewDef->renderView.cramZNear ) {
+	if( viewDef->renderView.cramZNear ) {
 		dNear *= 0.25f;
 	}
 	dFar = MAX_WORLD_SIZE;
-	dLeft = dFar * tan( DEG2RAD( tr.viewDef->renderView.fov_x * 0.5f ) );
-	dUp = dFar * tan( DEG2RAD( tr.viewDef->renderView.fov_y * 0.5f ) );
-	tr.viewDef->viewFrustum.SetOrigin( tr.viewDef->renderView.vieworg );
-	tr.viewDef->viewFrustum.SetAxis( tr.viewDef->renderView.viewaxis );
-	tr.viewDef->viewFrustum.SetSize( dNear, dFar, dLeft, dUp );
+	dLeft = dFar * tan( DEG2RAD( viewDef->renderView.fov_x * 0.5f ) );
+	dUp = dFar * tan( DEG2RAD( viewDef->renderView.fov_y * 0.5f ) );
+	viewDef->viewFrustum.SetOrigin( viewDef->renderView.vieworg );
+	viewDef->viewFrustum.SetAxis( viewDef->renderView.viewaxis );
+	viewDef->viewFrustum.SetSize( dNear, dFar, dLeft, dUp );
 }
 
 /*
@@ -993,13 +928,13 @@ void R_RenderView( viewDef_t *parms ) {
 	tr.viewDef = parms;
 	tr.sortOffset = 0;
 	// set the matrix for world space to eye space
-	R_SetViewMatrix( tr.viewDef );
+	R_SetupViewMatrix( tr.viewDef );
 	// the four sides of the view frustum are needed
 	// for culling and portal visibility
-	R_SetupViewFrustum();
+	R_SetupViewFrustum( tr.viewDef );
 	// we need to set the projection matrix before doing
 	// portal-to-screen scissor box calculations
-	R_SetupProjection();
+	R_SetupProjectionMatrix( tr.viewDef );
 	// identify all the visible portalAreas, and the entityDefs and
 	// lightDefs that are in them and pass culling.
 	static_cast<idRenderWorldLocal *>( parms->renderWorld )->FindViewLightsAndEntities();

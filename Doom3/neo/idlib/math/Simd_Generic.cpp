@@ -2714,7 +2714,7 @@ int VPCALL idSIMD_Generic::CreateShadowCache( idVec4 *vertexCache, int *vertRema
 		vertexCache[outVerts + 0][1] = v[1];
 		vertexCache[outVerts + 0][2] = v[2];
 		vertexCache[outVerts + 0][3] = 1.0f;
-		// R_SetupProjection() builds the projection matrix with a slight crunch
+		// R_SetupProjectionMatrix() builds the projection matrix with a slight crunch
 		// for depth, which keeps this w=0 division from rasterizing right at the
 		// wrap around point and causing depth fighting with the rear caps
 		vertexCache[outVerts + 1][0] = v[0] - lightOrigin[0];

@@ -40,7 +40,7 @@ static void RB_SetStageTexGen( const drawSurf_t *surf ) {
 	glEnable( GL_TEXTURE_GEN_T );
 	glEnable( GL_TEXTURE_GEN_Q );
 	float	mat[16], plane[4];
-	R_MultiMatrix( surf->space->modelViewMatrix, backEnd.viewDef->projectionMatrix, mat );
+	R_MatrixMultiply( surf->space->modelViewMatrix, backEnd.viewDef->projectionMatrix, mat );
 	plane[0] = mat[0 * 4 + 0];
 	plane[1] = mat[1 * 4 + 0];
 	plane[2] = mat[2 * 4 * 0];

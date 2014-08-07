@@ -1161,9 +1161,9 @@ void R_TransformClipToDevice( const idPlane &clip, idVec3 &ndc );
 
 void R_TransposeGLMatrix( const float in[16], float out[16] );
 
-void R_SetViewMatrix( viewDef_t *viewDef );
+void R_SetupViewMatrix( viewDef_t *viewDef );
 
-void R_MultiMatrix( const float *a, const float *b, float *out );
+void R_MatrixMultiply( const float *a, const float *b, float *out );
 
 /*
 ============================================================
@@ -1602,8 +1602,6 @@ int R_CountFrameData( void );
 void R_ToggleSmpFrame( void );
 void *R_FrameAlloc( int bytes );
 void *R_ClearedFrameAlloc( int bytes );
-void R_FrameFree( void *data );
-
 void *R_StaticAlloc( int bytes );		// just malloc with error checking
 void *R_ClearedStaticAlloc( int bytes );	// with memset
 void R_StaticFree( void *data );
