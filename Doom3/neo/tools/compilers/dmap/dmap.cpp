@@ -189,7 +189,7 @@ void Dmap( const idCmdArgs &args ) {
 	}
 	common->Printf( "---- dmap ----\n" );
 	dmapGlobals.fullCarve = true;
-	dmapGlobals.shadowOptLevel = SO_MERGE_SURFACES;		// create shadows by merging all surfaces, but no super optimization
+	dmapGlobals.shadowOptLevel = SO_MERGE_SURFACES;			// create shadows by merging all surfaces, but no super optimization
 	//	dmapGlobals.shadowOptLevel = SO_CLIP_OCCLUDERS;		// remove occluders that are completely covered
 	//	dmapGlobals.shadowOptLevel = SO_SIL_OPTIMIZE;
 	//	dmapGlobals.shadowOptLevel = SO_CULL_OCCLUDED;

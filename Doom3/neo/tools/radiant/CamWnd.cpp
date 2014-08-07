@@ -45,8 +45,6 @@ If you have questions concerning this license or the applicable additional terms
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
-
 int g_axialAnchor = -1;
 int g_axialDest = -1;
 bool g_bAxialMode = false;

@@ -38,7 +38,6 @@ If you have questions concerning this license or the applicable additional terms
 #endif
 
 MEMainFrame *meMainFrame = NULL;
-
 CFont *materialEditorFont = NULL;
 
 /**
@@ -86,10 +85,19 @@ void MaterialEditorInit( void ) {
 */
 void MaterialEditorRun( void ) {
 	MSG *msg = AfxGetCurrentMessage();
-	while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
-		// pump message
-		if( !AfxGetApp()->PumpMessage() ) {
+	BOOL bDoingBackgroundProcessing = TRUE;
+	while (bDoingBackgroundProcessing) { 
+		while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
+			// pump message
+			if( !AfxGetApp()->PumpMessage() ) {
+				bDoingBackgroundProcessing = FALSE; 
+				::PostQuitMessage(0); 
+				break; 
+			}
 		}
+		// let MFC do its idle processing
+		LONG lIdle = 0;
+		while (AfxGetApp()->OnIdle(lIdle++));
 	}
 }
 

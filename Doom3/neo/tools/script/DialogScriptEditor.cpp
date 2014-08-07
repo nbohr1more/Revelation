@@ -41,7 +41,6 @@ If you have questions concerning this license or the applicable additional terms
 #define DEBUG_NEW new
 #endif
 
-
 typedef struct scriptEventInfo_s {
 	idStr		name;
 	idStr		parms;
@@ -53,7 +52,6 @@ static idList<scriptEventInfo_t> scriptEvents;
 static DialogScriptEditor *g_ScriptDialog = NULL;
 
 // DialogScriptEditor dialog
-
 static UINT FindDialogMessage = ::RegisterWindowMessage( FINDMSGSTRING );
 
 toolTip_t DialogScriptEditor::toolTips[] = {
@@ -61,7 +59,6 @@ toolTip_t DialogScriptEditor::toolTips[] = {
 	{ IDCANCEL, "cancel" },
 	{ 0, NULL }
 };
-
 
 IMPLEMENT_DYNAMIC( DialogScriptEditor, CDialog )
 
@@ -337,11 +334,6 @@ void ScriptEditorInit( const idDict *spawnArgs ) {
 	}
 	if( g_ScriptDialog->GetSafeHwnd() == NULL ) {
 		g_ScriptDialog->Create( IDD_DIALOG_SCRIPTEDITOR );
-		/*
-				// FIXME: restore position
-				CRect rct;
-				g_ScriptDialog->SetWindowPos( NULL, rct.left, rct.top, 0, 0, SWP_NOSIZE );
-		*/
 	}
 	idKeyInput::ClearStates();
 	g_ScriptDialog->ShowWindow( SW_SHOW );
@@ -361,10 +353,19 @@ void ScriptEditorRun( void ) {
 #else
 	MSG *msg = &m_msgCur;
 #endif
-	while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
-		// pump message
-		if( !AfxGetApp()->PumpMessage() ) {
+	BOOL bDoingBackgroundProcessing = TRUE;
+	while (bDoingBackgroundProcessing) { 
+		while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
+			// pump message
+			if( !AfxGetApp()->PumpMessage() ) {
+				bDoingBackgroundProcessing = FALSE; 
+				::PostQuitMessage(0); 
+				break; 
+			}
 		}
+		// let MFC do its idle processing
+		LONG lIdle = 0;
+		while (AfxGetApp()->OnIdle(lIdle++));
 	}
 }
 

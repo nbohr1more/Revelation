@@ -82,7 +82,6 @@ BOOL CDIB::Create( int width, int height, int bits ) {
 		Free existing image
 	*/
 	DestroyDIB();
-	//	ASSERT(bits == 24 || bits == 8);
 	BITMAPINFOHEADER bmInfo;
 	memset( &bmInfo, 0, sizeof( BITMAPINFOHEADER ) );
 	bmInfo.biSize = sizeof( BITMAPINFOHEADER );
@@ -98,7 +97,6 @@ BOOL CDIB::Create( BITMAPINFOHEADER &bmInfo ) {
 	bytes = ( bmInfo.biBitCount * bmInfo.biWidth ) >> 3;
 	height = bmInfo.biHeight;
 	width = bmInfo.biWidth;
-	//	bmInfo.biHeight *= -1;
 	while( bytes % 4 ) {
 		bytes++;
 	}
@@ -119,8 +117,6 @@ BOOL CDIB::Create( BITMAPINFOHEADER &bmInfo ) {
 		return FALSE;
 	}
 	for( i = 0, ptr = m_pLinePtr; i < height; i++, ptr++ ) {
-		//*ptr = (int)(m_pBits)+(i*bytes);
-		//*ptr = (int)GetLinePtr(i);
 		*ptr = m_pBits + ( height - i - 1 ) * bytes;
 	}
 	m_nFlags = 0;
@@ -181,7 +177,6 @@ void CDIB::SetPixel( int x, int y, COLORREF color ) {
 	unsigned char *ptr;
 	ASSERT( x >= 0 && y >= 0 );
 	ASSERT( x < width && y < height );
-	//	ptr = m_pBits + (y*bytes) + x * 3;
 	ptr = ( unsigned char * )m_pLinePtr[y];
 	ptr += x * 3;
 	*ptr++ = ( unsigned char )GetBValue( color );
@@ -193,8 +188,6 @@ void CDIB::SetPixel8( int x, int y, unsigned char color ) {
 	unsigned char *ptr, *aptr;
 	ASSERT( x >= 0 && y >= 0 );
 	ASSERT( x < width && y < height );
-	//	ptr = m_pBits + (y*bytes) + x ;
-	//	ptr = (unsigned char *)m_pLinePtr[y] ;
 	ptr = GetLinePtr( y );
 	aptr = ptr;
 	ptr += x;
@@ -207,7 +200,6 @@ COLORREF CDIB::GetPixel( int x, int y ) {
 	COLORREF color;
 	ASSERT( x >= 0 && y >= 0 );
 	ASSERT( x < width && y < height );
-	//	ptr = m_pBits + (y*bytes) + x * 3;
 	ptr = GetLinePtr( y );
 	ptr += ( x * 3 );
 	color = RGB( *( ptr + 2 ), *( ptr + 1 ), *ptr );
@@ -472,9 +464,6 @@ void CDIB::BitBlt( int nXDest, int nYDest, int nWidth, int nHeight, CDIB &dibSrc
 }
 
 unsigned char *CDIB::GetLinePtr( int line ) {
-	/*unsigned char *ptr;
-		ptr = m_pBits + (height-line-1)*bytes;
-		return ptr;*/
 	return m_pLinePtr[line];
 }
 
@@ -593,8 +582,6 @@ void CDIB::CreateGammaCurve() {
 	}
 }
 
-
-
 void CDIB::GetPixel( UINT x, UINT y, int &pixel ) {
 	ASSERT( x < ( UINT )Width() );
 	ASSERT( y < ( UINT )Height() );
@@ -630,28 +617,6 @@ BOOL CDIB::Make8Bit( CDIB &dib ) {
 	}
 	return FALSE;
 }
-
-/*
-BOOL CDIB::SwitchFrom24(CDIB& dib)
-{
-int i,j,w,h;
-unsigned char *sPtr,*dPtr;
-	w = Width();
-	h = Height();
-	memset(CachePtr,0,sizeof(CachePtr));
-	for(i=0; i < h; i++)
-	{
-		dPtr = GetLinePtr(i);
-		sPtr = dib.GetLinePtr(i);
-		for(j=0 ; j < w; j++,dPtr++,sPtr+=3)
-		{
-			*dPtr = ClosestColor((RGBQUAD *)sPtr);
-		}
-	}
-	return TRUE;
-}
-*/
-
 
 BOOL CDIB::SwitchFromOne( CDIB &dib ) {
 	int i, j, w, h;
@@ -722,7 +687,6 @@ BOOL CDIB::SwitchPalette( CDIB &dib ) {
 	return TRUE;
 }
 
-
 int CDIB::ClosestColor( RGBQUAD *pRgb ) {
 	unsigned int dist = BIG_DISTANCE, i, d, c;
 	RGBQUAD *pQuad = m_pRGB;
@@ -770,8 +734,6 @@ BOOL CDIB::OpenDIB( CString &csFileName ) {
 	}
 	return FALSE;
 }
-
-
 
 BOOL CDIB::SaveDIB( CString &csFileName, BitmapType type ) {
 	CFile file;
@@ -827,7 +789,6 @@ BOOL CDIB::OpenBMP( CString &csFileName ) {
 	file.Close();
 	return TRUE;
 }
-
 
 int CDIB::CountColors() {
 	ASSERT( GetBitCount() == 8 );

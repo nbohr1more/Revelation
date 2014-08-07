@@ -1157,7 +1157,7 @@ void R_GlobalToNormalizedDeviceCoordinates( const idVec3 &global, idVec3 &ndc );
 
 void R_TransformModelToClip( const idVec3 &src, const float *modelMatrix, const float *projectionMatrix, idPlane &eye, idPlane &dst );
 
-void R_TransformClipToDevice( const idPlane &clip, const viewDef_t *view, idVec3 &normalized );
+void R_TransformClipToDevice( const idPlane &clip, idVec3 &ndc );
 
 void R_TransposeGLMatrix( const float in[16], float out[16] );
 
@@ -1462,13 +1462,9 @@ calling this function may modify "facing" based on culling
 ============================================================
 */
 
-srfTriangles_t *R_CreateVertexProgramTurboShadowVolume( const idRenderEntityLocal *ent,
-		const srfTriangles_t *tri, const idRenderLightLocal *light,
-		srfCullInfo_t &cullInfo );
+srfTriangles_t *R_CreateVertexProgramTurboShadowVolume( const idRenderEntityLocal *ent, const srfTriangles_t *tri, const idRenderLightLocal *light,	srfCullInfo_t &cullInfo );
 
-srfTriangles_t *R_CreateTurboShadowVolume( const idRenderEntityLocal *ent,
-		const srfTriangles_t *tri, const idRenderLightLocal *light,
-		srfCullInfo_t &cullInfo );
+srfTriangles_t *R_CreateTurboShadowVolume( const idRenderEntityLocal *ent, const srfTriangles_t *tri, const idRenderLightLocal *light, srfCullInfo_t &cullInfo );
 
 /*
 ============================================================
@@ -1494,8 +1490,7 @@ typedef struct {
 	int		totalIndexes;
 } optimizedShadow_t;
 
-optimizedShadow_t SuperOptimizeOccluders( idVec4 *verts, glIndex_t *indexes, int numIndexes,
-		idPlane projectionPlane, idVec3 projectionOrigin );
+optimizedShadow_t SuperOptimizeOccluders( idVec4 *verts, glIndex_t *indexes, int numIndexes, idPlane projectionPlane, idVec3 projectionOrigin );
 
 void CleanupOptimizedShadowTris( srfTriangles_t *tri );
 

@@ -625,7 +625,7 @@ static void FragmentSilQuad( silQuad_t quad, silPlane_t *silPlane, shadowOptEdge
 		float d1 = separate.Distance( uniqued[quad.nearV[0]] );
 		float d2 = separate.Distance( uniqued[quad.farV[0]] );
 		if( ( d1 < EDGE_PLANE_EPSILON && d2 < EDGE_PLANE_EPSILON )	||
-				( d1 > -EDGE_PLANE_EPSILON && d2 > -EDGE_PLANE_EPSILON ) ) {
+			( d1 > -EDGE_PLANE_EPSILON && d2 > -EDGE_PLANE_EPSILON ) ) {
 			continue;
 		}
 		// split the quad at this plane
@@ -809,8 +809,8 @@ static int FindUniqueVert( idVec3 &v ) {
 	for( k = 0 ; k < numUniqued ; k++ ) {
 		idVec3 &check = uniqued[k];
 		if( fabs( v[0] - check[0] ) < UNIQUE_EPSILON &&
-				fabs( v[1] - check[1] ) < UNIQUE_EPSILON &&
-				fabs( v[2] - check[2] ) < UNIQUE_EPSILON ) {
+			fabs( v[1] - check[1] ) < UNIQUE_EPSILON &&
+			fabs( v[2] - check[2] ) < UNIQUE_EPSILON ) {
 			return k;
 		}
 	}

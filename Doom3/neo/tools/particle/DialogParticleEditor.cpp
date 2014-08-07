@@ -128,10 +128,7 @@ const int EditEnableID[] = {
 };
 
 const int EditIDCount = sizeof( EditEnableID ) / sizeof( const int );
-
-
 CDialogParticleEditor *g_ParticleDialog = NULL;
-
 
 /*
 ================
@@ -150,11 +147,6 @@ void ParticleEditorInit( const idDict *spawnArgs ) {
 	}
 	if( g_ParticleDialog->GetSafeHwnd() == NULL ) {
 		g_ParticleDialog->Create( IDD_DIALOG_PARTICLE_EDITOR );
-		/*
-		// FIXME: restore position
-		CRect rct;
-		g_AFDialog->SetWindowPos( NULL, rct.left, rct.top, 0, 0, SWP_NOSIZE );
-		*/
 	}
 	idKeyInput::ClearStates();
 	g_ParticleDialog->ShowWindow( SW_SHOW );
@@ -180,10 +172,19 @@ void ParticleEditorRun( void ) {
 #else
 	MSG *msg = &m_msgCur;
 #endif
-	while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
-		// pump message
-		if( !AfxGetApp()->PumpMessage() ) {
+	BOOL bDoingBackgroundProcessing = TRUE;
+	while (bDoingBackgroundProcessing) { 
+		while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
+			// pump message
+			if( !AfxGetApp()->PumpMessage() ) {
+				bDoingBackgroundProcessing = FALSE; 
+				::PostQuitMessage(0); 
+				break; 
+			}
 		}
+		// let MFC do its idle processing
+		LONG lIdle = 0;
+		while (AfxGetApp()->OnIdle(lIdle++));
 	}
 }
 

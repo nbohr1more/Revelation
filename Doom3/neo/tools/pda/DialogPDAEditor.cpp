@@ -46,8 +46,6 @@ If you have questions concerning this license or the applicable additional terms
 /////////////////////////////////////////////////////////////////////////////
 // CCDialogPDAEditor dialog
 CDialogPDAEditor *g_PDAEditorDialog = NULL;
-
-
 CDialogPDAEditor::CDialogPDAEditor( CWnd *pParent /*=NULL*/ )
 	: CDialog( CDialogPDAEditor::IDD, pParent ) {
 	//{{AFX_DATA_INIT(CDialogPDAEditor)
@@ -107,11 +105,6 @@ void PDAEditorInit( const idDict *spawnArgs ) {
 	}
 	if( g_PDAEditorDialog->GetSafeHwnd() == NULL ) {
 		g_PDAEditorDialog->Create( IDD_DIALOG_PDA_EDITOR );
-		/*
-				// FIXME: restore position
-				CRect rct;
-				g_PDAEditorDialog->SetWindowPos( NULL, rct.left, rct.top, 0,0, SWP_NOSIZE );
-		*/
 	}
 	idKeyInput::ClearStates();
 	g_PDAEditorDialog->ShowWindow( SW_SHOW );
@@ -130,10 +123,19 @@ void PDAEditorRun( void ) {
 #else
 	MSG *msg = &m_msgCur;
 #endif
-	while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
-		// pump message
-		if( !AfxGetApp()->PumpMessage() ) {
+	BOOL bDoingBackgroundProcessing = TRUE;
+	while (bDoingBackgroundProcessing) { 
+		while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
+			// pump message
+			if( !AfxGetApp()->PumpMessage() ) {
+				bDoingBackgroundProcessing = FALSE; 
+				::PostQuitMessage(0); 
+				break; 
+			}
 		}
+		// let MFC do its idle processing
+		LONG lIdle = 0;
+		while (AfxGetApp()->OnIdle(lIdle++));
 	}
 }
 

@@ -49,7 +49,7 @@ If you have questions concerning this license or the applicable additional terms
 
 class idLib {
 public:
-	static class idSys 		*sys;
+	static class idSys 			*sys;
 	static class idCommon 		*common;
 	static class idCVarSystem 	*cvarSystem;
 	static class idFileSystem 	*fileSystem;

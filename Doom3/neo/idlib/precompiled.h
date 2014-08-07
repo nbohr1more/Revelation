@@ -94,6 +94,7 @@ If you have questions concerning this license or the applicable additional terms
 
 // non-portable system services
 #include "../sys/sys_public.h"
+#include "../sys/sys_intrinsics.h"
 
 // id lib
 #include "../idlib/Lib.h"

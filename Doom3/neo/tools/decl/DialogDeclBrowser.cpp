@@ -66,10 +66,7 @@ toolTip_t DialogDeclBrowser::toolTips[] = {
 	{ 0, NULL }
 };
 
-
 static DialogDeclBrowser *g_DeclDialog = NULL;
-
-
 IMPLEMENT_DYNAMIC( DialogDeclBrowser, CDialog )
 
 /*
@@ -405,11 +402,6 @@ void DeclBrowserInit( const idDict *spawnArgs ) {
 	}
 	if( g_DeclDialog->GetSafeHwnd() == NULL ) {
 		g_DeclDialog->Create( IDD_DIALOG_DECLBROWSER );
-		/*
-				// FIXME: restore position
-				CRect rct;
-				g_DeclDialog->SetWindowPos( NULL, rct.left, rct.top, 0, 0, SWP_NOSIZE );
-		*/
 	}
 	idKeyInput::ClearStates();
 	g_DeclDialog->ShowWindow( SW_SHOW );
@@ -429,10 +421,19 @@ void DeclBrowserRun( void ) {
 #else
 	MSG *msg = &m_msgCur;
 #endif
-	while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
-		// pump message
-		if( !AfxGetApp()->PumpMessage() ) {
+	BOOL bDoingBackgroundProcessing = TRUE;
+	while (bDoingBackgroundProcessing) { 
+		while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
+			// pump message
+			if( !AfxGetApp()->PumpMessage() ) {
+				bDoingBackgroundProcessing = FALSE; 
+				::PostQuitMessage(0); 
+				break; 
+			}
 		}
+		// let MFC do its idle processing
+		LONG lIdle = 0;
+		while (AfxGetApp()->OnIdle(lIdle++));
 	}
 }
 
@@ -487,7 +488,6 @@ BEGIN_MESSAGE_MAP( DialogDeclBrowser, CDialog )
 END_MESSAGE_MAP()
 
 // DialogDeclBrowser message handlers
-
 /*
 ================
 DialogDeclBrowser::OnActivate

@@ -229,40 +229,40 @@ typedef enum {
 
 typedef struct {
 	// mapFileBase will contain the qpath without any extension: "maps/test_box"
-	char		mapFileBase[1024];
+	char				mapFileBase[1024];
 
-	idMapFile	*dmapFile;
+	idMapFile			*dmapFile;
 
-	idPlaneSet	mapPlanes;
+	idPlaneSet			mapPlanes;
 
-	int			num_entities;
-	uEntity_t	*uEntities;
+	int					num_entities;
+	uEntity_t			*uEntities;
 
-	int			entityNum;
+	int					entityNum;
 
 	idList<mapLight_t *>	mapLights;
 
-	bool	verbose;
+	bool				verbose;
 
-	bool	glview;
-	bool	noOptimize;
-	bool	verboseentities;
-	bool	noCurves;
-	bool	fullCarve;
-	bool	noModelBrushes;
-	bool	noTJunc;
-	bool	nomerge;
-	bool	noFlood;
-	bool	noClipSides;		// don't cut sides by solid leafs, use the entire thing
-	bool	noLightCarve;		// extra triangle subdivision by light frustums
+	bool				glview;
+	bool				noOptimize;
+	bool				verboseentities;
+	bool				noCurves;
+	bool				fullCarve;
+	bool				noModelBrushes;
+	bool				noTJunc;
+	bool				nomerge;
+	bool				noFlood;
+	bool				noClipSides;		// don't cut sides by solid leafs, use the entire thing
+	bool				noLightCarve;		// extra triangle subdivision by light frustums
 	shadowOptLevel_t	shadowOptLevel;
-	bool	noShadow;			// don't create optimized shadow volumes
+	bool				noShadow;			// don't create optimized shadow volumes
 
-	idBounds	drawBounds;
-	bool	drawflag;
+	idBounds			drawBounds;
+	bool				drawflag;
 
-	int		totalShadowTriangles;
-	int		totalShadowVerts;
+	int					totalShadowTriangles;
+	int					totalShadowVerts;
 } dmapGlobals_t;
 
 extern dmapGlobals_t dmapGlobals;
@@ -355,7 +355,6 @@ void FreeTree( tree_t *tree );
 void FreeTree_r( node_t *node );
 void FreeTreePortals_r( node_t *node );
 
-
 bspface_t	*MakeStructuralBspFaceList( primitive_t *list );
 bspface_t	*MakeVisibleBspFaceList( primitive_t *list );
 tree_t		*FaceBSP( bspface_t *list );
@@ -389,36 +388,36 @@ void	FixGlobalTjunctions( uEntity_t *e );
 // the shadow volume optimizer call internal optimizer routines, normal triangles
 // will just be done by OptimizeEntity()
 typedef struct optVertex_s {
-	idDrawVert	v;
-	idVec3	pv;					// projected against planar axis, third value is 0
-	struct optEdge_s *edges;
+	idDrawVert			v;
+	idVec3				pv;					// projected against planar axis, third value is 0
+	struct optEdge_s	*edges;
 	struct optVertex_s	*islandLink;
-	bool	addedToIsland;
-	bool	emited;			// when regenerating triangles
+	bool				addedToIsland;
+	bool				emited;			// when regenerating triangles
 } optVertex_t;
 
 typedef struct optEdge_s {
-	optVertex_t	*v1, *v2;
+	optVertex_t			*v1, *v2;
 	struct optEdge_s	*islandLink;
-	bool	addedToIsland;
-	bool	created;		// not one of the original edges
-	bool	combined;		// combined from two or more colinear edges
-	struct optTri_s	*frontTri, *backTri;
-	struct optEdge_s *v1link, *v2link;
+	bool				addedToIsland;
+	bool				created;		// not one of the original edges
+	bool				combined;		// combined from two or more colinear edges
+	struct optTri_s		*frontTri, *backTri;
+	struct optEdge_s	*v1link, *v2link;
 } optEdge_t;
 
 typedef struct optTri_s {
 	struct optTri_s	*next;
-	idVec3		midpoint;
-	optVertex_t	*v[3];
-	bool	filled;
+	idVec3			midpoint;
+	optVertex_t		*v[3];
+	bool			filled;
 } optTri_t;
 
 typedef struct {
 	optimizeGroup_t	*group;
-	optVertex_t	*verts;
-	optEdge_t	*edges;
-	optTri_t	*tris;
+	optVertex_t		*verts;
+	optEdge_t		*edges;
+	optTri_t		*tris;
 } optIsland_t;
 
 void	OptimizeEntity( uEntity_t *e );

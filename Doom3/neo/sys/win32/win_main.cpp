@@ -723,7 +723,7 @@ void Sys_PumpEvents( void ) {
 		// save the msg time, because wndprocs don't have access to the timestamp
 		if( win32.sysMsgTime && win32.sysMsgTime > ( int )msg.time ) {
 			// don't ever let the event times run backwards
-			//			common->Printf( "Sys_PumpEvents: win32.sysMsgTime (%i) > msg.time (%i)\n", win32.sysMsgTime, msg.time );
+			common->DPrintf( "Sys_PumpEvents: win32.sysMsgTime (%i) > msg.time (%i)\n", win32.sysMsgTime, msg.time );
 		} else {
 			win32.sysMsgTime = msg.time;
 		}
@@ -743,8 +743,8 @@ Sys_GenerateEvents
 ================
 */
 void Sys_GenerateEvents( void ) {
-	static int entered = false;
-	char *s;
+	static int	entered = false;
+	char		*s;
 	if( entered ) {
 		return;
 	}

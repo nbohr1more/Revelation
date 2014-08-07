@@ -465,6 +465,9 @@
     <ClInclude Include="tools\radiant\externals.h">
       <Filter>Tools\Radiant</Filter>
     </ClInclude>
+    <ClInclude Include="sys\sys_intrinsics.h">
+      <Filter>Sys</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cm\CollisionModel_contacts.cpp">

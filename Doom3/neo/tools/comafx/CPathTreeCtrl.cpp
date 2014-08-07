@@ -245,8 +245,8 @@ BOOL CPathTreeCtrl::OnToolTipText( UINT id, NMHDR *pNMHDR, LRESULT *pResult ) {
 	*pResult = 0;
 	// Do not process the message from built in tooltip
 	if( nID == ( UINT )m_hWnd &&
-			( ( pNMHDR->code == TTN_NEEDTEXTA && pTTTA->uFlags & TTF_IDISHWND ) ||
-			  ( pNMHDR->code == TTN_NEEDTEXTW && pTTTW->uFlags & TTF_IDISHWND ) ) ) {
+	  ( ( pNMHDR->code == TTN_NEEDTEXTA && pTTTA->uFlags & TTF_IDISHWND ) ||
+	    ( pNMHDR->code == TTN_NEEDTEXTW && pTTTW->uFlags & TTF_IDISHWND ) ) ) {
 		return FALSE;
 	}
 	CString toolTip = "?";

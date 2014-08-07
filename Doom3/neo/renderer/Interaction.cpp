@@ -267,10 +267,10 @@ static srfTriangles_t *R_CreateLightTris( const idRenderEntityLocal *ent, const 
 	indexes = NULL;
 	// it is debatable if non-shadowing lights should light back faces. we aren't at the moment
 	if( r_lightAllBackFaces.GetBool() ||
-			light->lightShader->LightEffectsBackSides() ||
-			shader->ReceivesLightingOnBackSides() ||
-			ent->parms.noSelfShadow ||
-			ent->parms.noShadow ) {
+		light->lightShader->LightEffectsBackSides() ||
+		shader->ReceivesLightingOnBackSides() ||
+		ent->parms.noSelfShadow ||
+		ent->parms.noShadow ) {
 		includeBackFaces = true;
 	} else {
 		includeBackFaces = false;
@@ -726,8 +726,8 @@ void idInteraction::CreateInteraction( const idRenderModel *model ) {
 		MakeEmpty();
 		return;
 	}
-	// use the turbo shadow path
-	shadowGen_t shadowGen = SG_DYNAMIC;
+	// use the turbo shadow path unless models are smaller than 3 then do the expensive optimizations.
+	shadowGen_t shadowGen = ( bounds[1][0] - bounds[0][0] < 3 ) ? SG_OFFLINE : SG_DYNAMIC;
 	// really large models, like outside terrain meshes, should use
 	// the more exactly culled static shadow path instead of the turbo shadow path.
 	// FIXME: this is a HACK, we should probably have a material flag.

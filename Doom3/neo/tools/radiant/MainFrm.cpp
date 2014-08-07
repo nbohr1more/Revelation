@@ -1252,7 +1252,6 @@ BOOL CMainFrame::OnCommand( WPARAM wParam, LPARAM lParam ) {
  =======================================================================================================================
  */
 LRESULT CMainFrame::DefWindowProc( UINT message, WPARAM wParam, LPARAM lParam ) {
-	//RoutineProcessing();
 	return CFrameWnd::DefWindowProc( message, wParam, lParam );
 }
 

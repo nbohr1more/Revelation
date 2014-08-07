@@ -568,7 +568,7 @@ idScreenRect R_ClippedLightScissorRectangle( viewLight_t *vLight ) {
 			if( clip[3] <= 0.01f ) {
 				clip[3] = 0.01f;
 			}
-			R_TransformClipToDevice( clip, tr.viewDef, ndc );
+			R_TransformClipToDevice( clip, ndc );
 			float windowX = 0.5f * ( 1.0f + ndc[0] ) * ( tr.viewDef->viewport.x2 - tr.viewDef->viewport.x1 );
 			float windowY = 0.5f * ( 1.0f + ndc[1] ) * ( tr.viewDef->viewport.y2 - tr.viewDef->viewport.y1 );
 			if( windowX > tr.viewDef->scissor.x2 ) {
@@ -629,7 +629,7 @@ idScreenRect R_CalcLightScissorRectangle( viewLight_t *vLight ) {
 				return r;
 			}
 		}
-		R_TransformClipToDevice( clip, tr.viewDef, ndc );
+		R_TransformClipToDevice( clip, ndc );
 		float windowX = 0.5f * ( 1.0f + ndc[0] ) * ( tr.viewDef->viewport.x2 - tr.viewDef->viewport.x1 );
 		float windowY = 0.5f * ( 1.0f + ndc[1] ) * ( tr.viewDef->viewport.y2 - tr.viewDef->viewport.y1 );
 		if( windowX > tr.viewDef->scissor.x2 ) {
@@ -902,7 +902,7 @@ idRenderModel *R_EntityDefDynamicModel( idRenderEntityLocal *def ) {
 		idPlane eye, clip;
 		idVec3 ndc;
 		R_TransformModelToClip( def->parms.origin, tr.viewDef->worldSpace.modelViewMatrix, tr.viewDef->projectionMatrix, eye, clip );
-		R_TransformClipToDevice( clip, tr.viewDef, ndc );
+		R_TransformClipToDevice( clip, ndc );
 		def->parms.modelDepthHack = model->DepthHack() * ( 1.0f - ndc.z );
 	}
 	// FIXME: if any of the surfaces have deforms, create a frame-temporary model with references to the

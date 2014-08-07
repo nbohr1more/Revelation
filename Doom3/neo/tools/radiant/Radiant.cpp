@@ -125,7 +125,6 @@ void RadiantInit( void ) {
 		// Perform specific initializations
 		pThread->InitInstance();
 		glFinish();
-		//wglMakeCurrent(0, 0);
 		wglMakeCurrent( win32.hDC, win32.hGLRC );
 		// hide the doom window by default
 		::ShowWindow( win32.hWnd, SW_HIDE );
@@ -267,7 +266,6 @@ int CRadiantApp::ExitInstance() {
 	ExitProcess( 0 );
 	return ret;
 }
-
 
 BOOL CRadiantApp::OnIdle( LONG lCount ) {
 	if( g_pParentWnd ) {

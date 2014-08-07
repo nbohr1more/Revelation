@@ -118,7 +118,6 @@ If a high order bit is clear, the point is outside the plane (definately negativ
 // a point that is on the plane is NOT culled
 #define	POINT_CULLED(p1) ((pointCull[p1] & 0xfc0) != 0xfc0)
 
-//#define	LIGHT_CLIP_EPSILON	0.001f
 #define	LIGHT_CLIP_EPSILON		0.1f
 
 idPlane	pointLightFrustums[6][6] = {
@@ -249,7 +248,7 @@ R_LightProjectionMatrix
 void R_LightProjectionMatrix( const idVec3 &origin, const idPlane &rearPlane, idVec4 mat[4] ) {
 	idVec4		lv;
 	float		lg;
-	// calculate the homogenious light vector
+	// calculate the homogenous light vector
 	lv.x = origin.x;
 	lv.y = origin.y;
 	lv.z = origin.z;
@@ -922,12 +921,12 @@ void R_MakeShadowFrustums( idRenderLightLocal *light ) {
 			{ 0, 0, 3, 3 },		// positive Z side
 			{ 5, 5, 6, 6 }		// negative Z side
 		};
-		bool	centerOutside = false;
+		bool centerOutside = false;
 		// if the light center of projection is outside the light bounds,
 		// we will need to build the planes a little differently
 		if( fabs( light->parms.lightCenter[0] ) > light->parms.lightRadius[0] ||
-				fabs( light->parms.lightCenter[1] ) > light->parms.lightRadius[1] ||
-				fabs( light->parms.lightCenter[2] ) > light->parms.lightRadius[2] )	{
+			fabs( light->parms.lightCenter[1] ) > light->parms.lightRadius[1] ||
+			fabs( light->parms.lightCenter[2] ) > light->parms.lightRadius[2] )	{
 			centerOutside = true;
 		}
 		// make the corners
@@ -1053,7 +1052,11 @@ srfTriangles_t *R_CreateShadowVolume( const idRenderEntityLocal *ent, const srfT
 	// trades somewhat more overdraw and no cap optimizations for
 	// a very simple generation process
 	if( optimize == SG_DYNAMIC && r_useTurboShadow.GetBool() ) {
-		return R_CreateVertexProgramTurboShadowVolume( ent, tri, light, cullInfo );
+		if ( tr.backEndRendererHasVertexPrograms && r_useShadowVertexProgram.GetBool() ) {
+			return R_CreateVertexProgramTurboShadowVolume( ent, tri, light, cullInfo );
+		} else {
+			return R_CreateTurboShadowVolume( ent, tri, light, cullInfo );
+		}
 	}
 	R_CalcInteractionFacing( ent, tri, light, cullInfo );
 	int numFaces = tri->numIndexes / 3;
@@ -1141,7 +1144,7 @@ srfTriangles_t *R_CreateShadowVolume( const idRenderEntityLocal *ent, const srfT
 	memcpy( newTri->shadowVertexes, st->shadowVerts, newTri->numVerts * sizeof( newTri->shadowVertexes[0] ) );
 	R_AllocStaticTriSurfIndexes( newTri, newTri->numIndexes );
 	/* sortCapIndexes */
-	if( 1 ) {
+	if( true ) {
 		newTri->shadowCapPlaneBits = capPlaneBits;
 		// copy the sil indexes first
 		newTri->numShadowIndexesNoCaps = 0;

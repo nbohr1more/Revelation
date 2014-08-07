@@ -42,14 +42,12 @@ R_CreateVertexProgramTurboShadowVolume
 are dangling edges that are outside the light frustum still making planes?
 =====================
 */
-srfTriangles_t *R_CreateVertexProgramTurboShadowVolume( const idRenderEntityLocal *ent,
-		const srfTriangles_t *tri, const idRenderLightLocal *light,
-		srfCullInfo_t &cullInfo ) {
-	int		i, j;
+srfTriangles_t *R_CreateVertexProgramTurboShadowVolume( const idRenderEntityLocal *ent,	const srfTriangles_t *tri, const idRenderLightLocal *light,	srfCullInfo_t &cullInfo ) {
+	int				i, j;
 	srfTriangles_t	*newTri;
-	silEdge_t	*sil;
+	silEdge_t		*sil;
 	const glIndex_t *indexes;
-	const byte *facing;
+	const byte		*facing;
 	R_CalcInteractionFacing( ent, tri, light, cullInfo );
 	if( r_useShadowProjectedCull.GetBool() ) {
 		R_CalcInteractionCullBits( ent, tri, light, cullInfo );
@@ -159,15 +157,13 @@ srfTriangles_t *R_CreateVertexProgramTurboShadowVolume( const idRenderEntityLoca
 R_CreateTurboShadowVolume
 =====================
 */
-srfTriangles_t *R_CreateTurboShadowVolume( const idRenderEntityLocal *ent,
-		const srfTriangles_t *tri, const idRenderLightLocal *light,
-		srfCullInfo_t &cullInfo ) {
-	int		i, j;
-	idVec3	localLightOrigin;
+srfTriangles_t *R_CreateTurboShadowVolume( const idRenderEntityLocal *ent, const srfTriangles_t *tri, const idRenderLightLocal *light, srfCullInfo_t &cullInfo ) {
+	int				i, j;
+	idVec3			localLightOrigin;
 	srfTriangles_t	*newTri;
-	silEdge_t	*sil;
+	silEdge_t		*sil;
 	const glIndex_t *indexes;
-	const byte *facing;
+	const byte		*facing;
 	R_CalcInteractionFacing( ent, tri, light, cullInfo );
 	if( r_useShadowProjectedCull.GetBool() ) {
 		R_CalcInteractionCullBits( ent, tri, light, cullInfo );
