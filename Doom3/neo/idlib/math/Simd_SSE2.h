@@ -45,10 +45,6 @@ public:
 
 #elif defined(_WIN32)
 	virtual const char *VPCALL GetName( void ) const;
-
-	//virtual void VPCALL MatX_LowerTriangularSolve( const idMatX &L, float *x, const float *b, const int n, int skip = 0 );
-	//virtual void VPCALL MatX_LowerTriangularSolveTranspose( const idMatX &L, float *x, const float *b, const int n );
-
 	virtual void VPCALL MixedSoundToSamples( short *samples, const float *mixBuffer, const int numSamples );
 
 #endif

@@ -118,15 +118,15 @@ SURFACES
 static const int	DSF_VIEW_INSIDE_SHADOW	= 1;
 
 typedef struct drawSurf_s {
-	const srfTriangles_t	*geo;
-	const struct viewEntity_s *space;
-	const idMaterial		*material;	// may be NULL for shadow volumes
-	float					sort;		// material->sort, modified by gui / entity sort offsets
-	const float				*shaderRegisters;	// evaluated and adjusted for referenceShaders
-	const struct drawSurf_s	*nextOnLight;	// viewLight chains
-	idScreenRect			scissorRect;	// for scissor clipping, local inside renderView viewport
-	int						dsFlags;			// DSF_VIEW_INSIDE_SHADOW, etc
-	struct vertCache_s		*dynamicTexCoords;	// float * in vertex cache memory
+	const srfTriangles_t		*geo;
+	const struct viewEntity_s	*space;
+	const idMaterial			*material;	// may be NULL for shadow volumes
+	float						sort;		// material->sort, modified by gui / entity sort offsets
+	const float					*shaderRegisters;	// evaluated and adjusted for referenceShaders
+	const struct drawSurf_s		*nextOnLight;	// viewLight chains
+	idScreenRect				scissorRect;	// for scissor clipping, local inside renderView viewport
+	int							dsFlags;			// DSF_VIEW_INSIDE_SHADOW, etc
+	struct vertCache_s			*dynamicTexCoords;	// float * in vertex cache memory
 	// specular directions for non vertex program cards, skybox texcoords, etc
 } drawSurf_t;
 
@@ -148,11 +148,11 @@ typedef struct {
 
 // areas have references to hold all the lights and entities in them
 typedef struct areaReference_s {
-	struct areaReference_s *areaNext;				// chain in the area
-	struct areaReference_s *areaPrev;
-	struct areaReference_s *ownerNext;				// chain on either the entityDef or lightDef
+	struct areaReference_s	*areaNext;				// chain in the area
+	struct areaReference_s	*areaPrev;
+	struct areaReference_s	*ownerNext;				// chain on either the entityDef or lightDef
 	idRenderEntityLocal 	*entity;					// only one of entity / light will be non-NULL
-	idRenderLightLocal 	*light;					// only one of entity / light will be non-NULL
+	idRenderLightLocal 		*light;					// only one of entity / light will be non-NULL
 	struct portalArea_s		*area;					// so owners can find all the areas they are in
 } areaReference_t;
 

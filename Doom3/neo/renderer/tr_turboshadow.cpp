@@ -34,7 +34,6 @@ If you have questions concerning this license or the applicable additional terms
 int	c_turboUsedVerts;
 int c_turboUnusedVerts;
 
-
 /*
 =====================
 R_CreateVertexProgramTurboShadowVolume

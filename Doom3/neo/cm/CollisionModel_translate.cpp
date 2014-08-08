@@ -309,7 +309,6 @@ void idCollisionModelManagerLocal::TranslateTrmEdgeThroughPolygon( cm_traceWork_
 			d1 = normal * start - dist;
 			d2 = normal * end - dist;
 			f1 = d1 / ( d1 - d2 );
-			//assert( f1 >= 0.0f && f1 <= 1.0f );
 			tw->trace.c.point = start + f1 * ( end - start );
 			// if retrieving contacts
 			if( tw->getContacts ) {

@@ -44,7 +44,6 @@ public:
 
 #elif defined(_WIN32)
 	virtual const char *VPCALL GetName( void ) const;
-
 	virtual void VPCALL TransformVerts( idDrawVert *verts, const int numVerts, const idJointMat *joints, const idVec4 *weights, const int *index, const int numWeights );
 
 #endif

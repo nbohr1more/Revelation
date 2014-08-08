@@ -160,6 +160,7 @@ public:
 template<class T> ID_FORCE_INLINE T	Max( T x, T y ) {
 	return ( x > y ) ? x : y;
 }
+
 template<class T> ID_FORCE_INLINE T	Min( T x, T y ) {
 	return ( x < y ) ? x : y;
 }

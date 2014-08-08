@@ -234,15 +234,14 @@ static bool PointsOrdered( const idVec3 &a, const idVec3 &b ) {
 	// to 8, -8, 8
 	// in the very rare case that these might be equal, all that would
 	// happen is an oportunity for a tiny rasterization shadow crack
-	i = a[0] + a[1] * 127 + a[2] * 1023;
-	j = b[0] + b[1] * 127 + b[2] * 1023;
+	i = ( a[0] + a[1] * 127 + a[2] * 1023 );
+	j = ( b[0] + b[1] * 127 + b[2] * 1023 );
 	return ( bool )( i < j );
 }
 
 /*
 ====================
 R_LightProjectionMatrix
-
 ====================
 */
 void R_LightProjectionMatrix( const idVec3 &origin, const idPlane &rearPlane, idVec4 mat[4] ) {
@@ -946,10 +945,10 @@ void R_MakeShadowFrustums( idRenderLightLocal *light ) {
 		light->numShadowFrustums = 0;
 		for( int side = 0; side < 6; side++ ) {
 			shadowFrustum_t	*frust = &light->shadowFrustums[light->numShadowFrustums];
-			idVec3 &p1 = corners[faceCorners[side][0]];
-			idVec3 &p2 = corners[faceCorners[side][1]];
-			idVec3 &p3 = corners[faceCorners[side][2]];
-			idPlane backPlane;
+			idVec3			&p1 = corners[faceCorners[side][0]];
+			idVec3			&p2 = corners[faceCorners[side][1]];
+			idVec3			&p3 = corners[faceCorners[side][2]];
+			idPlane			backPlane;
 			// plane will have positive side inward
 			backPlane.FromPoints( p1, p2, p3 );
 			// if center of projection is on the wrong side, skip
@@ -1148,6 +1147,8 @@ srfTriangles_t *R_CreateShadowVolume( const idRenderEntityLocal *ent, const srfT
 		newTri->shadowCapPlaneBits = capPlaneBits;
 		// copy the sil indexes first
 		newTri->numShadowIndexesNoCaps = 0;
+		// try to use 8 threads
+#pragma loop( hint_parallel(8) )
 		for( i = 0; i < st->indexFrustumNumber; i++ ) {
 			int	c = st->indexRef[i].end - st->indexRef[i].silStart;
 			SIMDProcessor->Memcpy( newTri->indexes + newTri->numShadowIndexesNoCaps, st->shadowIndexes + st->indexRef[i].silStart, c * sizeof( newTri->indexes[0] ) );
@@ -1155,6 +1156,8 @@ srfTriangles_t *R_CreateShadowVolume( const idRenderEntityLocal *ent, const srfT
 		}
 		// copy rear cap indexes next
 		newTri->numShadowIndexesNoFrontCaps = newTri->numShadowIndexesNoCaps;
+		// try to use 8 threads
+#pragma loop( hint_parallel(8) )
 		for( i = 0; i < st->indexFrustumNumber; i++ ) {
 			int	c = st->indexRef[i].silStart - st->indexRef[i].rearCapStart;
 			SIMDProcessor->Memcpy( newTri->indexes + newTri->numShadowIndexesNoFrontCaps, st->shadowIndexes + st->indexRef[i].rearCapStart, c * sizeof( newTri->indexes[0] ) );
@@ -1162,6 +1165,8 @@ srfTriangles_t *R_CreateShadowVolume( const idRenderEntityLocal *ent, const srfT
 		}
 		// copy front cap indexes last
 		newTri->numIndexes = newTri->numShadowIndexesNoFrontCaps;
+		// try to use 8 threads
+#pragma loop( hint_parallel(8) )
 		for( i = 0; i < st->indexFrustumNumber; i++ ) {
 			int	c = st->indexRef[i].rearCapStart - st->indexRef[i].frontCapStart;
 			SIMDProcessor->Memcpy( newTri->indexes + newTri->numIndexes, st->shadowIndexes + st->indexRef[i].frontCapStart, c * sizeof( newTri->indexes[0] ) );

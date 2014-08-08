@@ -81,7 +81,7 @@ bool R_CreateLightingCache( const idRenderEntityLocal *ent, const idRenderLightL
 		return true;
 	}
 	R_GlobalPointToLocal( ent->modelMatrix, light->globalLightOrigin, localLightOrigin );
-	int				size = tri->ambientSurface->numVerts * sizeof( lightingCache_t );
+	int	size = tri->ambientSurface->numVerts * sizeof( lightingCache_t );
 	lightingCache_t *cache = ( lightingCache_t * )_alloca16( size );
 	SIMDProcessor->CreateTextureSpaceLightVectors( &cache[0].localLightVector, localLightOrigin, tri->ambientSurface->verts, tri->ambientSurface->numVerts, tri->indexes, tri->numIndexes );
 	vertexCache.Alloc( cache, size, &tri->lightingCache );
@@ -829,11 +829,11 @@ bool R_IssueEntityDefCallback( idRenderEntityLocal *def ) {
 	}
 	if( r_checkBounds.GetBool() ) {
 		if(	oldBounds[0][0] > def->referenceBounds[0][0] + CHECK_BOUNDS_EPSILON ||
-				oldBounds[0][1] > def->referenceBounds[0][1] + CHECK_BOUNDS_EPSILON ||
-				oldBounds[0][2] > def->referenceBounds[0][2] + CHECK_BOUNDS_EPSILON ||
-				oldBounds[1][0] < def->referenceBounds[1][0] - CHECK_BOUNDS_EPSILON ||
-				oldBounds[1][1] < def->referenceBounds[1][1] - CHECK_BOUNDS_EPSILON ||
-				oldBounds[1][2] < def->referenceBounds[1][2] - CHECK_BOUNDS_EPSILON ) {
+			oldBounds[0][1] > def->referenceBounds[0][1] + CHECK_BOUNDS_EPSILON ||
+			oldBounds[0][2] > def->referenceBounds[0][2] + CHECK_BOUNDS_EPSILON ||
+			oldBounds[1][0] < def->referenceBounds[1][0] - CHECK_BOUNDS_EPSILON ||
+			oldBounds[1][1] < def->referenceBounds[1][1] - CHECK_BOUNDS_EPSILON ||
+			oldBounds[1][2] < def->referenceBounds[1][2] - CHECK_BOUNDS_EPSILON ) {
 			common->Printf( "entity %i callback extended reference bounds\n", def->index );
 		}
 	}
@@ -885,11 +885,11 @@ idRenderModel *R_EntityDefDynamicModel( idRenderEntityLocal *def ) {
 			if( r_checkBounds.GetBool() ) {
 				idBounds b = def->cachedDynamicModel->Bounds();
 				if(	b[0][0] < def->referenceBounds[0][0] - CHECK_BOUNDS_EPSILON ||
-						b[0][1] < def->referenceBounds[0][1] - CHECK_BOUNDS_EPSILON ||
-						b[0][2] < def->referenceBounds[0][2] - CHECK_BOUNDS_EPSILON ||
-						b[1][0] > def->referenceBounds[1][0] + CHECK_BOUNDS_EPSILON ||
-						b[1][1] > def->referenceBounds[1][1] + CHECK_BOUNDS_EPSILON ||
-						b[1][2] > def->referenceBounds[1][2] + CHECK_BOUNDS_EPSILON ) {
+					b[0][1] < def->referenceBounds[0][1] - CHECK_BOUNDS_EPSILON ||
+					b[0][2] < def->referenceBounds[0][2] - CHECK_BOUNDS_EPSILON ||
+					b[1][0] > def->referenceBounds[1][0] + CHECK_BOUNDS_EPSILON ||
+					b[1][1] > def->referenceBounds[1][1] + CHECK_BOUNDS_EPSILON ||
+					b[1][2] > def->referenceBounds[1][2] + CHECK_BOUNDS_EPSILON ) {
 					common->Printf( "entity %i dynamic model exceeded reference bounds\n", def->index );
 				}
 			}

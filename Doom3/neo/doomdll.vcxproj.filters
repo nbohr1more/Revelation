@@ -465,7 +465,7 @@
     <ClInclude Include="tools\radiant\externals.h">
       <Filter>Tools\Radiant</Filter>
     </ClInclude>
-    <ClInclude Include="sys\sys_intrinsics.h">
+    <ClInclude Include="sys\sys_defines.h">
       <Filter>Sys</Filter>
     </ClInclude>
   </ItemGroup>

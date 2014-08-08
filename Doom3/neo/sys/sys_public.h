@@ -29,132 +29,6 @@ If you have questions concerning this license or the applicable additional terms
 #ifndef __SYS_PUBLIC__
 #define __SYS_PUBLIC__
 
-/*
-===============================================================================
-
-	Non-portable system services.
-
-===============================================================================
-*/
-
-// Revelator: If we're not using GNU C, elide __attribute__
-#ifndef __GNUC__
-#define __attribute__( x )				/* NOTHING */
-#endif
-#define id_attribute( x )				__attribute__( x )
-
-// Revelator: workaround for msvc's missing __attribute__( ( packed ) )
-// only used in snd_local.h which will need some rewriting.
-#ifdef _MSC_VER
-#  define PACKED( __type__ ) \
-	__pragma( pack( push, 1 ) ) struct __type__ __pragma( pack( pop ) )
-#elif defined(__GNUC__)
-#  define PACKED( __type__ ) \
-	id_attribute( ( packed ) ) struct __type__
-#endif
-
-// DG: _CRT_ALIGN seems to be MSVC specific, so provide implementation..
-#ifndef _CRT_ALIGN
-#if defined(__GNUC__)	// also applies for clang
-#define _CRT_ALIGN(x)					id_attribute ( ( __aligned__ ( x ) ) )
-#elif defined(_MSC_VER) // also for MSVC, just to be sure
-#define _CRT_ALIGN(x)					__declspec( align( x ) )
-#endif
-#endif
-
-
-// Win32
-#if defined(WIN32) || defined(_WIN32)
-
-#define	BUILD_STRING					"win-x86"
-#define BUILD_OS_ID						0
-#define	CPUSTRING						"x86"
-#define CPU_EASYARGS					1
-
-#define ALIGN16( x )					_CRT_ALIGN(16) x
-
-#define _alloca16( x )					((void *)((((int)_alloca( (x)+15 )) + 15) & ~15))
-
-#define PATHSEPERATOR_STR				"\\"
-#define PATHSEPERATOR_CHAR				'\\'
-
-#define ID_INLINE						__inline
-#define ID_FORCE_INLINE					__forceinline
-#define ID_STATIC_TEMPLATE				static
-
-#define assertmem( x, y )				assert( _CrtIsValidPointer( x, y, true ) )
-
-#endif
-
-// Mac OSX
-#if defined(MACOS_X) || defined(__APPLE__)
-
-#define BUILD_STRING					"MacOSX-universal"
-#define BUILD_OS_ID						1
-#ifdef __ppc__
-#define	CPUSTRING					"ppc"
-#define CPU_EASYARGS				0
-#elif defined(__i386__)
-#define	CPUSTRING					"x86"
-#define CPU_EASYARGS				1
-#endif
-
-#define ALIGN16( x )					x _CRT_ALIGN(16)
-
-#ifdef __MWERKS__
-#include <alloca.h>
-#endif
-
-#define _alloca							alloca
-#define _alloca16( x )					((void *)((((int)alloca( (x)+15 )) + 15) & ~15))
-
-#define PATHSEPERATOR_STR				"/"
-#define PATHSEPERATOR_CHAR				'/'
-
-#define __cdecl
-#define ASSERT							assert
-
-#define ID_INLINE						__inline
-#define ID_FORCE_INLINE					__forceinline
-#define ID_STATIC_TEMPLATE
-
-#define assertmem( x, y )
-
-#endif
-
-// Linux
-#ifdef __linux__
-
-#ifdef __i386__
-#define	BUILD_STRING				"linux-x86"
-#define BUILD_OS_ID					2
-#define CPUSTRING					"x86"
-#define CPU_EASYARGS				1
-#elif defined(__ppc__)
-#define	BUILD_STRING				"linux-ppc"
-#define CPUSTRING					"ppc"
-#define CPU_EASYARGS				0
-#endif
-
-#define _alloca							alloca
-#define _alloca16( x )					((void *)((((int)alloca( (x)+15 )) + 15) & ~15))
-
-#define ALIGN16( x )					x _CRT_ALIGN(16)
-
-#define PATHSEPERATOR_STR				"/"
-#define PATHSEPERATOR_CHAR				'/'
-
-#define __cdecl
-#define ASSERT							assert
-
-#define ID_INLINE						__inline
-#define ID_FORCE_INLINE					__forceinline
-#define ID_STATIC_TEMPLATE
-
-#define assertmem( x, y )
-
-#endif
-
 typedef enum {
 	CPUID_NONE							= 0x00000,
 	CPUID_UNSUPPORTED					= 0x00001,	// unsupported (386/486)
@@ -483,14 +357,14 @@ const int MAX_THREADS				= 10;
 extern xthreadInfo *g_threads[MAX_THREADS];
 extern int			g_thread_count;
 
-void				Sys_CreateThread( xthread_t function, void *parms, xthreadPriority priority, xthreadInfo &info, const char *name, xthreadInfo *threads[MAX_THREADS], int *thread_count );
-void				Sys_DestroyThread( xthreadInfo &info ); // sets threadHandle back to 0
+void						Sys_CreateThread( xthread_t function, void *parms, xthreadPriority priority, xthreadInfo &info, const char *name, xthreadInfo *threads[MAX_THREADS], int *thread_count );
+void						Sys_DestroyThread( xthreadInfo &info ); // sets threadHandle back to 0
 
 // find the name of the calling thread
 // if index != NULL, set the index in g_threads array (use -1 for "main" thread)
-const char 			*Sys_GetThreadName( int *index = 0 );
+const char 					*Sys_GetThreadName( int *index = 0 );
 
-const int MAX_CRITICAL_SECTIONS		= 4;
+const int MAX_CRITICAL_SECTIONS	= 4;
 
 enum {
 	CRITICAL_SECTION_ZERO = 0,
@@ -499,10 +373,10 @@ enum {
 	CRITICAL_SECTION_THREE
 };
 
-void				Sys_EnterCriticalSection( int index = CRITICAL_SECTION_ZERO );
-void				Sys_LeaveCriticalSection( int index = CRITICAL_SECTION_ZERO );
+void						Sys_EnterCriticalSection( int index = CRITICAL_SECTION_ZERO );
+void						Sys_LeaveCriticalSection( int index = CRITICAL_SECTION_ZERO );
 
-const int MAX_TRIGGER_EVENTS		= 4;
+const int MAX_TRIGGER_EVENTS = 4;
 
 enum {
 	TRIGGER_EVENT_ZERO = 0,
@@ -511,8 +385,8 @@ enum {
 	TRIGGER_EVENT_THREE
 };
 
-void				Sys_WaitForEvent( int index = TRIGGER_EVENT_ZERO );
-void				Sys_TriggerEvent( int index = TRIGGER_EVENT_ZERO );
+void						Sys_WaitForEvent( int index = TRIGGER_EVENT_ZERO );
+void						Sys_TriggerEvent( int index = TRIGGER_EVENT_ZERO );
 
 /*
 ==============================================================

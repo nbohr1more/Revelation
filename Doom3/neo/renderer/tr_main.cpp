@@ -494,7 +494,8 @@ bool R_RadiusCullLocalBox( const idBounds &bounds, const float modelMatrix[16], 
 	// transform the surface bounds into world space
 	idVec3	localOrigin = ( bounds[0] + bounds[1] ) * 0.5;
 	R_LocalPointToGlobal( modelMatrix, localOrigin, worldOrigin );
-	worldRadius = ( bounds[0] - localOrigin ).Length();	// FIXME: won't be correct for scaled objects
+	// FIXME: won't be correct for scaled objects
+	worldRadius = ( bounds[0] - localOrigin ).Length();	
 	for( int i = 0 ; i < numPlanes ; i++ ) {
 		frust = planes + i;
 		float d = frust->Distance( worldOrigin );
@@ -502,7 +503,7 @@ bool R_RadiusCullLocalBox( const idBounds &bounds, const float modelMatrix[16], 
 			return true;	// culled
 		}
 	}
-	return false;		// no culled
+	return false;			// not culled
 }
 
 /*
@@ -515,11 +516,11 @@ Returns true if the box is outside the given global frustum, (positive sides are
 =================
 */
 bool R_CornerCullLocalBox( const idBounds &bounds, const float modelMatrix[16], int numPlanes, const idPlane *planes ) {
-	int			i, j;
-	idVec3		transformed[8];
-	float		dists[8];
-	idVec3		v;
-	const idPlane *frust;
+	int				i, j;
+	idVec3			transformed[8];
+	float			dists[8];
+	idVec3			v;
+	const idPlane	*frust;
 	// we can disable box culling for experimental timing purposes
 	if( r_useCulling.GetInteger() < 2 ) {
 		return false;
@@ -635,40 +636,16 @@ R_MatrixMultiply
 ==========================
 */
 void R_MatrixMultiply( const float a[16], const float b[16], float out[16] ) {
-	__m128 a0 = _mm_loadu_ps( a + 0 * 4 );
-	__m128 a1 = _mm_loadu_ps( a + 1 * 4 );
-	__m128 a2 = _mm_loadu_ps( a + 2 * 4 );
-	__m128 a3 = _mm_loadu_ps( a + 3 * 4 );
-
-	__m128 b0 = _mm_loadu_ps( b + 0 * 4 );
-	__m128 b1 = _mm_loadu_ps( b + 1 * 4 );
-	__m128 b2 = _mm_loadu_ps( b + 2 * 4 );
-	__m128 b3 = _mm_loadu_ps( b + 3 * 4 );
-
-	__m128 t0 = _mm_mul_ps( _mm_splat_ps( a0, 0 ), b0 );
-	__m128 t1 = _mm_mul_ps( _mm_splat_ps( a1, 0 ), b0 );
-	__m128 t2 = _mm_mul_ps( _mm_splat_ps( a2, 0 ), b0 );
-	__m128 t3 = _mm_mul_ps( _mm_splat_ps( a3, 0 ), b0 );
-
-	t0 = _mm_add_ps( t0, _mm_mul_ps( _mm_splat_ps( a0, 1 ), b1 ) );
-	t1 = _mm_add_ps( t1, _mm_mul_ps( _mm_splat_ps( a1, 1 ), b1 ) );
-	t2 = _mm_add_ps( t2, _mm_mul_ps( _mm_splat_ps( a2, 1 ), b1 ) );
-	t3 = _mm_add_ps( t3, _mm_mul_ps( _mm_splat_ps( a3, 1 ), b1 ) );
-
-	t0 = _mm_add_ps( t0, _mm_mul_ps( _mm_splat_ps( a0, 2 ), b2 ) );
-	t1 = _mm_add_ps( t1, _mm_mul_ps( _mm_splat_ps( a1, 2 ), b2 ) );
-	t2 = _mm_add_ps( t2, _mm_mul_ps( _mm_splat_ps( a2, 2 ), b2 ) );
-	t3 = _mm_add_ps( t3, _mm_mul_ps( _mm_splat_ps( a3, 2 ), b2 ) );
-
-	t0 = _mm_add_ps( t0, _mm_mul_ps( _mm_splat_ps( a0, 3 ), b3 ) );
-	t1 = _mm_add_ps( t1, _mm_mul_ps( _mm_splat_ps( a1, 3 ), b3 ) );
-	t2 = _mm_add_ps( t2, _mm_mul_ps( _mm_splat_ps( a2, 3 ), b3 ) );
-	t3 = _mm_add_ps( t3, _mm_mul_ps( _mm_splat_ps( a3, 3 ), b3 ) );
-
-	_mm_storeu_ps( out + 0 * 4, t0 );
-	_mm_storeu_ps( out + 1 * 4, t1 );
-	_mm_storeu_ps( out + 2 * 4, t2 );
-	_mm_storeu_ps( out + 3 * 4, t3 );
+	int		i, j;
+	for ( i = 0 ; i < 4 ; i++ ) {
+		for ( j = 0 ; j < 4 ; j++ ) {
+			out[ i * 4 + j ] =
+			a [ i * 4 + 0 ] * b [ 0 * 4 + j ] + 
+			a [ i * 4 + 1 ] * b [ 1 * 4 + j ] + 
+			a [ i * 4 + 2 ] * b [ 2 * 4 + j ] + 
+			a [ i * 4 + 3 ] * b [ 3 * 4 + j ];
+		}
+	}
 }
 
 /*
@@ -747,6 +724,7 @@ void R_SetupProjectionMatrix( viewDef_t* viewDef ) {
 	float	zNear;
 	float	jitterx, jittery;
 	static	idRandom random;
+
 	// random jittering is usefull when multiple
 	// frames are going to be blended together
 	// for motion blurred anti-aliasing
@@ -756,6 +734,7 @@ void R_SetupProjectionMatrix( viewDef_t* viewDef ) {
 	} else {
 		jitterx = jittery = 0;
 	}
+
 	//
 	// set up projection matrix
 	//
@@ -785,6 +764,7 @@ void R_SetupProjectionMatrix( viewDef_t* viewDef ) {
 	viewDef->projectionMatrix[1 * 4 + 1] = 2.0f * zNear / height;
 	viewDef->projectionMatrix[2 * 4 + 1] = ( ymax + ymin ) / height;	// normally 0
 	viewDef->projectionMatrix[3 * 4 + 1] = 0.0f;
+
 	// this is the far-plane-at-infinity formulation, and
 	// crunches the Z range slightly so w=0 vertexes do not
 	// rasterize right at the wraparound point
@@ -820,7 +800,7 @@ static void R_SetupViewFrustum( viewDef_t* viewDef ) {
 	viewDef->frustum[2] = xs * viewDef->renderView.viewaxis[0] + xc * viewDef->renderView.viewaxis[2];
 	viewDef->frustum[3] = xs * viewDef->renderView.viewaxis[0] - xc * viewDef->renderView.viewaxis[2];
 	// plane four is the front clipping plane
-	viewDef->frustum[4] = viewDef->renderView.viewaxis[0];
+	viewDef->frustum[0 * 4 + 4] = viewDef->renderView.viewaxis[0];
 	for( i = 0; i < 5; i++ ) {
 		// flip direction so positive side faces out (FIXME: globally unify this)
 		viewDef->frustum[i] = -viewDef->frustum[i].Normal();
@@ -872,7 +852,6 @@ DRAWSURF SORTING
 /*
 =======================
 R_QsortSurfaces
-
 =======================
 */
 static int R_QsortSurfaces( const void *a, const void *b ) {
@@ -898,14 +877,7 @@ static void R_SortDrawSurfs( void ) {
 	qsort( tr.viewDef->drawSurfs, tr.viewDef->numDrawSurfs, sizeof( tr.viewDef->drawSurfs[0] ), R_QsortSurfaces );
 }
 
-
-
-//========================================================================
-
-
 //==============================================================================
-
-
 
 /*
 ================
@@ -918,7 +890,7 @@ Parms will typically be allocated with R_FrameAlloc
 ================
 */
 void R_RenderView( viewDef_t *parms ) {
-	viewDef_t		*oldView;
+	viewDef_t	*oldView;
 	if( parms->renderView.width <= 0 || parms->renderView.height <= 0 ) {
 		return;
 	}
