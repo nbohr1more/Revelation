@@ -392,17 +392,14 @@ void R_AxisToModelMatrix( const idMat3 &axis, const idVec3 &origin, float modelM
 	modelMatrix[1 * 4 + 0] = axis[1][0];
 	modelMatrix[2 * 4 + 0] = axis[2][0];
 	modelMatrix[3 * 4 + 0] = origin[0];
-
 	modelMatrix[0 * 4 + 1] = axis[0][1];
 	modelMatrix[1 * 4 + 1] = axis[1][1];
 	modelMatrix[2 * 4 + 1] = axis[2][1];
 	modelMatrix[3 * 4 + 1] = origin[1];
-
 	modelMatrix[0 * 4 + 2] = axis[0][2];
 	modelMatrix[1 * 4 + 2] = axis[1][2];
 	modelMatrix[2 * 4 + 2] = axis[2][2];
 	modelMatrix[3 * 4 + 2] = origin[2];
-
 	modelMatrix[0 * 4 + 3] = 0.0f;
 	modelMatrix[1 * 4 + 3] = 0.0f;
 	modelMatrix[2 * 4 + 3] = 0.0f;
@@ -410,8 +407,7 @@ void R_AxisToModelMatrix( const idMat3 &axis, const idVec3 &origin, float modelM
 }
 
 // FIXME: these assume no skewing or scaling transforms
-void R_LocalPointToGlobal (const float modelMatrix[16], const idVec3 &in, idVec3 &out)
-{
+void R_LocalPointToGlobal( const float modelMatrix[16], const idVec3 &in, idVec3 &out ) {
 	out[0] = in[0] * modelMatrix[0 * 4 + 0] + in[1] * modelMatrix[1 * 4 + 0] + in[2] * modelMatrix[2 * 4 + 0] + modelMatrix[3 * 4 + 0];
 	out[1] = in[0] * modelMatrix[0 * 4 + 1] + in[1] * modelMatrix[1 * 4 + 1] + in[2] * modelMatrix[2 * 4 + 1] + modelMatrix[3 * 4 + 1];
 	out[2] = in[0] * modelMatrix[0 * 4 + 2] + in[1] * modelMatrix[1 * 4 + 2] + in[2] * modelMatrix[2 * 4 + 2] + modelMatrix[3 * 4 + 2];
@@ -426,11 +422,9 @@ void R_PointTimesMatrix( const float modelMatrix[16], const idVec4 &in, idVec4 &
 
 void R_GlobalPointToLocal( const float modelMatrix[16], const idVec3 &in, idVec3 &out ) {
 	idVec3 temp;
-
 	temp[0] = in[0] - modelMatrix[3 * 4 + 0];
 	temp[1] = in[1] - modelMatrix[3 * 4 + 1];
 	temp[2] = in[2] - modelMatrix[3 * 4 + 2];
-
 	out[0] = temp[0] * modelMatrix[0 * 4 + 0] + temp[1] * modelMatrix[0 * 4 + 1] + temp[2] * modelMatrix[0 * 4 + 2];
 	out[1] = temp[0] * modelMatrix[1 * 4 + 0] + temp[1] * modelMatrix[1 * 4 + 1] + temp[2] * modelMatrix[1 * 4 + 2];
 	out[2] = temp[0] * modelMatrix[2 * 4 + 0] + temp[1] * modelMatrix[2 * 4 + 1] + temp[2] * modelMatrix[2 * 4 + 2];
@@ -495,7 +489,7 @@ bool R_RadiusCullLocalBox( const idBounds &bounds, const float modelMatrix[16], 
 	idVec3	localOrigin = ( bounds[0] + bounds[1] ) * 0.5;
 	R_LocalPointToGlobal( modelMatrix, localOrigin, worldOrigin );
 	// FIXME: won't be correct for scaled objects
-	worldRadius = ( bounds[0] - localOrigin ).Length();	
+	worldRadius = ( bounds[0] - localOrigin ).Length();
 	for( int i = 0 ; i < numPlanes ; i++ ) {
 		frust = planes + i;
 		float d = frust->Distance( worldOrigin );
@@ -597,7 +591,7 @@ void R_GlobalToNormalizedDeviceCoordinates( const idVec3 &global, idVec3 &ndc ) 
 	idPlane	view;
 	idPlane	clip;
 	// _D3XP use tr.primaryView when there is no tr.viewDef
-	const viewDef_t* viewDef = ( tr.viewDef != NULL ) ? tr.viewDef : tr.primaryView;
+	const viewDef_t *viewDef = ( tr.viewDef != NULL ) ? tr.viewDef : tr.primaryView;
 	for( int i = 0; i < 4; i ++ ) {
 		view[i] = 	viewDef->worldSpace.modelViewMatrix[i + 0 * 4] * global[0] +
 					viewDef->worldSpace.modelViewMatrix[i + 1 * 4] * global[1] +
@@ -637,13 +631,13 @@ R_MatrixMultiply
 */
 void R_MatrixMultiply( const float a[16], const float b[16], float out[16] ) {
 	int		i, j;
-	for ( i = 0 ; i < 4 ; i++ ) {
-		for ( j = 0 ; j < 4 ; j++ ) {
+	for( i = 0 ; i < 4 ; i++ ) {
+		for( j = 0 ; j < 4 ; j++ ) {
 			out[ i * 4 + j ] =
-			a [ i * 4 + 0 ] * b [ 0 * 4 + j ] + 
-			a [ i * 4 + 1 ] * b [ 1 * 4 + j ] + 
-			a [ i * 4 + 2 ] * b [ 2 * 4 + j ] + 
-			a [ i * 4 + 3 ] * b [ 3 * 4 + j ];
+				a [ i * 4 + 0 ] * b [ 0 * 4 + j ] +
+				a [ i * 4 + 1 ] * b [ 1 * 4 + j ] +
+				a [ i * 4 + 2 ] * b [ 2 * 4 + j ] +
+				a [ i * 4 + 3 ] * b [ 3 * 4 + j ];
 		}
 	}
 }
@@ -718,13 +712,12 @@ R_SetupProjectionMatrix
 This uses the "infinite far z" trick
 ===============
 */
-void R_SetupProjectionMatrix( viewDef_t* viewDef ) {
+void R_SetupProjectionMatrix( viewDef_t *viewDef ) {
 	float	xmin, xmax, ymin, ymax;
 	float	width, height;
 	float	zNear;
 	float	jitterx, jittery;
 	static	idRandom random;
-
 	// random jittering is usefull when multiple
 	// frames are going to be blended together
 	// for motion blurred anti-aliasing
@@ -734,7 +727,6 @@ void R_SetupProjectionMatrix( viewDef_t* viewDef ) {
 	} else {
 		jitterx = jittery = 0;
 	}
-
 	//
 	// set up projection matrix
 	//
@@ -754,17 +746,14 @@ void R_SetupProjectionMatrix( viewDef_t* viewDef ) {
 	jittery = jittery * height / ( viewDef->viewport.y2 - viewDef->viewport.y1 + 1 );
 	ymin += jittery;
 	ymax += jittery;
-
 	viewDef->projectionMatrix[0 * 4 + 0] = 2.0f * zNear / width;
 	viewDef->projectionMatrix[1 * 4 + 0] = 0.0f;
 	viewDef->projectionMatrix[2 * 4 + 0] = ( xmax + xmin ) / width;	// normally 0
 	viewDef->projectionMatrix[3 * 4 + 0] = 0.0f;
-
 	viewDef->projectionMatrix[0 * 4 + 1] = 0.0f;
 	viewDef->projectionMatrix[1 * 4 + 1] = 2.0f * zNear / height;
 	viewDef->projectionMatrix[2 * 4 + 1] = ( ymax + ymin ) / height;	// normally 0
 	viewDef->projectionMatrix[3 * 4 + 1] = 0.0f;
-
 	// this is the far-plane-at-infinity formulation, and
 	// crunches the Z range slightly so w=0 vertexes do not
 	// rasterize right at the wraparound point
@@ -772,7 +761,6 @@ void R_SetupProjectionMatrix( viewDef_t* viewDef ) {
 	viewDef->projectionMatrix[1 * 4 + 2] = 0.0f;
 	viewDef->projectionMatrix[2 * 4 + 2] = -0.999f; // adjust value to prevent imprecision issues
 	viewDef->projectionMatrix[3 * 4 + 2] = -2.0f * zNear;
-
 	viewDef->projectionMatrix[0 * 4 + 3] = 0.0f;
 	viewDef->projectionMatrix[1 * 4 + 3] = 0.0f;
 	viewDef->projectionMatrix[2 * 4 + 3] = -1.0f;
@@ -787,7 +775,7 @@ Setup that culling frustum planes for the current view
 FIXME: derive from modelview matrix times projection matrix
 =================
 */
-static void R_SetupViewFrustum( viewDef_t* viewDef ) {
+static void R_SetupViewFrustum( viewDef_t *viewDef ) {
 	int		i;
 	float	xs, xc;
 	float	ang;

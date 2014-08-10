@@ -289,8 +289,8 @@ static void RB_T_FillDepthBuffer( const drawSurf_t *surf ) {
 	if( shader->GetSort() == SS_SUBVIEW ) {
 		GL_State( GLS_SRCBLEND_DST_COLOR | GLS_DSTBLEND_ZERO | GLS_DEPTHFUNC_LESS );
 		color[0] =
-			color[1] =
-				color[2] = ( 1.0f / backEnd.overBright );
+		color[1] =
+		color[2] = ( 1.0f / backEnd.overBright );
 		color[3] = 1.0f;
 	} else {
 		// others just draw black
@@ -753,8 +753,11 @@ static int RB_STD_DrawShaderPasses( drawSurf_t **drawSurfs, int numDrawSurfs ) {
 		// only dump if in a 3d view
 		if( backEnd.viewDef->viewEntitys && ( tr.backEndRenderer == BE_ARB2 || tr.backEndRenderer == BE_GLSL ) ) {
 			globalImages->currentRenderImage->CopyFramebuffer( backEnd.viewDef->viewport.x1,
-					backEnd.viewDef->viewport.y1,  backEnd.viewDef->viewport.x2 -  backEnd.viewDef->viewport.x1 + 1,
-					backEnd.viewDef->viewport.y2 -  backEnd.viewDef->viewport.y1 + 1, true );
+															   backEnd.viewDef->viewport.y1,  
+															   backEnd.viewDef->viewport.x2 -  
+															   backEnd.viewDef->viewport.x1 + 1,
+															   backEnd.viewDef->viewport.y2 -  
+															   backEnd.viewDef->viewport.y1 + 1, true );
 		}
 		backEnd.currentRenderCopied = true;
 	}
@@ -1232,7 +1235,6 @@ static void RB_FogPass( const drawSurf_t *drawSurfs,  const drawSurf_t *drawSurf
 	glDisable( GL_TEXTURE_GEN_S );
 	glDisable( GL_TEXTURE_GEN_T );
 }
-
 
 /*
 ==================

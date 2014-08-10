@@ -147,7 +147,7 @@ void R_RenderGuiSurf( idUserInterface *gui, drawSurf_t *drawSurf ) {
 	guiModelMatrix[11] = 0;
 	guiModelMatrix[15] = 1;
 	R_MatrixMultiply( guiModelMatrix, drawSurf->space->modelMatrix,
-					modelMatrix );
+					  modelMatrix );
 	tr.guiRecursionLevel++;
 	// call the gui, which will call the 2D drawing functions
 	tr.guiModel->Clear();

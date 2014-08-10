@@ -153,7 +153,7 @@ void RadiantRun( void ) {
 	int show = ::IsWindowVisible( win32.hWnd );
 	try {
 		if( !exceptionErr && !show ) {
-			glDepthMask( true );
+			glDepthMask( GL_TRUE );
 			theApp.Run();
 			wglMakeCurrent( win32.hDC, win32.hGLRC );
 		}

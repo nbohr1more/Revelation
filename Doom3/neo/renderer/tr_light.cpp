@@ -670,7 +670,7 @@ and the viewEntitys due to game movement
 */
 void R_AddLightSurfaces( void ) {
 	viewLight_t			*vLight;
-	idRenderLightLocal *light;
+	idRenderLightLocal	*light;
 	viewLight_t			**ptr;
 	// go through each visible light, possibly removing some from the list
 	ptr = &tr.viewDef->viewLights;
@@ -805,6 +805,50 @@ void R_AddLightSurfaces( void ) {
 }
 
 //===============================================================================================================
+
+/*
+==================
+R_SortViewEntities
+==================
+*/
+viewEntity_t* R_SortViewEntities( viewEntity_t* vEntities ) {
+	// We want to avoid having a single AddModel for something complex be
+	// the last thing processed and hurt the parallel occupancy, so
+	// sort dynamic models first, _area models second, then everything else.
+	viewEntity_t* dynamics = NULL;
+	viewEntity_t* areas = NULL;
+	viewEntity_t* others = NULL;
+	for( viewEntity_t* vEntity = vEntities; vEntity != NULL; ) {
+		viewEntity_t* next = vEntity->next;
+		const idRenderModel* model = vEntity->entityDef->parms.hModel;
+		if( model->IsDynamicModel() != DM_STATIC ) {
+			vEntity->next = dynamics;
+			dynamics = vEntity;
+		} else if( model->IsStaticWorldModel() ) {
+			vEntity->next = areas;
+			areas = vEntity;
+		} else {
+			vEntity->next = others;
+			others = vEntity;
+		}
+		vEntity = next;
+	}
+	// concatenate the lists
+	viewEntity_t* all = others;
+	for( viewEntity_t* vEntity = areas; vEntity != NULL; ) {
+		viewEntity_t* next = vEntity->next;
+		vEntity->next = all;
+		all = vEntity;
+		vEntity = next;
+	}
+	for( viewEntity_t* vEntity = dynamics; vEntity != NULL; ) {
+		viewEntity_t* next = vEntity->next;
+		vEntity->next = all;
+		all = vEntity;
+		vEntity = next;
+	}
+	return all;
+}
 
 /*
 ==================
@@ -1163,6 +1207,8 @@ void R_AddModelSurfaces( void ) {
 	int					nInteractions = 0;
 	int					nCreateInteractions = 0;
 	int					i, j;
+	// sort the view entity models
+	tr.viewDef->viewEntitys = R_SortViewEntities( tr.viewDef->viewEntitys );
 	// clear the ambient surface list
 	tr.viewDef->numDrawSurfs = 0;
 	tr.viewDef->maxDrawSurfs = 0;	// will be set to INITIAL_DRAWSURFS on R_AddDrawSurf

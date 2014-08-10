@@ -248,6 +248,12 @@ void GL_State( int stateBits ) {
 		} else {
 			glDepthFunc( GL_LEQUAL );
 		}
+
+		if (stateBits & GLS_DEPTHFUNC_LESS) {
+			glEnable( GL_DEPTH_CLAMP );
+		} else {
+			glDisable( GL_DEPTH_CLAMP );
+		}
 	}
 	//
 	// check blend bits

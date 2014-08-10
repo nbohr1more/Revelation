@@ -40,6 +40,7 @@ idInteraction implementation
 */
 
 // FIXME: use private allocator for srfCullInfo_t
+static const float LIGHT_CLIP_EPSILON = 0.1f;
 
 /*
 ================

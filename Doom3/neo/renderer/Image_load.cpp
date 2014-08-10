@@ -34,7 +34,6 @@ If you have questions concerning this license or the applicable additional terms
 /*
 PROBLEM: compressed textures may break the zero clamp rule!
 */
-
 static bool FormatIsDXT( int internalFormat ) {
 	if( internalFormat < GL_COMPRESSED_RGB_S3TC_DXT1_EXT || internalFormat > GL_COMPRESSED_RGBA_S3TC_DXT5_EXT ) {
 		return false;
@@ -420,8 +419,7 @@ void idImage::GetDownsize( int &scaled_width, int &scaled_height ) const {
 	// deal with a half mip resampling
 	// This causes a 512*256 texture to sample down to
 	// 256*128 on a voodoo3, even though it could be 256*256
-	while( scaled_width > glConfig.maxTextureSize
-			|| scaled_height > glConfig.maxTextureSize ) {
+	while( scaled_width > glConfig.maxTextureSize || scaled_height > glConfig.maxTextureSize ) {
 		scaled_width >>= 1;
 		scaled_height >>= 1;
 	}
@@ -1540,7 +1538,6 @@ void idImage::BindFragment() {
 	}
 }
 
-
 /*
 ====================
 CopyFramebuffer
@@ -1688,14 +1685,14 @@ void idImage::UploadScratch( const byte *data, int cols, int rows ) {
 		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 		// these probably should be clamp, but we have a lot of issues with editor
 		// geometry coming out with texcoords slightly off one side, resulting in
-		// a smear across the entire polygon
-#if 0
-		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-#else
-		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
-		glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
-#endif
+		// a smear across the entire polygon. FIXED
+		if ( com_editorActive ) {
+			glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+			glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+		} else {
+			glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE );
+			glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE );
+		}
 	}
 }
 

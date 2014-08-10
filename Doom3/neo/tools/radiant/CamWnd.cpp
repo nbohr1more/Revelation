@@ -880,7 +880,7 @@ void CCamWnd::Cam_Draw() {
 		setGLMode( m_Camera.draw_mode );
 		Brush_Draw( brush );
 	}
-	//glDepthMask ( 1 ); // Ok, write now
+	// Ok, write now
 	glMatrixMode( GL_PROJECTION );
 	glTranslatef( g_qeglobals.d_select_translate[0], g_qeglobals.d_select_translate[1], g_qeglobals.d_select_translate[2] );
 	brush_t *pList = ( g_bClipMode && g_pSplitList ) ? g_pSplitList : &selected_brushes;

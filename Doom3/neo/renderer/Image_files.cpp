@@ -71,7 +71,6 @@ void R_WriteTGA( const char *filename, const byte *data, int width, int height, 
 	Mem_Free( buffer );
 }
 
-
 /*
 ================
 R_WritePalTGA
@@ -139,7 +138,6 @@ typedef struct {
 	char			filler[58];
 	unsigned char	data;			// unbounded
 } pcx_t;
-
 
 /*
 ========================================================================
@@ -342,7 +340,6 @@ static void LoadBMP( const char *name, byte **pic, int *width, int *height, ID_T
 	fileSystem->FreeFile( buffer );
 }
 
-
 /*
 =================================================================
 
@@ -350,7 +347,6 @@ PCX LOADING
 
 =================================================================
 */
-
 
 /*
 ==============
@@ -429,7 +425,6 @@ static void LoadPCX( const char *filename, byte **pic, byte **palette, int *widt
 	}
 	fileSystem->FreeFile( pcx );
 }
-
 
 /*
 ==============
@@ -1023,7 +1018,6 @@ void R_LoadImage( const char *cname, byte **pic, int *width, int *height, ID_TIM
 		}
 	}
 }
-
 
 /*
 =======================

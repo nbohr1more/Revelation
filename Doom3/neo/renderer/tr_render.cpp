@@ -651,9 +651,9 @@ static void RB_SubmitInteraction( drawInteraction_t *din, void ( *DrawInteractio
 	if( ( ( din->diffuseColor[0] > 0.0f ||
 			din->diffuseColor[1] > 0.0f ||
 			din->diffuseColor[2] > 0.0f ) && din->diffuseImage != globalImages->blackImage ) ||
-		( ( din->specularColor[0] > 0.0f ||
-			din->specularColor[1] > 0.0f ||
-			din->specularColor[2] > 0.0f ) && din->specularImage != globalImages->blackImage ) ) {
+			( ( din->specularColor[0] > 0.0f ||
+				din->specularColor[1] > 0.0f ||
+				din->specularColor[2] > 0.0f ) && din->specularImage != globalImages->blackImage ) ) {
 		DrawInteraction( din );
 	}
 }

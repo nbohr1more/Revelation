@@ -43,8 +43,6 @@ If you have questions concerning this license or the applicable additional terms
 
 #define LIGHT_TRIS_DEFERRED			((srfTriangles_t *)-1)
 #define LIGHT_CULL_ALL_FRONT		((byte *)-1)
-#define	LIGHT_CLIP_EPSILON			0.1f
-
 
 typedef struct {
 	// For each triangle a byte set to 1 if facing the light origin.

@@ -73,7 +73,6 @@ idCVar idImageManager::image_downSizeLimit( "image_downSizeLimit", "256", CVAR_R
 idImageManager	imageManager;
 idImageManager	*globalImages = &imageManager;
 
-
 enum IMAGE_CLASSIFICATION {
 	IC_NPC,
 	IC_WEAPON,
@@ -220,8 +219,6 @@ static void R_AlphaRampImage( idImage *image ) {
 	image->GenerateImage( ( byte * )data, 256, 1, TF_NEAREST, false, TR_CLAMP, TD_HIGH_QUALITY );
 }
 
-
-
 /*
 ==================
 R_CreateDefaultImage
@@ -294,7 +291,6 @@ static void R_BlackImage( idImage *image ) {
 	memset( data, 0, sizeof( data ) );
 	image->GenerateImage( ( byte * )data, DEFAULT_SIZE, DEFAULT_SIZE, TF_DEFAULT, false, TR_REPEAT, TD_DEFAULT );
 }
-
 
 // the size determines how far away from the edge the blocks start fading
 static const int BORDER_CLAMP_SIZE = 32;
@@ -379,8 +375,8 @@ static void R_FlatNormalImage( idImage *image ) {
 static void R_AmbientNormalImage( idImage *image ) {
 	byte	data[DEFAULT_SIZE][DEFAULT_SIZE][4];
 	int		i;
-	int red = ( globalImages->image_useNormalCompression.GetInteger() == 1 ) ? 0 : 3;
-	int alpha = ( red == 0 ) ? 3 : 0;
+	int		red = ( globalImages->image_useNormalCompression.GetInteger() == 1 ) ? 0 : 3;
+	int		alpha = ( red == 0 ) ? 3 : 0;
 	// flat normal map for default bunp mapping
 	for( i = 0 ; i < 4 ; i++ ) {
 		data[0][i][red] = ( byte )( 255 * tr.ambientLightVector[0] );
@@ -395,7 +391,6 @@ static void R_AmbientNormalImage( idImage *image ) {
 	// this must be a cube map for fragment programs to simply substitute for the normalization cube map
 	image->GenerateCubeImage( pics, 2, TF_DEFAULT, true, TD_HIGH_QUALITY );
 }
-
 
 static void CreateSquareLight( void ) {
 	byte		*buffer;
@@ -459,7 +454,6 @@ static void CreateFlashOff( void ) {
 	R_WriteTGA( "lights/flashoff.tga", buffer, width, height );
 	R_StaticFree( buffer );
 }
-
 
 /*
 ===============
@@ -568,8 +562,8 @@ static void getCubeVector( int i, int cubesize, int x, int y, float *vector ) {
 * access the cube map.
 */
 static void makeNormalizeVectorCubeMap( idImage *image ) {
-	float vector[3];
-	int i, x, y;
+	float	vector[3];
+	int		i, x, y;
 	byte	*pixels[6];
 	int		size;
 	size = NORMAL_MAP_SIZE;
@@ -586,8 +580,7 @@ static void makeNormalizeVectorCubeMap( idImage *image ) {
 			}
 		}
 	}
-	image->GenerateCubeImage( ( const byte ** )pixels, size,
-							  TF_LINEAR, false, TD_HIGH_QUALITY );
+	image->GenerateCubeImage( ( const byte ** )pixels, size, TF_LINEAR, false, TD_HIGH_QUALITY );
 	Mem_Free( pixels[0] );
 }
 
@@ -656,8 +649,7 @@ void R_FogImage( idImage *image ) {
 			data[y][x][3] = b;
 		}
 	}
-	image->GenerateImage( ( byte * )data, FOG_SIZE, FOG_SIZE,
-						  TF_LINEAR, false, TR_CLAMP, TD_HIGH_QUALITY );
+	image->GenerateImage( ( byte * )data, FOG_SIZE, FOG_SIZE, TF_LINEAR, false, TR_CLAMP, TD_HIGH_QUALITY );
 }
 
 
@@ -706,10 +698,10 @@ static float	FogFraction( float viewHeight, float targetHeight ) {
 	if( !total ) {
 		return -viewHeight * rampSlope;
 	}
-	float ramp = ( 1.0 - ( rampTop * rampSlope + rampBottom * rampSlope ) * -0.5 ) * ( rampTop - rampBottom );
+	float	ramp = ( 1.0 - ( rampTop * rampSlope + rampBottom * rampSlope ) * -0.5 ) * ( rampTop - rampBottom );
 	float	frac = ( total - above - ramp ) / total;
 	// after it gets moderately deep, always use full value
-	float deepest = viewHeight < targetHeight ? viewHeight : targetHeight;
+	float	deepest = viewHeight < targetHeight ? viewHeight : targetHeight;
 	float	deepFrac = deepest / DEEP_RANGE;
 	if( deepFrac >= 1.0 ) {
 		return 1.0;
@@ -750,7 +742,6 @@ void R_FogEnterImage( idImage *image ) {
 	image->GenerateImage( ( byte * )data, FOG_ENTER_SIZE, FOG_ENTER_SIZE, TF_LINEAR, false, TR_CLAMP, TD_HIGH_QUALITY );
 }
 
-
 /*
 ================
 R_QuadraticImage
@@ -790,13 +781,10 @@ void R_QuadraticImage( idImage *image ) {
 
 //=====================================================================
 
-
 typedef struct {
 	const char	*name;
 	int			minimize, maximize;
 } filterName_t;
-
-
 
 /*
 ===============
@@ -1093,8 +1081,7 @@ void R_ListImages_f( const idCmdArgs &args ) {
 			sortedArray[i].image->Print();
 			partialSize += sortedArray[i].image->StorageSize();
 			if( ( ( i + 1 ) % 10 ) == 0 ) {
-				common->Printf( "-------- %5.1f of %5.1f megs --------\n",
-								partialSize / ( 1024 * 1024.0 ), totalSize / ( 1024 * 1024.0 ) );
+				common->Printf( "-------- %5.1f of %5.1f megs --------\n", partialSize / ( 1024 * 1024.0 ), totalSize / ( 1024 * 1024.0 ) );
 			}
 		}
 	}
@@ -1274,11 +1261,10 @@ Finds or loads the given image, always returning a valid image pointer.
 Loading of the image may be deferred for dynamic loading.
 ==============
 */
-idImage	*idImageManager::ImageFromFile( const char *_name, textureFilter_t filter, bool allowDownSize,
-										textureRepeat_t repeat, textureDepth_t depth, cubeFiles_t cubeMap ) {
-	idStr name;
+idImage	*idImageManager::ImageFromFile( const char *_name, textureFilter_t filter, bool allowDownSize, textureRepeat_t repeat, textureDepth_t depth, cubeFiles_t cubeMap ) {
+	idStr	name;
 	idImage	*image;
-	int hash;
+	int		hash;
 	if( !_name || !_name[0] || idStr::Icmp( _name, "default" ) == 0 || idStr::Icmp( _name, "_default" ) == 0 ) {
 		declManager->MediaPrint( "DEFAULTED\n" );
 		return globalImages->defaultImage;
@@ -1403,9 +1389,9 @@ idImageManager::GetImage
 ===============
 */
 idImage *idImageManager::GetImage( const char *_name ) const {
-	idStr name;
+	idStr	name;
 	idImage	*image;
-	int hash;
+	int		hash;
 	if( !_name || !_name[0] || idStr::Icmp( _name, "default" ) == 0 || idStr::Icmp( _name, "_default" ) == 0 ) {
 		declManager->MediaPrint( "DEFAULTED\n" );
 		return globalImages->defaultImage;
@@ -1514,7 +1500,7 @@ void R_CombineCubeImages_f( const idCmdArgs &args ) {
 			}
 			break;
 		}
-		byte	*combined = ( byte * )Mem_Alloc( width * height * 6 * 4 );
+		byte *combined = ( byte * )Mem_Alloc( width * height * 6 * 4 );
 		for( side = 0 ; side < 6 ; side++ ) {
 			memcpy( combined + width * height * 4 * side, pics[side], width * height * 4 );
 			Mem_Free( pics[side] );
