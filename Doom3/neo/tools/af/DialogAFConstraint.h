@@ -39,7 +39,7 @@ class DialogAFConstraintSpring;
 class DialogAFConstraint : public CDialog {
 
 	DECLARE_DYNAMIC( DialogAFConstraint )
-
+	
 public:
 	DialogAFConstraint( CWnd *pParent = NULL );   // standard constructor
 	virtual				~DialogAFConstraint();
@@ -48,9 +48,9 @@ public:
 	void				LoadConstraint( const char *name );
 	void				SaveConstraint( void );
 	void				UpdateFile( void );
-
+	
 	enum				{ IDD = IDD_DIALOG_AF_CONSTRAINT };
-
+	
 protected:
 	virtual BOOL		OnInitDialog();
 	virtual void		DoDataExchange( CDataExchange *pDX );    // DDX/DDV support
@@ -66,9 +66,9 @@ protected:
 	afx_msg void		OnCbnSelchangeComboConstraintBody2();
 	afx_msg void		OnEnChangeEditConstraintFriction();
 	afx_msg void		OnDeltaposSpinConstraintFriction( NMHDR *pNMHDR, LRESULT *pResult );
-
+	
 	DECLARE_MESSAGE_MAP()
-
+	
 private:
 	idDeclAF 			*file;
 	idDeclAF_Constraint *constraint;
@@ -79,7 +79,7 @@ private:
 	DialogAFConstraintHinge *hingeDlg;
 	DialogAFConstraintSlider *sliderDlg;
 	DialogAFConstraintSpring *springDlg;
-
+	
 	//{{AFX_DATA(DialogAFConstraint)
 	CComboBox			m_comboConstraintList;			// list with constraints
 	CComboBox			m_comboConstraintType;
@@ -87,9 +87,9 @@ private:
 	CComboBox			m_comboBody2List;
 	float				m_friction;
 	//}}AFX_DATA
-
+	
 	static toolTip_t	toolTips[];
-
+	
 private:
 	void				InitConstraintList( void );
 	void				InitConstraintTypeDlg( void );

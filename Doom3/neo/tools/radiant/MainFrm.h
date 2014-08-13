@@ -71,7 +71,7 @@ public:
 			OnKeyUp( nChar, nRepCnt, nFlags );
 		}
 	};
-
+	
 	// Attributes
 public:
 
@@ -90,7 +90,7 @@ protected:
 	virtual LRESULT WindowProc( UINT message, WPARAM wParam, LPARAM lParam );
 	virtual BOOL OnCreateClient( LPCREATESTRUCT lpcs, CCreateContext *pContext );
 	//}}AFX_VIRTUAL
-
+	
 	// Implementation
 public:
 	void UpdatePatchToolbarButtons();
@@ -112,7 +112,7 @@ public:
 		return &nurb;
 	}
 	void OnPrecisionCursorCycle();
-
+	
 	virtual ~CMainFrame();
 	CXYWnd *GetXYWnd() {
 		return m_pXYWnd;
@@ -129,7 +129,7 @@ public:
 	CZWnd *GetZWnd()	 {
 		return m_pZWnd;
 	};
-
+	
 	void SetActiveXY( CXYWnd *p ) {
 		if( m_pActiveXY ) {
 			m_pActiveXY->SetActive( false );
@@ -139,12 +139,12 @@ public:
 			m_pActiveXY->SetActive( true );
 		}
 	};
-
+	
 #ifdef _DEBUG
 	virtual void AssertValid() const;
 	virtual void Dump( CDumpContext &dc ) const;
 #endif
-
+	
 protected:  // control bar embedded members
 	CStatusBar  m_wndStatusBar;
 	CToolBar m_wndToolBar;
@@ -177,8 +177,8 @@ public:
 	void SetBusy( bool b ) {
 		busy = b;
 	}
-
-
+	
+	
 	// these are public so i can easily reflect messages
 	// from child windows..
 	//{{AFX_MSG(CMainFrame)
@@ -288,7 +288,7 @@ public:
 	afx_msg void OnSelectionVisibleOff();
 	afx_msg void OnAutocaulk();
 	afx_msg void OnUpdateAutocaulk( CCmdUI *pCmdUI );
-
+	
 	afx_msg void OnTexturesPopup();
 	afx_msg void OnSplinesPopup();
 	afx_msg void OnSplinesEditPoints();
@@ -550,10 +550,10 @@ public:
 	afx_msg void OnGrid1( unsigned int nID );
 	afx_msg void OnDisplayChange( WPARAM wp, LPARAM lp );
 	afx_msg void OnSelectAlltargets();
-
+	
 	//}}AFX_MSG
 	void CheckTextureScale( int id );
-
+	
 	DECLARE_MESSAGE_MAP()
 };
 

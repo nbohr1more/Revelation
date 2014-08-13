@@ -195,7 +195,7 @@ LRESULT CALLBACK rvGEProperties::WndProc( HWND hWnd, UINT msg, WPARAM wParam, LP
 											if ( sel != -1 )
 											{
 												const char* prop;
-
+				
 												prop = kv->mGrid.GetItemName(sel);
 												if ( !idStr::Icmp ( prop, "rect" )		||
 													 !idStr::Icmp ( prop, "visible" )	||

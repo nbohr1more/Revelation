@@ -27,37 +27,37 @@ typedef struct {
 class idPlayerView {
 public:
 	idPlayerView();
-
+	
 	void				Save( idSaveGame *savefile ) const;
 	void				Restore( idRestoreGame *savefile );
-
+	
 	void				SetPlayerEntity( class idPlayer *playerEnt );
-
+	
 	void				ClearEffects( void );
-
+	
 	void				DamageImpulse( idVec3 localKickDir, const idDict *damageDef );
-
+	
 	void				WeaponFireFeedback( const idDict *weaponDef );
-
+	
 	idAngles			AngleOffset( void ) const;			// returns the current kick angle
-
+	
 	idMat3				ShakeAxis( void ) const;			// returns the current shake angle
-
+	
 	void				CalculateShake( void );
-
+	
 	// this may involve rendering to a texture and displaying
 	// that with a warp model or in double vision mode
 	void				RenderPlayerView( idUserInterface *hud );
-
+	
 	void				Fade( idVec4 color, int time );
 	void				Flash( idVec4 color, int time );
 	void				AddBloodSpray( float duration );
-
+	
 	// temp for view testing
 	void				EnableBFGVision( bool b ) {
 		bfgVision = b;
 	};
-
+	
 private:
 	void				SingleView( const renderView_t *view );
 	// sikk - Commented: Functions overridden
@@ -66,7 +66,7 @@ private:
 	//void				InfluenceVision( const renderView_t *view );
 	void				ScreenFade( void );
 	screenBlob_t 		*GetScreenBlob( void );
-
+	
 	const idMaterial 	*tunnelMaterial;			// health tunnel vision
 	const idMaterial 	*armorMaterial;			// armor damage view effect
 	const idMaterial 	*berserkMaterial;		// berserk effect
@@ -74,7 +74,7 @@ private:
 	const idMaterial 	*bloodSprayMaterial;		// blood spray
 	const idMaterial 	*bfgMaterial;			// when targeted with BFG
 	const idMaterial 	*lagoMaterial;			// lagometer drawing
-
+	
 	int					dvFinishTime;			// double vision will be stopped at this time
 	int					kickFinishTime;			// view kick will be stopped at this time
 	idAngles			kickAngles;
@@ -85,14 +85,14 @@ private:
 	float				fadeRate;				// fade rate
 	int					fadeTime;				// fade time
 	float				lastDamageTime;			// accentuate the tunnel effect for a while
-
+	
 	screenBlob_t		screenBlobs[MAX_SCREEN_BLOBS];
-
+	
 	idAngles			shakeAng;				// from the sound sources
-
+	
 	idPlayer 			*player;
 	renderView_t		view;
-
+	
 	// sikk---> PostProcess Effects
 	void				DoPostFX( void );
 	void				PostFX_SoftShadows( void );
@@ -112,7 +112,7 @@ private:
 	void				PostFX_CelShading( void );
 	void				PostFX_Filmgrain( void );
 	void				PostFX_Vignetting( void );
-
+	
 	void				PostFX_AdrenalineVision( void );
 	void				PostFX_DoubleVision( void );
 	void				PostFX_BerserkVision( void );
@@ -121,14 +121,14 @@ private:
 	void				PostFX_TunnelVision( void );
 	void				PostFX_ScreenBlobs( void );
 	void				PostFX_ArmorPulse( void );
-
+	
 	void				RenderDepth( bool bCrop );
 	void				RenderNormals( bool bFace );
 	void				ToggleShadows( bool noShadows );
 	void				ResetShadows( void );
 	bool				DoFConditionCheck( void );
 	bool				MBConditionCheck( void );
-
+	
 	const idMaterial 	*blackMaterial;			// Black material (for general use)
 	const idMaterial 	*whiteMaterial;			// White material (for general use)
 	const idMaterial 	*currentRenderMaterial;	// Current Render material (for general use)
@@ -164,7 +164,7 @@ private:
 	const idMaterial 	*tunnel2Material;		// health tunnel vision for Health Management System (Health Regen)
 	const idMaterial 	*adrenalineMaterial;		// Adrenaline Vision material
 	const idMaterial 	*explosionFXMaterial;	// Explosion FX material
-
+	
 	renderView_t		hackedView;
 	idAngles			prevViewAngles;			// Holds previous frame's player view angles
 	int					prevTime;				// Holds previous frame's time
@@ -172,7 +172,7 @@ private:
 	pvsHandle_t			playerPVS;				// Holds player's current pvs (for soft shadows)
 	bool				bSoftShadows;			// a soft shadows toggle used so ResetShadows() is only run once when r_useSoftShadows = 0
 	// <---sikk
-
+	
 	// sikk---> PostProccess Scaling Fix
 	int					screenHeight;
 	int					screenWidth;

@@ -74,9 +74,9 @@ void	RB_ARB2_DrawInteraction( const drawInteraction_t *din ) {
 		glProgramEnvParameter4fvARB( GL_FRAGMENT_PROGRAM_ARB, 2, din->localLightOrigin.ToFloatPtr() );
 		glProgramEnvParameter4fvARB( GL_FRAGMENT_PROGRAM_ARB, 3, din->localViewOrigin.ToFloatPtr() );
 	}
-	static const float zero[4] = { 0, 0, 0, 0 };
-	static const float one[4] = { 1, 1, 1, 1 };
-	static const float negOne[4] = { -1, -1, -1, -1 };
+	static const float zero[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	static const float one[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	static const float negOne[4] = { -1.0f, -1.0f, -1.0f, -1.0f };
 	switch( din->vertexColor ) {
 	case SVC_IGNORE:
 		glProgramEnvParameter4fvARB( GL_VERTEX_PROGRAM_ARB, PP_COLOR_MODULATE, zero );
@@ -160,7 +160,7 @@ void RB_ARB2_CreateDrawInteractions( const drawSurf_t *surf ) {
 		// perform setup here that will not change over multiple interaction passes
 		// set the vertex pointers
 		idDrawVert	*ac = ( idDrawVert * )vertexCache.Position( surf->geo->ambientCache );
-		glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ac->color );
+		glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ( const GLvoid * )&ac->color );
 		glVertexAttribPointerARB( 11, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac->normal.ToFloatPtr() );
 		glVertexAttribPointerARB( 10, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac->tangents[1].ToFloatPtr() );
 		glVertexAttribPointerARB( 9, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac->tangents[0].ToFloatPtr() );
@@ -218,7 +218,6 @@ void RB_ARB2_DrawInteractions( void ) {
 		if( !vLight->localInteractions && !vLight->globalInteractions && !vLight->translucentInteractions ) {
 			continue;
 		}
-		// turn on depthbounds testing for shadows
 		GL_DepthBoundsTest( vLight->scissorRect.zmin, vLight->scissorRect.zmax );
 		// clear the stencil buffer if needed
 		if( vLight->globalShadows || vLight->localShadows ) {

@@ -1107,14 +1107,14 @@ static int unzlocal_getShort( FILE *fin, uLong *pX ) {
 	    uLong x ;
 	    int i;
 	    int err;
-
+	
 	    err = unzlocal_getByte(fin,&i);
 	    x = (uLong)i;
-
+	
 	    if (err==UNZ_OK)
 	        err = unzlocal_getByte(fin,&i);
 	    x += ((uLong)i)<<8;
-
+	
 	    if (err==UNZ_OK)
 	        *pX = x;
 	    else
@@ -1132,22 +1132,22 @@ static int unzlocal_getLong( FILE *fin, uLong *pX ) {
 	    uLong x ;
 	    int i;
 	    int err;
-
+	
 	    err = unzlocal_getByte(fin,&i);
 	    x = (uLong)i;
-
+	
 	    if (err==UNZ_OK)
 	        err = unzlocal_getByte(fin,&i);
 	    x += ((uLong)i)<<8;
-
+	
 	    if (err==UNZ_OK)
 	        err = unzlocal_getByte(fin,&i);
 	    x += ((uLong)i)<<16;
-
+	
 	    if (err==UNZ_OK)
 	        err = unzlocal_getByte(fin,&i);
 	    x += ((uLong)i)<<24;
-
+	
 	    if (err==UNZ_OK)
 	        *pX = x;
 	    else
@@ -2467,7 +2467,7 @@ struct inflate_blocks_state {
 
 	/* mode */
 	inflate_block_mode  mode;     /* current inflate_block mode */
-
+	
 	/* mode dependent information */
 	union {
 		uInt left;          /* if STORED, bytes left to copy */
@@ -2484,7 +2484,7 @@ struct inflate_blocks_state {
 		} decode;           /* if CODES, current state */
 	} sub;                /* submode */
 	uInt last;            /* true if this block is the last block */
-
+	
 	/* mode independent information */
 	uInt bitk;            /* bits in bit buffer */
 	uLong bitb;           /* bit buffer */
@@ -2495,7 +2495,7 @@ struct inflate_blocks_state {
 	Byte *write;         /* window write pointer */
 	check_func checkfn;   /* check function */
 	uLong check;          /* check on output */
-
+	
 };
 
 
@@ -3328,7 +3328,7 @@ int inflate_trees_dynamic( uInt nl, uInt nd, uInt *c, uInt *bl, uInt *bd, inflat
 		return r;
 #endif
 	}
-
+	
 	/* done */
 	ZFREE( z, v );
 	return Z_OK;
@@ -3659,7 +3659,7 @@ struct inflate_codes_state {
 
 	/* mode */
 	inflate_codes_mode mode;      /* current inflate_codes mode */
-
+	
 	/* mode dependent information */
 	uInt len;
 	union {
@@ -3673,13 +3673,13 @@ struct inflate_codes_state {
 			uInt dist;                /* distance back to copy from */
 		} copy;             /* if EXT or COPY, where and how much */
 	} sub;                /* submode */
-
+	
 	/* mode independent information */
 	Byte lbits;           /* ltree bits decoded per branch */
 	Byte dbits;           /* dtree bits decoder per branch */
 	inflate_huft *ltree;          /* literal/length/eob tree */
 	inflate_huft *dtree;          /* distance tree */
-
+	
 };
 
 
@@ -3967,7 +3967,7 @@ struct internal_state {
 
 	/* mode */
 	inflate_mode  mode;   /* current inflate mode */
-
+	
 	/* mode dependent information */
 	union {
 		uInt method;        /* if FLAGS, method byte */
@@ -3977,13 +3977,13 @@ struct internal_state {
 		} check;            /* if CHECK, check values to compare */
 		uInt marker;        /* if BAD, inflateSync's marker bytes count */
 	} sub;        /* submode */
-
+	
 	/* mode independent information */
 	int  nowrap;          /* flag for no wrapper */
 	uInt wbits;           /* log2(window size)  (8..15, defaults to 15) */
 	inflate_blocks_statef
 	*blocks;            /* current inflate_blocks state */
-
+	
 };
 
 

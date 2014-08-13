@@ -650,97 +650,97 @@ void CSyntaxRichEditCtrl::HighlightSyntax( int startCharIndex, int endCharIndex 
 	for( charIndex = startCharIndex; charIndex <= endCharIndex; charIndex++ ) {
 		t = charType[text[charIndex]];
 		switch( t ) {
-			case CT_WHITESPACE: {
-				if( idStr::CharIsNewLine( text[charIndex] ) ) {
+		case CT_WHITESPACE: {
+			if( idStr::CharIsNewLine( text[charIndex] ) ) {
+				line++;
+			}
+			break;
+		}
+		case CT_COMMENT: {
+			c = text[charIndex + 1];
+			if( c == '/' ) {
+				// single line comment
+				syntaxStart = charIndex;
+				for( charIndex += 2; charIndex < textLength; charIndex++ ) {
+					if( idStr::CharIsNewLine( text[charIndex] ) ) {
+						break;
+					}
+				}
+				SetColor( syntaxStart, charIndex + 1, singleLineCommentColor, DEFAULT_BACK_COLOR, false );
+			} else if( c == '*' ) {
+				// multi-line comment
+				syntaxStart = charIndex;
+				for( charIndex += 2; charIndex < textLength; charIndex++ ) {
+					if( text[charIndex] == '*' && text[charIndex + 1] == '/' ) {
+						break;
+					}
+				}
+				charIndex++;
+				SetColor( syntaxStart, charIndex + 1, multiLineCommentColor, MULTILINE_COMMENT_BACK_COLOR, false );
+			}
+			break;
+		}
+		case CT_STRING: {
+			if( line != stringColorLine ) {
+				stringColorLine = line;
+				stringColorIndex = 0;
+			}
+			syntaxStart = charIndex;
+			for( charIndex++; charIndex < textLength; charIndex++ ) {
+				c = text[charIndex];
+				if( charType[c] == CT_STRING && text[charIndex - 1] != '\\' ) {
+					break;
+				}
+				if( idStr::CharIsNewLine( c ) ) {
 					line++;
+					break;
 				}
-				break;
 			}
-			case CT_COMMENT: {
-				c = text[charIndex + 1];
-				if( c == '/' ) {
-					// single line comment
-					syntaxStart = charIndex;
-					for( charIndex += 2; charIndex < textLength; charIndex++ ) {
-						if( idStr::CharIsNewLine( text[charIndex] ) ) {
-							break;
-						}
-					}
-					SetColor( syntaxStart, charIndex + 1, singleLineCommentColor, DEFAULT_BACK_COLOR, false );
-				} else if( c == '*' ) {
-					// multi-line comment
-					syntaxStart = charIndex;
-					for( charIndex += 2; charIndex < textLength; charIndex++ ) {
-						if( text[charIndex] == '*' && text[charIndex + 1] == '/' ) {
-							break;
-						}
-					}
-					charIndex++;
-					SetColor( syntaxStart, charIndex + 1, multiLineCommentColor, MULTILINE_COMMENT_BACK_COLOR, false );
+			SetColor( syntaxStart, charIndex + 1, stringColor[stringColorIndex], DEFAULT_BACK_COLOR, false );
+			stringColorIndex ^= 1;
+			break;
+		}
+		case CT_LITERAL: {
+			syntaxStart = charIndex;
+			for( charIndex++; charIndex < textLength; charIndex++ ) {
+				c = text[charIndex];
+				if( charType[c] == CT_LITERAL && text[charIndex - 1] != '\\' ) {
+					break;
 				}
-				break;
+				if( idStr::CharIsNewLine( c ) ) {
+					line++;
+					break;
+				}
 			}
-			case CT_STRING: {
-				if( line != stringColorLine ) {
-					stringColorLine = line;
-					stringColorIndex = 0;
-				}
-				syntaxStart = charIndex;
-				for( charIndex++; charIndex < textLength; charIndex++ ) {
-					c = text[charIndex];
-					if( charType[c] == CT_STRING && text[charIndex - 1] != '\\' ) {
-						break;
-					}
-					if( idStr::CharIsNewLine( c ) ) {
-						line++;
+			SetColor( syntaxStart, charIndex + 1, literalColor, DEFAULT_BACK_COLOR, false );
+			break;
+		}
+		case CT_NUMBER: {
+			break;
+		}
+		case CT_NAME: {
+			syntaxStart = charIndex;
+			keyWord = ( ( const char * )text ) + charIndex;
+			for( charIndex++; charIndex < textLength; charIndex++ ) {
+				c = text[charIndex];
+				t = charType[c];
+				if( t != CT_NAME && t != CT_NUMBER ) {
+					// allow path names
+					if( !allowPathNames || ( c != '/' && c != '\\' && c != '.' ) ) {
 						break;
 					}
 				}
-				SetColor( syntaxStart, charIndex + 1, stringColor[stringColorIndex], DEFAULT_BACK_COLOR, false );
-				stringColorIndex ^= 1;
-				break;
 			}
-			case CT_LITERAL: {
-				syntaxStart = charIndex;
-				for( charIndex++; charIndex < textLength; charIndex++ ) {
-					c = text[charIndex];
-					if( charType[c] == CT_LITERAL && text[charIndex - 1] != '\\' ) {
-						break;
-					}
-					if( idStr::CharIsNewLine( c ) ) {
-						line++;
-						break;
-					}
-				}
-				SetColor( syntaxStart, charIndex + 1, literalColor, DEFAULT_BACK_COLOR, false );
-				break;
+			keyWordLength = charIndex - syntaxStart;
+			keyWordIndex = FindKeyWord( keyWord, keyWordLength );
+			if( keyWordIndex != -1 ) {
+				SetColor( syntaxStart, syntaxStart + keyWordLength, keyWordColors[keyWordIndex], DEFAULT_BACK_COLOR, false );
 			}
-			case CT_NUMBER: {
-				break;
-			}
-			case CT_NAME: {
-				syntaxStart = charIndex;
-				keyWord = ( ( const char * )text ) + charIndex;
-				for( charIndex++; charIndex < textLength; charIndex++ ) {
-					c = text[charIndex];
-					t = charType[c];
-					if( t != CT_NAME && t != CT_NUMBER ) {
-						// allow path names
-						if( !allowPathNames || ( c != '/' && c != '\\' && c != '.' ) ) {
-							break;
-						}
-					}
-				}
-				keyWordLength = charIndex - syntaxStart;
-				keyWordIndex = FindKeyWord( keyWord, keyWordLength );
-				if( keyWordIndex != -1 ) {
-					SetColor( syntaxStart, syntaxStart + keyWordLength, keyWordColors[keyWordIndex], DEFAULT_BACK_COLOR, false );
-				}
-				break;
-			}
-			case CT_PUNCTUATION: {
-				break;
-			}
+			break;
+		}
+		case CT_PUNCTUATION: {
+			break;
+		}
 		}
 	}
 	// show braced section

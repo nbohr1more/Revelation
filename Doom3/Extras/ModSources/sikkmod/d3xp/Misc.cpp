@@ -2256,7 +2256,7 @@ void idLiquid::Event_Touch( idEntity *other, trace_t *trace ) {
 	// FIXME: for QuakeCon
 	/*
 		idVec3 pos;
-
+	
 		pos = other->GetPhysics()->GetOrigin() - GetPhysics()->GetOrigin();
 		model->IntersectBounds( other->GetPhysics()->GetBounds().Translate( pos ), -10.0f );
 	*/
@@ -3312,14 +3312,14 @@ void idFuncMountedObject::Event_Activate( idEntity *activator ) {
 		// Place player at path_corner targeted by mounted object
 		int i;
 		idPathCorner	*spot;
-
+		
 		for ( i = 0; i < targets.Num(); i++ ) {
 		if ( targets[i]->IsType( idPathCorner::Type ) ) {
 		spot = (idPathCorner*)targets[i];
 		break;
 		}
 		}
-
+		
 		mountedPlayer->GetPhysics()->SetOrigin( spot->GetPhysics()->GetOrigin() );
 		mountedPlayer->GetPhysics()->SetAxis( spot->GetPhysics()->GetAxis() );
 		*/

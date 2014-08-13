@@ -61,7 +61,7 @@ public:
 	}
 	void ReadFromDemoFile( idDemoFile *f );
 	void WriteToDemoFile( idDemoFile *f );
-
+	
 };
 
 class idRegisterList {
@@ -71,7 +71,7 @@ public:
 	//
 	void RemoveReg( const char *name );
 	//
-
+	
 	void AddReg( const char *name, int type, idParser *src, idWindow *win );
 	void AddReg( const char *name, int type, idVec4 data, idWindow *win );
 	idRegister *FindReg( const char *name );
@@ -81,7 +81,7 @@ public:
 	void Reset();
 	void ReadFromDemoFile( idDemoFile *f );
 	void WriteToDemoFile( idDemoFile *f );
-
+	
 };
 
 #endif

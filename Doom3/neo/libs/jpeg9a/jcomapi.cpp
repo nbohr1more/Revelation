@@ -26,35 +26,29 @@
  */
 
 GLOBAL( void )
-jpeg_abort( j_common_ptr cinfo )
-{
+jpeg_abort( j_common_ptr cinfo ) {
 	int pool;
 	
 	/* Do nothing if called on a not-initialized or destroyed JPEG object. */
-	if( cinfo->mem == NULL )
-	{
+	if( cinfo->mem == NULL ) {
 		return;
 	}
 	
 	/* Releasing pools in reverse order might help avoid fragmentation
 	 * with some (brain-damaged) malloc libraries.
 	 */
-	for( pool = JPOOL_NUMPOOLS - 1; pool > JPOOL_PERMANENT; pool-- )
-	{
+	for( pool = JPOOL_NUMPOOLS - 1; pool > JPOOL_PERMANENT; pool-- ) {
 		( *cinfo->mem->free_pool )( cinfo, pool );
 	}
 	
 	/* Reset overall state for possible reuse of object */
-	if( cinfo->is_decompressor )
-	{
+	if( cinfo->is_decompressor ) {
 		cinfo->global_state = DSTATE_START;
 		/* Try to keep application from accessing now-deleted marker list.
 		 * A bit kludgy to do it here, but this is the most central place.
 		 */
 		( ( j_decompress_ptr ) cinfo )->marker_list = NULL;
-	}
-	else
-	{
+	} else {
 		cinfo->global_state = CSTATE_START;
 	}
 }
@@ -72,12 +66,10 @@ jpeg_abort( j_common_ptr cinfo )
  */
 
 GLOBAL( void )
-jpeg_destroy( j_common_ptr cinfo )
-{
+jpeg_destroy( j_common_ptr cinfo ) {
 	/* We need only tell the memory manager to release everything. */
 	/* NB: mem pointer is NULL if memory mgr failed to initialize. */
-	if( cinfo->mem != NULL )
-	{
+	if( cinfo->mem != NULL ) {
 		( *cinfo->mem->self_destruct )( cinfo );
 	}
 	cinfo->mem = NULL;		/* be safe if jpeg_destroy is called twice */
@@ -91,8 +83,7 @@ jpeg_destroy( j_common_ptr cinfo )
  */
 
 GLOBAL( JQUANT_TBL * )
-jpeg_alloc_quant_table( j_common_ptr cinfo )
-{
+jpeg_alloc_quant_table( j_common_ptr cinfo ) {
 	JQUANT_TBL *tbl;
 	
 	tbl = ( JQUANT_TBL * )
@@ -103,8 +94,7 @@ jpeg_alloc_quant_table( j_common_ptr cinfo )
 
 
 GLOBAL( JHUFF_TBL * )
-jpeg_alloc_huff_table( j_common_ptr cinfo )
-{
+jpeg_alloc_huff_table( j_common_ptr cinfo ) {
 	JHUFF_TBL *tbl;
 	
 	tbl = ( JHUFF_TBL * )

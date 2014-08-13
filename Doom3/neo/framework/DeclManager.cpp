@@ -83,7 +83,7 @@ class idDeclFile;
 class idDeclLocal : public idDeclBase {
 	friend class idDeclFile;
 	friend class idDeclManagerLocal;
-
+	
 public:
 	idDeclLocal();
 	virtual 					~idDeclLocal() {};
@@ -106,7 +106,7 @@ public:
 	virtual bool				SourceFileChanged( void ) const;
 	virtual void				MakeDefault( void );
 	virtual bool				EverReferenced( void ) const;
-
+	
 protected:
 	virtual bool				SetDefaultText( void );
 	virtual const char 		*DefaultDefinition( void ) const;
@@ -114,24 +114,24 @@ protected:
 	virtual void				FreeData( void );
 	virtual void				List( void ) const;
 	virtual void				Print( void ) const;
-
+	
 protected:
 	void						AllocateSelf( void );
-
+	
 	// Parses the decl definition.
 	// After calling parse, a decl will be guaranteed usable.
 	void						ParseLocal( void );
-
+	
 	// Does a MakeDefualt, but flags the decl so that it
 	// will Parse() the next time the decl is found.
 	void						Purge( void );
-
+	
 	// Set textSource possible with compression.
 	void						SetTextLocal( const char *text, const int length );
-
+	
 private:
 	idDecl 					*self;
-
+	
 	idStr						name;					// name of the decl
 	char 						*textSource;				// decl text definition
 	int							textLength;				// length of textSource
@@ -144,7 +144,7 @@ private:
 	declType_t					type;					// decl type
 	declState_t					declState;				// decl state
 	int							index;					// index in the per-type list
-
+	
 	bool						parsedOutsideLevelLoad;	// these decls will never be purged
 	bool						everReferenced;			// set to true if the decl was ever used
 	bool						referencedThisLevel;	// set to true when the decl is used for the current level
@@ -157,25 +157,25 @@ class idDeclFile {
 public:
 	idDeclFile();
 	idDeclFile( const char *fileName, declType_t defaultType );
-
+	
 	void						Reload( bool force );
 	int							LoadAndParse();
-
+	
 public:
 	idStr						fileName;
 	declType_t					defaultType;
-
+	
 	ID_TIME_T						timestamp;
 	int							checksum;
 	int							fileSize;
 	int							numLines;
-
+	
 	idDeclLocal 				*decls;
 };
 
 class idDeclManagerLocal : public idDeclManager {
 	friend class idDeclLocal;
-
+	
 public:
 	virtual void				Init( void );
 	virtual void				Shutdown( void );
@@ -191,44 +191,44 @@ public:
 	virtual declType_t			GetDeclTypeFromName( const char *typeName ) const;
 	virtual const idDecl 		*FindType( declType_t type, const char *name, bool makeDefault = true );
 	virtual const idDecl 		*DeclByIndex( declType_t type, int index, bool forceParse = true );
-
+	
 	virtual const idDecl		*FindDeclWithoutParsing( declType_t type, const char *name, bool makeDefault = true );
 	virtual void				ReloadFile( const char *filename, bool force );
-
+	
 	virtual void				ListType( const idCmdArgs &args, declType_t type );
 	virtual void				PrintType( const idCmdArgs &args, declType_t type );
-
+	
 	virtual idDecl 			*CreateNewDecl( declType_t type, const char *name, const char *fileName );
-
+	
 	//BSM Added for the material editors rename capabilities
 	virtual bool				RenameDecl( declType_t type, const char *oldName, const char *newName );
-
+	
 	virtual void				MediaPrint( const char *fmt, ... ) id_attribute( ( format( printf, 2, 3 ) ) );
 	virtual void				WritePrecacheCommands( idFile *f );
-
+	
 	virtual const idMaterial 		*FindMaterial( const char *name, bool makeDefault = true );
 	virtual const idDeclSkin 		*FindSkin( const char *name, bool makeDefault = true );
 	virtual const idSoundShader 	*FindSound( const char *name, bool makeDefault = true );
-
+	
 	virtual const idMaterial 		*MaterialByIndex( int index, bool forceParse = true );
 	virtual const idDeclSkin 		*SkinByIndex( int index, bool forceParse = true );
 	virtual const idSoundShader 	*SoundByIndex( int index, bool forceParse = true );
-
+	
 public:
 	static void					MakeNameCanonical( const char *name, char *result, int maxLength );
 	idDeclLocal 				*FindTypeWithoutParsing( declType_t type, const char *name, bool makeDefault = true );
-
+	
 	idDeclType 				*GetDeclType( int type ) const {
 		return declTypes[type];
 	}
 	const idDeclFile 			*GetImplicitDeclFile( void ) const {
 		return &implicitDecls;
 	}
-
+	
 private:
 	idList<idDeclType *>		declTypes;
 	idList<idDeclFolder *>		declFolders;
-
+	
 	idList<idDeclFile *>		loadedFiles;
 	idHashIndex					hashTables[DECL_MAX_TYPES];
 	idList<idDeclLocal *>		linearLists[DECL_MAX_TYPES];
@@ -238,9 +238,9 @@ private:
 	int							checksum;		// checksum of all loaded decl text
 	int							indent;			// for MediaPrint
 	bool						insideLevelLoad;
-
+	
 	static idCVar				decl_show;
-
+	
 private:
 	static void					ListDecls_f( const idCmdArgs &args );
 	static void					ReloadDecls_f( const idCmdArgs &args );
@@ -292,7 +292,7 @@ static int huffmanFrequencies[] = {
 	0x00010f13, 0x0002e723, 0x00003518, 0x00005738, 0x0002cc26, 0x0002a9b7, 0x0002db81, 0x0003b5fa,
 	0x000185d2, 0x00001299, 0x00030773, 0x0003920d, 0x000411cd, 0x00018751, 0x00005fbd, 0x000099b0,
 	0x00009242, 0x00007cf2, 0x00002809, 0x00005a1d, 0x00000001, 0x00005a1d, 0x00000001, 0x00000001,
-
+	
 	0x00000001, 0x00000001, 0x00000001, 0x00000001, 0x00000001, 0x00000001, 0x00000001, 0x00000001,
 	0x00000001, 0x00000001, 0x00000001, 0x00000001, 0x00000001, 0x00000001, 0x00000001, 0x00000001,
 	0x00000001, 0x00000001, 0x00000001, 0x00000001, 0x00000001, 0x00000001, 0x00000001, 0x00000001,

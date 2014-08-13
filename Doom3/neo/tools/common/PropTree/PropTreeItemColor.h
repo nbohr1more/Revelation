@@ -32,32 +32,32 @@ class PROPTREE_API CPropTreeItemColor : public CWnd, public CPropTreeItem {
 public:
 	CPropTreeItemColor();
 	virtual ~CPropTreeItemColor();
-
+	
 	// Attributes
 public:
 	// The attribute area needs drawing
 	virtual void DrawAttribute( CDC *pDC, const RECT &rc );
-
+	
 	// Retrieve the item's attribute value
 	virtual LPARAM GetItemValue();
-
+	
 	// Set the item's attribute value
 	virtual void SetItemValue( LPARAM lParam );
-
+	
 	// Called when attribute area has changed size
 	virtual void OnMove();
-
+	
 	// Called when the item needs to refresh its data
 	virtual void OnRefresh();
-
+	
 	// Called when the item needs to commit its changes
 	virtual void OnCommit();
-
+	
 	// Called to activate the item
 	virtual void OnActivate( int activateType, CPoint point );
-
+	
 	static void SetDefaultColorsList( COLORREF *pColors );
-
+	
 protected:
 	COLORREF			m_cColor;
 	COLORREF			m_cPrevColor;
@@ -65,14 +65,14 @@ protected:
 	LONG				m_nSpot;
 	BOOL				m_bButton;
 	BOOL				m_bInDialog;
-
+	
 	static COLORREF	*s_pColors;
-
+	
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CPropTreeItemColor)
 	//}}AFX_VIRTUAL
-
+	
 	// Implementation
 public:
 

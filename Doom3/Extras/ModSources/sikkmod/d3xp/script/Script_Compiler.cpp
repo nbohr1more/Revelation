@@ -47,22 +47,22 @@ const char *idCompiler::punctuation[] = {
 
 const opcode_t idCompiler::opcodes[] = {
 	{ "<RETURN>", "RETURN", -1, false, &def_void, &def_void, &def_void },
-
+	
 	{ "++", "UINC_F", 1, true, &def_float, &def_void, &def_void },
 	{ "++", "UINCP_F", 1, true, &def_object, &def_field, &def_float },
 	{ "--", "UDEC_F", 1, true, &def_float, &def_void, &def_void },
 	{ "--", "UDECP_F", 1, true, &def_object, &def_field, &def_float },
-
+	
 	{ "~", "COMP_F", -1, false, &def_float, &def_void, &def_float },
-
+	
 	{ "*", "MUL_F", 3, false, &def_float, &def_float, &def_float },
 	{ "*", "MUL_V", 3, false, &def_vector, &def_vector, &def_float },
 	{ "*", "MUL_FV", 3, false, &def_float, &def_vector, &def_vector },
 	{ "*", "MUL_VF", 3, false, &def_vector, &def_float, &def_vector },
-
+	
 	{ "/", "DIV", 3, false, &def_float, &def_float, &def_float },
 	{ "%", "MOD_F",	3, false, &def_float, &def_float, &def_float },
-
+	
 	{ "+", "ADD_F", 4, false, &def_float, &def_float, &def_float },
 	{ "+", "ADD_V", 4, false, &def_vector, &def_vector, &def_vector },
 	{ "+", "ADD_S", 4, false, &def_string, &def_string, &def_string },
@@ -70,10 +70,10 @@ const opcode_t idCompiler::opcodes[] = {
 	{ "+", "ADD_SF", 4, false, &def_string, &def_float, &def_string },
 	{ "+", "ADD_VS", 4, false, &def_vector, &def_string, &def_string },
 	{ "+", "ADD_SV", 4, false, &def_string, &def_vector, &def_string },
-
+	
 	{ "-", "SUB_F", 4, false, &def_float, &def_float, &def_float },
 	{ "-", "SUB_V", 4, false, &def_vector, &def_vector, &def_vector },
-
+	
 	{ "==", "EQ_F", 5, false, &def_float, &def_float, &def_float },
 	{ "==", "EQ_V", 5, false, &def_vector, &def_vector, &def_float },
 	{ "==", "EQ_S", 5, false, &def_string, &def_string, &def_float },
@@ -81,7 +81,7 @@ const opcode_t idCompiler::opcodes[] = {
 	{ "==", "EQ_EO", 5, false, &def_entity, &def_object, &def_float },
 	{ "==", "EQ_OE", 5, false, &def_object, &def_entity, &def_float },
 	{ "==", "EQ_OO", 5, false, &def_object, &def_object, &def_float },
-
+	
 	{ "!=", "NE_F", 5, false, &def_float, &def_float, &def_float },
 	{ "!=", "NE_V", 5, false, &def_vector, &def_vector, &def_float },
 	{ "!=", "NE_S", 5, false, &def_string, &def_string, &def_float },
@@ -89,25 +89,25 @@ const opcode_t idCompiler::opcodes[] = {
 	{ "!=", "NE_EO", 5, false, &def_entity, &def_object, &def_float },
 	{ "!=", "NE_OE", 5, false, &def_object, &def_entity, &def_float },
 	{ "!=", "NE_OO", 5, false, &def_object, &def_object, &def_float },
-
+	
 	{ "<=", "LE", 5, false, &def_float, &def_float, &def_float },
 	{ ">=", "GE", 5, false, &def_float, &def_float, &def_float },
 	{ "<", "LT", 5, false, &def_float, &def_float, &def_float },
 	{ ">", "GT", 5, false, &def_float, &def_float, &def_float },
-
+	
 	{ ".", "INDIRECT_F", 1, false, &def_object, &def_field, &def_float },
 	{ ".", "INDIRECT_V", 1, false, &def_object, &def_field, &def_vector },
 	{ ".", "INDIRECT_S", 1, false, &def_object, &def_field, &def_string },
 	{ ".", "INDIRECT_E", 1, false, &def_object, &def_field, &def_entity },
 	{ ".", "INDIRECT_BOOL", 1, false, &def_object, &def_field, &def_boolean },
 	{ ".", "INDIRECT_OBJ", 1, false, &def_object, &def_field, &def_object },
-
+	
 	{ ".", "ADDRESS", 1, false, &def_entity, &def_field, &def_pointer },
-
+	
 	{ ".", "EVENTCALL", 2, false, &def_entity, &def_function, &def_void },
 	{ ".", "OBJECTCALL", 2, false, &def_object, &def_function, &def_void },
 	{ ".", "SYSCALL", 2, false, &def_void, &def_function, &def_void },
-
+	
 	{ "=", "STORE_F", 6, true, &def_float, &def_float, &def_float },
 	{ "=", "STORE_V", 6, true, &def_vector, &def_vector, &def_vector },
 	{ "=", "STORE_S", 6, true, &def_string, &def_string, &def_string },
@@ -116,13 +116,13 @@ const opcode_t idCompiler::opcodes[] = {
 	{ "=", "STORE_OBJENT", 6, true, &def_object, &def_entity, &def_object },
 	{ "=", "STORE_OBJ", 6, true, &def_object, &def_object, &def_object },
 	{ "=", "STORE_OBJENT", 6, true, &def_entity, &def_object, &def_object },
-
+	
 	{ "=", "STORE_FTOS", 6, true, &def_string, &def_float, &def_string },
 	{ "=", "STORE_BTOS", 6, true, &def_string, &def_boolean, &def_string },
 	{ "=", "STORE_VTOS", 6, true, &def_string, &def_vector, &def_string },
 	{ "=", "STORE_FTOBOOL", 6, true, &def_boolean, &def_float, &def_boolean },
 	{ "=", "STORE_BOOLTOF", 6, true, &def_float, &def_boolean, &def_float },
-
+	
 	{ "=", "STOREP_F", 6, true, &def_pointer, &def_float, &def_float },
 	{ "=", "STOREP_V", 6, true, &def_pointer, &def_vector, &def_vector },
 	{ "=", "STOREP_S", 6, true, &def_pointer, &def_string, &def_string },
@@ -131,13 +131,13 @@ const opcode_t idCompiler::opcodes[] = {
 	{ "=", "STOREP_BOOL", 6, true, &def_pointer, &def_boolean, &def_boolean },
 	{ "=", "STOREP_OBJ", 6, true, &def_pointer, &def_object, &def_object },
 	{ "=", "STOREP_OBJENT", 6, true, &def_pointer, &def_object, &def_object },
-
+	
 	{ "<=>", "STOREP_FTOS", 6, true, &def_pointer, &def_float, &def_string },
 	{ "<=>", "STOREP_BTOS", 6, true, &def_pointer, &def_boolean, &def_string },
 	{ "<=>", "STOREP_VTOS", 6, true, &def_pointer, &def_vector, &def_string },
 	{ "<=>", "STOREP_FTOBOOL", 6, true, &def_pointer, &def_float, &def_boolean },
 	{ "<=>", "STOREP_BOOLTOF", 6, true, &def_pointer, &def_boolean, &def_float },
-
+	
 	{ "*=", "UMUL_F", 6, true, &def_float, &def_float, &def_void },
 	{ "*=", "UMUL_V", 6, true, &def_vector, &def_float, &def_void },
 	{ "/=", "UDIV_F", 6, true, &def_float, &def_float, &def_void },
@@ -149,26 +149,26 @@ const opcode_t idCompiler::opcodes[] = {
 	{ "-=", "USUB_V", 6, true, &def_vector, &def_vector, &def_void },
 	{ "&=", "UAND_F", 6, true, &def_float, &def_float, &def_void },
 	{ "|=", "UOR_F", 6, true, &def_float, &def_float, &def_void },
-
+	
 	{ "!", "NOT_BOOL", -1, false, &def_boolean, &def_void, &def_float },
 	{ "!", "NOT_F", -1, false, &def_float, &def_void, &def_float },
 	{ "!", "NOT_V", -1, false, &def_vector, &def_void, &def_float },
 	{ "!", "NOT_S", -1, false, &def_vector, &def_void, &def_float },
 	{ "!", "NOT_ENT", -1, false, &def_entity, &def_void, &def_float },
-
+	
 	{ "<NEG_F>", "NEG_F", -1, false, &def_float, &def_void, &def_float },
 	{ "<NEG_V>", "NEG_V", -1, false, &def_vector, &def_void, &def_vector },
-
+	
 	{ "int", "INT_F", -1, false, &def_float, &def_void, &def_float },
-
+	
 	{ "<IF>", "IF", -1, false, &def_float, &def_jumpoffset, &def_void },
 	{ "<IFNOT>", "IFNOT", -1, false, &def_float, &def_jumpoffset, &def_void },
-
+	
 	// calls returns REG_RETURN
 	{ "<CALL>", "CALL", -1, false, &def_function, &def_argsize, &def_void },
 	{ "<THREAD>", "THREAD", -1, false, &def_function, &def_argsize, &def_void },
 	{ "<THREAD>", "OBJTHREAD", -1, false, &def_function, &def_argsize, &def_void },
-
+	
 	{ "<PUSH>", "PUSH_F", -1, false, &def_float, &def_float, &def_void },
 	{ "<PUSH>", "PUSH_V", -1, false, &def_vector, &def_vector, &def_void },
 	{ "<PUSH>", "PUSH_S", -1, false, &def_string, &def_string, &def_void },
@@ -180,9 +180,9 @@ const opcode_t idCompiler::opcodes[] = {
 	{ "<PUSH>", "PUSH_FTOB", -1, false, &def_boolean, &def_float, &def_void },
 	{ "<PUSH>", "PUSH_VTOS", -1, false, &def_string, &def_vector, &def_void },
 	{ "<PUSH>", "PUSH_BTOS", -1, false, &def_string, &def_boolean, &def_void },
-
+	
 	{ "<GOTO>", "GOTO", -1, false, &def_jumpoffset, &def_void, &def_void },
-
+	
 	{ "&&", "AND", 7, false, &def_float, &def_float, &def_float },
 	{ "&&", "AND_BOOLF", 7, false, &def_boolean, &def_float, &def_float },
 	{ "&&", "AND_FBOOL", 7, false, &def_float, &def_boolean, &def_float },
@@ -191,13 +191,13 @@ const opcode_t idCompiler::opcodes[] = {
 	{ "||", "OR_BOOLF", 7, false, &def_boolean, &def_float, &def_float },
 	{ "||", "OR_FBOOL", 7, false, &def_float, &def_boolean, &def_float },
 	{ "||", "OR_BOOLBOOL", 7, false, &def_boolean, &def_boolean, &def_float },
-
+	
 	{ "&", "BITAND", 3, false, &def_float, &def_float, &def_float },
 	{ "|", "BITOR", 3, false, &def_float, &def_float, &def_float },
-
+	
 	{ "<BREAK>", "BREAK", -1, false, &def_float, &def_void, &def_void },
 	{ "<CONTINUE>", "CONTINUE", -1, false, &def_float, &def_void, &def_void },
-
+	
 	{ NULL }
 };
 

@@ -260,11 +260,11 @@ public:
 	virtual void			ClearDecoder( void );
 	virtual idSoundSample 	*GetSample( void ) const;
 	virtual int				GetLastDecodeTime( void ) const;
-
+	
 	void					Clear( void );
 	int						DecodePCM( idSoundSample *sample, int sampleOffset44k, int sampleCount44k, float *dest );
 	int						DecodeOGG( idSoundSample *sample, int sampleOffset44k, int sampleCount44k, float *dest );
-
+	
 private:
 	bool					failed;				// set if decoding failed
 	int						lastFormat;			// last format being decoded
@@ -272,7 +272,7 @@ private:
 	int						lastSampleOffset;	// last offset into the decoded sample
 	int						lastDecodeTime;		// last time decoding sound
 	idFile_Memory			file;				// encoded file in memory
-
+	
 	OggVorbis_File			ogg;				// OggVorbis file
 };
 

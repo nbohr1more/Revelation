@@ -41,7 +41,7 @@ class CMapInfo : public CDialog {
 	// Construction
 public:
 	CMapInfo( CWnd *pParent = NULL ); // standard constructor
-
+	
 	// Dialog Data
 	//{{AFX_DATA(CMapInfo)
 	enum { IDD = IDD_DLG_MAPINFO };
@@ -50,15 +50,15 @@ public:
 	int		m_nTotalBrushes;
 	int		m_nTotalEntities;
 	//}}AFX_DATA
-
-
+	
+	
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CMapInfo)
 protected:
 	virtual void DoDataExchange( CDataExchange *pDX );  // DDX/DDV support
 	//}}AFX_VIRTUAL
-
+	
 	// Implementation
 protected:
 

@@ -37,7 +37,7 @@ If you have questions concerning this license or the applicable additional terms
 class CLightInfo {
 public:
 	CLightInfo();
-
+	
 	bool		pointLight;
 	float		fallOff;
 	CString		strTexture;
@@ -52,19 +52,19 @@ public:
 	idVec3		color;
 	bool		fog;
 	idVec4		fogDensity;
-
+	
 	bool		strobe;
 	float		strobeSpeed;
 	bool		rotate;
 	float		rotateSpeed;
-
+	
 	idVec3		lightRadius;
 	bool		castShadows;
 	bool		castSpecular;
 	bool		castDiffuse;
 	bool		hasCenter;
 	bool		isParallel;
-
+	
 	void		Defaults();
 	void		DefaultProjected();
 	void		DefaultPoint();
@@ -81,7 +81,7 @@ class CLightDlg : public CDialog {
 public:
 	CLightDlg( CWnd *pParent = NULL ); // standard constructor
 	~CLightDlg();
-
+	
 	void			UpdateDialogFromLightInfo( void );
 	void			UpdateDialog( bool updateChecks );
 	void			UpdateLightInfoFromDialog( void );
@@ -91,7 +91,7 @@ public:
 	void			LoadLightTextures();
 	void			ColorButtons();
 	void			SaveLightInfo( const idDict *differences );
-
+	
 	// Dialog Data
 	//{{AFX_DATA(CLightDlg)
 	enum { IDD = IDD_DIALOG_LIGHT };
@@ -133,8 +133,8 @@ public:
 	float	m_centerZ;
 	BOOL    m_bIsParallel;
 	//}}AFX_DATA
-
-
+	
+	
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CLightDlg)
@@ -143,7 +143,7 @@ public:
 protected:
 	virtual void DoDataExchange( CDataExchange *pDX );  // DDX/DDV support
 	//}}AFX_VIRTUAL
-
+	
 	// Implementation
 protected:
 
@@ -172,7 +172,7 @@ protected:
 	afx_msg void OnApplyDifferences();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-
+	
 private:
 	CBitmap					colorBitmap;
 	CBitmap					fogBitmap;

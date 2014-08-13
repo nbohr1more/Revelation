@@ -269,7 +269,7 @@ viewEntity_t *R_SetEntityDefViewEntity( idRenderEntityLocal *def ) {
 R_TestPointInViewLight
 ====================
 */
-static const float INSIDE_LIGHT_FRUSTUM_SLOP = 32;
+static const float INSIDE_LIGHT_FRUSTUM_SLOP = 32.0f;
 // this needs to be greater than the dist from origin to corner of near clip plane
 static bool R_TestPointInViewLight( const idVec3 &org, const idRenderLightLocal *light ) {
 	int		i;
@@ -605,8 +605,8 @@ idScreenRect R_CalcLightScissorRectangle( viewLight_t *vLight ) {
 	idPlane			eye, clip;
 	idVec3			ndc;
 	if( vLight->lightDef->parms.pointLight ) {
-		idBounds bounds;
-		idRenderLightLocal *lightDef = vLight->lightDef;
+		idBounds			bounds;
+		idRenderLightLocal	*lightDef = vLight->lightDef;
 		tr.viewDef->viewFrustum.ProjectionBounds( idBox( lightDef->parms.origin, lightDef->parms.lightRadius, lightDef->parms.axis ), bounds );
 		return R_ScreenRectFromViewFrustumBounds( bounds );
 	}
@@ -811,16 +811,16 @@ void R_AddLightSurfaces( void ) {
 R_SortViewEntities
 ==================
 */
-viewEntity_t* R_SortViewEntities( viewEntity_t* vEntities ) {
+viewEntity_t *R_SortViewEntities( viewEntity_t *vEntities ) {
 	// We want to avoid having a single AddModel for something complex be
 	// the last thing processed and hurt the parallel occupancy, so
 	// sort dynamic models first, _area models second, then everything else.
-	viewEntity_t* dynamics = NULL;
-	viewEntity_t* areas = NULL;
-	viewEntity_t* others = NULL;
-	for( viewEntity_t* vEntity = vEntities; vEntity != NULL; ) {
-		viewEntity_t* next = vEntity->next;
-		const idRenderModel* model = vEntity->entityDef->parms.hModel;
+	viewEntity_t	*dynamics = NULL;
+	viewEntity_t	*areas = NULL;
+	viewEntity_t	*others = NULL;
+	for( viewEntity_t *vEntity = vEntities; vEntity != NULL; ) {
+		viewEntity_t *next = vEntity->next;
+		const idRenderModel *model = vEntity->entityDef->parms.hModel;
 		if( model->IsDynamicModel() != DM_STATIC ) {
 			vEntity->next = dynamics;
 			dynamics = vEntity;
@@ -834,15 +834,15 @@ viewEntity_t* R_SortViewEntities( viewEntity_t* vEntities ) {
 		vEntity = next;
 	}
 	// concatenate the lists
-	viewEntity_t* all = others;
-	for( viewEntity_t* vEntity = areas; vEntity != NULL; ) {
-		viewEntity_t* next = vEntity->next;
+	viewEntity_t *all = others;
+	for( viewEntity_t *vEntity = areas; vEntity != NULL; ) {
+		viewEntity_t *next = vEntity->next;
 		vEntity->next = all;
 		all = vEntity;
 		vEntity = next;
 	}
-	for( viewEntity_t* vEntity = dynamics; vEntity != NULL; ) {
-		viewEntity_t* next = vEntity->next;
+	for( viewEntity_t *vEntity = dynamics; vEntity != NULL; ) {
+		viewEntity_t *next = vEntity->next;
 		vEntity->next = all;
 		all = vEntity;
 		vEntity = next;
@@ -873,11 +873,11 @@ bool R_IssueEntityDefCallback( idRenderEntityLocal *def ) {
 	}
 	if( r_checkBounds.GetBool() ) {
 		if(	oldBounds[0][0] > def->referenceBounds[0][0] + CHECK_BOUNDS_EPSILON ||
-			oldBounds[0][1] > def->referenceBounds[0][1] + CHECK_BOUNDS_EPSILON ||
-			oldBounds[0][2] > def->referenceBounds[0][2] + CHECK_BOUNDS_EPSILON ||
-			oldBounds[1][0] < def->referenceBounds[1][0] - CHECK_BOUNDS_EPSILON ||
-			oldBounds[1][1] < def->referenceBounds[1][1] - CHECK_BOUNDS_EPSILON ||
-			oldBounds[1][2] < def->referenceBounds[1][2] - CHECK_BOUNDS_EPSILON ) {
+				oldBounds[0][1] > def->referenceBounds[0][1] + CHECK_BOUNDS_EPSILON ||
+				oldBounds[0][2] > def->referenceBounds[0][2] + CHECK_BOUNDS_EPSILON ||
+				oldBounds[1][0] < def->referenceBounds[1][0] - CHECK_BOUNDS_EPSILON ||
+				oldBounds[1][1] < def->referenceBounds[1][1] - CHECK_BOUNDS_EPSILON ||
+				oldBounds[1][2] < def->referenceBounds[1][2] - CHECK_BOUNDS_EPSILON ) {
 			common->Printf( "entity %i callback extended reference bounds\n", def->index );
 		}
 	}
@@ -929,11 +929,11 @@ idRenderModel *R_EntityDefDynamicModel( idRenderEntityLocal *def ) {
 			if( r_checkBounds.GetBool() ) {
 				idBounds b = def->cachedDynamicModel->Bounds();
 				if(	b[0][0] < def->referenceBounds[0][0] - CHECK_BOUNDS_EPSILON ||
-					b[0][1] < def->referenceBounds[0][1] - CHECK_BOUNDS_EPSILON ||
-					b[0][2] < def->referenceBounds[0][2] - CHECK_BOUNDS_EPSILON ||
-					b[1][0] > def->referenceBounds[1][0] + CHECK_BOUNDS_EPSILON ||
-					b[1][1] > def->referenceBounds[1][1] + CHECK_BOUNDS_EPSILON ||
-					b[1][2] > def->referenceBounds[1][2] + CHECK_BOUNDS_EPSILON ) {
+						b[0][1] < def->referenceBounds[0][1] - CHECK_BOUNDS_EPSILON ||
+						b[0][2] < def->referenceBounds[0][2] - CHECK_BOUNDS_EPSILON ||
+						b[1][0] > def->referenceBounds[1][0] + CHECK_BOUNDS_EPSILON ||
+						b[1][1] > def->referenceBounds[1][1] + CHECK_BOUNDS_EPSILON ||
+						b[1][2] > def->referenceBounds[1][2] + CHECK_BOUNDS_EPSILON ) {
 					common->Printf( "entity %i dynamic model exceeded reference bounds\n", def->index );
 				}
 			}
@@ -944,7 +944,7 @@ idRenderModel *R_EntityDefDynamicModel( idRenderEntityLocal *def ) {
 	// set model depth hack value
 	if( def->dynamicModel && model->DepthHack() != 0.0f && tr.viewDef ) {
 		idPlane eye, clip;
-		idVec3 ndc;
+		idVec3	ndc;
 		R_TransformModelToClip( def->parms.origin, tr.viewDef->worldSpace.modelViewMatrix, tr.viewDef->projectionMatrix, eye, clip );
 		R_TransformClipToDevice( clip, ndc );
 		def->parms.modelDepthHack = model->DepthHack() * ( 1.0f - ndc.z );
@@ -1059,8 +1059,8 @@ void R_AddDrawSurf( const srfTriangles_t *tri, const viewEntity_t *space, const 
 	}
 	if( gui ) {
 		// force guis on the fast time
-		float oldFloatTime;
-		int oldTime;
+		float	oldFloatTime;
+		int		oldTime;
 		oldFloatTime = tr.viewDef->floatTime;
 		oldTime = tr.viewDef->renderView.time;
 		tr.viewDef->floatTime = game->GetTimeGroupTime( 1 ) * 0.001;
@@ -1377,7 +1377,7 @@ void R_RemoveUnecessaryViewLights( void ) {
 		}
 	};
 	sortLight_t *sortLights = ( sortLight_t * )_alloca( sizeof( sortLight_t ) * numViewLights );
-	int numSortLightsFilled = 0;
+	int			numSortLightsFilled = 0;
 	for( viewLight_t *vLight = tr.viewDef->viewLights; vLight != NULL; vLight = vLight->next ) {
 		sortLights[ numSortLightsFilled ].vLight = vLight;
 		sortLights[ numSortLightsFilled ].screenArea = vLight->scissorRect.GetArea();

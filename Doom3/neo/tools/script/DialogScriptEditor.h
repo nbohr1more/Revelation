@@ -39,19 +39,19 @@ If you have questions concerning this license or the applicable additional terms
 class DialogScriptEditor : public CDialog {
 
 	DECLARE_DYNAMIC( DialogScriptEditor )
-
+	
 public:
 	DialogScriptEditor( CWnd *pParent = NULL );   // standard constructor
 	virtual				~DialogScriptEditor();
-
+	
 	void				OpenFile( const char *fileName );
-
+	
 	//{{AFX_VIRTUAL(DialogScriptEditor)
 	virtual BOOL		OnInitDialog();
 	virtual void		DoDataExchange( CDataExchange *pDX );    // DDX/DDV support
 	virtual BOOL		PreTranslateMessage( MSG *pMsg );
 	//}}AFX_VIRTUAL
-
+	
 protected:
 	//{{AFX_MSG(DialogScriptEditor)
 	afx_msg BOOL		OnToolTipNotify( UINT id, NMHDR *pNMHDR, LRESULT *pResult );
@@ -71,9 +71,9 @@ protected:
 	afx_msg void		OnBnClickedOk();
 	afx_msg void		OnBnClickedCancel();
 	//}}AFX_MSG
-
+	
 	DECLARE_MESSAGE_MAP()
-
+	
 private:
 	//{{AFX_DATA(DialogScriptEditor)
 	enum				{ IDD = IDD_DIALOG_SCRIPTEDITOR };
@@ -82,9 +82,9 @@ private:
 	CButton				okButton;
 	CButton				cancelButton;
 	//}}AFX_DATA
-
+	
 	static toolTip_t	toolTips[];
-
+	
 	HACCEL				m_hAccel;
 	CRect				initialRect;
 	CFindReplaceDialog *findDlg;
@@ -95,7 +95,7 @@ private:
 	bool				searchForward;
 	idStr				fileName;
 	int					firstLine;
-
+	
 private:
 	void				InitScriptEvents( void );
 	void				UpdateStatusBar( void );

@@ -78,7 +78,7 @@ typedef struct {
 	byte	size;				//	32, 16, 8, or 4
 	word	xat;				// where is it at on the screen
 	word	yat;				//
-
+	
 	float	cccsnr;				// ccc bitmap snr to actual image
 	float	fccsnr;				// fcc bitmap snr to actual image
 	float	motsnr;				// delta snr to previous image
@@ -86,7 +86,7 @@ typedef struct {
 	float	patsnr;
 	float	dctsnr;
 	float	rsnr;				// what's the current snr
-
+	
 	unsigned int	cola;			// color a for ccc
 	unsigned int	colb;			// color b for ccc
 	unsigned int	colc;			// color b for ccc
@@ -95,10 +95,10 @@ typedef struct {
 	unsigned int	colpatb;
 	unsigned int	colpats;
 	unsigned int	bitmap;				// ccc bitmap
-
+	
 	word	domain;				// where to copy from for fcc
 	word	patten[5];			// which pattern
-
+	
 	int		status;
 	bool		mark;
 	float			snr[DEAD + 1];				// snrssss

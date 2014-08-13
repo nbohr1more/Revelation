@@ -68,8 +68,7 @@ Sorry, this code only copes with 8x8 DCTs. /* deliberate syntax err */
 GLOBAL( void )
 jpeg_idct_float( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 				 JCOEFPTR coef_block,
-				 JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+				 JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	FAST_FLOAT tmp0, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
 	FAST_FLOAT tmp10, tmp11, tmp12, tmp13;
 	FAST_FLOAT z5, z10, z11, z12, z13;
@@ -86,8 +85,7 @@ jpeg_idct_float( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( FLOAT_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = DCTSIZE; ctr > 0; ctr-- )
-	{
+	for( ctr = DCTSIZE; ctr > 0; ctr-- ) {
 		/* Due to quantization, we will usually find that many of the input
 		 * coefficients are zero, especially the AC terms.  We can exploit this
 		 * by short-circuiting the IDCT calculation for any column in which all
@@ -100,8 +98,7 @@ jpeg_idct_float( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 		if( inptr[DCTSIZE * 1] == 0 && inptr[DCTSIZE * 2] == 0 &&
 				inptr[DCTSIZE * 3] == 0 && inptr[DCTSIZE * 4] == 0 &&
 				inptr[DCTSIZE * 5] == 0 && inptr[DCTSIZE * 6] == 0 &&
-				inptr[DCTSIZE * 7] == 0 )
-		{
+				inptr[DCTSIZE * 7] == 0 ) {
 			/* AC terms all zero */
 			FAST_FLOAT dcval = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
 			
@@ -178,8 +175,7 @@ jpeg_idct_float( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	/* Pass 2: process rows from work array, store into output array. */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < DCTSIZE; ctr++ )
-	{
+	for( ctr = 0; ctr < DCTSIZE; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		/* Rows of zeroes can be exploited in the same way as we did with columns.
 		 * However, the column calculation has created many nonzero AC terms, so

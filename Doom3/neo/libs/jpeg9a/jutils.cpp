@@ -24,8 +24,7 @@
 
 #if 0				/* This table is not actually needed in v6a */
 
-const int jpeg_zigzag_order[DCTSIZE2] =
-{
+const int jpeg_zigzag_order[DCTSIZE2] = {
 	0,  1,  5,  6, 14, 15, 27, 28,
 	2,  4,  7, 13, 16, 26, 29, 42,
 	3,  8, 12, 17, 25, 30, 41, 43,
@@ -52,8 +51,7 @@ const int jpeg_zigzag_order[DCTSIZE2] =
  * fake entries.
  */
 
-const int jpeg_natural_order[DCTSIZE2 + 16] =
-{
+const int jpeg_natural_order[DCTSIZE2 + 16] = {
 	0,  1,  8, 16,  9,  2,  3, 10,
 	17, 24, 32, 25, 18, 11,  4,  5,
 	12, 19, 26, 33, 40, 48, 41, 34,
@@ -66,8 +64,7 @@ const int jpeg_natural_order[DCTSIZE2 + 16] =
 	63, 63, 63, 63, 63, 63, 63, 63
 };
 
-const int jpeg_natural_order7[7 * 7 + 16] =
-{
+const int jpeg_natural_order7[7 * 7 + 16] = {
 	0,  1,  8, 16,  9,  2,  3, 10,
 	17, 24, 32, 25, 18, 11,  4,  5,
 	12, 19, 26, 33, 40, 48, 41, 34,
@@ -79,8 +76,7 @@ const int jpeg_natural_order7[7 * 7 + 16] =
 	63, 63, 63, 63, 63, 63, 63, 63
 };
 
-const int jpeg_natural_order6[6 * 6 + 16] =
-{
+const int jpeg_natural_order6[6 * 6 + 16] = {
 	0,  1,  8, 16,  9,  2,  3, 10,
 	17, 24, 32, 25, 18, 11,  4,  5,
 	12, 19, 26, 33, 40, 41, 34, 27,
@@ -90,8 +86,7 @@ const int jpeg_natural_order6[6 * 6 + 16] =
 	63, 63, 63, 63, 63, 63, 63, 63
 };
 
-const int jpeg_natural_order5[5 * 5 + 16] =
-{
+const int jpeg_natural_order5[5 * 5 + 16] = {
 	0,  1,  8, 16,  9,  2,  3, 10,
 	17, 24, 32, 25, 18, 11,  4, 12,
 	19, 26, 33, 34, 27, 20, 28, 35,
@@ -100,24 +95,21 @@ const int jpeg_natural_order5[5 * 5 + 16] =
 	63, 63, 63, 63, 63, 63, 63, 63
 };
 
-const int jpeg_natural_order4[4 * 4 + 16] =
-{
+const int jpeg_natural_order4[4 * 4 + 16] = {
 	0,  1,  8, 16,  9,  2,  3, 10,
 	17, 24, 25, 18, 11, 19, 26, 27,
 	63, 63, 63, 63, 63, 63, 63, 63, /* extra entries for safety in decoder */
 	63, 63, 63, 63, 63, 63, 63, 63
 };
 
-const int jpeg_natural_order3[3 * 3 + 16] =
-{
+const int jpeg_natural_order3[3 * 3 + 16] = {
 	0,  1,  8, 16,  9,  2, 10, 17,
 	18,
 	63, 63, 63, 63, 63, 63, 63, 63, /* extra entries for safety in decoder */
 	63, 63, 63, 63, 63, 63, 63, 63
 };
 
-const int jpeg_natural_order2[2 * 2 + 16] =
-{
+const int jpeg_natural_order2[2 * 2 + 16] = {
 	0,  1,  8,  9,
 	63, 63, 63, 63, 63, 63, 63, 63, /* extra entries for safety in decoder */
 	63, 63, 63, 63, 63, 63, 63, 63
@@ -173,8 +165,7 @@ jzero_far( void FAR *target, size_t bytestozero )
 	register char FAR *ptr = ( char FAR * ) target;
 	register size_t count;
 
-	for( count = bytestozero; count > 0; count-- )
-	{
+	for( count = bytestozero; count > 0; count-- ) {
 		*ptr++ = 0;
 	}
 }
@@ -203,15 +194,13 @@ jcopy_sample_rows( JSAMPARRAY input_array, int source_row,
 	input_array += source_row;
 	output_array += dest_row;
 	
-	for( row = num_rows; row > 0; row-- )
-	{
+	for( row = num_rows; row > 0; row-- ) {
 		inptr = *input_array++;
 		outptr = *output_array++;
 #ifdef FMEMCOPY
 		FMEMCOPY( outptr, inptr, count );
 #else
-		for( count = num_cols; count > 0; count-- )
-		{
+		for( count = num_cols; count > 0; count-- ) {
 			*outptr++ = *inptr++;    /* needn't bother with GETJSAMPLE() here */
 		}
 #endif
@@ -232,8 +221,7 @@ jcopy_block_row( JBLOCKROW input_row, JBLOCKROW output_row,
 	
 	inptr = ( JCOEFPTR ) input_row;
 	outptr = ( JCOEFPTR ) output_row;
-	for( count = ( long ) num_blocks * DCTSIZE2; count > 0; count-- )
-	{
+	for( count = ( long ) num_blocks * DCTSIZE2; count > 0; count-- ) {
 		*outptr++ = *inptr++;
 	}
 #endif

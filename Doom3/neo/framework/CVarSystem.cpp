@@ -46,20 +46,20 @@ public:
 	idInternalCVar( const char *newName, const char *newValue, int newFlags );
 	idInternalCVar( const idCVar *cvar );
 	virtual					~idInternalCVar( void );
-
+	
 	const char 			**CopyValueStrings( const char **strings );
 	void					Update( const idCVar *cvar );
 	void					UpdateValue( void );
 	void					UpdateCheat( void );
 	void					Set( const char *newValue, bool force, bool fromServer );
 	void					Reset( void );
-
+	
 private:
 	idStr					nameString;				// name
 	idStr					resetString;			// resetting will change to this value
 	idStr					valueString;			// value
 	idStr					descriptionString;		// description
-
+	
 	virtual void			InternalSetString( const char *newValue );
 	virtual void			InternalServerSetString( const char *newValue );
 	virtual void			InternalSetBool( const bool newValue );
@@ -400,47 +400,47 @@ void idInternalCVar::InternalSetFloat( const float newValue ) {
 class idCVarSystemLocal : public idCVarSystem {
 public:
 	idCVarSystemLocal( void );
-
+	
 	virtual					~idCVarSystemLocal( void ) {}
-
+	
 	virtual void			Init( void );
 	virtual void			Shutdown( void );
 	virtual bool			IsInitialized( void ) const;
-
+	
 	virtual void			Register( idCVar *cvar );
-
+	
 	virtual idCVar 		*Find( const char *name );
-
+	
 	virtual void			SetCVarString( const char *name, const char *value, int flags = 0 );
 	virtual void			SetCVarBool( const char *name, const bool value, int flags = 0 );
 	virtual void			SetCVarInteger( const char *name, const int value, int flags = 0 );
 	virtual void			SetCVarFloat( const char *name, const float value, int flags = 0 );
-
+	
 	virtual const char 	*GetCVarString( const char *name ) const;
 	virtual bool			GetCVarBool( const char *name ) const;
 	virtual int				GetCVarInteger( const char *name ) const;
 	virtual float			GetCVarFloat( const char *name ) const;
-
+	
 	virtual bool			Command( const idCmdArgs &args );
-
+	
 	virtual void			CommandCompletion( void( *callback )( const char *s ) );
 	virtual void			ArgCompletion( const char *cmdString, void( *callback )( const char *s ) );
-
+	
 	virtual void			SetModifiedFlags( int flags );
 	virtual int				GetModifiedFlags( void ) const;
 	virtual void			ClearModifiedFlags( int flags );
-
+	
 	virtual void			ResetFlaggedVariables( int flags );
 	virtual void			RemoveFlaggedAutoCompletion( int flags );
 	virtual void			WriteFlaggedVariables( int flags, const char *setCmd, idFile *f ) const;
-
+	
 	virtual const idDict 	*MoveCVarsToDict( int flags ) const;
 	virtual void			SetCVarsFromDict( const idDict &dict );
-
+	
 	void					RegisterInternal( idCVar *cvar );
 	idInternalCVar 		*FindInternal( const char *name ) const;
 	void					SetInternal( const char *name, const char *value, int flags );
-
+	
 private:
 	bool					initialized;
 	idList<idInternalCVar *>	cvars;
@@ -448,8 +448,8 @@ private:
 	int						modifiedFlags;
 	// use a static dictionary to MoveCVarsToDict can be used from game
 	static idDict			moveCVarsToDict;
-
-
+	
+	
 private:
 	static void				Toggle_f( const idCmdArgs &args );
 	static void				Set_f( const idCmdArgs &args );

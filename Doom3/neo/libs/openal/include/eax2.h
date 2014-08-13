@@ -24,8 +24,7 @@ DEFINE_GUID( DSPROPSETID_EAX20_ListenerProperties,
 			 0x11d2,
 			 0x99, 0xe5, 0x0, 0x0, 0xe8, 0xd8, 0xc7, 0x22 );
 			 
-typedef enum
-{
+typedef enum {
 	DSPROPERTY_EAX20LISTENER_NONE,
 	DSPROPERTY_EAX20LISTENER_ALLPARAMETERS,
 	DSPROPERTY_EAX20LISTENER_ROOM,
@@ -66,8 +65,7 @@ typedef enum
 //       If you want to save and load presets in binary form, you
 //       should define your own structure to insure future compatibility.
 //
-typedef struct _EAX20LISTENERPROPERTIES
-{
+typedef struct _EAX20LISTENERPROPERTIES {
 	long lRoom;                    // room effect level at low frequencies
 	long lRoomHF;                  // room effect high-frequency level re. low frequency level
 	float flRoomRolloffFactor;     // like DS3D flRolloffFactor but for room effect
@@ -85,8 +83,7 @@ typedef struct _EAX20LISTENERPROPERTIES
 } EAX20LISTENERPROPERTIES, *LPEAX20LISTENERPROPERTIES;
 
 // used by DSPROPERTY_EAX20LISTENER_ENVIRONMENT
-enum
-{
+enum {
 	EAX20_ENVIRONMENT_GENERIC,
 	EAX20_ENVIRONMENT_PADDEDCELL,
 	EAX20_ENVIRONMENT_ROOM,
@@ -212,8 +209,7 @@ DEFINE_GUID( DSPROPSETID_EAX20_BufferProperties,
 // For compatibility with future EAX versions:
 #define DSPROPSETID_EAX20_BufferProperties DSPROPSETID_EAX20_BufferProperties
 
-typedef enum
-{
+typedef enum {
 	DSPROPERTY_EAX20BUFFER_NONE,
 	DSPROPERTY_EAX20BUFFER_ALLPARAMETERS,
 	DSPROPERTY_EAX20BUFFER_DIRECT,
@@ -249,8 +245,7 @@ typedef enum
 //       instead of:
 //              myBuffer = { 0, -200, ... , 0x00000003 };
 //
-typedef struct _EAX20BUFFERPROPERTIES
-{
+typedef struct _EAX20BUFFERPROPERTIES {
 	long lDirect;                // direct path level
 	long lDirectHF;              // direct path level at high frequencies
 	long lRoom;                  // room effect level

@@ -36,9 +36,9 @@ public:
 	idFieldWindow( idUserInterfaceLocal *gui );
 	idFieldWindow( idDeviceContext *d, idUserInterfaceLocal *gui );
 	virtual ~idFieldWindow();
-
+	
 	virtual void Draw( int time, float x, float y );
-
+	
 private:
 	virtual bool ParseInternalVar( const char *name, idParser *src );
 	void CommonInit();

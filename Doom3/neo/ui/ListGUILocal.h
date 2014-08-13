@@ -45,7 +45,7 @@ public:
 		m_water = 0;
 		m_stateUpdates = true;
 	}
-
+	
 	// idListGUI interface
 	void				Config( idUserInterface *pGUI, const char *name ) {
 		m_pGUI = pGUI;
@@ -65,14 +65,14 @@ public:
 	bool				IsConfigured( void ) const;
 	void				SetStateChanges( bool enable );
 	void				Shutdown( void );
-
+	
 private:
 	idUserInterface 	*m_pGUI;
 	idStr				m_name;
 	int					m_water;
 	idList<int>			m_ids;
 	bool				m_stateUpdates;
-
+	
 	void				StateChanged();
 };
 

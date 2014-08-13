@@ -53,7 +53,7 @@ struct dma_buffparms {
 	/* Interrupt callback stuff */
 	void ( *audio_callback )( int dev, int parm );
 	int callback_parm;
-
+	
 #ifdef OS_DMA_PARMS
 	OS_DMA_PARMS
 #endif
@@ -74,7 +74,7 @@ struct dma_buffparms {
 #define DMODE_NONE		0
 #define DMODE_OUTPUT		PCM_ENABLE_OUTPUT
 #define DMODE_INPUT		PCM_ENABLE_INPUT
-
+	
 	/*
 	 * Queue parameters.
 	 */
@@ -92,11 +92,11 @@ struct dma_buffparms {
 	int interrupt_count;
 	int fragment_counter;
 	int expand_factor;
-
+	
 	int mapping_flags;
 #define			DMA_MAP_MAPPED		0x00000001
 	char neutral_byte;
-
+	
 #ifdef SPARCAUDIO_EMU
 #define EOFLIST_SIZE 16
 	void *devaudio_sigproc;	/* A pref to which send a SIGPOLL signal */
@@ -109,7 +109,7 @@ struct dma_buffparms {
 	int underrun_flag;
 	int play_error, num_play_errors;
 	int rec_error, num_rec_errors;
-
+	
 	unsigned char *leftover_buf;
 	int leftover_bytes;
 	int tmpbuf_len, tmpbuf_ptr;
@@ -162,7 +162,7 @@ struct audio_driver {
 	/* Timeout handlers for input and output */
 	int ( *check_input )( int dev );
 	int ( *check_output )( int dev );
-
+	
 	int ( *alloc_buffer )( int dev, struct dma_buffparms *dmap, int direction );
 	int ( *free_buffer )( int dev, struct dma_buffparms *dmap, int direction );
 	void ( *lock_buffer )( int dev, int direction );
@@ -223,12 +223,12 @@ struct audio_operations {
 #define DMA_SPECIAL		0x20000000	/* Multich or otherwise special dev */
 #define DMA_NOMMAP		0x40000000	/* No MMAP capability */
 #define DMA_SOFTOSS_DISABLE	0x80000000	/* Not compatible with SoftOSS  */
-
-
+	
+	
 	/*
 	 * Sampling parameters
 	 */
-
+	
 	sample_parms user_parms, hw_parms;
 	int iformat_mask, oformat_mask;	/* Bitmasks for supported audio formats */
 	int min_rate, max_rate;	/* Sampling rate limits */
@@ -270,22 +270,22 @@ struct audio_operations {
 	int sync_group;
 	int sync_mode;
 	struct audio_operations *sync_next;	/* Next device in sync group */
-
+	
 	int rate_source;
 #define MAX_SAMPLE_RATES	20 /* Cannot be changed (see soundcard.h) */
 	int nrates, rates[MAX_SAMPLE_RATES];
-
+	
 #ifndef CONFIGURE_C
 	oss_mutex mutex;
 #endif
-
+	
 	int card_number;
 	int port_number;
 	int real_dev;
-
+	
 	int cooked_enable;
 	int timeout_count;
-
+	
 	void ( *outputintr )( int dev, int xx );
 	void ( *inputintr )( int dev );
 };

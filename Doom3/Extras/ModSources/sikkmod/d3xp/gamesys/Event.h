@@ -61,13 +61,13 @@ private:
 	int							argOffset[ D_EVENT_MAXARGS ];
 	int							eventnum;
 	const idEventDef 			*next;
-
+	
 	static idEventDef 			*eventDefList[MAX_EVENTS];
 	static int					numEventDefs;
-
+	
 public:
 	idEventDef( const char *command, const char *formatspec = NULL, char returnType = 0 );
-
+	
 	const char					*GetName( void ) const;
 	const char					*GetArgFormat( void ) const;
 	unsigned int				GetFormatspecIndex( void ) const;
@@ -76,7 +76,7 @@ public:
 	int							GetNumArgs( void ) const;
 	size_t						GetArgSize( void ) const;
 	int							GetArgOffset( int arg ) const;
-
+	
 	static int					NumEventCommands( void );
 	static const idEventDef		*GetEventCommand( int eventnum );
 	static const idEventDef		*FindEvent( const char *name );
@@ -92,24 +92,24 @@ private:
 	int							time;
 	idClass						*object;
 	const idTypeInfo			*typeinfo;
-
+	
 	idLinkList<idEvent>			eventNode;
-
+	
 	static idDynamicBlockAlloc<byte, 16 * 1024, 256> eventDataAllocator;
-
-
+	
+	
 public:
 	static bool					initialized;
-
+	
 	~idEvent();
-
+	
 	static idEvent				*Alloc( const idEventDef *evdef, int numargs, va_list args );
 	static void					CopyArgs( const idEventDef *evdef, int numargs, va_list args, int data[ D_EVENT_MAXARGS ] );
-
+	
 	void						Free( void );
 	void						Schedule( idClass *object, const idTypeInfo *cls, int time );
 	byte						*GetData( void );
-
+	
 	static void					CancelEvents( const idClass *obj, const idEventDef *evdef = NULL );
 	static void					ClearEventList( void );
 	static void					ServiceEvents( void );
@@ -118,13 +118,13 @@ public:
 #endif
 	static void					Init( void );
 	static void					Shutdown( void );
-
+	
 	// save games
 	static void					Save( idSaveGame *savefile );					// archives object for save game file
 	static void					Restore( idRestoreGame *savefile );				// unarchives object from save game file
 	static void					SaveTrace( idSaveGame *savefile, const trace_t &trace );
 	static void					RestoreTrace( idRestoreGame *savefile, trace_t &trace );
-
+	
 };
 
 /*

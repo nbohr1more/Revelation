@@ -47,7 +47,7 @@ public:
 	void UpdateFilter( const char *pFilter );
 	void UpdatePrefs();
 	void FocusEdit();
-
+	
 	// Attributes
 public:
 
@@ -63,7 +63,7 @@ public:
 protected:
 	virtual BOOL PreCreateWindow( CREATESTRUCT &cs );
 	//}}AFX_VIRTUAL
-
+	
 	// Implementation
 public:
 	void EnsureTextureIsVisible( const char *name );
@@ -72,7 +72,7 @@ public:
 	BOOL OnToolTipNotify( UINT id, NMHDR *pNMHDR, LRESULT *pResult );
 	int CNewTexWnd::OnToolHitTest( CPoint point, TOOLINFO *pTI );
 	virtual BOOL PreTranslateMessage( MSG *pMsg );
-
+	
 protected:
 	//CTexEdit m_wndFilter;
 	//CButton  m_wndShaders;
@@ -88,7 +88,7 @@ protected:
 	int currentRow;
 	int currentIndex;
 	idList<const idMaterial *> materialList;
-
+	
 	// Generated message map functions
 protected:
 	const idMaterial *NextPos();

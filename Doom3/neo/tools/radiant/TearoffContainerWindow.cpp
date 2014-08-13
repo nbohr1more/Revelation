@@ -97,7 +97,7 @@ BOOL CTearoffContainerWindow:: PreTranslateMessage( MSG *pMsg ) {
 	if( pMsg->message == WM_NCLBUTTONUP ) {
 		/*		CRect rect;
 				GetWindowRect ( rect );
-
+		
 				rect.DeflateRect( 0,0,0,rect.Height() - GetSystemMetrics(SM_CYSMSIZE));
 				if ( m_DockManager->RectWithinDockManager ( rect ))
 				{

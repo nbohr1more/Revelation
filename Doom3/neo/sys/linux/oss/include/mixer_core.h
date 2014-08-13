@@ -31,11 +31,11 @@ struct mixer_operations {
 	char id[16];
 	char name[64];
 	int ( *ioctl )( int dev, int audiodev, unsigned int cmd, ioctl_arg arg );
-
+	
 	void *devc;
 	void *hw_devc;
 	int modify_counter;
-
+	
 	/* Mixer extension interface */
 	int nr_ext;
 	int max_ext;

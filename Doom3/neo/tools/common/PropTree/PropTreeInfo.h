@@ -32,15 +32,15 @@ class PROPTREE_API CPropTreeInfo : public CStatic {
 	// Construction
 public:
 	CPropTreeInfo();
-
+	
 	// Attributes
 public:
 	// CPropTree class that this class belongs
 	void SetPropOwner( CPropTree *pProp );
-
+	
 protected:
 	CPropTree		*m_pProp;
-
+	
 	// Operations
 public:
 
@@ -48,17 +48,17 @@ public:
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CPropTreeInfo)
 	//}}AFX_VIRTUAL
-
+	
 	// Implementation
 public:
 	virtual ~CPropTreeInfo();
-
+	
 	// Generated message map functions
 protected:
 	//{{AFX_MSG(CPropTreeInfo)
 	afx_msg void OnPaint();
 	//}}AFX_MSG
-
+	
 	DECLARE_MESSAGE_MAP()
 };
 

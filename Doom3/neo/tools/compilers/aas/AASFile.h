@@ -240,17 +240,17 @@ public:
 	int							tt_startCrouching;
 	int							tt_waterJump;
 	int							tt_startWalkOffLedge;
-
+	
 public:
 	idAASSettings( void );
-
+	
 	bool						FromFile( const idStr &fileName );
 	bool						FromParser( idLexer &src );
 	bool						FromDict( const char *name, const idDict *dict );
 	bool						WriteToFile( idFile *fp ) const;
 	bool						ValidForBounds( const idBounds &bounds ) const;
 	bool						ValidEntity( const char *classname ) const;
-
+	
 private:
 	bool						ParseBool( idLexer &src, bool &b );
 	bool						ParseInt( idLexer &src, int &i );
@@ -287,14 +287,14 @@ private:
 class idAASFile {
 public:
 	virtual 					~idAASFile( void ) {}
-
+	
 	const char 				*GetName( void ) const {
 		return name.c_str();
 	}
 	unsigned int				GetCRC( void ) const {
 		return crc;
 	}
-
+	
 	int							GetNumPlanes( void ) const {
 		return planeList.Num();
 	}
@@ -361,11 +361,11 @@ public:
 	const aasCluster_t 		&GetCluster( int index ) const {
 		return clusters[index];
 	}
-
+	
 	const idAASSettings 		&GetSettings( void ) const {
 		return settings;
 	}
-
+	
 	void						SetPortalMaxTravelTime( int index, int time ) {
 		portals[index].maxAreaTravelTime = time;
 	}
@@ -375,26 +375,26 @@ public:
 	void						RemoveAreaTravelFlag( int index, int flag ) {
 		areas[index].travelFlags &= ~flag;
 	}
-
+	
 	virtual idVec3				EdgeCenter( int edgeNum ) const = 0;
 	virtual idVec3				FaceCenter( int faceNum ) const = 0;
 	virtual idVec3				AreaCenter( int areaNum ) const = 0;
-
+	
 	virtual idBounds			EdgeBounds( int edgeNum ) const = 0;
 	virtual idBounds			FaceBounds( int faceNum ) const = 0;
 	virtual idBounds			AreaBounds( int areaNum ) const = 0;
-
+	
 	virtual int					PointAreaNum( const idVec3 &origin ) const = 0;
 	virtual int					PointReachableAreaNum( const idVec3 &origin, const idBounds &searchBounds, const int areaFlags, const int excludeTravelFlags ) const = 0;
 	virtual int					BoundsReachableAreaNum( const idBounds &bounds, const int areaFlags, const int excludeTravelFlags ) const = 0;
 	virtual void				PushPointIntoAreaNum( int areaNum, idVec3 &point ) const = 0;
 	virtual bool				Trace( aasTrace_t &trace, const idVec3 &start, const idVec3 &end ) const = 0;
 	virtual void				PrintInfo( void ) const = 0;
-
+	
 protected:
 	idStr						name;
 	unsigned int				crc;
-
+	
 	idPlaneSet					planeList;
 	idList<aasVertex_t>			vertices;
 	idList<aasEdge_t>			edges;

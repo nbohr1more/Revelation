@@ -453,7 +453,7 @@ Sys_FPU_SetDAZ
 void Sys_FPU_SetDAZ( bool enable ) {
 	/*
 	DWORD dwData;
-
+	
 	_asm {
 		movzx	ecx, byte ptr enable
 		and		ecx, 1
@@ -476,7 +476,7 @@ Sys_FPU_SetFTZ
 void Sys_FPU_SetFTZ( bool enable ) {
 	/*
 	DWORD dwData;
-
+	
 	_asm {
 		movzx	ecx, byte ptr enable
 		and		ecx, 1

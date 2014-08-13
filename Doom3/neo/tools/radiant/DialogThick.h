@@ -41,22 +41,22 @@ class CDialogThick : public CDialog {
 	// Construction
 public:
 	CDialogThick( CWnd *pParent = NULL ); // standard constructor
-
+	
 	// Dialog Data
 	//{{AFX_DATA(CDialogThick)
 	enum { IDD = IDD_DIALOG_THICKEN };
 	BOOL	m_bSeams;
 	int		m_nAmount;
 	//}}AFX_DATA
-
-
+	
+	
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CDialogThick)
 protected:
 	virtual void DoDataExchange( CDataExchange *pDX );  // DDX/DDV support
 	//}}AFX_VIRTUAL
-
+	
 	// Implementation
 protected:
 

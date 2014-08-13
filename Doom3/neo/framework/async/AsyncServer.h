@@ -107,11 +107,11 @@ typedef struct serverClient_s {
 	int					clientAheadTime;
 	int					clientRate;
 	int					clientPing;
-
+	
 	int					gameInitSequence;
 	int					gameFrame;
 	int					gameTime;
-
+	
 	idMsgChannel		channel;
 	int					lastConnectTime;
 	int					lastEmptyTime;
@@ -122,22 +122,22 @@ typedef struct serverClient_s {
 	int					snapshotSequence;
 	int					acknowledgeSnapshotSequence;
 	int					numDuplicatedUsercmds;
-
+	
 	char				guid[12];  // Even Balance - M. Quinn
-
+	
 } serverClient_t;
 
 
 class idAsyncServer {
 public:
 	idAsyncServer();
-
+	
 	bool				InitPort( void );
 	void				ClosePort( void );
 	void				Spawn( void );
 	void				Kill( void );
 	void				ExecuteMapChange( void );
-
+	
 	int					GetPort( void ) const;
 	netadr_t			GetBoundAdr( void ) const;
 	bool				IsActive( void ) const {
@@ -163,56 +163,56 @@ public:
 	int					GetLocalClientNum( void ) const {
 		return localClientNum;
 	}
-
+	
 	void				RunFrame( void );
 	void				ProcessConnectionLessMessages( void );
 	void				RemoteConsoleOutput( const char *string );
 	void				SendReliableGameMessage( int clientNum, const idBitMsg &msg );
 	void				SendReliableGameMessageExcluding( int clientNum, const idBitMsg &msg );
 	void				LocalClientSendReliableMessage( const idBitMsg &msg );
-
+	
 	void				MasterHeartbeat( bool force = false );
 	void				DropClient( int clientNum, const char *reason );
-
+	
 	void				PacifierUpdate( void );
-
+	
 	void				UpdateUI( int clientNum );
-
+	
 	void				UpdateAsyncStatsAvg( void );
 	void				GetAsyncStatsAvgMsg( idStr &msg );
-
+	
 	void				PrintLocalServerInfo( void );
-
+	
 private:
 	bool				active;						// true if server is active
 	int					realTime;					// absolute time
-
+	
 	int					serverTime;					// local server time
 	idPort				serverPort;					// UDP port
 	int					serverId;					// server identification
 	int					serverDataChecksum;			// checksum of the data used by the server
 	int					localClientNum;				// local client on listen server
-
+	
 	challenge_t			challenges[MAX_CHALLENGES];	// to prevent invalid IPs from connecting
 	serverClient_t		clients[MAX_ASYNC_CLIENTS];	// clients
 	usercmd_t			userCmds[MAX_USERCMD_BACKUP][MAX_ASYNC_CLIENTS];
-
+	
 	int					gameInitId;					// game initialization identification
 	int					gameFrame;					// local game frame
 	int					gameTime;					// local game time
 	int					gameTimeResidual;			// left over time from previous frame
-
+	
 	netadr_t			rconAddress;
-
+	
 	int					nextHeartbeatTime;
 	int					nextAsyncStatsTime;
-
+	
 	bool				serverReloadingEngine;		// flip-flop to not loop over when net_serverReloadEngine is on
-
+	
 	bool				noRconOutput;				// for default rcon response when command is silent
-
+	
 	int					lastAuthTime;				// global for auth server timeout
-
+	
 	// track the max outgoing rate over the last few secs to watch for spikes
 	// dependent on net_serverSnapshotDelay. 50ms, for a 3 seconds backlog -> 60 samples
 	static const int	stats_numsamples = 60;
@@ -221,7 +221,7 @@ private:
 	int					stats_average_sum;
 	int					stats_max;
 	int					stats_max_index;
-
+	
 	void				PrintOOB( const netadr_t to, int opcode, const char *string );
 	void				DuplicateUsercmds( int frame, int time );
 	void				ClearClient( int clientNum );

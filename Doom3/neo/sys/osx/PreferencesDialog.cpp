@@ -57,9 +57,9 @@ struct PrefInfo {
 	UInt32							prefResFlags;
 	Boolean							prefAlways;
 	Boolean							prefOpenAL;
-
+	
 	bool							okPressed;		// Set to true if the user pressed the OK button
-
+	
 	// The following are private data passed from GameDisplayPreferencesDialog() to it's command handler.
 	WindowRef						window;
 	ControlRef						fullscreenBtn;
@@ -69,9 +69,9 @@ struct PrefInfo {
 	ControlRef						chooseMonitorsBtn;
 	ControlRef						alwaysBtn;
 	ControlRef						openALBtn;
-
+	
 	ValidModeCallbackProc			callback;		// To validate display modes
-
+	
 	bool							multiMonitor;	// Does user have multiple monitors
 	std::list<Fixed>				refreshRates;	// List of refresh rates available for the selected monitor
 	SInt32							freqMenuIndex;

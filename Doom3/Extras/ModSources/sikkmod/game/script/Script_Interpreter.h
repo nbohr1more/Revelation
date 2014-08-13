@@ -43,21 +43,21 @@ private:
 	prstack_t			callStack[ MAX_STACK_DEPTH ];
 	int 				callStackDepth;
 	int 				maxStackDepth;
-
+	
 	byte				localstack[ LOCALSTACK_SIZE ];
 	int 				localstackUsed;
 	int 				localstackBase;
 	int 				maxLocalstackUsed;
-
+	
 	const function_t	*currentFunction;
 	int 				instructionPointer;
-
+	
 	int					popParms;
 	const idEventDef	*multiFrameEvent;
 	idEntity			*eventEntity;
-
+	
 	idThread			*thread;
-
+	
 	void				PopParms( int numParms );
 	void				PushString( const char *string );
 	void				Push( int value );
@@ -69,51 +69,51 @@ private:
 	idEntity			*GetEntity( int entnum ) const;
 	idScriptObject		*GetScriptObject( int entnum ) const;
 	void				NextInstruction( int position );
-
+	
 	void				LeaveFunction( idVarDef *returnDef );
 	void				CallEvent( const function_t *func, int argsize );
 	void				CallSysEvent( const function_t *func, int argsize );
-
+	
 public:
 	bool				doneProcessing;
 	bool				threadDying;
 	bool				terminateOnExit;
 	bool				debug;
-
+	
 	idInterpreter();
-
+	
 	// save games
 	void				Save( idSaveGame *savefile ) const;				// archives object for save game file
 	void				Restore( idRestoreGame *savefile );				// unarchives object from save game file
-
+	
 	void				SetThread( idThread *pThread );
-
+	
 	void				StackTrace( void ) const;
-
+	
 	int					CurrentLine( void ) const;
 	const char			*CurrentFile( void ) const;
-
+	
 	void				Error( char *fmt, ... ) const id_attribute( ( format( printf, 2, 3 ) ) );
 	void				Warning( char *fmt, ... ) const id_attribute( ( format( printf, 2, 3 ) ) );
 	void				DisplayInfo( void ) const;
-
+	
 	bool				BeginMultiFrameEvent( idEntity *ent, const idEventDef *event );
 	void				EndMultiFrameEvent( idEntity *ent, const idEventDef *event );
 	bool				MultiFrameEventInProgress( void ) const;
-
+	
 	void				ThreadCall( idInterpreter *source, const function_t *func, int args );
 	void				EnterFunction( const function_t *func, bool clearStack );
 	void				EnterObjectFunction( idEntity *self, const function_t *func, bool clearStack );
-
+	
 	bool				Execute( void );
 	void				Reset( void );
-
+	
 	bool				GetRegisterValue( const char *name, idStr &out, int scopeDepth );
 	int					GetCallstackDepth( void ) const;
 	const prstack_t		*GetCallstack( void ) const;
 	const function_t	*GetCurrentFunction( void ) const;
 	idThread			*GetThread( void ) const;
-
+	
 };
 
 /*

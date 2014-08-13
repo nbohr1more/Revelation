@@ -45,13 +45,13 @@ class idCinematicLocal : public idCinematic {
 public:
 	idCinematicLocal();
 	virtual					~idCinematicLocal();
-
+	
 	virtual bool			InitFromFile( const char *qpath, bool looping );
 	virtual cinData_t		ImageForTime( int milliseconds );
 	virtual int				AnimationLength();
 	virtual void			Close();
 	virtual void			ResetTime( int time );
-
+	
 private:
 	unsigned int			mcomp[256];
 	byte 					**qStatus[2];
@@ -78,33 +78,33 @@ private:
 	long					t[2];
 	long					roqFPS;
 	long					drawX, drawY;
-
+	
 	int						animationLength;
 	int						startTime;
 	float					frameRate;
-
+	
 	byte 					*image;
-
+	
 	bool					looping;
 	bool					dirty;
 	bool					half;
 	bool					smootheddouble;
 	bool					inMemory;
-
+	
 	void					RoQ_init( void );
 	void					blitVQQuad32fs( byte **status, unsigned char *data );
 	void					RoQShutdown( void );
 	void					RoQInterrupt( void );
-
+	
 	void					move8_32( byte *src, byte *dst, int spl );
 	void					move4_32( byte *src, byte *dst, int spl );
 	void					blit8_32( byte *src, byte *dst, int spl );
 	void					blit4_32( byte *src, byte *dst, int spl );
 	void					blit2_32( byte *src, byte *dst, int spl );
-
+	
 	unsigned short			yuv_to_rgb( long y, long u, long v );
 	unsigned int			yuv_to_rgb24( long y, long u, long v );
-
+	
 	void					decodeCodeBook( byte *input, unsigned short roq_flags );
 	void					recurseQuad( long startX, long startY, long quadSize, long xOff, long yOff );
 	void					setupQuad( long xOff, long yOff );
@@ -1140,10 +1140,10 @@ void idCinematicLocal::RoQReset() {
 
 typedef struct {
 	struct jpeg_source_mgr pub;	/* public fields */
-
-	byte   *infile;		/* source stream */
-	JOCTET *buffer;		/* start of buffer */
-	boolean start_of_file;	/* have we gotten any data yet? */
+	
+	byte   *infile;				/* source stream */
+	JOCTET *buffer;				/* start of buffer */
+	boolean start_of_file;		/* have we gotten any data yet? */
 	int		memsize;
 } my_source_mgr;
 
@@ -1249,16 +1249,6 @@ skip_input_data( j_decompress_ptr cinfo, long num_bytes ) {
 		src->pub.bytes_in_buffer -= ( size_t ) num_bytes;
 	}
 }
-
-
-/*
- * An additional method that can be provided by data source modules is the
- * resync_to_restart method for error recovery in the presence of RST markers.
- * For the moment, this source module just uses the default resync method
- * provided by the JPEG library.  That method assumes that no backtracking
- * is possible.
- */
-
 
 /*
  * Terminate source --- called by jpeg_finish_decompress

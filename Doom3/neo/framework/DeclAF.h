@@ -67,10 +67,10 @@ public:
 	}						type;
 	idStr					joint1;
 	idStr					joint2;
-
+	
 public:
 	idAFVector( void );
-
+	
 	bool					Parse( idLexer &src );
 	bool					Finish( const char *fileName, const getJointTransform_t GetJointTransform, const idJointMat *frame, void *model ) const;
 	bool					Write( idFile *f ) const;
@@ -81,7 +81,7 @@ public:
 	idVec3 				&ToVec3( void ) {
 		return vec;
 	}
-
+	
 private:
 	mutable idVec3			vec;
 	bool					negate;
@@ -137,7 +137,7 @@ public:
 	}						limit;
 	idAFVector				limitAxis;
 	float					limitAngles[3];
-
+	
 public:
 	void					SetDefault( const idDeclAF *file );
 };
@@ -147,30 +147,30 @@ class idDeclAF : public idDecl {
 public:
 	idDeclAF( void );
 	virtual					~idDeclAF( void );
-
+	
 	virtual size_t			Size( void ) const;
 	virtual const char 	*DefaultDefinition( void ) const;
 	virtual bool			Parse( const char *text, const int textLength );
 	virtual void			FreeData( void );
-
+	
 	virtual void			Finish( const getJointTransform_t GetJointTransform, const idJointMat *frame, void *model ) const;
-
+	
 	bool					Save( void );
-
+	
 	void					NewBody( const char *name );
 	void					RenameBody( const char *oldName, const char *newName );
 	void					DeleteBody( const char *name );
-
+	
 	void					NewConstraint( const char *name );
 	void					RenameConstraint( const char *oldName, const char *newName );
 	void					DeleteConstraint( const char *name );
-
+	
 	static int				ContentsFromString( const char *str );
 	static const char 		*ContentsToString( const int contents, idStr &str );
-
+	
 	static declAFJointMod_t	JointModFromString( const char *str );
 	static const char 		*JointModToString( declAFJointMod_t jointMod );
-
+	
 public:
 	bool					modified;
 	idStr					model;
@@ -192,7 +192,7 @@ public:
 	bool					selfCollision;
 	idList<idDeclAF_Body *>			bodies;
 	idList<idDeclAF_Constraint *>	constraints;
-
+	
 private:
 	bool					ParseContents( idLexer &src, int &c ) const;
 	bool					ParseBody( idLexer &src );
@@ -203,7 +203,7 @@ private:
 	bool					ParseSlider( idLexer &src );
 	bool					ParseSpring( idLexer &src );
 	bool					ParseSettings( idLexer &src );
-
+	
 	bool					WriteBody( idFile *f, const idDeclAF_Body &body ) const;
 	bool					WriteFixed( idFile *f, const idDeclAF_Constraint &c ) const;
 	bool					WriteBallAndSocketJoint( idFile *f, const idDeclAF_Constraint &c ) const;
@@ -213,7 +213,7 @@ private:
 	bool					WriteSpring( idFile *f, const idDeclAF_Constraint &c ) const;
 	bool					WriteConstraint( idFile *f, const idDeclAF_Constraint &c ) const;
 	bool					WriteSettings( idFile *f ) const;
-
+	
 	bool					RebuildTextSource( void );
 };
 

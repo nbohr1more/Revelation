@@ -32,7 +32,7 @@ If you have questions concerning this license or the applicable additional terms
 class DialogAFConstraintUniversal : public CDialog {
 
 	DECLARE_DYNAMIC( DialogAFConstraintUniversal )
-
+	
 public:
 	DialogAFConstraintUniversal( CWnd *pParent = NULL ); // standard constructor
 	virtual				~DialogAFConstraintUniversal();
@@ -41,9 +41,9 @@ public:
 	void				LoadConstraint( idDeclAF_Constraint *c );
 	void				SaveConstraint( void );
 	void				UpdateFile( void );
-
+	
 	enum { IDD = IDD_DIALOG_AF_CONSTRAINT_UNIVERSAL };
-
+	
 protected:
 	virtual void		DoDataExchange( CDataExchange *pDX );  // DDX/DDV support
 	virtual int			OnToolHitTest( CPoint point, TOOLINFO *pTI ) const;
@@ -92,13 +92,13 @@ protected:
 	afx_msg void		OnDeltaposSpinUniversalLimitPitch( NMHDR *pNMHDR, LRESULT *pResult );
 	afx_msg void		OnEnChangeEditUniversalLimitYaw();
 	afx_msg void		OnDeltaposSpinUniversalLimitYaw( NMHDR *pNMHDR, LRESULT *pResult );
-
+	
 	DECLARE_MESSAGE_MAP()
-
+	
 private:
 	idDeclAF 			*file;
 	idDeclAF_Constraint *constraint;
-
+	
 	//{{AFX_DATA(DialogAFConstraintUniversal)
 	CComboBox			m_comboAnchorJoint;
 	float				m_anchor_x;
@@ -121,9 +121,9 @@ private:
 	float				m_limitYaw;
 	float				m_limitRoll;
 	//}}AFX_DATA
-
+	
 	static toolTip_t	toolTips[];
-
+	
 private:
 	void				InitJointLists( void );
 };

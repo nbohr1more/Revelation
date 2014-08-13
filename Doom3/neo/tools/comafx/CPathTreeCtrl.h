@@ -42,7 +42,7 @@ public:
 	idPathTreeStack( void ) {
 		size = 0;
 	}
-
+	
 	void				PushRoot( HTREEITEM root );
 	void				Push( HTREEITEM item, const char *name );
 	void				Pop( void ) {
@@ -60,7 +60,7 @@ public:
 	int					Num( void ) const {
 		return size;
 	}
-
+	
 private:
 	int					size;
 	HTREEITEM			stackItem[128];
@@ -88,17 +88,17 @@ class CPathTreeCtrl : public CTreeCtrl {
 public:
 	CPathTreeCtrl();
 	~CPathTreeCtrl();
-
+	
 	HTREEITEM			FindItem( const idStr &pathName );
 	HTREEITEM			InsertPathIntoTree( const idStr &pathName, const int id );
 	HTREEITEM			AddPathToTree( const idStr &pathName, const int id, idPathTreeStack &stack );
 	int					SearchTree( treeItemCompare_t compare, void *data, CPathTreeCtrl &result );
-
+	
 protected:
 	virtual void		PreSubclassWindow();
 	virtual int			OnToolHitTest( CPoint point, TOOLINFO *pTI ) const;
 	afx_msg BOOL		OnToolTipText( UINT id, NMHDR *pNMHDR, LRESULT *pResult );
-
+	
 	DECLARE_MESSAGE_MAP()
 };
 

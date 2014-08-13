@@ -95,17 +95,17 @@ public:
 	int						ammo[ AMMO_NUMTYPES ];
 	int						clip[ MAX_WEAPONS ];
 	int						powerupEndTime[ MAX_POWERUPS ];
-
+	
 	// mp
 	int						ammoPredictTime;
-
+	
 	int						deplete_armor;
 	float					deplete_rate;
 	int						deplete_ammount;
 	int						nextArmorDepleteTime;
-
+	
 	int						pdasViewed[4]; // 128 bit flags for indicating if a pda has been viewed
-
+	
 	int						selPDA;
 	int						selEMail;
 	int						selVideo;
@@ -117,25 +117,25 @@ public:
 	idStrList				pdaSecurity;
 	idStrList				videos;
 	idStrList				emails;
-
+	
 	bool					ammoPulse;
 	bool					weaponPulse;
 	bool					armorPulse;
 	int						lastGiveTime;
-
+	
 	idList<idLevelTriggerInfo> levelTriggers;
-
+	
 	idInventory() {
 		Clear();
 	}
 	~idInventory() {
 		Clear();
 	}
-
+	
 	// save games
 	void					Save( idSaveGame *savefile ) const;					// archives object for save game file
 	void					Restore( idRestoreGame *savefile );					// unarchives object from save game file
-
+	
 	void					Clear( void );
 	void					GivePowerUp( idPlayer *player, int powerup, int msec );
 	void					ClearPowerUps( void );
@@ -149,19 +149,19 @@ public:
 	ammo_t					AmmoIndexForWeaponClass( const char *weapon_classname, int *ammoRequired );
 	const char 			*AmmoPickupNameForIndex( ammo_t ammonum ) const;
 	void					AddPickupName( const char *name, const char *icon );
-
+	
 	int						HasAmmo( ammo_t type, int amount );
 	bool					UseAmmo( ammo_t type, int amount );
 	int						HasAmmo( const char *weapon_classname );			// looks up the ammo information for the weapon class first
-
+	
 	void					UpdateArmor( void );
-
+	
 	int						nextItemPickup;
 	int						nextItemNum;
 	int						onePickupTime;
 	idList<idItemInfo>		pickupItemNames;
 	idList<idObjectiveInfo>	objectiveNames;
-
+	
 	int						healthPackAmount;	// sikk - Health Management System (Health Pack)
 	int						adrenalineAmount;	// sikk - Adrenaline Pack System
 };
@@ -186,27 +186,27 @@ public:
 		EVENT_SPECTATE,
 		EVENT_MAXEVENTS
 	};
-
+	
 	usercmd_t				usercmd;
-
+	
 	class idPlayerView		playerView;			// handles damage kicks and effects
-
+	
 	bool					noclip;
 	bool					godmode;
-
+	
 	bool					spawnAnglesSet;		// on first usercmd, we must set deltaAngles
 	idAngles				spawnAngles;
 	idAngles				viewAngles;			// player view angles
 	idAngles				cmdAngles;			// player cmd angles
-
+	
 	int						buttonMask;
 	int						oldButtons;
 	int						oldFlags;
-
+	
 	int						lastHitTime;			// last time projectile fired by player hit target
 	int						lastSndHitTime;			// MP hit sound - != lastHitTime because we throttle
 	int						lastSavingThrowTime;	// for the "free miss" effect
-
+	
 	idScriptBool			AI_FORWARD;
 	idScriptBool			AI_BACKWARD;
 	idScriptBool			AI_STRAFE_LEFT;
@@ -226,19 +226,19 @@ public:
 	idScriptBool			AI_TELEPORT;
 	idScriptBool			AI_TURN_LEFT;
 	idScriptBool			AI_TURN_RIGHT;
-
+	
 	// inventory
 	idInventory				inventory;
-
+	
 	idEntityPtr<idWeapon>	weapon;
 	idUserInterface 		*hud;				// MP: is NULL if not local player
 	idUserInterface 		*objectiveSystem;
 	bool					objectiveSystemOpen;
-
+	
 	int						weapon_soulcube;
 	int						weapon_pda;
 	int						weapon_fists;
-
+	
 	int						heartRate;
 	idInterpolate<float>	heartInfo;
 	int						lastHeartAdjust;
@@ -253,10 +253,10 @@ public:
 	bool					healthPulse;
 	bool					healthTake;
 	int						nextHealthTake;
-
+	
 	bool					hiddenWeapon;		// if the weapon is hidden ( in noWeapons maps )
 	idEntityPtr<idProjectile> soulCubeProjectile;
-
+	
 	// mp stuff
 	static idVec3			colorBarTable[ 5 ];
 	int						spectator;
@@ -276,7 +276,7 @@ public:
 	int						tourneyRank;		// for tourney cycling - the higher, the more likely to play next - server
 	int						tourneyLine;		// client side - our spot in the wait line. 0 means no info.
 	int						spawnedTime;		// when client first enters the game
-
+	
 	idEntityPtr<idEntity>	teleportEntity;		// while being teleported, this is set to the entity we'll use for exit
 	int						teleportKiller;		// entity number of an entity killing us at teleporter exit
 	bool					lastManOver;		// can't respawn in last man anymore (srv only)
@@ -284,34 +284,34 @@ public:
 	bool					lastManPresent;		// true when player was in when game started (spectators can't join a running LMS)
 	bool					isLagged;			// replicated from server, true if packets haven't been received from client.
 	bool					isChatting;			// replicated from server, true if the player is chatting.
-
+	
 	// timers
 	int						minRespawnTime;		// can respawn when time > this, force after g_forcerespawn
 	int						maxRespawnTime;		// force respawn after this time
-
+	
 	// the first person view values are always calculated, even
 	// if a third person view is used
 	idVec3					firstPersonViewOrigin;
 	idMat3					firstPersonViewAxis;
-
+	
 	idDragEntity			dragEntity;
-
+	
 public:
 	CLASS_PROTOTYPE( idPlayer );
-
+	
 	idPlayer();
 	virtual					~idPlayer();
-
+	
 	void					Spawn( void );
 	void					Think( void );
-
+	
 	// save games
 	void					Save( idSaveGame *savefile ) const;					// archives object for save game file
 	void					Restore( idRestoreGame *savefile );					// unarchives object from save game file
-
+	
 	virtual void			Hide( void );
 	virtual void			Show( void );
-
+	
 	void					Init( void );
 	void					PrepareForRestart( void );
 	virtual void			Restart( void );
@@ -321,82 +321,82 @@ public:
 	void					SpawnFromSpawnSpot( void );
 	void					SpawnToPoint( const idVec3	&spawn_origin, const idAngles &spawn_angles );
 	void					SetClipModel( void );	// spectator mode uses a different bbox size
-
+	
 	void					SavePersistantInfo( void );
 	void					RestorePersistantInfo( void );
 	void					SetLevelTrigger( const char *levelName, const char *triggerName );
-
+	
 	bool					UserInfoChanged( bool canModify );
 	idDict 				*GetUserInfo( void );
 	bool					BalanceTDM( void );
-
+	
 	void					CacheWeapons( void );
-
+	
 	void					EnterCinematic( void );
 	void					ExitCinematic( void );
 	bool					HandleESC( void );
 	bool					SkipCinematic( void );
-
+	
 	void					UpdateConditions( void );
 	void					SetViewAngles( const idAngles &angles );
-
+	
 	// delta view angles to allow movers to rotate the view of the player
 	void					UpdateDeltaViewAngles( const idAngles &angles );
-
+	
 	virtual bool			Collide( const trace_t &collision, const idVec3 &velocity );
-
+	
 	virtual void			GetAASLocation( idAAS *aas, idVec3 &pos, int &areaNum ) const;
 	virtual void			GetAIAimTargets( const idVec3 &lastSightPos, idVec3 &headPos, idVec3 &chestPos );
 	virtual void			DamageFeedback( idEntity *victim, idEntity *inflictor, int &damage );
 	void					CalcDamagePoints( idEntity *inflictor, idEntity *attacker, const idDict *damageDef,
 			const float damageScale, const int location, int *health, int *armor );
 	virtual	void			Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &dir, const char *damageDefName, const float damageScale, const int location );
-
+	
 	// use exitEntityNum to specify a teleport with private camera view and delayed exit
 	virtual void			Teleport( const idVec3 &origin, const idAngles &angles, idEntity *destination );
-
+	
 	void					Kill( bool delayRespawn, bool nodamage );
 	virtual void			Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location );
 	void					StartFxOnBone( const char *fx, const char *bone );
-
+	
 	renderView_t 			*GetRenderView( void );
 	void					CalculateRenderView( void );	// called every tic by player code
 	void					CalculateFirstPersonView( void );
-
+	
 	void					DrawHUD( idUserInterface *hud );
-
+	
 	void					WeaponFireFeedback( const idDict *weaponDef );
-
+	
 	float					DefaultFov( void ) const;
 	float					CalcFov( bool honorZoom );
 	void					CalculateViewWeaponPos( idVec3 &origin, idMat3 &axis );
 	idVec3					GetEyePosition( void ) const;
 	void					GetViewPos( idVec3 &origin, idMat3 &axis ) const;
 	void					OffsetThirdPersonView( float angle, float range, float height, bool clip );
-
+	
 	bool					Give( const char *statname, const char *value );
 	bool					GiveItem( idItem *item );
 	void					GiveItem( const char *name );
 	void					GiveHealthPool( float amt );
-
+	
 	bool					GiveInventoryItem( idDict *item );
 	void					RemoveInventoryItem( idDict *item );
 	bool					GiveInventoryItem( const char *name );
 	void					RemoveInventoryItem( const char *name );
 	idDict 				*FindInventoryItem( const char *name );
-
+	
 	void					GivePDA( const char *pdaName, idDict *item );
 	void					GiveVideo( const char *videoName, idDict *item );
 	void					GiveEmail( const char *emailName );
 	void					GiveSecurity( const char *security );
 	void					GiveObjective( const char *title, const char *text, const char *screenshot );
 	void					CompleteObjective( const char *title );
-
+	
 	bool					GivePowerUp( int powerup, int time );
 	void					ClearPowerUps( void );
 	bool					PowerUpActive( int powerup ) const;
 	float					PowerUpModifier( int type );
-
+	
 	int						SlotForWeapon( const char *weaponName );
 	void					Reload( void );
 	void					NextWeapon( void );
@@ -414,20 +414,20 @@ public:
 	void					WeaponRisingCallback( void );
 	void					RemoveWeapon( const char *weap );
 	bool					CanShowWeaponViewmodel( void ) const;
-
+	
 	void					AddAIKill( void );
 	void					SetSoulCubeProjectile( idProjectile *projectile );
-
+	
 	void					AdjustHeartRate( int target, float timeInSecs, float delay, bool force );
 	void					SetCurrentHeartRate( void );
 	int						GetBaseHeartRate( void );
 	void					UpdateAir( void );
-
+	
 	virtual bool			HandleSingleGuiCommand( idEntity *entityGui, idLexer *src );
 	bool					GuiActive( void ) {
 		return focusGUIent != NULL;
 	}
-
+	
 	void					PerformImpulse( int impulse );
 	void					Spectate( bool spectate );
 	void					TogglePDA( void );
@@ -460,23 +460,23 @@ public:
 	};
 	void					ShowObjective( const char *obj );
 	void					HideObjective( void );
-
+	
 	virtual void			ClientPredictionThink( void );
 	virtual void			WriteToSnapshot( idBitMsgDelta &msg ) const;
 	virtual void			ReadFromSnapshot( const idBitMsgDelta &msg );
 	void					WritePlayerStateToSnapshot( idBitMsgDelta &msg ) const;
 	void					ReadPlayerStateFromSnapshot( const idBitMsgDelta &msg );
-
+	
 	virtual bool			ServerReceiveEvent( int event, int time, const idBitMsg &msg );
-
+	
 	virtual bool			GetPhysicsToVisualTransform( idVec3 &origin, idMat3 &axis );
 	virtual bool			GetPhysicsToSoundTransform( idVec3 &origin, idMat3 &axis );
-
+	
 	virtual bool			ClientReceiveEvent( int event, int time, const idBitMsg &msg );
 	bool					IsReady( void );
 	bool					IsRespawning( void );
 	bool					IsInTeleport( void );
-
+	
 	idEntity				*GetInfluenceEntity( void ) {
 		return influenceEntity;
 	};
@@ -486,7 +486,7 @@ public:
 	float					GetInfluenceRadius( void ) {
 		return influenceRadius;
 	};
-
+	
 	// server side work for in/out of spectate. takes care of spawning it into the world as well
 	void					ServerSpectate( bool spectate );
 	// for very specific usage. != GetPhysics()
@@ -494,46 +494,46 @@ public:
 	void					TeleportDeath( int killer );
 	void					SetLeader( bool lead );
 	bool					IsLeader( void );
-
+	
 	void					UpdateSkinSetup( bool restart );
-
+	
 	bool					OnLadder( void ) const;
-
+	
 	virtual	void			UpdatePlayerIcons( void );
 	virtual	void			DrawPlayerIcons( void );
 	virtual	void			HidePlayerIcons( void );
 	bool					NeedsIcon( void );
-
+	
 	bool					SelfSmooth( void );
 	void					SetSelfSmooth( bool b );
-
+	
 	int						nScreenFrostAlpha;	// sikk - Screen Frost
-
+	
 	int						nShowHudTimer;		// sikk - Dynamic hud system - Used to say when to show the hud as well as fade it in/out (just for health/armor/ammo/weapon changes)
-
+	
 	// sikk---> Manual Item Pickup
 	idItem					*focusItem;
 	int						itemPickupTime;
 	// <---sikk
-
+	
 	// sikk---> Searchable Corpses
 	void					SearchCorpse( idAFEntity_Gibbable *corpse );
 	idAFEntity_Gibbable	*focusCorpse;
 	int						searchTimer;
 	// <---sikk
-
+	
 	// sikk---> Object Manipulation
 	idGrabEntity			grabEntity;
 	idEntity				*focusMoveable;
 	int						focusMoveableId;
 	int						focusMoveableTimer;
 	// <---sikk
-
+	
 	// sikk---> Adrenaline Pack System
 	void					UseAdrenaline( void );
 	int						adrenalineAmount;
 	// <---sikk
-
+	
 	// sikk---> Health Management System
 	void					UseHealthPack( void );
 	int						healthPackAmount;
@@ -541,14 +541,14 @@ public:
 	int						nextHealthRegen;
 	int						prevHeatlh;			// sikk - holds player health after Health station has been used
 	// <---sikk
-
+	
 	// sikk---> Crosshair Positioning
 	int						GetCurrentWeapon( void ) {
 		return currentWeapon;
 	};
 	idVec3					v3CrosshairPos;
 	// <---sikk
-
+	
 	// sikk---> Weapon Management: Awareness
 	bool					GetWeaponAwareness( void );
 	bool					bWATrace;
@@ -557,12 +557,12 @@ public:
 	float					fSpreadModifier;
 	idEntity				*entChainsawed;
 	// <---sikk
-
+	
 	// sikk---> Depth Render
 	void					ToggleSuppression( bool bSuppress );
 	bool					bViewModelsModified;
 	// <---sikk
-
+	
 	// sikk---> Depth of Field PostProcess
 	int						GetTalkCursor( void ) {
 		return talkCursor;
@@ -570,19 +570,19 @@ public:
 	bool					bIsZoomed;
 	float					focusDistance;
 	// <---sikk
-
+	
 	// sikk---> Global Ambient Light
 	void					ToggleAmbientLight( bool bOn );
 	bool					bAmbientLightOn;
 	idStr					szAmbientLightColor;
 	idStr					szAmbientLightRadius;
 	// <---sikk
-
+	
 	// sikk---> Infrared Goggles/Headlight Mod
 	void					UpdateBattery( void );
 	void					ToggleIRGoggles( void );
 	void					ToggleHeadlight( void );
-
+	
 	bool					bIRGogglesOn;
 	bool					bHeadlightOn;
 	int						nIRGogglesTime;
@@ -591,16 +591,16 @@ public:
 	float					fIntensity;
 	float					fIRBloomParms[ 7 ];
 	// <---sikk
-
+	
 private:
 	jointHandle_t			hipJoint;
 	jointHandle_t			chestJoint;
 	jointHandle_t			headJoint;
-
+	
 	idPhysics_Player		physicsObj;			// player physics
-
+	
 	idList<aasLocation_t>	aasLocation;		// for AI tracking the player
-
+	
 	int						bobFoot;
 	float					bobFrac;
 	float					bobfracsin;
@@ -616,48 +616,48 @@ private:
 	idVec3					viewBob;
 	int						landChange;
 	int						landTime;
-
+	
 	int						currentWeapon;
 	int						idealWeapon;
 	int						previousWeapon;
 	int						weaponSwitchTime;
 	bool					weaponEnabled;
 	bool					showWeaponViewModel;
-
+	
 	const idDeclSkin 		*skin;
 	const idDeclSkin 		*powerUpSkin;
 	idStr					baseSkinName;
-
+	
 	int						numProjectilesFired;	// number of projectiles fired
 	int						numProjectileHits;		// number of hits on mobs
-
+	
 	bool					airless;
 	int						airTics;				// set to pm_airTics at start, drops in vacuum
 	int						lastAirDamage;
-
+	
 	bool					gibDeath;
 	bool					gibsLaunched;
 	idVec3					gibsDir;
-
+	
 	idInterpolate<float>	zoomFov;
 	idInterpolate<float>	centerView;
 	bool					fxFov;
-
+	
 	float					influenceFov;
 	int						influenceActive;		// level of influence.. 1 == no gun or hud .. 2 == 1 + no movement
 	idEntity 				*influenceEntity;
 	const idMaterial 		*influenceMaterial;
 	float					influenceRadius;
 	const idDeclSkin 		*influenceSkin;
-
+	
 	idCamera 				*privateCameraView;
-
+	
 	static const int		NUM_LOGGED_VIEW_ANGLES = 64;		// for weapon turning angle offsets
 	idAngles				loggedViewAngles[NUM_LOGGED_VIEW_ANGLES];	// [gameLocal.framenum&(LOGGED_VIEW_ANGLES-1)]
 	static const int		NUM_LOGGED_ACCELS = 16;			// for weapon turning angle offsets
 	loggedAccel_t			loggedAccel[NUM_LOGGED_ACCELS];	// [currentLoggedAccel & (NUM_LOGGED_ACCELS-1)]
 	int						currentLoggedAccel;
-
+	
 	// if there is a focusGUIent, the attack button will be changed into mouse clicks
 	idEntity 				*focusGUIent;
 	idUserInterface 		*focusUI;				// focusGUIent->renderEntity.gui, gui2, or gui3
@@ -666,18 +666,18 @@ private:
 	int						focusTime;
 	idAFEntity_Vehicle 	*focusVehicle;
 	idUserInterface 		*cursor;
-
+	
 	// full screen guis track mouse movements directly
 	int						oldMouseX;
 	int						oldMouseY;
-
+	
 	idStr					pdaAudio;
 	idStr					pdaVideo;
 	idStr					pdaVideoWave;
-
+	
 	bool					tipUp;
 	bool					objectiveUp;
-
+	
 	int						lastDamageDef;
 	idVec3					lastDamageDir;
 	int						lastDamageLocation;
@@ -685,7 +685,7 @@ private:
 	bool					smoothedOriginUpdated;
 	idVec3					smoothedOrigin;
 	idAngles				smoothedAngles;
-
+	
 	// mp
 	bool					ready;					// from userInfo
 	bool					respawning;				// set to true while in SpawnToPoint for telefrag checks
@@ -700,13 +700,13 @@ private:
 	int						MPAimFadeTime;			// for GUI fade
 	bool					MPAimHighlight;
 	bool					isTelefragged;			// proper obituaries
-
+	
 	idPlayerIcon			playerIcon;
-
+	
 	bool					selfSmooth;
-
+	
 	void					LookAtKiller( idEntity *inflictor, idEntity *attacker );
-
+	
 	void					StopFiring( void );
 	void					FireWeapon( void );
 	void					Weapon_Combat( void );
@@ -718,7 +718,7 @@ private:
 	void					SpectateCycle( void );
 	idAngles				GunTurningOffset( void );
 	idVec3					GunAcceleratingOffset( void );
-
+	
 	void					UseObjects( void );
 	void					CrashLand( const idVec3 &oldOrigin, const idVec3 &oldVelocity );
 	void					BobCycle( const idVec3 &pushVelocity );
@@ -733,7 +733,7 @@ private:
 	void					UpdateDeathSkin( bool state_hitch );
 	void					ClearPowerup( int i );
 	void					SetSpectateOrigin( void );
-
+	
 	void					ClearFocus( void );
 	void					UpdateFocus( void );
 	void					UpdateLocation( void );
@@ -742,9 +742,9 @@ private:
 	int						AddGuiPDAData( const declType_t dataType, const char *listName, const idDeclPDA *src, idUserInterface *gui );
 	void					ExtractEmailInfo( const idStr &email, const char *scan, idStr &out );
 	void					UpdateObjectiveInfo( void );
-
+	
 	void					UseVehicle( bool drive );	// sikk - function modified to support use function
-
+	
 	void					Event_GetButtons( void );
 	void					Event_GetMove( void );
 	void					Event_GetViewAngles( void );

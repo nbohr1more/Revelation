@@ -96,17 +96,17 @@ public:
 		light = 1.0;
 		worldDirty = true;
 	}
-
+	
 	idGLDrawableMaterial() {
 		material = NULL;
 		light = 1.0;
 		worldDirty = true;
 		realTime = 50;
 	}
-
+	
 	~idGLDrawableMaterial() {
 	}
-
+	
 	virtual void setMedia( const char *name );
 	virtual void draw( int x, int y, int w, int h );
 	virtual void buttonUp( int button ) {}
@@ -115,7 +115,7 @@ public:
 	virtual void Update() {
 		worldDirty = true ;
 	};
-
+	
 protected:
 	const idMaterial *material;
 	bool worldDirty;
@@ -126,13 +126,13 @@ class idGLDrawableModel : public idGLDrawableWorld {
 public:
 
 	idGLDrawableModel( const char *name );
-
+	
 	idGLDrawableModel();
-
+	
 	~idGLDrawableModel() {}
-
+	
 	virtual void setMedia( const char *name );
-
+	
 	virtual void buttonDown( int button, float x, float y );
 	virtual void mouseMove( float x, float y );
 	virtual void draw( int x, int y, int w, int h );
@@ -143,7 +143,7 @@ public:
 		return false;
 	}
 	void SetSkin( const char *skin );
-
+	
 protected:
 	bool worldDirty;
 	float light;
@@ -152,7 +152,7 @@ protected:
 	idVec3 lastPress;
 	float radius;
 	idVec4 rect;
-
+	
 };
 
 class idGLDrawableConsole : public idGLDrawable {
@@ -160,20 +160,20 @@ public:
 
 	idGLDrawableConsole() {
 	}
-
+	
 	~idGLDrawableConsole() {
 	}
-
+	
 	virtual void setMedia( const char *name ) {
 	}
-
-
+	
+	
 	virtual void draw( int x, int y, int w, int h );
-
+	
 	virtual int getRealTime() {
 		return 0;
 	};
-
+	
 protected:
 
 };
@@ -185,7 +185,7 @@ class idGLWidget : public CWnd {
 public:
 	idGLWidget();
 	void setDrawable( idGLDrawable *d );
-
+	
 	// Attributes
 public:
 
@@ -200,11 +200,11 @@ public:
 protected:
 	virtual BOOL PreCreateWindow( CREATESTRUCT &cs );
 	//}}AFX_VIRTUAL
-
+	
 	// Implementation
 public:
 	virtual ~idGLWidget();
-
+	
 	// Generated message map functions
 protected:
 	idGLDrawable *drawable;
@@ -222,7 +222,7 @@ protected:
 	afx_msg void OnTimer( UINT nIDEvent );
 	afx_msg BOOL OnEraseBkgnd( CDC *pDC );
 	//}}AFX_MSG
-
+	
 	DECLARE_MESSAGE_MAP()
 };
 
@@ -243,7 +243,7 @@ protected:
 	afx_msg void OnLButtonDown( UINT nFlags, CPoint point );
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-
+	
 };
 
 /////////////////////////////////////////////////////////////////////////////

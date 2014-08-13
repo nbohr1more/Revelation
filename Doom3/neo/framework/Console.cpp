@@ -55,65 +55,65 @@ public:
 	virtual	void		Close( void );
 	virtual	void		Print( const char *text );
 	virtual	void		Draw( bool forceFullScreen );
-
+	
 	void				Dump( const char *toFile );
 	void				Clear();
-
+	
 	//============================
-
+	
 	const idMaterial 	*charSetShader;
-
+	
 private:
 	void				KeyDownEvent( int key );
-
+	
 	void				Linefeed();
-
+	
 	void				PageUp();
 	void				PageDown();
 	void				Top();
 	void				Bottom();
-
+	
 	void				DrawInput();
 	void				DrawNotify();
 	void				DrawSolidConsole( float frac );
-
+	
 	void				Scroll();
 	void				SetDisplayFraction( float frac );
 	void				UpdateDisplayFraction( void );
-
+	
 	//============================
-
+	
 	bool				keyCatching;
-
+	
 	short				text[CON_TEXTSIZE];
 	int					current;		// line where next message will be printed
 	int					x;				// offset in current line for next print
 	int					display;		// bottom of console displays this line
 	int					lastKeyEvent;	// time of last key event for scroll delay
 	int					nextKeyEvent;	// keyboard repeat rate
-
+	
 	float				displayFrac;	// approaches finalFrac at scr_conspeed
 	float				finalFrac;		// 0.0 to 1.0 lines of console to display
 	int					fracTime;		// time of last displayFrac update
-
+	
 	int					vislines;		// in scanlines
-
+	
 	int					times[NUM_CON_TIMES];	// cls.realtime time the line was generated
 	// for transparent notify lines
 	idVec4				color;
-
+	
 	idEditField			historyEditLines[COMMAND_HISTORY];
-
+	
 	int					nextHistoryLine;// the last line in the history buffer, not masked
 	int					historyLine;	// the line being displayed from history buffer
 	// will be <= nextHistoryLine
-
+	
 	idEditField			consoleField;
-
+	
 	static idCVar		con_speed;
 	static idCVar		con_notifyTime;
 	static idCVar		con_noPrint;
-
+	
 	const idMaterial 	*whiteShader;
 	const idMaterial 	*consoleShader;
 };

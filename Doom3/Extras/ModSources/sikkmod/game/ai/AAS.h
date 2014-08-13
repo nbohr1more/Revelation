@@ -111,7 +111,7 @@ public:
 	virtual void				ShowFlyPath( const idVec3 &origin, int goalAreaNum, const idVec3 &goalOrigin ) const = 0;
 	// Find the nearest goal which satisfies the callback.
 	virtual bool				FindNearestGoal( aasGoal_t &goal, int areaNum, const idVec3 origin, const idVec3 &target, int travelFlags, aasObstacle_t *obstacles, int numObstacles, idAASCallback &callback ) const = 0;
-
+	
 	// Returns the number of areas in the current aas file.
 	virtual int					GetNumAreas( int aasNum ) const = 0;	// sikk - Random Encounters System
 };

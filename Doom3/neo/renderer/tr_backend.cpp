@@ -44,7 +44,7 @@ may touch, including the editor.
 void RB_SetDefaultGLState( void ) {
 	int		i;
 	glClearDepth( 1.0f );
-	glColor4f( 1, 1, 1, 1 );
+	GL_Color( 1.0f, 1.0f, 1.0f, 1.0f );
 	// the vertex array is always enabled
 	glEnableClientState( GL_VERTEX_ARRAY );
 	glEnableClientState( GL_TEXTURE_COORD_ARRAY );
@@ -54,7 +54,7 @@ void RB_SetDefaultGLState( void ) {
 	//
 	memset( &backEnd.glState, 0, sizeof( backEnd.glState ) );
 	backEnd.glState.forceGlState = true;
-	glColorMask( 1, 1, 1, 1 );
+	glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
 	glEnable( GL_DEPTH_TEST );
 	glEnable( GL_BLEND );
 	glEnable( GL_SCISSOR_TEST );
@@ -248,12 +248,6 @@ void GL_State( int stateBits ) {
 		} else {
 			glDepthFunc( GL_LEQUAL );
 		}
-
-		if (stateBits & GLS_DEPTHFUNC_LESS) {
-			glEnable( GL_DEPTH_CLAMP );
-		} else {
-			glDisable( GL_DEPTH_CLAMP );
-		}
 	}
 	//
 	// check blend bits
@@ -384,8 +378,94 @@ void GL_State( int stateBits ) {
 	backEnd.glState.glStateBits = stateBits;
 }
 
+/*
+============================================================================
 
+RENDER BACK END COLOR WRAPPERS
 
+============================================================================
+*/
+
+/*
+====================
+GL_Color
+====================
+*/
+void GL_Color( const idVec3 &color ) {
+	GLfloat parm[4];
+	parm[0] = idMath::ClampFloat( 0.0f, 1.0f, color[0] );
+	parm[1] = idMath::ClampFloat( 0.0f, 1.0f, color[1] );
+	parm[2] = idMath::ClampFloat( 0.0f, 1.0f, color[2] );
+	glColor3f( parm[0], parm[1], parm[2] );
+}
+
+/*
+====================
+GL_Color
+====================
+*/
+void GL_Color( const idVec4 &color ) {
+	GLfloat parm[4];
+	parm[0] = idMath::ClampFloat( 0.0f, 1.0f, color[0] );
+	parm[1] = idMath::ClampFloat( 0.0f, 1.0f, color[1] );
+	parm[2] = idMath::ClampFloat( 0.0f, 1.0f, color[2] );
+	parm[3] = idMath::ClampFloat( 0.0f, 1.0f, color[3] );
+	glColor4f( parm[0], parm[1], parm[2], parm[3] );
+}
+
+/*
+====================
+GL_Color
+====================
+*/
+void GL_Color( float r, float g, float b ) {
+	GLfloat parm[3];
+	parm[0] = idMath::ClampFloat( 0.0f, 1.0f, r );
+	parm[1] = idMath::ClampFloat( 0.0f, 1.0f, g );
+	parm[2] = idMath::ClampFloat( 0.0f, 1.0f, b );
+	glColor3f( parm[0], parm[1], parm[2] );
+}
+
+/*
+====================
+GL_Color
+====================
+*/
+void GL_Color( float r, float g, float b, float a ) {
+	GLfloat parm[4];
+	parm[0] = idMath::ClampFloat( 0.0f, 1.0f, r );
+	parm[1] = idMath::ClampFloat( 0.0f, 1.0f, g );
+	parm[2] = idMath::ClampFloat( 0.0f, 1.0f, b );
+	parm[3] = idMath::ClampFloat( 0.0f, 1.0f, a );
+	glColor4f( parm[0], parm[1], parm[2], parm[3] );
+}
+
+/*
+====================
+GL_Color
+====================
+*/
+void GL_Color( byte r, byte g, byte b ) {
+	GLubyte parm[3];
+	parm[0] = idMath::ClampByte( 0, 255, r );
+	parm[1] = idMath::ClampByte( 0, 255, g );
+	parm[2] = idMath::ClampByte( 0, 255, b );
+	glColor3ub( parm[0], parm[1], parm[2] );
+}
+
+/*
+====================
+GL_Color
+====================
+*/
+void GL_Color( byte r, byte g, byte b, byte a ) {
+	GLubyte parm[4];
+	parm[0] = idMath::ClampByte( 0, 255, r );
+	parm[1] = idMath::ClampByte( 0, 255, g );
+	parm[2] = idMath::ClampByte( 0, 255, b );
+	parm[3] = idMath::ClampByte( 0, 255, a );
+	glColor4ub( parm[0], parm[1], parm[2], parm[3] );
+}
 
 /*
 ============================================================================
@@ -404,7 +484,7 @@ This is not used by the normal game paths, just by some tools
 */
 void RB_SetGL2D( void ) {
 	// set 2D virtual screen size
-	glViewport( 0, 0, glConfig.vidWidth, glConfig.vidHeight );
+	GL_Viewport( 0, 0, glConfig.vidWidth, glConfig.vidHeight );
 	if( r_useScissor.GetBool() ) {
 		GL_Scissor( 0, 0, glConfig.vidWidth, glConfig.vidHeight );
 	}
@@ -413,9 +493,7 @@ void RB_SetGL2D( void ) {
 	glOrtho( 0, 640, 480, 0, 0, 1 );		// always assume 640x480 virtual coordinates
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
-	GL_State( GLS_DEPTHFUNC_ALWAYS |
-			  GLS_SRCBLEND_SRC_ALPHA |
-			  GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA );
+	GL_State( GLS_DEPTHFUNC_ALWAYS | GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA );
 	GL_Cull( CT_TWO_SIDED );
 	glDisable( GL_DEPTH_TEST );
 	glDisable( GL_STENCIL_TEST );

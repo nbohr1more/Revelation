@@ -42,8 +42,7 @@
 
 /* Private subobject */
 
-typedef struct
-{
+typedef struct {
 	struct jpeg_upsampler pub;	/* public fields */
 	
 	/* Pointer to routine to do actual upsampling/conversion of one row group */
@@ -82,8 +81,7 @@ typedef my_upsampler *my_upsample_ptr;
  */
 
 LOCAL( void )
-build_ycc_rgb_table( j_decompress_ptr cinfo )
-{
+build_ycc_rgb_table( j_decompress_ptr cinfo ) {
 	my_upsample_ptr upsample = ( my_upsample_ptr ) cinfo->upsample;
 	int i;
 	INT32 x;
@@ -102,8 +100,7 @@ build_ycc_rgb_table( j_decompress_ptr cinfo )
 						 ( *cinfo->mem->alloc_small )( ( j_common_ptr ) cinfo, JPOOL_IMAGE,
 								 ( MAXJSAMPLE + 1 ) * SIZEOF( INT32 ) );
 								 
-	for( i = 0, x = -CENTERJSAMPLE; i <= MAXJSAMPLE; i++, x++ )
-	{
+	for( i = 0, x = -CENTERJSAMPLE; i <= MAXJSAMPLE; i++, x++ ) {
 		/* i is the actual input pixel value, in the range 0..MAXJSAMPLE */
 		/* The Cb or Cr value we are thinking of is x = i - CENTERJSAMPLE */
 		/* Cr=>R value is nearest int to 1.402 * x */
@@ -126,8 +123,7 @@ build_ycc_rgb_table( j_decompress_ptr cinfo )
  */
 
 METHODDEF( void )
-start_pass_merged_upsample( j_decompress_ptr cinfo )
-{
+start_pass_merged_upsample( j_decompress_ptr cinfo ) {
 	my_upsample_ptr upsample = ( my_upsample_ptr ) cinfo->upsample;
 	
 	/* Mark the spare buffer empty */
@@ -155,37 +151,29 @@ merged_2v_upsample( j_decompress_ptr cinfo,
 	JSAMPROW work_ptrs[2];
 	JDIMENSION num_rows;		/* number of rows returned to caller */
 	
-	if( upsample->spare_full )
-	{
+	if( upsample->spare_full ) {
 		/* If we have a spare row saved from a previous cycle, just return it. */
 		jcopy_sample_rows( & upsample->spare_row, 0, output_buf + *out_row_ctr, 0,
 						   1, upsample->out_row_width );
 		num_rows = 1;
 		upsample->spare_full = FALSE;
-	}
-	else
-	{
+	} else {
 		/* Figure number of rows to return to caller. */
 		num_rows = 2;
 		/* Not more than the distance to the end of the image. */
-		if( num_rows > upsample->rows_to_go )
-		{
+		if( num_rows > upsample->rows_to_go ) {
 			num_rows = upsample->rows_to_go;
 		}
 		/* And not more than what the client can accept: */
 		out_rows_avail -= *out_row_ctr;
-		if( num_rows > out_rows_avail )
-		{
+		if( num_rows > out_rows_avail ) {
 			num_rows = out_rows_avail;
 		}
 		/* Create output pointer array for upsampler. */
 		work_ptrs[0] = output_buf[*out_row_ctr];
-		if( num_rows > 1 )
-		{
+		if( num_rows > 1 ) {
 			work_ptrs[1] = output_buf[*out_row_ctr + 1];
-		}
-		else
-		{
+		} else {
 			work_ptrs[1] = upsample->spare_row;
 			upsample->spare_full = TRUE;
 		}
@@ -197,8 +185,7 @@ merged_2v_upsample( j_decompress_ptr cinfo,
 	*out_row_ctr += num_rows;
 	upsample->rows_to_go -= num_rows;
 	/* When the buffer is emptied, declare this input row group consumed */
-	if( ! upsample->spare_full )
-	{
+	if( ! upsample->spare_full ) {
 		( *in_row_group_ctr )++;
 	}
 }
@@ -240,8 +227,7 @@ merged_1v_upsample( j_decompress_ptr cinfo,
 METHODDEF( void )
 h2v1_merged_upsample( j_decompress_ptr cinfo,
 					  JSAMPIMAGE input_buf, JDIMENSION in_row_group_ctr,
-					  JSAMPARRAY output_buf )
-{
+					  JSAMPARRAY output_buf ) {
 	my_upsample_ptr upsample = ( my_upsample_ptr ) cinfo->upsample;
 	register int y, cred, cgreen, cblue;
 	int cb, cr;
@@ -261,8 +247,7 @@ h2v1_merged_upsample( j_decompress_ptr cinfo,
 	inptr2 = input_buf[2][in_row_group_ctr];
 	outptr = output_buf[0];
 	/* Loop for each pair of output pixels */
-	for( col = cinfo->output_width >> 1; col > 0; col-- )
-	{
+	for( col = cinfo->output_width >> 1; col > 0; col-- ) {
 		/* Do the chroma part of the calculation */
 		cb = GETJSAMPLE( *inptr1++ );
 		cr = GETJSAMPLE( *inptr2++ );
@@ -282,8 +267,7 @@ h2v1_merged_upsample( j_decompress_ptr cinfo,
 		outptr += RGB_PIXELSIZE;
 	}
 	/* If image width is odd, do the last output column separately */
-	if( cinfo->output_width & 1 )
-	{
+	if( cinfo->output_width & 1 ) {
 		cb = GETJSAMPLE( *inptr1 );
 		cr = GETJSAMPLE( *inptr2 );
 		cred = Crrtab[cr];
@@ -304,8 +288,7 @@ h2v1_merged_upsample( j_decompress_ptr cinfo,
 METHODDEF( void )
 h2v2_merged_upsample( j_decompress_ptr cinfo,
 					  JSAMPIMAGE input_buf, JDIMENSION in_row_group_ctr,
-					  JSAMPARRAY output_buf )
-{
+					  JSAMPARRAY output_buf ) {
 	my_upsample_ptr upsample = ( my_upsample_ptr ) cinfo->upsample;
 	register int y, cred, cgreen, cblue;
 	int cb, cr;
@@ -327,8 +310,7 @@ h2v2_merged_upsample( j_decompress_ptr cinfo,
 	outptr0 = output_buf[0];
 	outptr1 = output_buf[1];
 	/* Loop for each group of output pixels */
-	for( col = cinfo->output_width >> 1; col > 0; col-- )
-	{
+	for( col = cinfo->output_width >> 1; col > 0; col-- ) {
 		/* Do the chroma part of the calculation */
 		cb = GETJSAMPLE( *inptr1++ );
 		cr = GETJSAMPLE( *inptr2++ );
@@ -358,8 +340,7 @@ h2v2_merged_upsample( j_decompress_ptr cinfo,
 		outptr1 += RGB_PIXELSIZE;
 	}
 	/* If image width is odd, do the last output column separately */
-	if( cinfo->output_width & 1 )
-	{
+	if( cinfo->output_width & 1 ) {
 		cb = GETJSAMPLE( *inptr1 );
 		cr = GETJSAMPLE( *inptr2 );
 		cred = Crrtab[cr];
@@ -386,8 +367,7 @@ h2v2_merged_upsample( j_decompress_ptr cinfo,
  */
 
 GLOBAL( void )
-jinit_merged_upsampler( j_decompress_ptr cinfo )
-{
+jinit_merged_upsampler( j_decompress_ptr cinfo ) {
 	my_upsample_ptr upsample;
 	
 	upsample = ( my_upsample_ptr )
@@ -399,17 +379,14 @@ jinit_merged_upsampler( j_decompress_ptr cinfo )
 	
 	upsample->out_row_width = cinfo->output_width * cinfo->out_color_components;
 	
-	if( cinfo->max_v_samp_factor == 2 )
-	{
+	if( cinfo->max_v_samp_factor == 2 ) {
 		upsample->pub.upsample = merged_2v_upsample;
 		upsample->upmethod = h2v2_merged_upsample;
 		/* Allocate a spare row buffer */
 		upsample->spare_row = ( JSAMPROW )
 							  ( *cinfo->mem->alloc_large )( ( j_common_ptr ) cinfo, JPOOL_IMAGE,
 									  ( size_t )( upsample->out_row_width * SIZEOF( JSAMPLE ) ) );
-	}
-	else
-	{
+	} else {
 		upsample->pub.upsample = merged_1v_upsample;
 		upsample->upmethod = h2v1_merged_upsample;
 		/* No spare row needed */

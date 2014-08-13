@@ -39,7 +39,7 @@ class idWinVar {
 public:
 	idWinVar();
 	virtual ~idWinVar();
-
+	
 	void SetGuiInfo( idDict *gd, const char *_name );
 	const char *GetName() const {
 		if( name ) {
@@ -58,20 +58,20 @@ public:
 			strcpy( name, _name );
 		}
 	}
-
+	
 	idWinVar &operator=( const idWinVar &other ) {
 		guiDict = other.guiDict;
 		SetName( other.name );
 		return *this;
 	}
-
+	
 	idDict *GetDict() const {
 		return guiDict;
 	}
 	bool NeedsUpdate() {
 		return ( guiDict != NULL );
 	}
-
+	
 	virtual void Init( const char *_name, idWindow *win ) = 0;
 	virtual void Set( const char *val ) = 0;
 	virtual void Update() = 0;
@@ -80,19 +80,19 @@ public:
 		size_t sz = ( name ) ? strlen( name ) : 0;
 		return sz + sizeof( *this );
 	}
-
+	
 	virtual void WriteToSaveGame( idFile *savefile ) = 0;
 	virtual void ReadFromSaveGame( idFile *savefile ) = 0;
-
+	
 	virtual float x( void ) const = 0;
-
+	
 	void SetEval( bool b ) {
 		eval = b;
 	}
 	bool GetEval() {
 		return eval;
 	}
-
+	
 protected:
 	idDict *guiDict;
 	char *name;
@@ -124,29 +124,29 @@ public:
 		data = other.data;
 		return *this;
 	}
-
+	
 	operator bool() const {
 		return data;
 	}
-
+	
 	virtual void Set( const char *val ) {
 		data = ( atoi( val ) != 0 );
 		if( guiDict ) {
 			guiDict->SetBool( GetName(), data );
 		}
 	}
-
+	
 	virtual void Update() {
 		const char *s = GetName();
 		if( guiDict && s[0] != '\0' ) {
 			data = guiDict->GetBool( s );
 		}
 	}
-
+	
 	virtual const char *c_str() const {
 		return va( "%i", data );
 	}
-
+	
 	// SaveGames
 	virtual void WriteToSaveGame( idFile *savefile ) {
 		savefile->Write( &eval, sizeof( eval ) );
@@ -156,11 +156,11 @@ public:
 		savefile->Read( &eval, sizeof( eval ) );
 		savefile->Read( &data, sizeof( data ) );
 	}
-
+	
 	virtual float x( void ) const {
 		return data ? 1.0f : 0.0f;
 	};
-
+	
 protected:
 	bool data;
 };
@@ -220,26 +220,26 @@ public:
 	virtual const char *c_str() const {
 		return data.c_str();
 	}
-
+	
 	virtual void Set( const char *val ) {
 		data = val;
 		if( guiDict ) {
 			guiDict->Set( GetName(), data );
 		}
 	}
-
+	
 	virtual void Update() {
 		const char *s = GetName();
 		if( guiDict && s[0] != '\0' ) {
 			data = guiDict->GetString( s );
 		}
 	}
-
+	
 	virtual size_t Size() {
 		size_t sz = idWinVar::Size();
 		return sz + data.Allocated();
 	}
-
+	
 	// SaveGames
 	virtual void WriteToSaveGame( idFile *savefile ) {
 		savefile->Write( &eval, sizeof( eval ) );
@@ -258,12 +258,12 @@ public:
 			savefile->Read( &data[0], len );
 		}
 	}
-
+	
 	// return wether string is emtpy
 	virtual float x( void ) const {
 		return data[0] ? 1.0f : 0.0f;
 	};
-
+	
 protected:
 	idStr data;
 };
@@ -299,7 +299,7 @@ public:
 			guiDict->SetInt( GetName(), data );
 		}
 	}
-
+	
 	virtual void Update() {
 		const char *s = GetName();
 		if( guiDict && s[0] != '\0' ) {
@@ -309,7 +309,7 @@ public:
 	virtual const char *c_str() const {
 		return va( "%i", data );
 	}
-
+	
 	// SaveGames
 	virtual void WriteToSaveGame( idFile *savefile ) {
 		savefile->Write( &eval, sizeof( eval ) );
@@ -319,13 +319,13 @@ public:
 		savefile->Read( &eval, sizeof( eval ) );
 		savefile->Read( &data, sizeof( data ) );
 	}
-
+	
 	// no suitable conversion
 	virtual float x( void ) const {
 		assert( false );
 		return 0.0f;
 	};
-
+	
 protected:
 	int data;
 };
@@ -370,7 +370,7 @@ public:
 	virtual const char *c_str() const {
 		return va( "%f", data );
 	}
-
+	
 	virtual void WriteToSaveGame( idFile *savefile ) {
 		savefile->Write( &eval, sizeof( eval ) );
 		savefile->Write( &data, sizeof( data ) );
@@ -379,7 +379,7 @@ public:
 		savefile->Read( &eval, sizeof( eval ) );
 		savefile->Read( &data, sizeof( data ) );
 	}
-
+	
 	virtual float x( void ) const {
 		return data;
 	};
@@ -401,11 +401,11 @@ public:
 			data.h = v.w;
 		}
 	}
-
+	
 	int	operator==(	const idRectangle &other ) const {
 		return ( other == data );
 	}
-
+	
 	idWinRectangle &operator=( const idWinRectangle &other ) {
 		idWinVar::operator=( other );
 		data = other.data;
@@ -418,7 +418,7 @@ public:
 		}
 		return data;
 	}
-
+	
 	idRectangle &operator=(	const idRectangle &other ) {
 		data = other;
 		if( guiDict ) {
@@ -427,11 +427,11 @@ public:
 		}
 		return data;
 	}
-
+	
 	operator const idRectangle &() const {
 		return data;
 	}
-
+	
 	float x() const {
 		return data.x;
 	}
@@ -476,11 +476,11 @@ public:
 			data.h = v.w;
 		}
 	}
-
+	
 	virtual const char *c_str() const {
 		return data.ToVec4().ToString();
 	}
-
+	
 	virtual void WriteToSaveGame( idFile *savefile ) {
 		savefile->Write( &eval, sizeof( eval ) );
 		savefile->Write( &data, sizeof( data ) );
@@ -489,7 +489,7 @@ public:
 		savefile->Read( &eval, sizeof( eval ) );
 		savefile->Read( &data, sizeof( data ) );
 	}
-
+	
 protected:
 	idRectangle data;
 };
@@ -512,7 +512,7 @@ public:
 		data = other.data;
 		return *this;
 	}
-
+	
 	idVec2 &operator=(	const idVec2 &other ) {
 		data = other;
 		if( guiDict ) {
@@ -551,7 +551,7 @@ public:
 	void Zero() {
 		data.Zero();
 	}
-
+	
 	virtual void WriteToSaveGame( idFile *savefile ) {
 		savefile->Write( &eval, sizeof( eval ) );
 		savefile->Write( &data, sizeof( data ) );
@@ -560,7 +560,7 @@ public:
 		savefile->Read( &eval, sizeof( eval ) );
 		savefile->Read( &data, sizeof( data ) );
 	}
-
+	
 protected:
 	idVec2 data;
 };
@@ -593,19 +593,19 @@ public:
 	operator const idVec4 &() const {
 		return data;
 	}
-
+	
 	float x() const {
 		return data.x;
 	}
-
+	
 	float y() const {
 		return data.y;
 	}
-
+	
 	float z() const {
 		return data.z;
 	}
-
+	
 	float w() const {
 		return data.w;
 	}
@@ -628,18 +628,18 @@ public:
 	virtual const char *c_str() const {
 		return data.ToString();
 	}
-
+	
 	void Zero() {
 		data.Zero();
 		if( guiDict ) {
 			guiDict->SetVec4( GetName(), data );
 		}
 	}
-
+	
 	const idVec3 &ToVec3() const {
 		return data.ToVec3();
 	}
-
+	
 	virtual void WriteToSaveGame( idFile *savefile ) {
 		savefile->Write( &eval, sizeof( eval ) );
 		savefile->Write( &data, sizeof( data ) );
@@ -648,7 +648,7 @@ public:
 		savefile->Read( &eval, sizeof( eval ) );
 		savefile->Read( &data, sizeof( data ) );
 	}
-
+	
 protected:
 	idVec4 data;
 };
@@ -681,19 +681,19 @@ public:
 	operator const idVec3 &() const {
 		return data;
 	}
-
+	
 	float x() const {
 		return data.x;
 	}
-
+	
 	float y() const {
 		return data.y;
 	}
-
+	
 	float z() const {
 		return data.z;
 	}
-
+	
 	virtual void Set( const char *val ) {
 		sscanf( val, "%f %f %f", &data.x, &data.y, &data.z );
 		if( guiDict ) {
@@ -709,14 +709,14 @@ public:
 	virtual const char *c_str() const {
 		return data.ToString();
 	}
-
+	
 	void Zero() {
 		data.Zero();
 		if( guiDict ) {
 			guiDict->SetVector( GetName(), data );
 		}
 	}
-
+	
 	virtual void WriteToSaveGame( idFile *savefile ) {
 		savefile->Write( &eval, sizeof( eval ) );
 		savefile->Write( &data, sizeof( data ) );
@@ -725,7 +725,7 @@ public:
 		savefile->Read( &eval, sizeof( eval ) );
 		savefile->Read( &data, sizeof( data ) );
 	}
-
+	
 protected:
 	idVec3 data;
 };
@@ -790,7 +790,7 @@ public:
 	virtual const char *c_str() const {
 		return data.c_str();
 	}
-
+	
 	virtual void Set( const char *val ) {
 		data = val;
 		if( guiDict ) {
@@ -804,7 +804,7 @@ public:
 			}
 		}
 	}
-
+	
 	virtual void Update() {
 		const char *s = GetName();
 		if( guiDict && s[0] != '\0' ) {
@@ -818,16 +818,16 @@ public:
 			}
 		}
 	}
-
+	
 	virtual size_t Size() {
 		size_t sz = idWinVar::Size();
 		return sz + data.Allocated();
 	}
-
+	
 	void SetMaterialPtr( const idMaterial **m ) {
 		mat = m;
 	}
-
+	
 	virtual void WriteToSaveGame( idFile *savefile ) {
 		savefile->Write( &eval, sizeof( eval ) );
 		int len = data.Length();
@@ -852,7 +852,7 @@ public:
 			}
 		}
 	}
-
+	
 protected:
 	idStr data;
 	const idMaterial **mat;

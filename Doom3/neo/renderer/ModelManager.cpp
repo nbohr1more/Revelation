@@ -37,7 +37,7 @@ class idRenderModelManagerLocal : public idRenderModelManager {
 public:
 	idRenderModelManagerLocal();
 	virtual					~idRenderModelManagerLocal() {}
-
+	
 	virtual void			Init();
 	virtual void			Shutdown();
 	virtual idRenderModel 	*AllocModel();
@@ -52,9 +52,9 @@ public:
 	virtual void			WritePrecacheCommands( idFile *file );
 	virtual void			BeginLevelLoad();
 	virtual void			EndLevelLoad();
-
+	
 	virtual	void			PrintMemInfo( MemInfo_t *mi );
-
+	
 private:
 	idList<idRenderModel *>	models;
 	idHashIndex				hash;
@@ -63,9 +63,9 @@ private:
 	idRenderModel 			*spriteModel;
 	idRenderModel 			*trailModel;
 	bool					insideLevelLoad;		// don't actually load now
-
+	
 	idRenderModel 			*GetModel( const char *modelName, bool createIfNotFound );
-
+	
 	static void				PrintModel_f( const idCmdArgs &args );
 	static void				ListModels_f( const idCmdArgs &args );
 	static void				ReloadModels_f( const idCmdArgs &args );

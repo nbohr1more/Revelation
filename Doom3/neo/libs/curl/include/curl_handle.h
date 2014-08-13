@@ -14,18 +14,18 @@ using curl::curl_multi;
 
 class curl_multi::curl_handle {
 public:
-    // This object wraps a curl message
-    class curl_message;
-    explicit curl_handle(curl_multi &);
-    curl_handle(const curl_handle &);
-    curl_handle &operator=(const curl_handle &);
-    ~curl_handle();
-    void add(const curl_easy &);
-    void remove(const curl_easy &);
-    vector<curl_message> read_info();
+	// This object wraps a curl message
+	class curl_message;
+	explicit curl_handle( curl_multi & );
+	curl_handle( const curl_handle & );
+	curl_handle &operator=( const curl_handle & );
+	~curl_handle();
+	void add( const curl_easy & );
+	void remove( const curl_easy & );
+	vector<curl_message> read_info();
 private:
-    vector<curl_easy> handlers;
-    curl_multi &multi;
+	vector<curl_easy> handlers;
+	curl_multi &multi;
 };
 
 #endif /* defined(__curlcpp__curl_handle__) */

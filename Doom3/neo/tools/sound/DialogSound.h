@@ -39,17 +39,17 @@ If you have questions concerning this license or the applicable additional terms
 class CDialogSound : public CDialog {
 public:
 	CDialogSound( CWnd *pParent = NULL ); // standard constructor\
-
+	
 	void					Set( const idDict *source );
 	void					Get( idDict *dest );
-
+	
 	enum { NONE, SOUNDS, SOUNDPARENT, WAVES, WAVEDIR, INUSESOUNDS };
-
+	
 	//{{AFX_VIRTUAL(CDialogSound)
 	virtual BOOL			OnInitDialog();
 	virtual void			DoDataExchange( CDataExchange *pDX );  // DDX/DDV support
 	//}}AFX_VIRTUAL
-
+	
 protected:
 	//{{AFX_MSG(CDialogSound)
 	afx_msg void			OnActivate( UINT nState, CWnd *pWndOther, BOOL bMinimized );
@@ -84,9 +84,9 @@ protected:
 	afx_msg void			OnBtnRefreshspeakers();
 	afx_msg void			OnBtnRefreshwave();
 	//}}AFX_MSG
-
+	
 	DECLARE_MESSAGE_MAP()
-
+	
 private:
 	//{{AFX_DATA(CDialogSound)
 	enum					{ IDD = IDD_DIALOG_SOUND };
@@ -113,7 +113,7 @@ private:
 	BOOL					looping;
 	BOOL					unclamped;
 	//}}AFX_DATA
-
+	
 	CString					playSound;
 	idHashTable<HTREEITEM>	quickTree;
 	HTREEITEM				inUseTree;

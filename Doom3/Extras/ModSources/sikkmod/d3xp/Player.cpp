@@ -963,7 +963,8 @@ bool idInventory::HasEmptyClipCannotRefill( const char *weapon_classname, idPlay
 	}
 	const idDeclEntityDef *decl = gameLocal.FindEntityDef( weapon_classname, false );
 	if( !decl ) {
-		gameLocal.Error( "Unknown weapon in decl '%s'", weapon_classname );
+		gameLocal.Warning( "Unknown weapon in decl '%s'", weapon_classname );
+		return false;
 	}
 	int minclip = decl->dict.GetInt( "minclipsize" );
 	if( !minclip ) {
@@ -3359,7 +3360,7 @@ bool idPlayer::GivePowerUp( int powerup, int time ) {
 			if(gameLocal.isMultiplayer && !gameLocal.isClient) {
 				inventory.AddPickupName("#str_00100631", "", this);
 			}
-
+		
 			if ( baseSkinName.Length() ) {
 				powerUpSkin = declManager->FindSkin( baseSkinName + "_haste" );
 			}
@@ -7196,7 +7197,7 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 	damageDef->dict.GetInt( "knockback", "20", knockback );
 	/*#ifdef _D3XP
 		idPlayer *player = attacker->IsType( idPlayer::Type ) ? static_cast<idPlayer*>(attacker) : NULL;
-
+	
 		if ( gameLocal.mpGame.IsGametypeTeamBased()
 			&& !gameLocal.serverInfo.GetBool( "si_teamDamage" )
 			&& !damageDef->dict.GetBool( "noTeam" )

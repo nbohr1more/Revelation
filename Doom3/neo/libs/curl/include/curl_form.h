@@ -27,21 +27,21 @@ using curl::curl_error;
 
 // Simple class used to handle curl forms.
 namespace curl {
-    class curl_form {
-    public:
-        explicit curl_form();
-        ~curl_form() NOEXCEPT;
-        void add(const curl_pair<CURLformoption,string> &, const curl_pair<CURLformoption,string> &);
-        void add(const curl_pair<CURLformoption,string> &, const curl_pair<CURLformoption,string> &, const curl_pair<CURLformoption,string> &); 
-        void add(const curl_pair<CURLformoption,string> &, const curl_pair<CURLformoption,string> &, const curl_pair<CURLformoption,int> &); 
-        void add(const curl_pair<CURLformoption,string> &, const curl_pair<CURLformoption,int> &, const curl_pair<CURLformoption,string> &);
-        void add(const curl_pair<CURLformoption,string> &, const curl_pair<CURLformoption,string> &, const curl_pair<CURLformoption,int> &, const curl_pair<CURLformoption,string> &); 
-        void add(const curl_pair<CURLformoption,string> &, const vector<string> &);
-        struct curl_httppost *get() const;
-    private:
-        struct curl_httppost *form_post;
-        struct curl_httppost *last_ptr;
-    };
+class curl_form {
+public:
+	explicit curl_form();
+	~curl_form() NOEXCEPT;
+	void add( const curl_pair<CURLformoption, string> &, const curl_pair<CURLformoption, string> & );
+	void add( const curl_pair<CURLformoption, string> &, const curl_pair<CURLformoption, string> &, const curl_pair<CURLformoption, string> & );
+	void add( const curl_pair<CURLformoption, string> &, const curl_pair<CURLformoption, string> &, const curl_pair<CURLformoption, int> & );
+	void add( const curl_pair<CURLformoption, string> &, const curl_pair<CURLformoption, int> &, const curl_pair<CURLformoption, string> & );
+	void add( const curl_pair<CURLformoption, string> &, const curl_pair<CURLformoption, string> &, const curl_pair<CURLformoption, int> &, const curl_pair<CURLformoption, string> & );
+	void add( const curl_pair<CURLformoption, string> &, const vector<string> & );
+	struct curl_httppost *get() const;
+private:
+	struct curl_httppost *form_post;
+	struct curl_httppost *last_ptr;
+};
 }
 
 #endif /* defined(__curlcpp__curl_form__) */

@@ -42,7 +42,7 @@ class CDlgCamera : public CDialog {
 public:
 	CDlgCamera( CWnd *pParent = NULL ); // standard constructor
 	void setupFromCamera();
-
+	
 	// Dialog Data
 	//{{AFX_DATA(CDlgCamera)
 	enum { IDD = IDD_DLG_CAMERA };
@@ -57,15 +57,15 @@ public:
 	CString	m_strType;
 	int		m_editPoints;
 	//}}AFX_DATA
-
-
+	
+	
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CDlgCamera)
 protected:
 	virtual void DoDataExchange( CDataExchange *pDX );  // DDX/DDV support
 	//}}AFX_VIRTUAL
-
+	
 	// Implementation
 protected:
 	// Generated message map functions

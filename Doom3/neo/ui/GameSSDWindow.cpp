@@ -1695,7 +1695,7 @@ void idGameSSDWindow::OnNuke() {
 	//Check to see if a nuke ends the level
 	/*if(gameStats.levelStats.destroyedAsteroids >= levelData[gameStats.currentLevel].needToWin) {
 		LevelComplete();
-
+	
 	}*/
 }
 

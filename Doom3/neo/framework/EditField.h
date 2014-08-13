@@ -53,7 +53,7 @@ class idEditField {
 public:
 	idEditField();
 	~idEditField();
-
+	
 	void			Clear( void );
 	void			SetWidthInChars( int w );
 	void			SetCursor( int c );
@@ -67,7 +67,7 @@ public:
 	char 			*GetBuffer( void );
 	void			Draw( int x, int y, int width, bool showCursor, const idMaterial *material );
 	void			SetBuffer( const char *buffer );
-
+	
 private:
 	int				cursor;
 	int				scroll;

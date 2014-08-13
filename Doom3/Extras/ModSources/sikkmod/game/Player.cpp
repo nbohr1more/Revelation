@@ -614,7 +614,8 @@ idInventory::AmmoIndexForWeaponClass
 ammo_t idInventory::AmmoIndexForWeaponClass( const char *weapon_classname, int *ammoRequired ) {
 	const idDeclEntityDef *decl = gameLocal.FindEntityDef( weapon_classname, false );
 	if( !decl ) {
-		gameLocal.Error( "Unknown weapon in decl '%s'", weapon_classname );
+		gameLocal.Warning( "Unknown weapon in decl '%s'", weapon_classname );
+		return 0;
 	}
 	if( ammoRequired ) {
 		*ammoRequired = decl->dict.GetInt( "ammoRequired" );

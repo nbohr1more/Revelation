@@ -53,7 +53,7 @@ public:
 	int				FirstFrameSize( void );
 	int				JpegQuality( void );
 	bool			IsScaleable( void );
-
+	
 	idStr			outputFilename;
 	int				numInputFiles;
 private:
@@ -79,7 +79,7 @@ private:
 	int				firstframesize;
 	int				normalframesize;
 	int				jpegDefault;
-
+	
 	bool			scaleDown;
 	bool			twentyFourToThirty;
 	bool			encodeVideo;

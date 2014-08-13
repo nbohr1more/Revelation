@@ -110,7 +110,7 @@ typedef enum {
 
 typedef enum {
 	EXP_REG_TIME,
-
+	
 	EXP_REG_PARM0,
 	EXP_REG_PARM1,
 	EXP_REG_PARM2,
@@ -123,7 +123,7 @@ typedef enum {
 	EXP_REG_PARM9,
 	EXP_REG_PARM10,
 	EXP_REG_PARM11,
-
+	
 	EXP_REG_GLOBAL0,
 	EXP_REG_GLOBAL1,
 	EXP_REG_GLOBAL2,
@@ -132,7 +132,7 @@ typedef enum {
 	EXP_REG_GLOBAL5,
 	EXP_REG_GLOBAL6,
 	EXP_REG_GLOBAL7,
-
+	
 	EXP_REG_NUM_PREDEFINED
 } expRegister_t;
 
@@ -162,7 +162,7 @@ typedef struct {
 	texgen_t			texgen;
 	bool				hasMatrix;
 	int					matrix[2][3];	// we only allow a subset of the full projection matrix
-
+	
 	// dynamic image variables
 	dynamicidImage_t	dynamic;
 	int					width, height;
@@ -192,11 +192,11 @@ typedef struct {
 	int					vertexProgram;
 	int					numVertexParms;
 	int					vertexParms[MAX_VERTEX_PARMS][4];	// evaluated register indexes
-
+	
 	int					fragmentProgram;
 	int					numFragmentProgramImages;
 	idImage 			*fragmentProgramImages[MAX_FRAGMENT_IMAGES];
-
+	
 	idMegaTexture		*megaTexture;		// handles all the binding and parameter setting
 } newShaderStage_t;
 
@@ -212,7 +212,7 @@ typedef struct {
 	bool				ignoreAlphaTest;	// this stage should act as translucent, even
 	// if the surface is alpha tested
 	float				privatePolygonOffset;	// a per-stage polygon offset
-
+	
 	newShaderStage_t	*newStage;			// vertex / fragment program based stage
 } shaderStage_t;
 
@@ -228,19 +228,19 @@ typedef enum {
 	SS_GUI = -2,		// guis
 	SS_BAD = -1,
 	SS_OPAQUE,			// opaque
-
+	
 	SS_PORTAL_SKY,
-
+	
 	SS_DECAL,			// scorch marks, etc.
-
+	
 	SS_FAR,
 	SS_MEDIUM,			// normal translucent
 	SS_CLOSE,
-
+	
 	SS_ALMOST_NEAREST,	// gun smoke puffs
-
+	
 	SS_NEAREST,			// screen blood blobs
-
+	
 	SS_POST_PROCESS = 100	// after a screen copy to texture
 } materialSort_t;
 
@@ -286,11 +286,11 @@ typedef enum {
 	CONTENTS_AAS_SOLID			= BIT( 13 ),	// solid for AAS
 	CONTENTS_AAS_OBSTACLE		= BIT( 14 ),	// used to compile an obstacle into AAS that can be enabled/disabled
 	CONTENTS_FLASHLIGHT_TRIGGER	= BIT( 15 ),	// used for triggers that are activated by the flashlight
-
+	
 	// contents used by utils
 	CONTENTS_AREAPORTAL			= BIT( 20 ),	// portal separating renderer areas
 	CONTENTS_NOCSG				= BIT( 21 ),	// don't cut this brush with CSG operations in the editor
-
+	
 	CONTENTS_REMOVE_UTIL		= ~( CONTENTS_AREAPORTAL | CONTENTS_NOCSG )
 } contentsFlags_t;
 
@@ -324,7 +324,7 @@ typedef enum {
 	SURF_TYPE_BIT2				= BIT( 2 ),	// "
 	SURF_TYPE_BIT3				= BIT( 3 ),	// "
 	SURF_TYPE_MASK				= ( 1 << NUM_SURFACE_BITS ) - 1,
-
+	
 	SURF_NODAMAGE				= BIT( 4 ),	// never give falling damage
 	SURF_SLICK					= BIT( 5 ),	// effects game physics
 	SURF_COLLISION				= BIT( 6 ),	// collision surface
@@ -343,39 +343,39 @@ class idMaterial : public idDecl {
 public:
 	idMaterial();
 	virtual				~idMaterial();
-
+	
 	virtual size_t		Size( void ) const;
 	virtual bool		SetDefaultText( void );
 	virtual const char *DefaultDefinition( void ) const;
 	virtual bool		Parse( const char *text, const int textLength );
 	virtual void		FreeData( void );
 	virtual void		Print( void ) const;
-
+	
 	//BSM Nerve: Added for material editor
 	bool				Save( const char *fileName = NULL );
-
+	
 	// returns the internal image name for stage 0, which can be used
 	// for the renderer CaptureRenderToImage() call
 	// I'm not really sure why this needs to be virtual...
 	virtual const char	*ImageName( void ) const;
-
+	
 	void				ReloadImages( bool force ) const;
-
+	
 	// returns number of stages this material contains
 	const int			GetNumStages( void ) const {
 		return numStages;
 	}
-
+	
 	// get a specific stage
 	const shaderStage_t *GetStage( const int index ) const {
 		assert( index >= 0 && index < numStages );
 		return &stages[index];
 	}
-
+	
 	// get the first bump map stage, or NULL if not present.
 	// used for bumpy-specular
 	const shaderStage_t *GetBumpStage( void ) const;
-
+	
 	// returns true if the material will draw anything at all.  Triggers, portals,
 	// etc, will not have anything to draw.  A not drawn surface can still castShadow,
 	// which can be used to make a simplified shadow hull for a complex object set
@@ -383,48 +383,48 @@ public:
 	bool				IsDrawn( void ) const {
 		return ( numStages > 0 || entityGui != 0 || gui != NULL );
 	}
-
+	
 	// returns true if the material will draw any non light interaction stages
 	bool				HasAmbient( void ) const {
 		return ( numAmbientStages > 0 );
 	}
-
+	
 	// returns true if material has a gui
 	bool				HasGui( void ) const {
 		return ( entityGui != 0 || gui != NULL );
 	}
-
+	
 	// returns true if the material will generate another view, either as
 	// a mirror or dynamic rendered image
 	bool				HasSubview( void ) const {
 		return hasSubview;
 	}
-
+	
 	// returns true if the material will generate shadows, not making a
 	// distinction between global and no-self shadows
 	bool				SurfaceCastsShadow( void ) const {
 		return TestMaterialFlag( MF_FORCESHADOWS ) || !TestMaterialFlag( MF_NOSHADOWS );
 	}
-
+	
 	// returns true if the material will generate interactions with fog/blend lights
 	// All non-translucent surfaces receive fog unless they are explicitly noFog
 	bool				ReceivesFog( void ) const {
 		return ( IsDrawn() && !noFog && coverage != MC_TRANSLUCENT );
 	}
-
+	
 	// returns true if the material will generate interactions with normal lights
 	// Many special effect surfaces don't have any bump/diffuse/specular
 	// stages, and don't interact with lights at all
 	bool				ReceivesLighting( void ) const {
 		return numAmbientStages != numStages;
 	}
-
+	
 	// returns true if the material should generate interactions on sides facing away
 	// from light centers, as with noshadow and noselfshadow options
 	bool				ReceivesLightingOnBackSides( void ) const {
 		return ( materialFlags & ( MF_NOSELFSHADOW | MF_NOSHADOWS ) ) != 0;
 	}
-
+	
 	// Standard two-sided triangle rendering won't work with bump map lighting, because
 	// the normal and tangent vectors won't be correct for the back sides.  When two
 	// sided lighting is desired. typically for alpha tested surfaces, this is
@@ -433,21 +433,21 @@ public:
 	bool				ShouldCreateBackSides( void ) const {
 		return shouldCreateBackSides;
 	}
-
+	
 	// characters and models that are created by a complete renderbump can use a faster
 	// method of tangent and normal vector generation than surfaces which have a flat
 	// renderbump wrapped over them.
 	bool				UseUnsmoothedTangents( void ) const {
 		return unsmoothedTangents;
 	}
-
+	
 	// by default, monsters can have blood overlays placed on them, but this can
 	// be overrided on a per-material basis with the "noOverlays" material command.
 	// This will always return false for translucent surfaces
 	bool				AllowOverlays( void ) const {
 		return allowOverlays;
 	}
-
+	
 	// MC_OPAQUE, MC_PERFORATED, or MC_TRANSLUCENT, for interaction list linking and
 	// dmap flood filling
 	// The depth buffer will not be filled for MC_TRANSLUCENT surfaces
@@ -455,18 +455,18 @@ public:
 	materialCoverage_t	Coverage( void ) const {
 		return coverage;
 	}
-
+	
 	// returns true if this material takes precedence over other in coplanar cases
 	bool				HasHigherDmapPriority( const idMaterial &other ) const {
 		return ( IsDrawn() && !other.IsDrawn() ) ||
 			   ( Coverage() < other.Coverage() );
 	}
-
+	
 	// returns a idUserInterface if it has a global gui, or NULL if no gui
 	idUserInterface		*GlobalGui( void ) const {
 		return gui;
 	}
-
+	
 	// a discrete surface will never be merged with other surfaces by dmap, which is
 	// necessary to prevent mutliple gui surfaces, mirrors, autosprites, and some other
 	// special effects from being combined into a single surface
@@ -475,7 +475,7 @@ public:
 		return ( entityGui || gui || deform != DFRM_NONE || sort == SS_SUBVIEW ||
 				 ( surfaceFlags & SURF_DISCRETE ) != 0 );
 	}
-
+	
 	// Normally, dmap chops each surface by every BSP boundary, then reoptimizes.
 	// For gigantic polygons like sky boxes, this can cause a huge number of planar
 	// triangles that make the optimizer take forever to turn back into a single
@@ -487,32 +487,32 @@ public:
 	bool				NoFragment( void ) const {
 		return ( surfaceFlags & SURF_NOFRAGMENT ) != 0;
 	}
-
+	
 	//------------------------------------------------------------------
 	// light shader specific functions, only called for light entities
-
+	
 	// lightshader option to fill with fog from viewer instead of light from center
 	bool				IsFogLight() const {
 		return fogLight;
 	}
-
+	
 	// perform simple blending of the projection, instead of interacting with bumps and textures
 	bool				IsBlendLight() const {
 		return blendLight;
 	}
-
+	
 	// an ambient light has non-directional bump mapping and no specular
 	bool				IsAmbientLight() const {
 		return ambientLight;
 	}
-
+	
 	// implicitly no-shadows lights (ambients, fogs, etc) will never cast shadows
 	// but individual light entities can also override this value
 	bool				LightCastsShadows() const {
 		return TestMaterialFlag( MF_FORCESHADOWS ) ||
 			   ( !fogLight && !ambientLight && !blendLight && !TestMaterialFlag( MF_NOSHADOWS ) );
 	}
-
+	
 	// fog lights, blend lights, ambient lights, etc will all have to have interaction
 	// triangles generated for sides facing away from the light as well as those
 	// facing towards the light.  It is debatable if noshadow lights should effect back
@@ -522,54 +522,54 @@ public:
 	bool				LightEffectsBackSides() const {
 		return fogLight || ambientLight || blendLight;
 	}
-
+	
 	// NULL unless an image is explicitly specified in the shader with "lightFalloffShader <image>"
 	idImage				*LightFalloffImage() const {
 		return lightFalloffImage;
 	}
-
+	
 	//------------------------------------------------------------------
-
+	
 	// returns the renderbump command line for this shader, or an empty string if not present
 	const char 		*GetRenderBump() const {
 		return renderBump;
 	};
-
+	
 	// set specific material flag(s)
 	void				SetMaterialFlag( const int flag ) const {
 		materialFlags |= flag;
 	}
-
+	
 	// clear specific material flag(s)
 	void				ClearMaterialFlag( const int flag ) const {
 		materialFlags &= ~flag;
 	}
-
+	
 	// test for existance of specific material flag(s)
 	bool				TestMaterialFlag( const int flag ) const {
 		return ( materialFlags & flag ) != 0;
 	}
-
+	
 	// get content flags
 	const int			GetContentFlags( void ) const {
 		return contentFlags;
 	}
-
+	
 	// get surface flags
 	const int			GetSurfaceFlags( void ) const {
 		return surfaceFlags;
 	}
-
+	
 	// gets name for surface type (stone, metal, flesh, etc.)
 	const surfTypes_t	GetSurfaceType( void ) const {
 		return static_cast<surfTypes_t>( surfaceFlags & SURF_TYPE_MASK );
 	}
-
+	
 	// get material description
 	const char 		*GetDescription( void ) const {
 		return desc;
 	}
-
+	
 	// get sort order
 	const float			GetSort( void ) const {
 		return sort;
@@ -580,104 +580,104 @@ public:
 	void				SetSort( float s ) const {
 		sort = s;
 	};
-
+	
 	// DFRM_NONE, DFRM_SPRITE, etc
 	deform_t			Deform( void ) const {
 		return deform;
 	}
-
+	
 	// flare size, expansion size, etc
 	const int			GetDeformRegister( int index ) const {
 		return deformRegisters[index];
 	}
-
+	
 	// particle system to emit from surface and table for turbulent
 	const idDecl		*GetDeformDecl( void ) const {
 		return deformDecl;
 	}
-
+	
 	// currently a surface can only have one unique texgen for all the stages
 	texgen_t			Texgen() const;
-
+	
 	// wobble sky parms
 	const int 			*GetTexGenRegisters( void ) const {
 		return texGenRegisters;
 	}
-
+	
 	// get cull type
 	const cullType_t	GetCullType( void ) const {
 		return cullType;
 	}
-
+	
 	float				GetEditorAlpha( void ) const {
 		return editorAlpha;
 	}
-
+	
 	int					GetEntityGui( void ) const {
 		return entityGui;
 	}
-
+	
 	decalInfo_t			GetDecalInfo( void ) const {
 		return decalInfo;
 	}
-
+	
 	// spectrums are used for "invisible writing" that can only be
 	// illuminated by a light of matching spectrum
 	int					Spectrum( void ) const {
 		return spectrum;
 	}
-
+	
 	float				GetPolygonOffset( void ) const {
 		return polygonOffset;
 	}
-
+	
 	float				GetSurfaceArea( void ) const {
 		return surfaceArea;
 	}
 	void				AddToSurfaceArea( float area ) {
 		surfaceArea += area;
 	}
-
+	
 	//------------------------------------------------------------------
-
+	
 	// returns the length, in milliseconds, of the videoMap on this material,
 	// or zero if it doesn't have one
 	int					CinematicLength( void ) const;
-
+	
 	void				CloseCinematic( void ) const;
-
+	
 	void				ResetCinematicTime( int time ) const;
-
+	
 	void				UpdateCinematic( int time ) const;
-
+	
 	//------------------------------------------------------------------
-
+	
 	// gets an image for the editor to use
 	idImage 			*GetEditorImage( void ) const;
 	int					GetImageWidth( void ) const;
 	int					GetImageHeight( void ) const;
-
+	
 	void				SetGui( const char *_gui ) const;
-
+	
 	// just for resource tracking
 	void				SetImageClassifications( int tag ) const;
-
+	
 	//------------------------------------------------------------------
-
+	
 	// returns number of registers this material contains
 	const int			GetNumRegisters() const {
 		return numRegisters;
 	}
-
+	
 	// regs should point to a float array large enough to hold GetNumRegisters() floats
 	void				EvaluateRegisters( float *regs, const float entityParms[MAX_ENTITY_SHADER_PARMS],
 										   const struct viewDef_s *view, idSoundEmitter *soundEmitter = NULL ) const;
-
+										   
 	// if a material only uses constants (no entityParm or globalparm references), this
 	// will return a pointer to an internal table, and EvaluateRegisters will not need
 	// to be called.  If NULL is returned, EvaluateRegisters must be used.
 	const float 		*ConstantRegisters() const;
-
+	
 	bool				SuppressInSubview() const				{
 		return suppressInSubview;
 	};
@@ -685,7 +685,7 @@ public:
 		return portalSky;
 	};
 	void				AddReference();
-
+	
 private:
 	// parse the entire material
 	void				CommonInit();
@@ -714,72 +714,72 @@ private:
 	void				SortInteractionStages();
 	void				AddImplicitStages( const textureRepeat_t trpDefault = TR_REPEAT );
 	void				CheckForConstantRegisters();
-
+	
 private:
 	idStr				desc;				// description
 	idStr				renderBump;			// renderbump command options, without the "renderbump" at the start
-
+	
 	idImage				*lightFalloffImage;
-
+	
 	int					entityGui;			// draw a gui with the idUserInterface from the renderEntity_t
 	// non zero will draw gui, gui2, or gui3 from renderEnitty_t
 	mutable idUserInterface	*gui;			// non-custom guis are shared by all users of a material
-
+	
 	bool				noFog;				// surface does not create fog interactions
-
+	
 	int					spectrum;			// for invisible writing, used for both lights and surfaces
-
+	
 	float				polygonOffset;
-
+	
 	int					contentFlags;		// content flags
 	int					surfaceFlags;		// surface flags
 	mutable int			materialFlags;		// material flags
-
+	
 	decalInfo_t			decalInfo;
-
-
+	
+	
 	mutable	float		sort;				// lower numbered shaders draw before higher numbered
 	deform_t			deform;
 	int					deformRegisters[4];		// numeric parameter for deforms
 	const idDecl		*deformDecl;			// for surface emitted particle deforms and tables
-
+	
 	int					texGenRegisters[MAX_TEXGEN_REGISTERS];	// for wobbleSky
-
+	
 	materialCoverage_t	coverage;
 	cullType_t			cullType;			// CT_FRONT_SIDED, CT_BACK_SIDED, or CT_TWO_SIDED
 	bool				shouldCreateBackSides;
-
+	
 	bool				fogLight;
 	bool				blendLight;
 	bool				ambientLight;
 	bool				unsmoothedTangents;
 	bool				hasSubview;			// mirror, remote render, etc
 	bool				allowOverlays;
-
+	
 	int					numOps;
 	expOp_t 			*ops;				// evaluate to make expressionRegisters
-
+	
 	int					numRegisters;																			//
 	float 				*expressionRegisters;
-
+	
 	float 				*constantRegisters;	// NULL if ops ever reference globalParms or entityParms
-
+	
 	int					numStages;
 	int					numAmbientStages;
-
+	
 	shaderStage_t 		*stages;
-
+	
 	struct mtrParsingData_s	*pd;			// only used during parsing
-
+	
 	float				surfaceArea;		// only for listSurfaceAreas
-
+	
 	// we defer loading of the editor image until it is asked for, so the game doesn't load up
 	// all the invisible and uncompressed images.
 	// If editorImage is NULL, it will atempt to load editorImageName, and set editorImage to that or defaultImage
 	idStr				editorImageName;
 	mutable idImage 	*editorImage;		// image used for non-shaded preview
 	float				editorAlpha;
-
+	
 	bool				suppressInSubview;
 	bool				portalSky;
 	int					refCount;

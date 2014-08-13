@@ -44,14 +44,14 @@ typedef enum {
 
 typedef struct {
 	int			width, height;
-
+	
 	idVec3		origin;
 	idAngles	angles;
-
+	
 	camera_draw_mode	draw_mode;
-
+	
 	idVec3		color;			// background
-
+	
 	idVec3		forward, right, up;	// move matrix
 	idVec3		vup, vpn, vright;	// view matrix
 } camera_t;
@@ -66,7 +66,7 @@ class CCamWnd : public CWnd {
 	// Construction
 public:
 	CCamWnd();
-
+	
 	// Attributes
 public:
 
@@ -79,7 +79,7 @@ public:
 protected:
 	virtual BOOL PreCreateWindow( CREATESTRUCT &cs );
 	//}}AFX_VIRTUAL
-
+	
 	// Implementation
 public:
 	void ShiftTexture_BrushPrimit( face_t *f, int x, int y );
@@ -100,7 +100,7 @@ public:
 	void ToggleSoundMode();
 	void SetProjectionMatrix();
 	void UpdateCameraView();
-
+	
 	void BuildEntityRenderState( entity_t *ent, bool update );
 	bool GetRenderMode() {
 		return renderMode;
@@ -122,12 +122,12 @@ public:
 	}
 	bool UpdateRenderEntities();
 	void MarkWorldDirty();
-
+	
 	void SetView( const idVec3 &origin, const idAngles &angles ) {
 		m_Camera.origin = origin;
 		m_Camera.angles = angles;
 	}
-
+	
 protected:
 	void Cam_Init();
 	void Cam_BuildMatrix();
@@ -140,7 +140,7 @@ protected:
 	bool CullBrush( brush_t *b, bool cubicOnly );
 	void Cam_Draw();
 	void Cam_Render();
-
+	
 	// game renderer interaction
 	qhandle_t		worldModelDef;
 	idRenderModel	*worldModel;		// createRawModel of the brush and patch geometry
@@ -155,7 +155,7 @@ protected:
 	void			UpdateCaption();
 	bool			BuildBrushRenderData( brush_t *brush );
 	void			DrawEntityData();
-
+	
 	camera_t		m_Camera;
 	int				m_nCambuttonstate;
 	CPoint			m_ptButton;
@@ -170,7 +170,7 @@ protected:
 	idVec3			saveOrg;
 	idAngles		saveAng;
 	bool			saveValid;
-
+	
 	// Generated message map functions
 protected:
 	void OriginalMouseDown( UINT nFlags, CPoint point );

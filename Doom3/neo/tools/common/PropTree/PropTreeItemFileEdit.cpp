@@ -31,7 +31,7 @@ BEGIN_MESSAGE_MAP( CPropTreeItemFileEdit, CPropTreeItemEdit )
 	//}}AFX_MSG_MAP
 	ON_WM_CONTEXTMENU()
 	ON_WM_CREATE()
-
+	
 	ON_COMMAND( ID_EDITMENU_INSERTFILE, OnInsertFile )
 	ON_COMMAND( ID_EDIT_UNDO, OnEditUndo )
 	ON_COMMAND( ID_EDIT_CUT, OnEditCut )
@@ -39,7 +39,7 @@ BEGIN_MESSAGE_MAP( CPropTreeItemFileEdit, CPropTreeItemEdit )
 	ON_COMMAND( ID_EDIT_PASTE, OnEditPaste )
 	ON_COMMAND( ID_EDIT_DELETE, OnEditDelete )
 	ON_COMMAND( ID_EDIT_SELECTALL, OnEditSelectAll )
-
+	
 END_MESSAGE_MAP()
 
 

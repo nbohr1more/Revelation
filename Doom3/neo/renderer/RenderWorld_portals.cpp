@@ -48,9 +48,9 @@ const int MAX_PORTAL_PLANES	= 20;
 typedef struct portalStack_s {
 	portal_t	*p;
 	const struct portalStack_s *next;
-
+	
 	idScreenRect	rect;
-
+	
 	int			numPortalPlanes;
 	idPlane		portalPlanes[MAX_PORTAL_PLANES + 1];
 	// positive side is outside the visible frustum
@@ -65,18 +65,18 @@ typedef struct portalStack_s {
 idRenderWorldLocal::ScreenRectForWinding
 ===================
 */
-idScreenRect idRenderWorldLocal::ScreenRectFromWinding( const idWinding *w, viewEntity_t *space ) {
+idScreenRect idRenderWorldLocal::ScreenRectFromWinding( const idWinding *w, const viewEntity_t *space ) {
+	const float		viewWidth = ( float ) tr.viewDef->viewport.x2 - ( float ) tr.viewDef->viewport.x1;
+	const float		viewHeight = ( float ) tr.viewDef->viewport.y2 - ( float ) tr.viewDef->viewport.y1;
 	idScreenRect	r;
-	int				i;
-	idVec3			v;
-	idVec3			ndc;
-	float			windowX, windowY;
 	r.Clear();
-	for( i = 0 ; i < w->GetNumPoints() ; i++ ) {
+	for( int i = 0; i < w->GetNumPoints(); i++ ) {
+		idVec3 v;
+		idVec3 ndc;
 		R_LocalPointToGlobal( space->modelMatrix, ( *w )[i].ToVec3(), v );
 		R_GlobalToNormalizedDeviceCoordinates( v, ndc );
-		windowX = 0.5f * ( 1.0f + ndc[0] ) * ( tr.viewDef->viewport.x2 - tr.viewDef->viewport.x1 );
-		windowY = 0.5f * ( 1.0f + ndc[1] ) * ( tr.viewDef->viewport.y2 - tr.viewDef->viewport.y1 );
+		float windowX = ( ndc[0] * 0.5f + 0.5f ) * viewWidth;
+		float windowY = ( ndc[1] * 0.5f + 0.5f ) * viewHeight;
 		r.AddPoint( windowX, windowY );
 	}
 	r.Expand();
@@ -90,22 +90,22 @@ PortalIsFoggedOut
 */
 bool idRenderWorldLocal::PortalIsFoggedOut( const portal_t *p ) {
 	idRenderLightLocal	*ldef;
-	const idWinding	*w;
-	int			i;
-	idPlane		forward;
+	const idWinding		*w;
+	int					i;
+	idPlane				forward;
 	ldef = p->doublePortal->fogLight;
 	if( !ldef ) {
 		return false;
 	}
 	// find the current density of the fog
 	const idMaterial	*lightShader = ldef->lightShader;
-	int		size = sizeof( float ) * lightShader->GetNumRegisters();
-	float	*regs = ( float * )_alloca( size );
+	int					size = sizeof( float ) * lightShader->GetNumRegisters();
+	float				*regs = ( float * )_alloca( size );
 	lightShader->EvaluateRegisters( regs, ldef->parms.shaderParms, tr.viewDef, ldef->parms.referenceSound );
 	const shaderStage_t	*stage = lightShader->GetStage( 0 );
-	float alpha = regs[ stage->color.registers[3] ];
+	float				alpha = regs[ stage->color.registers[3] ];
 	// if they left the default value on, set a fog distance of 500
-	float	a;
+	float				a;
 	if( alpha <= 1.0f ) {
 		a = -0.5f / DEFAULT_FOG_DISTANCE;
 	} else {
@@ -152,7 +152,7 @@ void idRenderWorldLocal::FloodViewThroughArea_r( const idVec3 origin, int areaNu
 		areaScreenRect[areaNum].Union( ps->rect );
 	}
 	// go through all the portals
-	for( p = area->portals; p; p = p->next ) {
+	for( p = area->portals; p != NULL; p = p->next ) {
 		// an enclosing door may have sealed the portal off
 		if( p->doublePortal->blockingBits & PS_BLOCK_VIEW ) {
 			continue;
@@ -164,7 +164,7 @@ void idRenderWorldLocal::FloodViewThroughArea_r( const idVec3 origin, int areaNu
 		}
 		// make sure the portal isn't in our stack trace,
 		// which would cause an infinite loop
-		for( check = ps; check; check = check->next ) {
+		for( check = ps; check != NULL; check = check->next ) {
 			if( check->p == p ) {
 				break;		// don't recursively enter a stack
 			}
@@ -404,10 +404,10 @@ idRenderWorldLocal::FloodFrustumAreas_r
 ===================
 */
 areaNumRef_t *idRenderWorldLocal::FloodFrustumAreas_r( const idFrustum &frustum, const int areaNum, const idBounds &bounds, areaNumRef_t *areas ) {
-	portal_t *p;
-	portalArea_t *portalArea;
-	idBounds newBounds;
-	areaNumRef_t *a;
+	portal_t		*p;
+	portalArea_t	*portalArea;
+	idBounds		newBounds;
+	areaNumRef_t	*a;
 	portalArea = &portalAreas[ areaNum ];
 	// go through all the portals
 	for( p = portalArea->portals; p; p = p->next ) {
@@ -453,8 +453,8 @@ idRenderWorldLocal::FloodFrustumAreas
 ===================
 */
 areaNumRef_t *idRenderWorldLocal::FloodFrustumAreas( const idFrustum &frustum, areaNumRef_t *areas ) {
-	idBounds bounds;
-	areaNumRef_t *a;
+	idBounds		bounds;
+	areaNumRef_t	*a;
 	// bounds that cover the whole frustum
 	bounds[0].Set( frustum.GetNearDistance(), -1.0f, -1.0f );
 	bounds[1].Set( frustum.GetFarDistance(), 1.0f, 1.0f );
@@ -489,8 +489,7 @@ bool idRenderWorldLocal::CullEntityByPortals( const idRenderEntityLocal *entity,
 	// because we want to do all touching of the model after
 	// we have determined all the lights that may effect it,
 	// which optimizes cache usage
-	if( R_CullLocalBox( entity->referenceBounds, entity->modelMatrix,
-						ps->numPortalPlanes, ps->portalPlanes ) ) {
+	if( R_CullLocalBox( entity->referenceBounds, entity->modelMatrix, ps->numPortalPlanes, ps->portalPlanes ) ) {
 		return true;
 	}
 	return false;
@@ -521,12 +520,10 @@ void idRenderWorldLocal::AddAreaEntityRefs( int areaNum, const portalStack_t *ps
 		R_FreeEntityDefFadedDecals( entity, tr.viewDef->renderView.time );
 		// check for completely suppressing the model
 		if( !r_skipSuppress.GetBool() ) {
-			if( entity->parms.suppressSurfaceInViewID
-					&& entity->parms.suppressSurfaceInViewID == tr.viewDef->renderView.viewID ) {
+			if( entity->parms.suppressSurfaceInViewID && entity->parms.suppressSurfaceInViewID == tr.viewDef->renderView.viewID ) {
 				continue;
 			}
-			if( entity->parms.allowSurfaceInViewID
-					&& entity->parms.allowSurfaceInViewID != tr.viewDef->renderView.viewID ) {
+			if( entity->parms.allowSurfaceInViewID && entity->parms.allowSurfaceInViewID != tr.viewDef->renderView.viewID ) {
 				continue;
 			}
 		}
@@ -551,10 +548,10 @@ The last stack plane is not used because lights are not near clipped.
 ================
 */
 bool idRenderWorldLocal::CullLightByPortals( const idRenderLightLocal *light, const portalStack_t *ps ) {
-	int				i, j;
+	int						i, j;
 	const srfTriangles_t	*tri;
-	float			d;
-	idFixedWinding	w;		// we won't overflow because MAX_PORTAL_PLANES = 20
+	float					d;
+	idFixedWinding			w;		// we won't overflow because MAX_PORTAL_PLANES = 20
 	if( r_useLightCulling.GetInteger() == 0 ) {
 		return false;
 	}
@@ -693,8 +690,7 @@ This is only valid for a given view, not all views in a frame
 */
 void idRenderWorldLocal::BuildConnectedAreas( void ) {
 	int		i;
-	tr.viewDef->connectedAreas = ( bool * )R_FrameAlloc( numPortalAreas
-								 * sizeof( tr.viewDef->connectedAreas[0] ) );
+	tr.viewDef->connectedAreas = ( bool * )R_FrameAlloc( numPortalAreas * sizeof( tr.viewDef->connectedAreas[0] ) );
 	// if we are outside the world, we can see all areas
 	if( tr.viewDef->areaNum == -1 ) {
 		for( i = 0 ; i < numPortalAreas ; i++ ) {
@@ -821,7 +817,7 @@ AreasAreConnected
 
 ==============
 */
-bool	idRenderWorldLocal::AreasAreConnected( int areaNum1, int areaNum2, portalConnection_t connection ) {
+bool idRenderWorldLocal::AreasAreConnected( int areaNum1, int areaNum2, portalConnection_t connection ) {
 	if( areaNum1 == -1 || areaNum2 == -1 ) {
 		return false;
 	}
@@ -848,7 +844,7 @@ SetPortalState
 doors explicitly close off portals when shut
 ==============
 */
-void		idRenderWorldLocal::SetPortalState( qhandle_t portal, int blockTypes ) {
+void idRenderWorldLocal::SetPortalState( qhandle_t portal, int blockTypes ) {
 	if( portal == 0 ) {
 		return;
 	}
@@ -881,7 +877,7 @@ void		idRenderWorldLocal::SetPortalState( qhandle_t portal, int blockTypes ) {
 GetPortalState
 ==============
 */
-int		idRenderWorldLocal::GetPortalState( qhandle_t portal ) {
+int	idRenderWorldLocal::GetPortalState( qhandle_t portal ) {
 	if( portal == 0 ) {
 		return 0;
 	}
@@ -899,10 +895,10 @@ Debugging tool, won't work correctly with SMP or when mirrors are present
 =====================
 */
 void idRenderWorldLocal::ShowPortals() {
-	int			i, j;
+	int				i, j;
 	portalArea_t	*area;
-	portal_t	*p;
-	idWinding	*w;
+	portal_t		*p;
+	idWinding		*w;
 	// flood out through portals, setting area viewCount
 	for( i = 0 ; i < numPortalAreas ; i++ ) {
 		area = &portalAreas[i];
@@ -916,10 +912,10 @@ void idRenderWorldLocal::ShowPortals() {
 			}
 			if( portalAreas[ p->intoArea ].viewCount != tr.viewCount ) {
 				// red = can't see
-				glColor3f( 1, 0, 0 );
+				GL_Color( 1.0f, 0.0f, 0.0f );
 			} else {
 				// green = see through
-				glColor3f( 0, 1, 0 );
+				GL_Color( 0.0f, 1.0f, 0.0f );
 			}
 			glBegin( GL_LINE_LOOP );
 			for( j = 0 ; j < w->GetNumPoints() ; j++ ) {

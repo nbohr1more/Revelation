@@ -51,9 +51,9 @@ typedef struct {
 	const char	*curpos;
 	int			len;
 	char		token[1024];
-
+	
 	bool	verbose;
-
+	
 	aseModel_t	*model;
 	aseObject_t	*currentObject;
 	aseMesh_t	*currentMesh;

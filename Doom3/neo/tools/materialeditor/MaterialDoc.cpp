@@ -576,7 +576,7 @@ void MaterialDoc::ParseMaterialText( const char *source ) {
 		LEXFL_ALLOWBACKSLASHSTRINGCONCAT |	// allow multiple strings seperated by '\' to be concatenated
 		LEXFL_NOFATALERRORS				// just set a flag instead of fatal erroring
 		);
-
+	
 	//Skip the name becuase the material parsing code expects it
 	src.SkipUntilString("{");*/
 	//Now let the material parse the text

@@ -33,21 +33,21 @@ class rvGEViewer {
 public:
 
 	rvGEViewer( );
-
+	
 	bool				Create( HWND parent );
 	bool				Destroy( void );
 	bool				OpenFile( const char *filename );
-
+	
 	void				RunFrame( void );
-
+	
 	HWND				GetWindow( void );
-
+	
 protected:
 
 	void				Render( HDC dc );
 	void				Play( void );
 	void				Pause( void );
-
+	
 	HWND					mWnd;
 	int						mWindowWidth;
 	int						mWindowHeight;
@@ -57,13 +57,13 @@ protected:
 	HWND					mToolbar;
 	int						mLastTime;
 	int						mTime;
-
+	
 	LRESULT		HandlePaint( WPARAM wParam, LPARAM lParam );
-
+	
 private:
 
 	bool	SetupPixelFormat( void );
-
+	
 	static LRESULT CALLBACK WndProc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam );
 };
 

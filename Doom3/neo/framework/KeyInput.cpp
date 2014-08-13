@@ -53,22 +53,22 @@ keyname_t keynames[] = {
 	{"DOWNARROW",		K_DOWNARROW,		"#str_07024"},
 	{"LEFTARROW",		K_LEFTARROW,		"#str_07025"},
 	{"RIGHTARROW",		K_RIGHTARROW,		"#str_07026"},
-
+	
 	{"ALT",				K_ALT,				"#str_07027"},
 	{"RIGHTALT",		K_RIGHT_ALT,		"#str_07027"},
 	{"CTRL",			K_CTRL,				"#str_07028"},
 	{"SHIFT",			K_SHIFT,			"#str_07029"},
-
+	
 	{"LWIN", 			K_LWIN, 			"#str_07030"},
 	{"RWIN", 			K_RWIN, 			"#str_07031"},
 	{"MENU", 			K_MENU, 			"#str_07032"},
-
+	
 	{"COMMAND",			K_COMMAND,			"#str_07033"},
-
+	
 	{"CAPSLOCK",		K_CAPSLOCK,			"#str_07034"},
 	{"SCROLL",			K_SCROLL,			"#str_07035"},
 	{"PRINTSCREEN",		K_PRINT_SCR,		"#str_07179"},
-
+	
 	{"F1", 				K_F1, 				"#str_07036"},
 	{"F2", 				K_F2, 				"#str_07037"},
 	{"F3", 				K_F3, 				"#str_07038"},
@@ -81,14 +81,14 @@ keyname_t keynames[] = {
 	{"F10", 			K_F10, 				"#str_07045"},
 	{"F11", 			K_F11, 				"#str_07046"},
 	{"F12", 			K_F12, 				"#str_07047"},
-
+	
 	{"INS", 			K_INS, 				"#str_07048"},
 	{"DEL", 			K_DEL, 				"#str_07049"},
 	{"PGDN", 			K_PGDN, 			"#str_07050"},
 	{"PGUP", 			K_PGUP, 			"#str_07051"},
 	{"HOME", 			K_HOME, 			"#str_07052"},
 	{"END",				K_END,				"#str_07053"},
-
+	
 	{"MOUSE1", 			K_MOUSE1, 			"#str_07054"},
 	{"MOUSE2", 			K_MOUSE2, 			"#str_07055"},
 	{"MOUSE3", 			K_MOUSE3, 			"#str_07056"},
@@ -97,10 +97,10 @@ keyname_t keynames[] = {
 	{"MOUSE6", 			K_MOUSE6, 			"#str_07059"},
 	{"MOUSE7", 			K_MOUSE7, 			"#str_07060"},
 	{"MOUSE8", 			K_MOUSE8, 			"#str_07061"},
-
+	
 	{"MWHEELUP",		K_MWHEELUP,			"#str_07131"},
 	{"MWHEELDOWN",		K_MWHEELDOWN,		"#str_07132"},
-
+	
 	{"JOY1", 			K_JOY1, 			"#str_07062"},
 	{"JOY2", 			K_JOY2, 			"#str_07063"},
 	{"JOY3", 			K_JOY3, 			"#str_07064"},
@@ -133,7 +133,7 @@ keyname_t keynames[] = {
 	{"JOY30", 			K_JOY30, 			"#str_07091"},
 	{"JOY31", 			K_JOY31, 			"#str_07092"},
 	{"JOY32", 			K_JOY32, 			"#str_07093"},
-
+	
 	{"AUX1", 			K_AUX1, 			"#str_07094"},
 	{"AUX2", 			K_AUX2, 			"#str_07095"},
 	{"AUX3", 			K_AUX3, 			"#str_07096"},
@@ -150,7 +150,7 @@ keyname_t keynames[] = {
 	{"AUX14", 			K_AUX14, 			"#str_07107"},
 	{"AUX15", 			K_AUX15, 			"#str_07108"},
 	{"AUX16", 			K_AUX16, 			"#str_07109"},
-
+	
 	{"KP_HOME",			K_KP_HOME,			"#str_07110"},
 	{"KP_UPARROW",		K_KP_UPARROW,		"#str_07111"},
 	{"KP_PGUP",			K_KP_PGUP,			"#str_07112"},
@@ -169,12 +169,12 @@ keyname_t keynames[] = {
 	{"KP_NUMLOCK",		K_KP_NUMLOCK,		"#str_07125"},
 	{"KP_STAR",			K_KP_STAR,			"#str_07126"},
 	{"KP_EQUALS",		K_KP_EQUALS,		"#str_07127"},
-
+	
 	{"PAUSE",			K_PAUSE,			"#str_07128"},
-
+	
 	{"SEMICOLON",		';',				"#str_07129"},	// because a raw semicolon separates commands
 	{"APOSTROPHE",		'\'',				"#str_07130"},	// because a raw apostrophe messes with parsing
-
+	
 	{NULL,				0,					NULL}
 };
 

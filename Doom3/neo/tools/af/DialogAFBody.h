@@ -32,7 +32,7 @@ If you have questions concerning this license or the applicable additional terms
 class DialogAFBody : public CDialog {
 
 	DECLARE_DYNAMIC( DialogAFBody )
-
+	
 public:
 	DialogAFBody( CWnd *pParent = NULL );   // standard constructor
 	virtual				~DialogAFBody();
@@ -41,11 +41,11 @@ public:
 	void				LoadBody( const char *name );
 	void				SaveBody( void );
 	void				UpdateFile( void );
-
+	
 	DialogAFConstraint *constraintDlg;
-
+	
 	enum				{ IDD = IDD_DIALOG_AF_BODY };
-
+	
 protected:
 	virtual BOOL		OnInitDialog();
 	virtual void		DoDataExchange( CDataExchange *pDX );    // DDX/DDV support
@@ -104,14 +104,14 @@ protected:
 	afx_msg void		OnBnClickedRadioModifyPosition();
 	afx_msg void		OnBnClickedRadioModifyBoth();
 	afx_msg void		OnEnChangeEditContainedjoints();
-
+	
 	DECLARE_MESSAGE_MAP()
-
+	
 private:
 	idDeclAF 			*file;
 	idDeclAF_Body 		*body;
 	int					numJoints;
-
+	
 	//{{AFX_DATA(DialogAFBody)
 	CComboBox			bodyList;				// list with bodies
 	CComboBox			cm_comboType;
@@ -143,9 +143,9 @@ private:
 	CComboBox			m_comboModifiedJoint;
 	CEdit				m_editContainedJoints;
 	//}}AFX_DATA
-
+	
 	static toolTip_t	toolTips[];
-
+	
 private:
 	void				InitBodyList( void );
 	void				InitJointLists( void );

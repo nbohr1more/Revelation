@@ -41,22 +41,22 @@ class CPatchDensityDlg : public CDialog {
 	// Construction
 public:
 	CPatchDensityDlg( CWnd *pParent = NULL ); // standard constructor
-
+	
 	// Dialog Data
 	//{{AFX_DATA(CPatchDensityDlg)
 	enum { IDD = IDD_DIALOG_NEWPATCH };
 	CComboBox	m_wndWidth;
 	CComboBox	m_wndHeight;
 	//}}AFX_DATA
-
-
+	
+	
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CPatchDensityDlg)
 protected:
 	virtual void DoDataExchange( CDataExchange *pDX );  // DDX/DDV support
 	//}}AFX_VIRTUAL
-
+	
 	// Implementation
 protected:
 

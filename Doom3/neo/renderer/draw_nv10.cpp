@@ -89,7 +89,7 @@ static void RB_RenderInteraction( const drawSurf_t *surf ) {
 	glVertexPointer( 3, GL_FLOAT, sizeof( idDrawVert ), ac->xyz.ToFloatPtr() );
 	GL_SelectTexture( 0 );
 	glTexCoordPointer( 2, GL_FLOAT, sizeof( idDrawVert ), ac->st.ToFloatPtr() );
-	glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ac->color );
+	glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ( const GLvoid * )&ac->color );
 	// go through the individual stages
 	for( int i = 0 ; i < surfaceShader->GetNumStages() ; i++ ) {
 		const shaderStage_t	*surfaceStage = surfaceShader->GetStage( i );
@@ -109,8 +109,7 @@ static void RB_RenderInteraction( const drawSurf_t *surf ) {
 		if( surfaceStage->lighting == SL_BUMP ) {
 			// render light falloff * bumpmap lighting
 			if( surfaceStage->vertexColor != SVC_IGNORE ) {
-				common->Printf( "shader %s: vertexColor on a bump stage\n",
-								surfaceShader->GetName() );
+				common->Printf( "shader %s: vertexColor on a bump stage\n", surfaceShader->GetName() );
 			}
 			// check for RGBA modulations in the stage, which are also illegal?
 			// save the bump map stage for the specular calculation and diffuse
@@ -244,8 +243,7 @@ static void RB_RenderInteraction( const drawSurf_t *surf ) {
 		}
 		if( surfaceStage->lighting == SL_DIFFUSE ) {
 			if( !lastBumpStage ) {
-				common->Printf( "shader %s: diffuse stage without a preceeding bumpmap stage\n",
-								surfaceShader->GetName() );
+				common->Printf( "shader %s: diffuse stage without a preceeding bumpmap stage\n", surfaceShader->GetName() );
 				continue;
 			}
 		}
@@ -265,8 +263,7 @@ static void RB_RenderInteraction( const drawSurf_t *surf ) {
 				continue;
 			}
 			if( !lastBumpStage ) {
-				common->Printf( "shader %s: specular stage without a preceeding bumpmap stage\n",
-								surfaceShader->GetName() );
+				common->Printf( "shader %s: specular stage without a preceeding bumpmap stage\n", surfaceShader->GetName() );
 				continue;
 			}
 			GL_State( GLS_SRCBLEND_DST_ALPHA | GLS_DSTBLEND_SRC_ALPHA | GLS_COLORMASK | GLS_DEPTHMASK
@@ -344,15 +341,14 @@ static void RB_RenderInteraction( const drawSurf_t *surf ) {
 		//-----------------------------------------------------
 		if( surfaceStage->lighting == SL_DIFFUSE || surfaceStage->lighting == SL_SPECULAR ) {
 			// don't trash alpha
-			GL_State( GLS_SRCBLEND_DST_ALPHA | GLS_DSTBLEND_ONE | GLS_ALPHAMASK | GLS_DEPTHMASK
-					  | backEnd.depthFunc );
+			GL_State( GLS_SRCBLEND_DST_ALPHA | GLS_DSTBLEND_ONE | GLS_ALPHAMASK | GLS_DEPTHMASK | backEnd.depthFunc );
 			// texture 0 will get the surface color texture
 			GL_SelectTexture( 0 );
 			glEnableClientState( GL_TEXTURE_COORD_ARRAY );
 			RB_BindStageTexture( surfaceRegs, &surfaceStage->texture, surf );
 			// development aid
 			if( ( surfaceStage->lighting == SL_DIFFUSE && r_skipDiffuse.GetBool() ) ||
-					( surfaceStage->lighting == SL_SPECULAR && r_skipSpecular.GetBool() ) ) {
+				( surfaceStage->lighting == SL_SPECULAR && r_skipSpecular.GetBool() ) ) {
 				globalImages->blackImage->Bind();
 			}
 			// texture 1 will get the light projected texture

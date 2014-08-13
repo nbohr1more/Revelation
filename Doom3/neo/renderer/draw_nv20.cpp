@@ -545,15 +545,14 @@ static void	RB_NV20_DrawInteraction( const drawInteraction_t *din ) {
 		glDisableClientState( GL_COLOR_ARRAY );
 		return;
 	}
-	glColor3f( 1, 1, 1 );
+	GL_Color( 1.0f, 1.0f, 1.0f );
 	// on an ideal card, we would now just bind the textures and call a
 	// single pass vertex / fragment program, but
 	// on NV20, we need to decide which single / dual / tripple pass set of programs to use
 	// ambient light could be done as a single pass if we want to optimize for it
 	// monochrome light is two passes
 	int		internalFormat = din->lightImage->internalFormat;
-	if( ( r_useNV20MonoLights.GetInteger() == 2 ) ||
-			( din->lightImage->isMonochrome && r_useNV20MonoLights.GetInteger() ) ) {
+	if( ( r_useNV20MonoLights.GetInteger() == 2 ) || ( din->lightImage->isMonochrome && r_useNV20MonoLights.GetInteger() ) ) {
 		// do a two-pass rendering
 		RB_NV20_DI_BumpAndLightPass( din, true );
 		RB_NV20_DI_DiffuseAndSpecularColorPass( din );
@@ -592,7 +591,7 @@ static void RB_NV20_CreateDrawInteractions( const drawSurf_t *surf ) {
 	for( ; surf ; surf = surf->nextOnLight ) {
 		// set the vertex pointers
 		idDrawVert	*ac = ( idDrawVert * )vertexCache.Position( surf->geo->ambientCache );
-		glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ac->color );
+		glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ( const GLvoid * )&ac->color );
 #ifdef MACOS_X
 		GL_SelectTexture( 0 );
 		glTexCoordPointer( 2, GL_FLOAT, sizeof( idDrawVert ), ac->st.ToFloatPtr() );
@@ -675,7 +674,7 @@ void RB_NV20_DrawInteractions( void ) {
 		// clear the stencil buffer if needed
 		if( vLight->globalShadows || vLight->localShadows ) {
 			backEnd.currentScissor = vLight->scissorRect;
-			if( r_useScissor.GetBool() ) {
+			if( r_useScissor.GetBool() && !backEnd.currentScissor.Equals( vLight->scissorRect ) ) {
 				GL_Scissor( backEnd.viewDef->viewport.x1 + backEnd.currentScissor.x1,
 							backEnd.viewDef->viewport.y1 + backEnd.currentScissor.y1,
 							backEnd.currentScissor.x2 + 1 - backEnd.currentScissor.x1,

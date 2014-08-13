@@ -247,8 +247,8 @@ static const unsigned char s_scantokey_italian[256] = {
 	0,          0,      0,         0,          0,      0,           0,        0,     // 6
 	0,          0,      0,         0,          0,      0,           0,        0,
 	0,          0,      0,         0,          0,      0,           0,        0		 // 7
-
-
+	
+	
 };
 
 static const unsigned char *keyScanTable = s_scantokey;

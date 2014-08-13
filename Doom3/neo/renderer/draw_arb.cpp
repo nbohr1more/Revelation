@@ -95,7 +95,7 @@ static void RB_ARB_DrawInteraction( const drawInteraction_t *din ) {
 	// draw light falloff to the alpha channel
 	//
 	GL_State( GLS_COLORMASK | GLS_DEPTHMASK | backEnd.depthFunc );
-	glColor3f( 1, 1, 1 );
+	GL_Color( 1.0f, 1.0f, 1.0f );
 	glDisableClientState( GL_TEXTURE_COORD_ARRAY );
 	glEnable( GL_TEXTURE_GEN_S );
 	glTexGenfv( GL_S, GL_OBJECT_PLANE, din->lightProjection[3].ToFloatPtr() );
@@ -172,10 +172,10 @@ static void RB_ARB_DrawInteraction( const drawInteraction_t *din ) {
 	GL_SelectTexture( 0 );
 	// select the vertex color source
 	if( din->vertexColor == SVC_IGNORE ) {
-		glColor4fv( din->diffuseColor.ToFloatPtr() );
+		GL_Color( din->diffuseColor );
 	} else {
 		// FIXME: does this not get diffuseColor blended in?
-		glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ( void * )&ac->color );
+		glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ( const GLvoid * )&ac->color );
 		glEnableClientState( GL_COLOR_ARRAY );
 		if( din->vertexColor == SVC_INVERSE_MODULATE ) {
 			GL_TexEnv( GL_COMBINE_ARB );
@@ -234,7 +234,7 @@ static void RB_ARB_DrawThreeTextureInteraction( const drawInteraction_t *din ) {
 	glVertexPointer( 3, GL_FLOAT, sizeof( idDrawVert ), ac->xyz.ToFloatPtr() );
 	GL_SelectTexture( 0 );
 	glTexCoordPointer( 2, GL_FLOAT, sizeof( idDrawVert ), ( void * )&ac->st );
-	glColor3f( 1, 1, 1 );
+	GL_Color( 1.0f, 1.0f, 1.0f );
 	//
 	// bump map dot cubeMap into the alpha channel
 	//
@@ -279,10 +279,10 @@ static void RB_ARB_DrawThreeTextureInteraction( const drawInteraction_t *din ) {
 	GL_SelectTexture( 0 );
 	// select the vertex color source
 	if( din->vertexColor == SVC_IGNORE ) {
-		glColor4fv( din->diffuseColor.ToFloatPtr() );
+		GL_Color( din->diffuseColor );
 	} else {
 		// FIXME: does this not get diffuseColor blended in?
-		glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ( void * )&ac->color );
+		glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ( const GLvoid * )&ac->color );
 		glEnableClientState( GL_COLOR_ARRAY );
 		if( din->vertexColor == SVC_INVERSE_MODULATE ) {
 			GL_TexEnv( GL_COMBINE_ARB );
@@ -382,7 +382,6 @@ static void RB_RenderViewLight( viewLight_t *vLight ) {
 		return;
 	}
 	backEnd.vLight = vLight;
-	// turn on depthbounds testing for shadows
 	GL_DepthBoundsTest( vLight->scissorRect.zmin, vLight->scissorRect.zmax );
 	// clear the stencil buffer if needed
 	if( vLight->globalShadows || vLight->localShadows ) {

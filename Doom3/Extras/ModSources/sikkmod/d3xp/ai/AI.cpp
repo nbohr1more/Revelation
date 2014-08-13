@@ -4317,7 +4317,7 @@ idEntity *idAI::StartEmitter( const char *name, const char *joint, const char *p
 	tmp = axis[2];
 	axis[2] = axis[0];
 	axis[0] = -tmp;
-
+	
 	ent->GetPhysics()->SetAxis(axis);*/
 	axis = physicsObj.GetGravityAxis();
 	ent->GetPhysics()->SetAxis( axis );

@@ -41,7 +41,7 @@ If you have questions concerning this license or the applicable additional terms
 class idNetworkSystem {
 public:
 	virtual					~idNetworkSystem( void ) {}
-
+	
 	virtual void			ServerSendReliableMessage( int clientNum, const idBitMsg &msg );
 	virtual void			ServerSendReliableMessageExcluding( int clientNum, const idBitMsg &msg );
 	virtual int				ServerGetClientPing( int clientNum );
@@ -51,7 +51,7 @@ public:
 	virtual int				ServerGetClientOutgoingRate( int clientNum );
 	virtual int				ServerGetClientIncomingRate( int clientNum );
 	virtual float			ServerGetClientIncomingPacketLoss( int clientNum );
-
+	
 	virtual void			ClientSendReliableMessage( const idBitMsg &msg );
 	virtual int				ClientGetPrediction( void );
 	virtual int				ClientGetTimeSinceLastPacket( void );

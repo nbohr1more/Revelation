@@ -86,18 +86,18 @@ void MaterialEditorInit( void ) {
 void MaterialEditorRun( void ) {
 	MSG *msg = AfxGetCurrentMessage();
 	BOOL bDoingBackgroundProcessing = TRUE;
-	while (bDoingBackgroundProcessing) { 
+	while( bDoingBackgroundProcessing ) {
 		while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
 			// pump message
 			if( !AfxGetApp()->PumpMessage() ) {
-				bDoingBackgroundProcessing = FALSE; 
-				::PostQuitMessage(0); 
-				break; 
+				bDoingBackgroundProcessing = FALSE;
+				::PostQuitMessage( 0 );
+				break;
 			}
 		}
 		// let MFC do its idle processing
 		LONG lIdle = 0;
-		while (AfxGetApp()->OnIdle(lIdle++));
+		while( AfxGetApp()->OnIdle( lIdle++ ) );
 	}
 }
 
@@ -132,12 +132,12 @@ HWND GetMaterialEditorWindow() {
 class CAboutDlg : public CDialog {
 public:
 	CAboutDlg();
-
+	
 	enum { IDD = IDD_ME_ABOUTBOX };
-
+	
 protected:
 	virtual void DoDataExchange( CDataExchange *pDX );  // DDX/DDV support
-
+	
 	DECLARE_MESSAGE_MAP()
 };
 

@@ -55,41 +55,41 @@ If you have questions concerning this license or the applicable additional terms
 typedef struct {
 	HWND		hWnd;
 	HWND		hwndBuffer;
-
+	
 	HWND		hwndButtonClear;
 	HWND		hwndButtonCopy;
 	HWND		hwndButtonQuit;
-
+	
 	HWND		hwndErrorBox;
 	HWND		hwndErrorText;
-
+	
 	HBITMAP		hbmLogo;
 	HBITMAP		hbmClearBitmap;
-
+	
 	HBRUSH		hbrEditBackground;
 	HBRUSH		hbrErrorBackground;
-
+	
 	HFONT		hfBufferFont;
 	HFONT		hfButtonFont;
-
+	
 	HWND		hwndInputLine;
-
+	
 	char		errorString[80];
-
+	
 	char		consoleText[512], returnedText[512];
 	bool		quitOnClose;
 	int			windowWidth, windowHeight;
-
+	
 	WNDPROC		SysInputLineWndProc;
-
+	
 	idEditField	historyEditLines[COMMAND_HISTORY];
-
+	
 	int			nextHistoryLine;// the last line in the history buffer, not masked
 	int			historyLine;	// the line being displayed from history buffer
 	// will be <= nextHistoryLine
-
+	
 	idEditField	consoleField;
-
+	
 } WinConData;
 
 static WinConData s_wcd;

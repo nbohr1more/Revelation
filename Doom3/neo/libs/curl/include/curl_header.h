@@ -1,4 +1,4 @@
-/* 
+/*
  * File:   curl_header.h
  * Author: Giuseppe
  *
@@ -21,23 +21,23 @@ using curl::curl_error;
 
 // Definition of a header object.
 namespace curl {
-    class curl_header {
-    public:
-        curl_header() : headers(nullptr) {};
-        curl_header(const size_t);
-        curl_header(const curl_header &);
-        curl_header &operator=(const curl_header &);
-        ~curl_header();
-        void add(const string);
-        void add(const vector<string> &);
-        void add(const list<string> &);
-        void remove(const string);
-        void confirm();
-        const vector<string> get() const;
-    private:
-        vector<string> headers_vector;
-        struct curl_slist *headers;
-    };
+class curl_header {
+public:
+	curl_header() : headers( nullptr ) {};
+	curl_header( const size_t );
+	curl_header( const curl_header & );
+	curl_header &operator=( const curl_header & );
+	~curl_header();
+	void add( const string );
+	void add( const vector<string> & );
+	void add( const list<string> & );
+	void remove( const string );
+	void confirm();
+	const vector<string> get() const;
+private:
+	vector<string> headers_vector;
+	struct curl_slist *headers;
+};
 }
 
 #endif	/* curl_header_H */

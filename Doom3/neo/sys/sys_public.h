@@ -271,7 +271,7 @@ class idPort {
 public:
 	idPort();				// this just zeros netSocket and port
 	virtual		~idPort();
-
+	
 	// if the InitForPort fails, the idPort.port field will remain 0
 	bool		InitForPort( int portNumber );
 	int			GetPort( void ) const {
@@ -281,17 +281,17 @@ public:
 		return bound_to;
 	}
 	void		Close();
-
+	
 	bool		GetPacket( netadr_t &from, void *data, int &size, int maxSize );
 	bool		GetPacketBlocking( netadr_t &from, void *data, int &size, int maxSize, int timeout );
 	void		SendPacket( const netadr_t to, const void *data, int size );
-
+	
 	int			packetsRead;
 	int			bytesRead;
-
+	
 	int			packetsWritten;
 	int			bytesWritten;
-
+	
 private:
 	netadr_t	bound_to;		// interface and port
 	int			netSocket;		// OS specific socket
@@ -301,18 +301,18 @@ class idTCP {
 public:
 	idTCP();
 	virtual		~idTCP();
-
+	
 	// if host is host:port, the value of port is ignored
 	bool		Init( const char *host, short port );
 	void		Close();
-
+	
 	// returns -1 on failure (and closes socket)
 	// those are non blocking, can be used for polling
 	// there is no buffering, you are not guaranteed to Read or Write everything in a single call
 	// (specially on win32, see recv and send documentation)
 	int			Read( void *data, int size );
 	int			Write( void *data, int size );
-
+	
 private:
 	netadr_t	address;		// remote address
 	int			fd;				// OS specific socket
@@ -400,7 +400,7 @@ class idSys {
 public:
 	virtual void			DebugPrintf( const char *fmt, ... )id_attribute( ( format( printf, 2, 3 ) ) ) = 0;
 	virtual void			DebugVPrintf( const char *fmt, va_list arg ) = 0;
-
+	
 	virtual double			GetClockTicks( void ) = 0;
 	virtual double			ClockTicksPerSecond( void ) = 0;
 	virtual cpuid_t			GetProcessorId( void ) = 0;
@@ -409,23 +409,23 @@ public:
 	virtual const char		*FPU_GetState( void ) = 0;
 	virtual void			FPU_SetFTZ( bool enable ) = 0;
 	virtual void			FPU_SetDAZ( bool enable ) = 0;
-
+	
 	virtual bool			LockMemory( void *ptr, int bytes ) = 0;
 	virtual bool			UnlockMemory( void *ptr, int bytes ) = 0;
-
+	
 	virtual void			GetCallStack( address_t *callStack, const int callStackSize ) = 0;
 	virtual const char 		*GetCallStackStr( const address_t *callStack, const int callStackSize ) = 0;
 	virtual const char 		*GetCallStackCurStr( int depth ) = 0;
 	virtual void			ShutdownSymbols( void ) = 0;
-
+	
 	virtual int				DLL_Load( const char *dllName ) = 0;
 	virtual void 			*DLL_GetProcAddress( int dllHandle, const char *procName ) = 0;
 	virtual void			DLL_Unload( int dllHandle ) = 0;
 	virtual void			DLL_GetFileName( const char *baseName, char *dllName, int maxLength ) = 0;
-
+	
 	virtual sysEvent_t		GenerateMouseButtonEvent( int button, bool down ) = 0;
 	virtual sysEvent_t		GenerateMouseMoveEvent( int deltax, int deltay ) = 0;
-
+	
 	virtual void			OpenURL( const char *url, bool quit ) = 0;
 	virtual void			StartProcess( const char *exePath, bool quit ) = 0;
 };

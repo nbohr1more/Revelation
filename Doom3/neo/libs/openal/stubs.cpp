@@ -28,13 +28,11 @@ If you have questions concerning this license or the applicable additional terms
 #include "precompiled.h"
 #include "../sound/snd_local.h"
 
-AL_API ALenum AL_APIENTRY alGetError()
-{
+AL_API ALenum AL_APIENTRY alGetError() {
 	return AL_NO_ERROR;
 }
 
-AL_API ALboolean AL_APIENTRY alIsSource( ALuint sid )
-{
+AL_API ALboolean AL_APIENTRY alIsSource( ALuint sid ) {
 	return AL_FALSE;
 }
 
@@ -44,22 +42,19 @@ AL_API void AL_APIENTRY alSourceStop( ALuint sid ) { }
 
 AL_API void AL_APIENTRY alGetSourcei( ALuint sid,  ALenum pname, ALint *value ) { }
 
-AL_API ALint AL_APIENTRY alGetInteger( ALenum param )
-{
+AL_API ALint AL_APIENTRY alGetInteger( ALenum param ) {
 	return 0;
 }
 
 ALC_API void ALC_APIENTRY alcSuspendContext( ALCcontext *alcHandle ) { }
 
-ALC_API ALCdevice *ALC_APIENTRY alcOpenDevice( const ALchar *tokstr )
-{
+ALC_API ALCdevice *ALC_APIENTRY alcOpenDevice( const ALchar *tokstr ) {
 	return NULL;
 }
 
 AL_API void AL_APIENTRY alDeleteBuffers( ALsizei n, const ALuint *buffers ) { }
 
-AL_API ALboolean AL_APIENTRY alIsExtensionPresent( const ALchar *fname )
-{
+AL_API ALboolean AL_APIENTRY alIsExtensionPresent( const ALchar *fname ) {
 	return AL_FALSE;
 }
 
@@ -69,23 +64,19 @@ AL_API void AL_APIENTRY alBufferData( ALuint   buffer,
 									  ALsizei  size,
 									  ALsizei  freq ) { }
 
-ALC_API ALCboolean ALC_APIENTRY alcMakeContextCurrent( ALCcontext *alcHandle )
-{
+ALC_API ALCboolean ALC_APIENTRY alcMakeContextCurrent( ALCcontext *alcHandle ) {
 	return 0;
 }
 
-ALC_API ALCvoid ALC_APIENTRY alcProcessContext( ALCcontext *alcHandle )
-{
+ALC_API ALCvoid ALC_APIENTRY alcProcessContext( ALCcontext *alcHandle ) {
 	return;
 }
 
-ALC_API ALCvoid ALC_APIENTRY alcDestroyContext( ALCcontext *alcHandle )
-{
+ALC_API ALCvoid ALC_APIENTRY alcDestroyContext( ALCcontext *alcHandle ) {
 	return;
 }
 
-ALC_API const ALCchar *ALC_APIENTRY alcGetString( ALCdevice *deviceHandle, ALCenum token )
-{
+ALC_API const ALCchar *ALC_APIENTRY alcGetString( ALCdevice *deviceHandle, ALCenum token ) {
 	return NULL;
 }
 
@@ -97,31 +88,26 @@ AL_API void AL_APIENTRY alBufferData( ALuint   buffer,
 
 AL_API void AL_APIENTRY alDeleteBuffers( ALsizei n, ALuint *buffers ) { }
 
-AL_API ALboolean AL_APIENTRY alIsExtensionPresent( ALubyte *fname )
-{
+AL_API ALboolean AL_APIENTRY alIsExtensionPresent( ALubyte *fname ) {
 	return AL_FALSE;
 }
 
 AL_API void AL_APIENTRY alDeleteSources( ALsizei n, const ALuint *sources ) { }
 
-AL_API ALenum AL_APIENTRY alGetEnumValue( const ALchar *ename )
-{
+AL_API ALenum AL_APIENTRY alGetEnumValue( const ALchar *ename ) {
 	return 0;
 }
 
-AL_API void *AL_APIENTRY alGetProcAddress( const ALchar *fname )
-{
+AL_API void *AL_APIENTRY alGetProcAddress( const ALchar *fname ) {
 	return NULL;
 }
 
 ALC_API ALCcontext *ALC_APIENTRY alcCreateContext( ALCdevice *dev,
-		const ALCint *attrlist )
-{
+		const ALCint *attrlist ) {
 	return NULL;
 }
 
-ALC_API ALCdevice *ALC_APIENTRY alcOpenDevice( ALubyte *tokstr )
-{
+ALC_API ALCdevice *ALC_APIENTRY alcOpenDevice( ALubyte *tokstr ) {
 	return NULL;
 }
 
@@ -133,13 +119,11 @@ AL_API void AL_APIENTRY alSourcei( ALuint sid, ALenum param, ALint value ) { }
 
 AL_API void AL_APIENTRY alListenerf( ALenum pname, ALfloat param ) { }
 
-ALC_API ALCboolean ALC_APIENTRY alcCloseDevice( ALCdevice *dev )
-{
+ALC_API ALCboolean ALC_APIENTRY alcCloseDevice( ALCdevice *dev ) {
 	return false;
 }
 
-AL_API ALboolean AL_APIENTRY alIsBuffer( ALuint buffer )
-{
+AL_API ALboolean AL_APIENTRY alIsBuffer( ALuint buffer ) {
 	return AL_FALSE;
 }
 

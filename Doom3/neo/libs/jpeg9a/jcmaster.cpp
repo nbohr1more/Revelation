@@ -19,15 +19,13 @@
 
 /* Private state */
 
-typedef enum
-{
+typedef enum {
 	main_pass,		/* input data, also do first output step */
 	huff_opt_pass,		/* Huffman code optimization pass */
 	output_pass		/* data output pass */
 } c_pass_type;
 
-typedef struct
-{
+typedef struct {
 	struct jpeg_comp_master pub;	/* public fields */
 	
 	c_pass_type pass_type;	/* the type of the current pass */
@@ -63,22 +61,18 @@ jpeg_calc_jpeg_dimensions( j_compress_ptr cinfo )
 	 * but image_width and image_height can come from arbitrary data,
 	 * and we need some space for multiplication by block_size.
 	 */
-	if( ( ( long ) cinfo->image_width >> 24 ) || ( ( long ) cinfo->image_height >> 24 ) )
-	{
+	if( ( ( long ) cinfo->image_width >> 24 ) || ( ( long ) cinfo->image_height >> 24 ) ) {
 		ERREXIT1( cinfo, JERR_IMAGE_TOO_BIG, ( unsigned int ) JPEG_MAX_DIMENSION );
 	}
 	
 	/* Compute actual JPEG image dimensions and DCT scaling choices. */
-	if( cinfo->scale_num >= cinfo->scale_denom * cinfo->block_size )
-	{
+	if( cinfo->scale_num >= cinfo->scale_denom * cinfo->block_size ) {
 		/* Provide block_size/1 scaling */
 		cinfo->jpeg_width = cinfo->image_width * cinfo->block_size;
 		cinfo->jpeg_height = cinfo->image_height * cinfo->block_size;
 		cinfo->min_DCT_h_scaled_size = 1;
 		cinfo->min_DCT_v_scaled_size = 1;
-	}
-	else if( cinfo->scale_num * 2 >= cinfo->scale_denom * cinfo->block_size )
-	{
+	} else if( cinfo->scale_num * 2 >= cinfo->scale_denom * cinfo->block_size ) {
 		/* Provide block_size/2 scaling */
 		cinfo->jpeg_width = ( JDIMENSION )
 							jdiv_round_up( ( long ) cinfo->image_width * cinfo->block_size, 2L );
@@ -86,9 +80,7 @@ jpeg_calc_jpeg_dimensions( j_compress_ptr cinfo )
 							 jdiv_round_up( ( long ) cinfo->image_height * cinfo->block_size, 2L );
 		cinfo->min_DCT_h_scaled_size = 2;
 		cinfo->min_DCT_v_scaled_size = 2;
-	}
-	else if( cinfo->scale_num * 3 >= cinfo->scale_denom * cinfo->block_size )
-	{
+	} else if( cinfo->scale_num * 3 >= cinfo->scale_denom * cinfo->block_size ) {
 		/* Provide block_size/3 scaling */
 		cinfo->jpeg_width = ( JDIMENSION )
 							jdiv_round_up( ( long ) cinfo->image_width * cinfo->block_size, 3L );
@@ -96,9 +88,7 @@ jpeg_calc_jpeg_dimensions( j_compress_ptr cinfo )
 							 jdiv_round_up( ( long ) cinfo->image_height * cinfo->block_size, 3L );
 		cinfo->min_DCT_h_scaled_size = 3;
 		cinfo->min_DCT_v_scaled_size = 3;
-	}
-	else if( cinfo->scale_num * 4 >= cinfo->scale_denom * cinfo->block_size )
-	{
+	} else if( cinfo->scale_num * 4 >= cinfo->scale_denom * cinfo->block_size ) {
 		/* Provide block_size/4 scaling */
 		cinfo->jpeg_width = ( JDIMENSION )
 							jdiv_round_up( ( long ) cinfo->image_width * cinfo->block_size, 4L );
@@ -106,9 +96,7 @@ jpeg_calc_jpeg_dimensions( j_compress_ptr cinfo )
 							 jdiv_round_up( ( long ) cinfo->image_height * cinfo->block_size, 4L );
 		cinfo->min_DCT_h_scaled_size = 4;
 		cinfo->min_DCT_v_scaled_size = 4;
-	}
-	else if( cinfo->scale_num * 5 >= cinfo->scale_denom * cinfo->block_size )
-	{
+	} else if( cinfo->scale_num * 5 >= cinfo->scale_denom * cinfo->block_size ) {
 		/* Provide block_size/5 scaling */
 		cinfo->jpeg_width = ( JDIMENSION )
 							jdiv_round_up( ( long ) cinfo->image_width * cinfo->block_size, 5L );
@@ -116,9 +104,7 @@ jpeg_calc_jpeg_dimensions( j_compress_ptr cinfo )
 							 jdiv_round_up( ( long ) cinfo->image_height * cinfo->block_size, 5L );
 		cinfo->min_DCT_h_scaled_size = 5;
 		cinfo->min_DCT_v_scaled_size = 5;
-	}
-	else if( cinfo->scale_num * 6 >= cinfo->scale_denom * cinfo->block_size )
-	{
+	} else if( cinfo->scale_num * 6 >= cinfo->scale_denom * cinfo->block_size ) {
 		/* Provide block_size/6 scaling */
 		cinfo->jpeg_width = ( JDIMENSION )
 							jdiv_round_up( ( long ) cinfo->image_width * cinfo->block_size, 6L );
@@ -126,9 +112,7 @@ jpeg_calc_jpeg_dimensions( j_compress_ptr cinfo )
 							 jdiv_round_up( ( long ) cinfo->image_height * cinfo->block_size, 6L );
 		cinfo->min_DCT_h_scaled_size = 6;
 		cinfo->min_DCT_v_scaled_size = 6;
-	}
-	else if( cinfo->scale_num * 7 >= cinfo->scale_denom * cinfo->block_size )
-	{
+	} else if( cinfo->scale_num * 7 >= cinfo->scale_denom * cinfo->block_size ) {
 		/* Provide block_size/7 scaling */
 		cinfo->jpeg_width = ( JDIMENSION )
 							jdiv_round_up( ( long ) cinfo->image_width * cinfo->block_size, 7L );
@@ -136,9 +120,7 @@ jpeg_calc_jpeg_dimensions( j_compress_ptr cinfo )
 							 jdiv_round_up( ( long ) cinfo->image_height * cinfo->block_size, 7L );
 		cinfo->min_DCT_h_scaled_size = 7;
 		cinfo->min_DCT_v_scaled_size = 7;
-	}
-	else if( cinfo->scale_num * 8 >= cinfo->scale_denom * cinfo->block_size )
-	{
+	} else if( cinfo->scale_num * 8 >= cinfo->scale_denom * cinfo->block_size ) {
 		/* Provide block_size/8 scaling */
 		cinfo->jpeg_width = ( JDIMENSION )
 							jdiv_round_up( ( long ) cinfo->image_width * cinfo->block_size, 8L );
@@ -146,9 +128,7 @@ jpeg_calc_jpeg_dimensions( j_compress_ptr cinfo )
 							 jdiv_round_up( ( long ) cinfo->image_height * cinfo->block_size, 8L );
 		cinfo->min_DCT_h_scaled_size = 8;
 		cinfo->min_DCT_v_scaled_size = 8;
-	}
-	else if( cinfo->scale_num * 9 >= cinfo->scale_denom * cinfo->block_size )
-	{
+	} else if( cinfo->scale_num * 9 >= cinfo->scale_denom * cinfo->block_size ) {
 		/* Provide block_size/9 scaling */
 		cinfo->jpeg_width = ( JDIMENSION )
 							jdiv_round_up( ( long ) cinfo->image_width * cinfo->block_size, 9L );
@@ -156,9 +136,7 @@ jpeg_calc_jpeg_dimensions( j_compress_ptr cinfo )
 							 jdiv_round_up( ( long ) cinfo->image_height * cinfo->block_size, 9L );
 		cinfo->min_DCT_h_scaled_size = 9;
 		cinfo->min_DCT_v_scaled_size = 9;
-	}
-	else if( cinfo->scale_num * 10 >= cinfo->scale_denom * cinfo->block_size )
-	{
+	} else if( cinfo->scale_num * 10 >= cinfo->scale_denom * cinfo->block_size ) {
 		/* Provide block_size/10 scaling */
 		cinfo->jpeg_width = ( JDIMENSION )
 							jdiv_round_up( ( long ) cinfo->image_width * cinfo->block_size, 10L );
@@ -166,9 +144,7 @@ jpeg_calc_jpeg_dimensions( j_compress_ptr cinfo )
 							 jdiv_round_up( ( long ) cinfo->image_height * cinfo->block_size, 10L );
 		cinfo->min_DCT_h_scaled_size = 10;
 		cinfo->min_DCT_v_scaled_size = 10;
-	}
-	else if( cinfo->scale_num * 11 >= cinfo->scale_denom * cinfo->block_size )
-	{
+	} else if( cinfo->scale_num * 11 >= cinfo->scale_denom * cinfo->block_size ) {
 		/* Provide block_size/11 scaling */
 		cinfo->jpeg_width = ( JDIMENSION )
 							jdiv_round_up( ( long ) cinfo->image_width * cinfo->block_size, 11L );
@@ -176,9 +152,7 @@ jpeg_calc_jpeg_dimensions( j_compress_ptr cinfo )
 							 jdiv_round_up( ( long ) cinfo->image_height * cinfo->block_size, 11L );
 		cinfo->min_DCT_h_scaled_size = 11;
 		cinfo->min_DCT_v_scaled_size = 11;
-	}
-	else if( cinfo->scale_num * 12 >= cinfo->scale_denom * cinfo->block_size )
-	{
+	} else if( cinfo->scale_num * 12 >= cinfo->scale_denom * cinfo->block_size ) {
 		/* Provide block_size/12 scaling */
 		cinfo->jpeg_width = ( JDIMENSION )
 							jdiv_round_up( ( long ) cinfo->image_width * cinfo->block_size, 12L );
@@ -186,9 +160,7 @@ jpeg_calc_jpeg_dimensions( j_compress_ptr cinfo )
 							 jdiv_round_up( ( long ) cinfo->image_height * cinfo->block_size, 12L );
 		cinfo->min_DCT_h_scaled_size = 12;
 		cinfo->min_DCT_v_scaled_size = 12;
-	}
-	else if( cinfo->scale_num * 13 >= cinfo->scale_denom * cinfo->block_size )
-	{
+	} else if( cinfo->scale_num * 13 >= cinfo->scale_denom * cinfo->block_size ) {
 		/* Provide block_size/13 scaling */
 		cinfo->jpeg_width = ( JDIMENSION )
 							jdiv_round_up( ( long ) cinfo->image_width * cinfo->block_size, 13L );
@@ -196,9 +168,7 @@ jpeg_calc_jpeg_dimensions( j_compress_ptr cinfo )
 							 jdiv_round_up( ( long ) cinfo->image_height * cinfo->block_size, 13L );
 		cinfo->min_DCT_h_scaled_size = 13;
 		cinfo->min_DCT_v_scaled_size = 13;
-	}
-	else if( cinfo->scale_num * 14 >= cinfo->scale_denom * cinfo->block_size )
-	{
+	} else if( cinfo->scale_num * 14 >= cinfo->scale_denom * cinfo->block_size ) {
 		/* Provide block_size/14 scaling */
 		cinfo->jpeg_width = ( JDIMENSION )
 							jdiv_round_up( ( long ) cinfo->image_width * cinfo->block_size, 14L );
@@ -206,9 +176,7 @@ jpeg_calc_jpeg_dimensions( j_compress_ptr cinfo )
 							 jdiv_round_up( ( long ) cinfo->image_height * cinfo->block_size, 14L );
 		cinfo->min_DCT_h_scaled_size = 14;
 		cinfo->min_DCT_v_scaled_size = 14;
-	}
-	else if( cinfo->scale_num * 15 >= cinfo->scale_denom * cinfo->block_size )
-	{
+	} else if( cinfo->scale_num * 15 >= cinfo->scale_denom * cinfo->block_size ) {
 		/* Provide block_size/15 scaling */
 		cinfo->jpeg_width = ( JDIMENSION )
 							jdiv_round_up( ( long ) cinfo->image_width * cinfo->block_size, 15L );
@@ -216,9 +184,7 @@ jpeg_calc_jpeg_dimensions( j_compress_ptr cinfo )
 							 jdiv_round_up( ( long ) cinfo->image_height * cinfo->block_size, 15L );
 		cinfo->min_DCT_h_scaled_size = 15;
 		cinfo->min_DCT_v_scaled_size = 15;
-	}
-	else
-	{
+	} else {
 		/* Provide block_size/16 scaling */
 		cinfo->jpeg_width = ( JDIMENSION )
 							jdiv_round_up( ( long ) cinfo->image_width * cinfo->block_size, 16L );
@@ -241,8 +207,7 @@ jpeg_calc_jpeg_dimensions( j_compress_ptr cinfo )
 
 
 LOCAL( void )
-jpeg_calc_trans_dimensions( j_compress_ptr cinfo )
-{
+jpeg_calc_trans_dimensions( j_compress_ptr cinfo ) {
 	if( cinfo->min_DCT_h_scaled_size != cinfo->min_DCT_v_scaled_size )
 		ERREXIT2( cinfo, JERR_BAD_DCTSIZE,
 				  cinfo->min_DCT_h_scaled_size, cinfo->min_DCT_v_scaled_size );
@@ -258,24 +223,19 @@ initial_setup( j_compress_ptr cinfo, boolean transcode_only )
 	int ci, ssize;
 	jpeg_component_info *compptr;
 	
-	if( transcode_only )
-	{
+	if( transcode_only ) {
 		jpeg_calc_trans_dimensions( cinfo );
-	}
-	else
-	{
+	} else {
 		jpeg_calc_jpeg_dimensions( cinfo );
 	}
 	
 	/* Sanity check on block_size */
-	if( cinfo->block_size < 1 || cinfo->block_size > 16 )
-	{
+	if( cinfo->block_size < 1 || cinfo->block_size > 16 ) {
 		ERREXIT2( cinfo, JERR_BAD_DCTSIZE, cinfo->block_size, cinfo->block_size );
 	}
 	
 	/* Derive natural_order from block_size */
-	switch( cinfo->block_size )
-	{
+	switch( cinfo->block_size ) {
 	case 2:
 		cinfo->natural_order = jpeg_natural_order2;
 		break;
@@ -305,21 +265,18 @@ initial_setup( j_compress_ptr cinfo, boolean transcode_only )
 					
 	/* Sanity check on image dimensions */
 	if( cinfo->jpeg_height <= 0 || cinfo->jpeg_width <= 0 ||
-			cinfo->num_components <= 0 )
-	{
+			cinfo->num_components <= 0 ) {
 		ERREXIT( cinfo, JERR_EMPTY_IMAGE );
 	}
 	
 	/* Make sure image isn't bigger than I can handle */
 	if( ( long ) cinfo->jpeg_height > ( long ) JPEG_MAX_DIMENSION ||
-			( long ) cinfo->jpeg_width > ( long ) JPEG_MAX_DIMENSION )
-	{
+			( long ) cinfo->jpeg_width > ( long ) JPEG_MAX_DIMENSION ) {
 		ERREXIT1( cinfo, JERR_IMAGE_TOO_BIG, ( unsigned int ) JPEG_MAX_DIMENSION );
 	}
 	
 	/* Only 8 to 12 bits data precision are supported for DCT based JPEG */
-	if( cinfo->data_precision < 8 || cinfo->data_precision > 12 )
-	{
+	if( cinfo->data_precision < 8 || cinfo->data_precision > 12 ) {
 		ERREXIT1( cinfo, JERR_BAD_PRECISION, cinfo->data_precision );
 	}
 	
@@ -332,11 +289,9 @@ initial_setup( j_compress_ptr cinfo, boolean transcode_only )
 	cinfo->max_h_samp_factor = 1;
 	cinfo->max_v_samp_factor = 1;
 	for( ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
-			ci++, compptr++ )
-	{
+			ci++, compptr++ ) {
 		if( compptr->h_samp_factor <= 0 || compptr->h_samp_factor > MAX_SAMP_FACTOR ||
-				compptr->v_samp_factor <= 0 || compptr->v_samp_factor > MAX_SAMP_FACTOR )
-		{
+				compptr->v_samp_factor <= 0 || compptr->v_samp_factor > MAX_SAMP_FACTOR ) {
 			ERREXIT( cinfo, JERR_BAD_SAMPLING );
 		}
 		cinfo->max_h_samp_factor = MAX( cinfo->max_h_samp_factor,
@@ -347,8 +302,7 @@ initial_setup( j_compress_ptr cinfo, boolean transcode_only )
 	
 	/* Compute dimensions of components */
 	for( ci = 0, compptr = cinfo->comp_info; ci < cinfo->num_components;
-			ci++, compptr++ )
-	{
+			ci++, compptr++ ) {
 		/* Fill in the correct component_index value; don't rely on application */
 		compptr->component_index = ci;
 		/* In selecting the actual DCT scaling for each component, we try to
@@ -360,8 +314,7 @@ initial_setup( j_compress_ptr cinfo, boolean transcode_only )
 #ifdef DCT_SCALING_SUPPORTED
 		while( cinfo->min_DCT_h_scaled_size * ssize <=
 				( cinfo->do_fancy_downsampling ? DCTSIZE : DCTSIZE / 2 ) &&
-				( cinfo->max_h_samp_factor % ( compptr->h_samp_factor * ssize * 2 ) ) == 0 )
-		{
+				( cinfo->max_h_samp_factor % ( compptr->h_samp_factor * ssize * 2 ) ) == 0 ) {
 			ssize = ssize * 2;
 		}
 #endif
@@ -370,20 +323,16 @@ initial_setup( j_compress_ptr cinfo, boolean transcode_only )
 #ifdef DCT_SCALING_SUPPORTED
 		while( cinfo->min_DCT_v_scaled_size * ssize <=
 				( cinfo->do_fancy_downsampling ? DCTSIZE : DCTSIZE / 2 ) &&
-				( cinfo->max_v_samp_factor % ( compptr->v_samp_factor * ssize * 2 ) ) == 0 )
-		{
+				( cinfo->max_v_samp_factor % ( compptr->v_samp_factor * ssize * 2 ) ) == 0 ) {
 			ssize = ssize * 2;
 		}
 #endif
 		compptr->DCT_v_scaled_size = cinfo->min_DCT_v_scaled_size * ssize;
 		
 		/* We don't support DCT ratios larger than 2. */
-		if( compptr->DCT_h_scaled_size > compptr->DCT_v_scaled_size * 2 )
-		{
+		if( compptr->DCT_h_scaled_size > compptr->DCT_v_scaled_size * 2 ) {
 			compptr->DCT_h_scaled_size = compptr->DCT_v_scaled_size * 2;
-		}
-		else if( compptr->DCT_v_scaled_size > compptr->DCT_h_scaled_size * 2 )
-		{
+		} else if( compptr->DCT_v_scaled_size > compptr->DCT_h_scaled_size * 2 ) {
 			compptr->DCT_v_scaled_size = compptr->DCT_h_scaled_size * 2;
 		}
 		
@@ -436,8 +385,7 @@ validate_script( j_compress_ptr cinfo )
 	/* -1 until that coefficient has been seen; then last Al for it */
 #endif
 	
-	if( cinfo->num_scans <= 0 )
-	{
+	if( cinfo->num_scans <= 0 ) {
 		ERREXIT1( cinfo, JERR_BAD_SCAN_SCRIPT, 0 );
 	}
 	
@@ -445,47 +393,37 @@ validate_script( j_compress_ptr cinfo )
 	 * for progressive JPEG, no scan can have this.
 	 */
 	scanptr = cinfo->scan_info;
-	if( scanptr->Ss != 0 || scanptr->Se != DCTSIZE2 - 1 )
-	{
+	if( scanptr->Ss != 0 || scanptr->Se != DCTSIZE2 - 1 ) {
 #ifdef C_PROGRESSIVE_SUPPORTED
 		cinfo->progressive_mode = TRUE;
 		last_bitpos_ptr = & last_bitpos[0][0];
 		for( ci = 0; ci < cinfo->num_components; ci++ )
-			for( coefi = 0; coefi < DCTSIZE2; coefi++ )
-			{
+			for( coefi = 0; coefi < DCTSIZE2; coefi++ ) {
 				*last_bitpos_ptr++ = -1;
 			}
 #else
 		ERREXIT( cinfo, JERR_NOT_COMPILED );
 #endif
-	}
-	else
-	{
+	} else {
 		cinfo->progressive_mode = FALSE;
-		for( ci = 0; ci < cinfo->num_components; ci++ )
-		{
+		for( ci = 0; ci < cinfo->num_components; ci++ ) {
 			component_sent[ci] = FALSE;
 		}
 	}
 	
-	for( scanno = 1; scanno <= cinfo->num_scans; scanptr++, scanno++ )
-	{
+	for( scanno = 1; scanno <= cinfo->num_scans; scanptr++, scanno++ ) {
 		/* Validate component indexes */
 		ncomps = scanptr->comps_in_scan;
-		if( ncomps <= 0 || ncomps > MAX_COMPS_IN_SCAN )
-		{
+		if( ncomps <= 0 || ncomps > MAX_COMPS_IN_SCAN ) {
 			ERREXIT2( cinfo, JERR_COMPONENT_COUNT, ncomps, MAX_COMPS_IN_SCAN );
 		}
-		for( ci = 0; ci < ncomps; ci++ )
-		{
+		for( ci = 0; ci < ncomps; ci++ ) {
 			thisi = scanptr->component_index[ci];
-			if( thisi < 0 || thisi >= cinfo->num_components )
-			{
+			if( thisi < 0 || thisi >= cinfo->num_components ) {
 				ERREXIT1( cinfo, JERR_BAD_SCAN_SCRIPT, scanno );
 			}
 			/* Components must appear in SOF order within each scan */
-			if( ci > 0 && thisi <= scanptr->component_index[ci - 1] )
-			{
+			if( ci > 0 && thisi <= scanptr->component_index[ci - 1] ) {
 				ERREXIT1( cinfo, JERR_BAD_SCAN_SCRIPT, scanno );
 			}
 		}
@@ -494,8 +432,7 @@ validate_script( j_compress_ptr cinfo )
 		Se = scanptr->Se;
 		Ah = scanptr->Ah;
 		Al = scanptr->Al;
-		if( cinfo->progressive_mode )
-		{
+		if( cinfo->progressive_mode ) {
 #ifdef C_PROGRESSIVE_SUPPORTED
 			/* The JPEG spec simply gives the ranges 0..13 for Ah and Al, but that
 			 * seems wrong: the upper bound ought to depend on data precision.
@@ -510,46 +447,32 @@ validate_script( j_compress_ptr cinfo )
 #define MAX_AH_AL 13
 #endif
 			if( Ss < 0 || Ss >= DCTSIZE2 || Se < Ss || Se >= DCTSIZE2 ||
-					Ah < 0 || Ah > MAX_AH_AL || Al < 0 || Al > MAX_AH_AL )
-			{
+					Ah < 0 || Ah > MAX_AH_AL || Al < 0 || Al > MAX_AH_AL ) {
 				ERREXIT1( cinfo, JERR_BAD_PROG_SCRIPT, scanno );
 			}
-			if( Ss == 0 )
-			{
-				if( Se != 0 )		/* DC and AC together not OK */
-				{
+			if( Ss == 0 ) {
+				if( Se != 0 ) {	/* DC and AC together not OK */
+					ERREXIT1( cinfo, JERR_BAD_PROG_SCRIPT, scanno );
+				}
+			} else {
+				if( ncomps != 1 ) {	/* AC scans must be for only one component */
 					ERREXIT1( cinfo, JERR_BAD_PROG_SCRIPT, scanno );
 				}
 			}
-			else
-			{
-				if( ncomps != 1 )	/* AC scans must be for only one component */
-				{
-					ERREXIT1( cinfo, JERR_BAD_PROG_SCRIPT, scanno );
-				}
-			}
-			for( ci = 0; ci < ncomps; ci++ )
-			{
+			for( ci = 0; ci < ncomps; ci++ ) {
 				last_bitpos_ptr = & last_bitpos[scanptr->component_index[ci]][0];
-				if( Ss != 0 && last_bitpos_ptr[0] < 0 ) /* AC without prior DC scan */
-				{
+				if( Ss != 0 && last_bitpos_ptr[0] < 0 ) { /* AC without prior DC scan */
 					ERREXIT1( cinfo, JERR_BAD_PROG_SCRIPT, scanno );
 				}
-				for( coefi = Ss; coefi <= Se; coefi++ )
-				{
-					if( last_bitpos_ptr[coefi] < 0 )
-					{
+				for( coefi = Ss; coefi <= Se; coefi++ ) {
+					if( last_bitpos_ptr[coefi] < 0 ) {
 						/* first scan of this coefficient */
-						if( Ah != 0 )
-						{
+						if( Ah != 0 ) {
 							ERREXIT1( cinfo, JERR_BAD_PROG_SCRIPT, scanno );
 						}
-					}
-					else
-					{
+					} else {
 						/* not first scan */
-						if( Ah != last_bitpos_ptr[coefi] || Al != Ah - 1 )
-						{
+						if( Ah != last_bitpos_ptr[coefi] || Al != Ah - 1 ) {
 							ERREXIT1( cinfo, JERR_BAD_PROG_SCRIPT, scanno );
 						}
 					}
@@ -557,20 +480,15 @@ validate_script( j_compress_ptr cinfo )
 				}
 			}
 #endif
-		}
-		else
-		{
+		} else {
 			/* For sequential JPEG, all progression parameters must be these: */
-			if( Ss != 0 || Se != DCTSIZE2 - 1 || Ah != 0 || Al != 0 )
-			{
+			if( Ss != 0 || Se != DCTSIZE2 - 1 || Ah != 0 || Al != 0 ) {
 				ERREXIT1( cinfo, JERR_BAD_PROG_SCRIPT, scanno );
 			}
 			/* Make sure components are not sent twice */
-			for( ci = 0; ci < ncomps; ci++ )
-			{
+			for( ci = 0; ci < ncomps; ci++ ) {
 				thisi = scanptr->component_index[ci];
-				if( component_sent[thisi] )
-				{
+				if( component_sent[thisi] ) {
 					ERREXIT1( cinfo, JERR_BAD_SCAN_SCRIPT, scanno );
 				}
 				component_sent[thisi] = TRUE;
@@ -579,29 +497,22 @@ validate_script( j_compress_ptr cinfo )
 	}
 	
 	/* Now verify that everything got sent. */
-	if( cinfo->progressive_mode )
-	{
+	if( cinfo->progressive_mode ) {
 #ifdef C_PROGRESSIVE_SUPPORTED
 		/* For progressive mode, we only check that at least some DC data
 		 * got sent for each component; the spec does not require that all bits
 		 * of all coefficients be transmitted.  Would it be wiser to enforce
 		 * transmission of all coefficient bits??
 		 */
-		for( ci = 0; ci < cinfo->num_components; ci++ )
-		{
-			if( last_bitpos[ci][0] < 0 )
-			{
+		for( ci = 0; ci < cinfo->num_components; ci++ ) {
+			if( last_bitpos[ci][0] < 0 ) {
 				ERREXIT( cinfo, JERR_MISSING_DATA );
 			}
 		}
 #endif
-	}
-	else
-	{
-		for( ci = 0; ci < cinfo->num_components; ci++ )
-		{
-			if( ! component_sent[ci] )
-			{
+	} else {
+		for( ci = 0; ci < cinfo->num_components; ci++ ) {
+			if( ! component_sent[ci] ) {
 				ERREXIT( cinfo, JERR_MISSING_DATA );
 			}
 		}
@@ -622,8 +533,7 @@ reduce_script( j_compress_ptr cinfo )
 	scanptr = ( jpeg_scan_info * ) cinfo->scan_info;
 	idxout = 0;
 	
-	for( idxin = 0; idxin < cinfo->num_scans; idxin++ )
-	{
+	for( idxin = 0; idxin < cinfo->num_scans; idxin++ ) {
 		/* After skipping, idxout becomes smaller than idxin */
 		if( idxin != idxout )
 			/* Copy rest of data;
@@ -658,28 +568,24 @@ select_scan_parameters( j_compress_ptr cinfo )
 	int ci;
 	
 #ifdef C_MULTISCAN_FILES_SUPPORTED
-	if( cinfo->scan_info != NULL )
-	{
+	if( cinfo->scan_info != NULL ) {
 		/* Prepare for current scan --- the script is already validated */
 		my_master_ptr master = ( my_master_ptr ) cinfo->master;
 		const jpeg_scan_info *scanptr = cinfo->scan_info + master->scan_number;
 		
 		cinfo->comps_in_scan = scanptr->comps_in_scan;
-		for( ci = 0; ci < scanptr->comps_in_scan; ci++ )
-		{
+		for( ci = 0; ci < scanptr->comps_in_scan; ci++ ) {
 			cinfo->cur_comp_info[ci] =
 				&cinfo->comp_info[scanptr->component_index[ci]];
 		}
-		if( cinfo->progressive_mode )
-		{
+		if( cinfo->progressive_mode ) {
 			cinfo->Ss = scanptr->Ss;
 			cinfo->Se = scanptr->Se;
 			cinfo->Ah = scanptr->Ah;
 			cinfo->Al = scanptr->Al;
 			return;
 		}
-	}
-	else
+	} else
 #endif
 	{
 		/* Prepare for single sequential-JPEG scan containing all components */
@@ -687,8 +593,7 @@ select_scan_parameters( j_compress_ptr cinfo )
 			ERREXIT2( cinfo, JERR_COMPONENT_COUNT, cinfo->num_components,
 					  MAX_COMPS_IN_SCAN );
 		cinfo->comps_in_scan = cinfo->num_components;
-		for( ci = 0; ci < cinfo->num_components; ci++ )
-		{
+		for( ci = 0; ci < cinfo->num_components; ci++ ) {
 			cinfo->cur_comp_info[ci] = &cinfo->comp_info[ci];
 		}
 	}
@@ -707,8 +612,7 @@ per_scan_setup( j_compress_ptr cinfo )
 	int ci, mcublks, tmp;
 	jpeg_component_info *compptr;
 	
-	if( cinfo->comps_in_scan == 1 )
-	{
+	if( cinfo->comps_in_scan == 1 ) {
 	
 		/* Noninterleaved (single-component) scan */
 		compptr = cinfo->cur_comp_info[0];
@@ -727,8 +631,7 @@ per_scan_setup( j_compress_ptr cinfo )
 		 * as the number of block rows present in the last iMCU row.
 		 */
 		tmp = ( int )( compptr->height_in_blocks % compptr->v_samp_factor );
-		if( tmp == 0 )
-		{
+		if( tmp == 0 ) {
 			tmp = compptr->v_samp_factor;
 		}
 		compptr->last_row_height = tmp;
@@ -737,9 +640,7 @@ per_scan_setup( j_compress_ptr cinfo )
 		cinfo->blocks_in_MCU = 1;
 		cinfo->MCU_membership[0] = 0;
 		
-	}
-	else
-	{
+	} else {
 	
 		/* Interleaved (multi-component) scan */
 		if( cinfo->comps_in_scan <= 0 || cinfo->comps_in_scan > MAX_COMPS_IN_SCAN )
@@ -756,8 +657,7 @@ per_scan_setup( j_compress_ptr cinfo )
 										  
 		cinfo->blocks_in_MCU = 0;
 		
-		for( ci = 0; ci < cinfo->comps_in_scan; ci++ )
-		{
+		for( ci = 0; ci < cinfo->comps_in_scan; ci++ ) {
 			compptr = cinfo->cur_comp_info[ci];
 			/* Sampling factors give # of blocks of component in each MCU */
 			compptr->MCU_width = compptr->h_samp_factor;
@@ -766,25 +666,21 @@ per_scan_setup( j_compress_ptr cinfo )
 			compptr->MCU_sample_width = compptr->MCU_width * compptr->DCT_h_scaled_size;
 			/* Figure number of non-dummy blocks in last MCU column & row */
 			tmp = ( int )( compptr->width_in_blocks % compptr->MCU_width );
-			if( tmp == 0 )
-			{
+			if( tmp == 0 ) {
 				tmp = compptr->MCU_width;
 			}
 			compptr->last_col_width = tmp;
 			tmp = ( int )( compptr->height_in_blocks % compptr->MCU_height );
-			if( tmp == 0 )
-			{
+			if( tmp == 0 ) {
 				tmp = compptr->MCU_height;
 			}
 			compptr->last_row_height = tmp;
 			/* Prepare array describing MCU composition */
 			mcublks = compptr->MCU_blocks;
-			if( cinfo->blocks_in_MCU + mcublks > C_MAX_BLOCKS_IN_MCU )
-			{
+			if( cinfo->blocks_in_MCU + mcublks > C_MAX_BLOCKS_IN_MCU ) {
 				ERREXIT( cinfo, JERR_BAD_MCU_SIZE );
 			}
-			while( mcublks-- > 0 )
-			{
+			while( mcublks-- > 0 ) {
 				cinfo->MCU_membership[cinfo->blocks_in_MCU++] = ci;
 			}
 		}
@@ -793,8 +689,7 @@ per_scan_setup( j_compress_ptr cinfo )
 	
 	/* Convert restart specified in rows to actual MCU count. */
 	/* Note that count must fit in 16 bits, so we provide limiting. */
-	if( cinfo->restart_in_rows > 0 )
-	{
+	if( cinfo->restart_in_rows > 0 ) {
 		long nominal = ( long ) cinfo->restart_in_rows * ( long ) cinfo->MCUs_per_row;
 		cinfo->restart_interval = ( unsigned int ) MIN( nominal, 65535L );
 	}
@@ -810,20 +705,17 @@ per_scan_setup( j_compress_ptr cinfo )
  */
 
 METHODDEF( void )
-prepare_for_pass( j_compress_ptr cinfo )
-{
+prepare_for_pass( j_compress_ptr cinfo ) {
 	my_master_ptr master = ( my_master_ptr ) cinfo->master;
 	
-	switch( master->pass_type )
-	{
+	switch( master->pass_type ) {
 	case main_pass:
 		/* Initial pass: will collect input data, and do either Huffman
 		 * optimization or data output for the first scan.
 		 */
 		select_scan_parameters( cinfo );
 		per_scan_setup( cinfo );
-		if( ! cinfo->raw_data_in )
-		{
+		if( ! cinfo->raw_data_in ) {
 			( *cinfo->cconvert->start_pass )( cinfo );
 			( *cinfo->downsample->start_pass )( cinfo );
 			( *cinfo->prep->start_pass )( cinfo, JBUF_PASS_THRU );
@@ -834,13 +726,10 @@ prepare_for_pass( j_compress_ptr cinfo )
 									  ( master->total_passes > 1 ?
 										JBUF_SAVE_AND_PASS : JBUF_PASS_THRU ) );
 		( *cinfo->main->start_pass )( cinfo, JBUF_PASS_THRU );
-		if( cinfo->optimize_coding )
-		{
+		if( cinfo->optimize_coding ) {
 			/* No immediate data output; postpone writing frame/scan headers */
 			master->pub.call_pass_startup = FALSE;
-		}
-		else
-		{
+		} else {
 			/* Will write frame/scan headers at first jpeg_write_scanlines call */
 			master->pub.call_pass_startup = TRUE;
 		}
@@ -850,8 +739,7 @@ prepare_for_pass( j_compress_ptr cinfo )
 		/* Do Huffman optimization for a scan after the first one. */
 		select_scan_parameters( cinfo );
 		per_scan_setup( cinfo );
-		if( cinfo->Ss != 0 || cinfo->Ah == 0 )
-		{
+		if( cinfo->Ss != 0 || cinfo->Ah == 0 ) {
 			( *cinfo->entropy->start_pass )( cinfo, TRUE );
 			( *cinfo->coef->start_pass )( cinfo, JBUF_CRANK_DEST );
 			master->pub.call_pass_startup = FALSE;
@@ -867,16 +755,14 @@ prepare_for_pass( j_compress_ptr cinfo )
 	case output_pass:
 		/* Do a data-output pass. */
 		/* We need not repeat per-scan setup if prior optimization pass did it. */
-		if( ! cinfo->optimize_coding )
-		{
+		if( ! cinfo->optimize_coding ) {
 			select_scan_parameters( cinfo );
 			per_scan_setup( cinfo );
 		}
 		( *cinfo->entropy->start_pass )( cinfo, FALSE );
 		( *cinfo->coef->start_pass )( cinfo, JBUF_CRANK_DEST );
 		/* We emit frame/scan headers now */
-		if( master->scan_number == 0 )
-		{
+		if( master->scan_number == 0 ) {
 			( *cinfo->marker->write_frame_header )( cinfo );
 		}
 		( *cinfo->marker->write_scan_header )( cinfo );
@@ -889,8 +775,7 @@ prepare_for_pass( j_compress_ptr cinfo )
 	master->pub.is_last_pass = ( master->pass_number == master->total_passes - 1 );
 	
 	/* Set up progress monitor's pass info if present */
-	if( cinfo->progress != NULL )
-	{
+	if( cinfo->progress != NULL ) {
 		cinfo->progress->completed_passes = master->pass_number;
 		cinfo->progress->total_passes = master->total_passes;
 	}
@@ -908,8 +793,7 @@ prepare_for_pass( j_compress_ptr cinfo )
  */
 
 METHODDEF( void )
-pass_startup( j_compress_ptr cinfo )
-{
+pass_startup( j_compress_ptr cinfo ) {
 	cinfo->master->call_pass_startup = FALSE; /* reset flag so call only once */
 	
 	( *cinfo->marker->write_frame_header )( cinfo );
@@ -922,8 +806,7 @@ pass_startup( j_compress_ptr cinfo )
  */
 
 METHODDEF( void )
-finish_pass_master( j_compress_ptr cinfo )
-{
+finish_pass_master( j_compress_ptr cinfo ) {
 	my_master_ptr master = ( my_master_ptr ) cinfo->master;
 	
 	/* The entropy coder always needs an end-of-pass call,
@@ -932,15 +815,13 @@ finish_pass_master( j_compress_ptr cinfo )
 	( *cinfo->entropy->finish_pass )( cinfo );
 	
 	/* Update state for next pass */
-	switch( master->pass_type )
-	{
+	switch( master->pass_type ) {
 	case main_pass:
 		/* next pass is either output of scan 0 (after optimization)
 		 * or output of scan 1 (if no optimization).
 		 */
 		master->pass_type = output_pass;
-		if( ! cinfo->optimize_coding )
-		{
+		if( ! cinfo->optimize_coding ) {
 			master->scan_number++;
 		}
 		break;
@@ -950,8 +831,7 @@ finish_pass_master( j_compress_ptr cinfo )
 		break;
 	case output_pass:
 		/* next pass is either optimization or output of next scan */
-		if( cinfo->optimize_coding )
-		{
+		if( cinfo->optimize_coding ) {
 			master->pass_type = huff_opt_pass;
 		}
 		master->scan_number++;
@@ -967,8 +847,7 @@ finish_pass_master( j_compress_ptr cinfo )
  */
 
 GLOBAL( void )
-jinit_c_master_control( j_compress_ptr cinfo, boolean transcode_only )
-{
+jinit_c_master_control( j_compress_ptr cinfo, boolean transcode_only ) {
 	my_master_ptr master;
 	
 	master = ( my_master_ptr )
@@ -983,31 +862,25 @@ jinit_c_master_control( j_compress_ptr cinfo, boolean transcode_only )
 	/* Validate parameters, determine derived values */
 	initial_setup( cinfo, transcode_only );
 	
-	if( cinfo->scan_info != NULL )
-	{
+	if( cinfo->scan_info != NULL ) {
 #ifdef C_MULTISCAN_FILES_SUPPORTED
 		validate_script( cinfo );
-		if( cinfo->block_size < DCTSIZE )
-		{
+		if( cinfo->block_size < DCTSIZE ) {
 			reduce_script( cinfo );
 		}
 #else
 		ERREXIT( cinfo, JERR_NOT_COMPILED );
 #endif
-	}
-	else
-	{
+	} else {
 		cinfo->progressive_mode = FALSE;
 		cinfo->num_scans = 1;
 	}
 	
-	if( cinfo->optimize_coding )
-	{
+	if( cinfo->optimize_coding ) {
 		cinfo->arith_code = FALSE;    /* disable arithmetic coding */
-	}
-	else if( ! cinfo->arith_code &&
-			 ( cinfo->progressive_mode ||
-			   ( cinfo->block_size > 1 && cinfo->block_size < DCTSIZE ) ) )
+	} else if( ! cinfo->arith_code &&
+			   ( cinfo->progressive_mode ||
+				 ( cinfo->block_size > 1 && cinfo->block_size < DCTSIZE ) ) )
 		/* TEMPORARY HACK ??? */
 		/* assume default tables no good for progressive or reduced AC mode */
 	{
@@ -1015,31 +888,22 @@ jinit_c_master_control( j_compress_ptr cinfo, boolean transcode_only )
 	}
 	
 	/* Initialize my private state */
-	if( transcode_only )
-	{
+	if( transcode_only ) {
 		/* no main pass in transcoding */
-		if( cinfo->optimize_coding )
-		{
+		if( cinfo->optimize_coding ) {
 			master->pass_type = huff_opt_pass;
-		}
-		else
-		{
+		} else {
 			master->pass_type = output_pass;
 		}
-	}
-	else
-	{
+	} else {
 		/* for normal compression, first pass is always this type: */
 		master->pass_type = main_pass;
 	}
 	master->scan_number = 0;
 	master->pass_number = 0;
-	if( cinfo->optimize_coding )
-	{
+	if( cinfo->optimize_coding ) {
 		master->total_passes = cinfo->num_scans * 2;
-	}
-	else
-	{
+	} else {
 		master->total_passes = cinfo->num_scans;
 	}
 }

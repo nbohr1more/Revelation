@@ -60,7 +60,7 @@ int idEventLoop::JournalLevel( void ) const {
 class idCommonLocal : public idCommon {
 public:
 	idCommonLocal( void ) {}
-
+	
 	virtual void			Init( int argc, const char **argv, const char *cmdline ) {}
 	virtual void			Shutdown( void ) {}
 	virtual void			Quit( void ) {}
@@ -253,8 +253,8 @@ const char 		*idSysLocal::GetProcessorString( void ) {
 bool			idSysLocal::FPU_StackIsEmpty( void ) {
 	return true;
 }
-const char *	idSysLocal::FPU_GetState( void ) { 
-	return ""; 
+const char 	*idSysLocal::FPU_GetState( void ) {
+	return "";
 }
 void			idSysLocal::FPU_SetFTZ( bool enable ) {}
 void			idSysLocal::FPU_SetDAZ( bool enable ) {}

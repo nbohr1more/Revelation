@@ -533,10 +533,10 @@ void RB_BeginDrawingView( void ) {
 	glLoadMatrixf( backEnd.viewDef->projectionMatrix );
 	glMatrixMode( GL_MODELVIEW );
 	// set the window clipping
-	glViewport( tr.viewportOffset[0] + backEnd.viewDef->viewport.x1,
-				tr.viewportOffset[1] + backEnd.viewDef->viewport.y1,
-				backEnd.viewDef->viewport.x2 + 1 - backEnd.viewDef->viewport.x1,
-				backEnd.viewDef->viewport.y2 + 1 - backEnd.viewDef->viewport.y1 );
+	GL_Viewport( tr.viewportOffset[0] + backEnd.viewDef->viewport.x1,
+				 tr.viewportOffset[1] + backEnd.viewDef->viewport.y1,
+				 backEnd.viewDef->viewport.x2 + 1 - backEnd.viewDef->viewport.x1,
+				 backEnd.viewDef->viewport.y2 + 1 - backEnd.viewDef->viewport.y1 );
 	// the scissor may be smaller than the viewport for subviews
 	GL_Scissor( tr.viewportOffset[0] + backEnd.viewDef->viewport.x1 + backEnd.viewDef->scissor.x1,
 				tr.viewportOffset[1] + backEnd.viewDef->viewport.y1 + backEnd.viewDef->scissor.y1,
@@ -673,7 +673,6 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void ( *DrawIntera
 	const idMaterial	*lightShader = vLight->lightShader;
 	const float			*lightRegs = vLight->shaderRegisters;
 	bool				lightDepthBoundsDisabled = false;
-	bool				useLightDepthBounds = true;
 	drawInteraction_t	inter;
 	if( r_skipInteractions.GetBool() || !surf->geo || !surf->geo->ambientCache ) {
 		return;
@@ -696,9 +695,6 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void ( *DrawIntera
 					lightDepthBoundsDisabled = true;
 				}
 			}
-		} else {
-			// if we got here disable depthbounds testing
-			useLightDepthBounds = false;
 		}
 		// model-view-projection
 		glLoadMatrixf( surf->space->modelViewMatrix );
@@ -817,7 +813,7 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void ( *DrawIntera
 		RB_LeaveDepthHack();
 	}
 	// Once again into the night
-	if( useLightDepthBounds && lightDepthBoundsDisabled ) {
+	if( lightDepthBoundsDisabled ) {
 		GL_DepthBoundsTest( vLight->scissorRect.zmin, vLight->scissorRect.zmax );
 	}
 }

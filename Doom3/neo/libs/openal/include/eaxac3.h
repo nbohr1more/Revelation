@@ -93,8 +93,7 @@ typedef void ( __stdcall *LPAC3CALLBACK )( AC3STREAM AC3Stream, int msg );
 #define EAXAC3NEEDMOREDATA	0
 #define EAXAC3REACHEDEND	1
 
-typedef struct
-{
+typedef struct {
 	unsigned int nNumOfAC3Frames;
 	unsigned int nAC3FrameSize;
 	unsigned int nSizeOfFile;
@@ -106,8 +105,7 @@ typedef struct
 #define SPDIFPASSTHRU	2
 #define FULLDECODE		4
 
-typedef struct
-{
+typedef struct {
 	char szDeviceName[256];
 	unsigned int uFlags;
 	unsigned int uStreams;
@@ -140,8 +138,7 @@ typedef char 	*( *LPEAXAC3GETERRORSTRING )( HRESULT, char *, int );
 typedef HRESULT( *LPEAXAC3GETLASTERROR )( HRESULT * );
 
 // Function table declaration
-typedef struct
-{
+typedef struct {
 	LPEAXAC3QUERYNUMBEROFDEVICES					EAXAC3QueryNumberOfDevices;
 	LPEAXAC3QUERYFILE								EAXAC3QueryFile;
 	LPEAXAC3QUERYMEMORY								EAXAC3QueryMemory;

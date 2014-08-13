@@ -335,9 +335,9 @@ Should part of this be inlined in a macro?
 ================
 */
 void *R_FrameAlloc( int bytes ) {
-	frameData_t		*frame;
+	frameData_t			*frame;
 	frameMemoryBlock_t	*block;
-	void			*buf;
+	void				*buf;
 	bytes = ( bytes + 16 )&~15;
 	// see if it can be satisfied in the current block
 	frame = frameData;
@@ -365,8 +365,7 @@ void *R_FrameAlloc( int bytes ) {
 	}
 	// we could fix this if we needed to...
 	if( bytes > block->size ) {
-		common->FatalError( "R_FrameAlloc of %i exceeded MEMORY_BLOCK_SIZE",
-							bytes );
+		common->FatalError( "R_FrameAlloc of %i exceeded MEMORY_BLOCK_SIZE", bytes );
 	}
 	frame->alloc = block;
 	block->used = bytes;
@@ -379,8 +378,7 @@ R_ClearedFrameAlloc
 ==================
 */
 void *R_ClearedFrameAlloc( int bytes ) {
-	void	*r;
-	r = R_FrameAlloc( bytes );
+	void  *r = R_FrameAlloc( bytes );
 	SIMDProcessor->Memset( r, 0, bytes );
 	return r;
 }
@@ -630,16 +628,25 @@ R_MatrixMultiply
 ==========================
 */
 void R_MatrixMultiply( const float a[16], const float b[16], float out[16] ) {
-	int		i, j;
-	for( i = 0 ; i < 4 ; i++ ) {
-		for( j = 0 ; j < 4 ; j++ ) {
-			out[ i * 4 + j ] =
-				a [ i * 4 + 0 ] * b [ 0 * 4 + j ] +
-				a [ i * 4 + 1 ] * b [ 1 * 4 + j ] +
-				a [ i * 4 + 2 ] * b [ 2 * 4 + j ] +
-				a [ i * 4 + 3 ] * b [ 3 * 4 + j ];
-		}
-	}
+	out[0 * 4 + 0] = a[0 * 4 + 0] * b[0 * 4 + 0] + a[0 * 4 + 1] * b[1 * 4 + 0] + a[0 * 4 + 2] * b[2 * 4 + 0] + a[0 * 4 + 3] * b[3 * 4 + 0];
+	out[0 * 4 + 1] = a[0 * 4 + 0] * b[0 * 4 + 1] + a[0 * 4 + 1] * b[1 * 4 + 1] + a[0 * 4 + 2] * b[2 * 4 + 1] + a[0 * 4 + 3] * b[3 * 4 + 1];
+	out[0 * 4 + 2] = a[0 * 4 + 0] * b[0 * 4 + 2] + a[0 * 4 + 1] * b[1 * 4 + 2] + a[0 * 4 + 2] * b[2 * 4 + 2] + a[0 * 4 + 3] * b[3 * 4 + 2];
+	out[0 * 4 + 3] = a[0 * 4 + 0] * b[0 * 4 + 3] + a[0 * 4 + 1] * b[1 * 4 + 3] + a[0 * 4 + 2] * b[2 * 4 + 3] + a[0 * 4 + 3] * b[3 * 4 + 3];
+
+	out[1 * 4 + 0] = a[1 * 4 + 0] * b[0 * 4 + 0] + a[1 * 4 + 1] * b[1 * 4 + 0] + a[1 * 4 + 2] * b[2 * 4 + 0] + a[1 * 4 + 3] * b[3 * 4 + 0];
+	out[1 * 4 + 1] = a[1 * 4 + 0] * b[0 * 4 + 1] + a[1 * 4 + 1] * b[1 * 4 + 1] + a[1 * 4 + 2] * b[2 * 4 + 1] + a[1 * 4 + 3] * b[3 * 4 + 1];
+	out[1 * 4 + 2] = a[1 * 4 + 0] * b[0 * 4 + 2] + a[1 * 4 + 1] * b[1 * 4 + 2] + a[1 * 4 + 2] * b[2 * 4 + 2] + a[1 * 4 + 3] * b[3 * 4 + 2];
+	out[1 * 4 + 3] = a[1 * 4 + 0] * b[0 * 4 + 3] + a[1 * 4 + 1] * b[1 * 4 + 3] + a[1 * 4 + 2] * b[2 * 4 + 3] + a[1 * 4 + 3] * b[3 * 4 + 3];
+
+	out[2 * 4 + 0] = a[2 * 4 + 0] * b[0 * 4 + 0] + a[2 * 4 + 1] * b[1 * 4 + 0] + a[2 * 4 + 2] * b[2 * 4 + 0] + a[2 * 4 + 3] * b[3 * 4 + 0];
+	out[2 * 4 + 1] = a[2 * 4 + 0] * b[0 * 4 + 1] + a[2 * 4 + 1] * b[1 * 4 + 1] + a[2 * 4 + 2] * b[2 * 4 + 1] + a[2 * 4 + 3] * b[3 * 4 + 1];
+	out[2 * 4 + 2] = a[2 * 4 + 0] * b[0 * 4 + 2] + a[2 * 4 + 1] * b[1 * 4 + 2] + a[2 * 4 + 2] * b[2 * 4 + 2] + a[2 * 4 + 3] * b[3 * 4 + 2];
+	out[2 * 4 + 3] = a[2 * 4 + 0] * b[0 * 4 + 3] + a[2 * 4 + 1] * b[1 * 4 + 3] + a[2 * 4 + 2] * b[2 * 4 + 3] + a[2 * 4 + 3] * b[3 * 4 + 3];
+
+	out[3 * 4 + 0] = a[3 * 4 + 0] * b[0 * 4 + 0] + a[3 * 4 + 1] * b[1 * 4 + 0] + a[3 * 4 + 2] * b[2 * 4 + 0] + a[3 * 4 + 3] * b[3 * 4 + 0];
+	out[3 * 4 + 1] = a[3 * 4 + 0] * b[0 * 4 + 1] + a[3 * 4 + 1] * b[1 * 4 + 1] + a[3 * 4 + 2] * b[2 * 4 + 1] + a[3 * 4 + 3] * b[3 * 4 + 1];
+	out[3 * 4 + 2] = a[3 * 4 + 0] * b[0 * 4 + 2] + a[3 * 4 + 1] * b[1 * 4 + 2] + a[3 * 4 + 2] * b[2 * 4 + 2] + a[3 * 4 + 3] * b[3 * 4 + 2];
+	out[3 * 4 + 3] = a[3 * 4 + 0] * b[0 * 4 + 3] + a[3 * 4 + 1] * b[1 * 4 + 3] + a[3 * 4 + 2] * b[2 * 4 + 3] + a[3 * 4 + 3] * b[3 * 4 + 3];
 }
 
 /*
@@ -680,9 +687,9 @@ void R_SetupViewMatrix( viewDef_t *viewDef ) {
 	world = &viewDef->worldSpace;
 	memset( world, 0, sizeof( *world ) );
 	// the model matrix is an identity
-	world->modelMatrix[0 * 4 + 0] = 1;
-	world->modelMatrix[1 * 4 + 1] = 1;
-	world->modelMatrix[2 * 4 + 2] = 1;
+	world->modelMatrix[0 * 4 + 0] = 1.0f;
+	world->modelMatrix[1 * 4 + 1] = 1.0f;
+	world->modelMatrix[2 * 4 + 2] = 1.0f;
 	// transform by the camera placement
 	viewerMatrix[0 * 4 + 0] = axis[0][0];
 	viewerMatrix[1 * 4 + 0] = axis[0][1];

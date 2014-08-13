@@ -337,21 +337,21 @@ void RB_ShowTrace( drawSurf_t **drawSurfs, int numDrawSurfs ) {
 		glLoadMatrixf( surf->space->modelViewMatrix );
 		// highlight the surface
 		GL_State( GLS_SRCBLEND_SRC_ALPHA | GLS_DSTBLEND_ONE_MINUS_SRC_ALPHA );
-		glColor4f( 1, 0, 0, 0.25 );
+		GL_Color( 1.0f, 0.0f, 0.0f, 0.25f );
 		RB_DrawElementsImmediate( tri );
 		// draw the bounding box
 		GL_State( GLS_DEPTHFUNC_ALWAYS );
-		glColor4f( 1, 1, 1, 1 );
+		GL_Color( 1.0f, 1.0f, 1.0f, 1.0f );
 		RB_DrawBounds( tri->bounds );
 		if( radius != 0.0f ) {
 			// draw the expanded triangles
-			glColor4f( 0.5f, 0.5f, 1.0f, 1.0f );
+			GL_Color( 0.5f, 0.5f, 1.0f, 1.0f );
 			RB_DrawExpandedTriangles( tri, radius, localStart );
 		}
 		// check the exact surfaces
 		hit = R_LocalTrace( localStart, localEnd, radius, tri );
 		if( hit.fraction < 1.0 ) {
-			glColor4f( 1, 1, 1, 1 );
+			GL_Color( 1.0f, 1.0f, 1.0f, 1.0f );
 			RB_DrawBounds( idBounds( hit.point ).Expand( 1 ) );
 		}
 	}

@@ -67,7 +67,7 @@ const int KEY_MOVESPEED	= 127;
 
 typedef enum {
 	UB_NONE,
-
+	
 	UB_UP,
 	UB_DOWN,
 	UB_LEFT,
@@ -79,7 +79,7 @@ typedef enum {
 	UB_STRAFE,
 	UB_MOVELEFT,
 	UB_MOVERIGHT,
-
+	
 	UB_BUTTON0,
 	UB_BUTTON1,
 	UB_BUTTON2,
@@ -88,13 +88,13 @@ typedef enum {
 	UB_BUTTON5,
 	UB_BUTTON6,
 	UB_BUTTON7,
-
+	
 	UB_ATTACK,
 	UB_SPEED,
 	UB_ZOOM,
 	UB_SHOWSCORES,
 	UB_MLOOK,
-
+	
 	UB_IMPULSE0,
 	UB_IMPULSE1,
 	UB_IMPULSE2,
@@ -159,7 +159,7 @@ typedef enum {
 	UB_IMPULSE61,
 	UB_IMPULSE62,
 	UB_IMPULSE63,
-
+	
 	UB_MAX_BUTTONS
 } usercmdButton_t;
 
@@ -180,13 +180,13 @@ userCmdString_t	userCmdStrings[] = {
 	{ "_strafe",		UB_STRAFE },
 	{ "_moveLeft",		UB_MOVELEFT },
 	{ "_moveRight",		UB_MOVERIGHT },
-
+	
 	{ "_attack",		UB_ATTACK },
 	{ "_speed",			UB_SPEED },
 	{ "_zoom",			UB_ZOOM },
 	{ "_showScores",	UB_SHOWSCORES },
 	{ "_mlook",			UB_MLOOK },
-
+	
 	{ "_button0",		UB_BUTTON0 },
 	{ "_button1",		UB_BUTTON1 },
 	{ "_button2",		UB_BUTTON2 },
@@ -195,7 +195,7 @@ userCmdString_t	userCmdStrings[] = {
 	{ "_button5",		UB_BUTTON5 },
 	{ "_button6",		UB_BUTTON6 },
 	{ "_button7",		UB_BUTTON7 },
-
+	
 	{ "_impulse0",		UB_IMPULSE0 },
 	{ "_impulse1",		UB_IMPULSE1 },
 	{ "_impulse2",		UB_IMPULSE2 },
@@ -260,7 +260,7 @@ userCmdString_t	userCmdStrings[] = {
 	{ "_impulse61",		UB_IMPULSE61 },
 	{ "_impulse62",		UB_IMPULSE62 },
 	{ "_impulse63",		UB_IMPULSE63 },
-
+	
 	{ NULL,				UB_NONE },
 };
 
@@ -268,7 +268,7 @@ class buttonState_t {
 public:
 	int		on;
 	bool	held;
-
+	
 	buttonState_t() {
 		Clear();
 	};
@@ -308,79 +308,79 @@ const int NUM_USER_COMMANDS = sizeof( userCmdStrings ) / sizeof( userCmdString_t
 class idUsercmdGenLocal : public idUsercmdGen {
 public:
 	idUsercmdGenLocal( void );
-
+	
 	void			Init( void );
-
+	
 	void			InitForNewMap( void );
-
+	
 	void			Shutdown( void );
-
+	
 	void			Clear( void );
-
+	
 	void			ClearAngles( void );
-
+	
 	usercmd_t		TicCmd( int ticNumber );
-
+	
 	void			InhibitUsercmd( inhibit_t subsystem, bool inhibit );
-
+	
 	void			UsercmdInterrupt( void );
-
+	
 	int				CommandStringUsercmdData( const char *cmdString );
-
+	
 	int				GetNumUserCommands( void );
-
+	
 	const char 	*GetUserCommandName( int index );
-
+	
 	void			MouseState( int *x, int *y, int *button, bool *down );
-
+	
 	int				ButtonState( int key );
 	int				KeyState( int key );
-
+	
 	usercmd_t		GetDirectUsercmd( void );
-
+	
 private:
 	void			MakeCurrent( void );
 	void			InitCurrent( void );
-
+	
 	bool			Inhibited( void );
 	void			AdjustAngles( void );
 	void			KeyMove( void );
 	void			JoystickMove( void );
 	void			MouseMove( void );
 	void			CmdButtons( void );
-
+	
 	void			Mouse( void );
 	void			Keyboard( void );
 	void			Joystick( void );
-
+	
 	void			Key( int keyNum, bool down );
-
+	
 	idVec3			viewangles;
 	int				flags;
 	int				impulse;
-
+	
 	buttonState_t	toggled_crouch;
 	buttonState_t	toggled_run;
 	buttonState_t	toggled_zoom;
-
+	
 	int				buttonState[UB_MAX_BUTTONS];
 	bool			keyState[K_LAST_KEY];
-
+	
 	int				inhibitCommands;	// true when in console or menu locally
 	int				lastCommandTime;
-
+	
 	bool			initialized;
-
+	
 	usercmd_t		cmd;		// the current cmd being built
 	usercmd_t		buffered[MAX_BUFFERED_USERCMD];
-
+	
 	int				continuousMouseX, continuousMouseY;	// for gui event generatioin, never zerod
 	int				mouseButton;						// for gui event generatioin
 	bool			mouseDown;
-
+	
 	int				mouseDx, mouseDy;	// added to by mouse events
 	int				joystickAxis[MAX_JOYSTICK_AXIS];	// set by joystick events
-
+	
 	static idCVar	in_yawSpeed;
 	static idCVar	in_pitchSpeed;
 	static idCVar	in_angleSpeedKey;

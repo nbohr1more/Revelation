@@ -145,19 +145,19 @@ typedef enum {
 class idImage {
 public:
 	idImage();
-
+	
 	// Makes this image active on the current GL texture unit.
 	// automatically enables or disables cube mapping or texture3D
 	// May perform file loading if the image was not preloaded.
 	// May start a background image read.
 	void		Bind();
-
+	
 	// for use with fragment programs, doesn't change any enable2D/3D/cube states
 	void		BindFragment();
-
+	
 	// deletes the texture object, but leaves the structure so it can be reloaded
 	void		PurgeImage();
-
+	
 	// used by callback functions to specify the actual data
 	// data goes from the bottom to the top line of the image, as OpenGL expects it
 	// These perform an implicit Bind() on the current texture unit
@@ -171,43 +171,43 @@ public:
 	void		GenerateCubeImage( const byte *pic[6], int size,
 								   textureFilter_t filter, bool allowDownSize,
 								   textureDepth_t depth );
-
+								   
 	void		GenerateFrameBufferImage( int width, int height );
-
+	
 	void		GenerateFrameBufferDepthImage( int width, int height );
-
+	
 	void		GenerateFrameBufferCubeImage( int width, int height );
-
+	
 	void		GenerateFrameBufferColorTargetFromFBO( void );
-
+	
 	void		BindFBO( void );
-
+	
 	void		UnBindFBO( void );
-
+	
 	void		CopyFramebuffer( int x, int y, int width, int height, bool useOversizedBuffer );
-
+	
 	void		CopyDepthbuffer( int x, int y, int width, int height );
-
+	
 	void		UploadScratch( const byte *pic, int width, int height );
-
+	
 	// just for resource tracking
 	void		SetClassification( int tag );
-
+	
 	// estimates size of the GL image based on dimensions and storage type
 	int			StorageSize() const;
-
+	
 	// print a one line summary of the image
 	void		Print() const;
-
+	
 	// check for changed timestamp on disk and reload if necessary
 	void		Reload( bool checkPrecompressed, bool force );
-
+	
 	void		AddReference()				{
 		refCount++;
 	};
-
+	
 	//==========================================================
-
+	
 	void		GetDownsize( int &scaled_width, int &scaled_height ) const;
 	void		MakeDefault();	// fill with a grid pattern
 	void		SetImageFilterAndRepeat() const;
@@ -223,21 +223,21 @@ public:
 									  textureDepth_t minimumDepth, bool *monochromeResult ) const;
 	void		ImageProgramStringToCompressedFileName( const char *imageProg, char *fileName ) const;
 	int			NumLevelsForImageSize( int width, int height ) const;
-
+	
 	// data commonly accessed is grouped here
 	static const int		TEXTURE_NOT_LOADED = -1;
 	GLuint					texnum;					// gl texture binding, will be TEXTURE_NOT_LOADED if not loaded
 	textureType_t			type;
 	int						frameUsed;				// for texture usage in frame statistics
 	int						bindCount;				// incremented each bind
-
+	
 	// background loading information
 	idImage					*partialImage;			// shrunken, space-saving version
 	bool					isPartialImage;			// true if this is pointed to by another image
 	bool					backgroundLoadInProgress;	// true if another thread is reading the complete d3t file
 	backgroundDownload_t	bgl;
 	idImage 				*bglNext;				// linked from tr.backgroundImageLoads
-
+	
 	// parameters that define this image
 	idStr					imgName;				// game path, including extension (except for cube maps), may be an image program
 	void	( *generatorFunction )( idImage *image );	// NULL for files
@@ -246,26 +246,26 @@ public:
 	textureRepeat_t			repeat;
 	textureDepth_t			depth;
 	cubeFiles_t				cubeFiles;				// determines the naming and flipping conventions for the six images
-
+	
 	bool					referencedOutsideLevelLoad;
 	bool					levelLoadReferenced;	// for determining if it needs to be purged
 	bool					precompressedFile;		// true when it was loaded from a .d3t file
 	bool					defaulted;				// true if the default image was generated because a file couldn't be loaded
 	bool					isMonochrome;			// so the NV20 path can use a reduced pass count
 	ID_TIME_T				timestamp;				// the most recent of all images used in creation, for reloadImages command
-
+	
 	int						imageHash;				// for identical-image checking
-
+	
 	int						classification;			// just for resource profiling
-
+	
 	// data for listImages
 	int						uploadWidth, uploadHeight, uploadDepth;	// after power of two, downsample, and MAX_TEXTURE_SIZE
 	int						internalFormat;
-
+	
 	idImage 				*cacheUsagePrev, *cacheUsageNext;	// for dynamic cache purging of old images
-
+	
 	idImage 				*hashNext;				// for hash chains to speed lookup
-
+	
 	int						refCount;				// overall ref count
 };
 
@@ -312,7 +312,7 @@ class idImageManager {
 public:
 	void				Init();
 	void				Shutdown();
-
+	
 	// If the exact combination of parameters has been asked for already, an existing
 	// image will be returned, otherwise a new image will be created.
 	// Be careful not to use the same image file with different filter / repeat / etc parameters
@@ -323,53 +323,53 @@ public:
 	idImage 			*ImageFromFile( const char *name,
 										textureFilter_t filter, bool allowDownSize,
 										textureRepeat_t repeat, textureDepth_t depth, cubeFiles_t cubeMap = CF_2D );
-
+										
 	// look for a loaded image, whatever the parameters
 	idImage 			*GetImage( const char *name ) const;
-
+	
 	// The callback will be issued immediately, and later if images are reloaded or vid_restart
 	// The callback function should call one of the idImage::Generate* functions to fill in the data
 	idImage 			*ImageFromFunction( const char *name, void ( *generatorFunction )( idImage *image ) );
-
+	
 	// called once a frame to allow any background loads that have been completed
 	// to turn into textures.
 	void				CompleteBackgroundImageLoads();
-
+	
 	// returns the number of bytes of image data bound in the previous frame
 	int					SumOfUsedImages();
-
+	
 	// called each frame to allow some cvars to automatically force changes
 	void				CheckCvars();
-
+	
 	// purges all the images before a vid_restart
 	void				PurgeAllImages();
-
+	
 	// reloads all apropriate images after a vid_restart
 	void				ReloadAllImages();
-
+	
 	// disable the active texture unit
 	void				BindNull();
-
+	
 	// Mark all file based images as currently unused,
 	// but don't free anything.  Calls to ImageFromFile() will
 	// either mark the image as used, or create a new image without
 	// loading the actual data.
 	// Called only by renderSystem::BeginLevelLoad
 	void				BeginLevelLoad();
-
+	
 	// Free all images marked as unused, and load all images that are necessary.
 	// This architecture prevents us from having the union of two level's
 	// worth of data present at one time.
 	// Called only by renderSystem::EndLevelLoad
 	void				EndLevelLoad();
-
+	
 	// used to clear and then write the dds conversion batch file
 	void				StartBuild();
 	void				FinishBuild( bool removeDups = false );
 	void				AddDDSCommand( const char *cmd );
-
+	
 	void				PrintMemInfo( MemInfo_t *mi );
-
+	
 	// cvars
 	static idCVar		image_roundDown;					// round bad sizes down to nearest power of two
 	static idCVar		image_colorMipLevels;				// development aid to see texture mip usage
@@ -399,7 +399,7 @@ public:
 	static idCVar		image_downSizeBumpLimit;			// downsize bump limit
 	static idCVar		image_ignoreHighQuality;			// ignore high quality on materials
 	static idCVar		image_downSizeLimit;				// downsize diffuse limit
-
+	
 	// built-in images
 	idImage 			*defaultImage;
 	idImage 			*flatNormalMap;						// 128 128 255 in all pixels
@@ -422,34 +422,34 @@ public:
 	idImage 			*specularTableImage;				// 1D intensity texture with our specular function
 	idImage 			*specular2DTableImage;				// 2D intensity texture with our specular function with variable specularity
 	idImage 			*borderClampImage;					// white inside, black outside
-
+	
 	//--------------------------------------------------------
-
+	
 	idImage 			*AllocImage( const char *name );
 	void				SetNormalPalette();
 	void				ChangeTextureFilter();
-
+	
 	idList<idImage *>	images;
 	idStrList			ddsList;
 	idHashIndex			ddsHash;
-
+	
 	bool				insideLevelLoad;					// don't actually load images now
-
+	
 	byte				originalToCompressed[256];			// maps normal maps to 8 bit textures
 	byte				compressedPalette[768];				// the palette that normal maps use
-
+	
 	// default filter modes for images
 	GLenum				textureMinFilter;
 	GLenum				textureMaxFilter;
 	float				textureAnisotropy;
 	float				textureLODBias;
-
+	
 	idImage 			*imageHashTable[FILE_HASH_SIZE];
-
+	
 	idImage 			*backgroundImageLoads;				// chain of images that have background file loads active
 	idImage				cacheLRU;							// head/tail of doubly linked list
 	int					totalCachedImageSize;				// for determining when something should be purged
-
+	
 	int	numActiveBackgroundImageLoads;
 	const static int MAX_BACKGROUND_IMAGE_LOADS = 8;
 };

@@ -42,16 +42,16 @@ class	idMegaTexture;
 class idTextureLevel {
 public:
 	idMegaTexture	*mega;
-
+	
 	int				tileOffset;
 	int				tilesWide;
 	int				tilesHigh;
-
+	
 	idImage			*image;
 	idTextureTile	tileMap[TILE_PER_LEVEL][TILE_PER_LEVEL];
-
+	
 	float			parms[4];
-
+	
 	void			UpdateForCenter( float center[2] );
 	void			UpdateTile( int localX, int localY, int globalX, int globalY );
 	void			Invalidate();
@@ -70,26 +70,26 @@ public:
 	void	SetMappingForSurface( const srfTriangles_t *tri );	// analyzes xyz and st to create a mapping
 	void	BindForViewOrigin( const idVec3 origin );	// binds images and sets program parameters
 	void	Unbind();								// removes texture bindings
-
+	
 	static	void MakeMegaTexture_f( const idCmdArgs &args );
 private:
 	friend class idTextureLevel;
 	void	SetViewOrigin( const idVec3 origin );
 	static void	GenerateMegaMipMaps( megaTextureHeader_t *header, idFile *file );
 	static void	GenerateMegaPreview( const char *fileName );
-
+	
 	idFile			*fileHandle;
-
+	
 	const srfTriangles_t *currentTriMapping;
-
+	
 	idVec3			currentViewOrigin;
-
+	
 	float			localViewToTextureCenter[2][4];
-
+	
 	int				numLevels;
 	idTextureLevel	levels[MAX_LEVELS];				// 0 is the highest resolution
 	megaTextureHeader_t	header;
-
+	
 	static idCVar	r_megaTextureLevel;
 	static idCVar	r_showMegaTexture;
 	static idCVar	r_showMegaTextureLabels;

@@ -32,7 +32,7 @@ If you have questions concerning this license or the applicable additional terms
 class DialogAFConstraintBallAndSocket : public CDialog {
 
 	DECLARE_DYNAMIC( DialogAFConstraintBallAndSocket )
-
+	
 public:
 	DialogAFConstraintBallAndSocket( CWnd *pParent = NULL ); // standard constructor
 	virtual				~DialogAFConstraintBallAndSocket();
@@ -41,9 +41,9 @@ public:
 	void				LoadConstraint( idDeclAF_Constraint *c );
 	void				SaveConstraint( void );
 	void				UpdateFile( void );
-
+	
 	enum { IDD = IDD_DIALOG_AF_CONSTRAINT_BALLANDSOCKET };
-
+	
 protected:
 	virtual void		DoDataExchange( CDataExchange *pDX );  // DDX/DDV support
 	virtual int			OnToolHitTest( CPoint point, TOOLINFO *pTI ) const;
@@ -84,13 +84,13 @@ protected:
 	afx_msg void		OnDeltaposSpinBasLimitAxisPitch( NMHDR *pNMHDR, LRESULT *pResult );
 	afx_msg void		OnEnChangeEditBasLimitAxisYaw();
 	afx_msg void		OnDeltaposSpinBasLimitAxisYaw( NMHDR *pNMHDR, LRESULT *pResult );
-
+	
 	DECLARE_MESSAGE_MAP()
-
+	
 private:
 	idDeclAF 			*file;
 	idDeclAF_Constraint *constraint;
-
+	
 	//{{AFX_DATA(DialogAFConstraintBallAndSocket)
 	CComboBox			m_comboAnchorJoint;
 	float				m_anchor_x;
@@ -109,9 +109,9 @@ private:
 	float				m_limitAxisPitch;
 	float				m_limitAxisYaw;
 	//}}AFX_DATA
-
+	
 	static toolTip_t	toolTips[];
-
+	
 private:
 	void				InitJointLists( void );
 };

@@ -34,37 +34,37 @@ class idMoveableItem;
 class idWeapon : public idAnimatedEntity {
 public:
 	CLASS_PROTOTYPE( idWeapon );
-
+	
 	idWeapon();
 	virtual					~idWeapon();
-
+	
 	// Init
 	void					Spawn( void );
 	void					SetOwner( idPlayer *owner );
 	idPlayer				*GetOwner( void );
 	virtual bool			ShouldConstructScriptObjectAtSpawn( void ) const;
-
+	
 	static void				CacheWeapon( const char *weaponName );
-
+	
 	// save games
 	void					Save( idSaveGame *savefile ) const;					// archives object for save game file
 	void					Restore( idRestoreGame *savefile );					// unarchives object from save game file
-
+	
 	// Weapon definition management
 	void					Clear( void );
 	void					GetWeaponDef( const char *objectname, int ammoinclip );
 	bool					IsLinked( void );
 	bool					IsWorldModelReady( void );
-
+	
 	// GUIs
 	const char 			*Icon( void ) const;
 	void					UpdateGUI( void );
-
+	
 	virtual void			SetModel( const char *modelname );
 	bool					GetGlobalJointTransform( bool viewModel, const jointHandle_t jointHandle, idVec3 &offset, idMat3 &axis );
 	void					SetPushVelocity( const idVec3 &pushVelocity );
 	bool					UpdateSkin( void );
-
+	
 	// State control/player interface
 	void					Think( void );
 	void					Raise( void );
@@ -86,7 +86,7 @@ public:
 	idEntity 				*DropItem( const idVec3 &velocity, int activateDelay, int removeDelay, bool died );
 	bool					CanDrop( void ) const;
 	void					WeaponStolen( void );
-
+	
 	// Script state management
 	virtual idThread 		*ConstructScriptObject( void );
 	virtual void			DeconstructScriptObject( void );
@@ -95,14 +95,14 @@ public:
 	void					EnterCinematic( void );
 	void					ExitCinematic( void );
 	void					NetCatchup( void );
-
+	
 	// Visual presentation
 	void					PresentWeapon( bool showViewModel );
 	int						GetZoomFov( void );
 	void					GetWeaponAngleOffsets( int *average, float *scale, float *max );
 	void					GetWeaponTimeOffsets( float *time, float *scale );
 	bool					BloodSplat( float size );
-
+	
 	// Ammo
 	static ammo_t			GetAmmoNumForName( const char *ammoname );
 	static const char		*GetAmmoNameForNum( ammo_t ammonum );
@@ -114,10 +114,10 @@ public:
 	int						ClipSize( void ) const;
 	int						LowAmmo( void ) const;
 	int						AmmoRequired( void ) const;
-
+	
 	virtual void			WriteToSnapshot( idBitMsgDelta &msg ) const;
 	virtual void			ReadFromSnapshot( const idBitMsgDelta &msg );
-
+	
 	enum {
 		EVENT_RELOAD = idEntity::EVENT_MAXEVENTS,
 		EVENT_ENDRELOAD,
@@ -125,15 +125,15 @@ public:
 		EVENT_MAXEVENTS
 	};
 	virtual bool			ClientReceiveEvent( int event, int time, const idBitMsg &msg );
-
+	
 	virtual void			ClientPredictionThink( void );
-
+	
 	float					wm_hide_distance;	// sikk - Weapon Management: Awareness
-
+	
 	idEntityPtr<idAnimatedEntity>	*GetWorldModel( void ) {
 		return &worldModel;
 	};	// sikk - Depth Render
-
+	
 	// sikk---> Crosshair Positioning
 	idVec3					GetMuzzleOrigin( void ) {
 		return muzzleOrigin;
@@ -148,7 +148,7 @@ public:
 		return projectileDict;
 	};
 	// <---sikk
-
+	
 	// sikk---> Soft Shadows PostProcess
 	renderLight_t			*GetMuzzleFlash( void ) {
 		return &muzzleFlash;
@@ -163,7 +163,7 @@ public:
 		return worldMuzzleFlashHandle;
 	};
 	// <---sikk
-
+	
 private:
 	// script control
 	idScriptBool			WEAPON_ATTACK;
@@ -180,13 +180,13 @@ private:
 	int						animBlendFrames;
 	int						animDoneTime;
 	bool					isLinked;
-
+	
 	// precreated projectile
 	idEntity				*projectileEnt;
-
+	
 	idPlayer 				*owner;
 	idEntityPtr<idAnimatedEntity>	worldModel;
-
+	
 	// hiding (for GUIs and NPCs)
 	int						hideTime;
 	float					hideDistance;
@@ -196,24 +196,24 @@ private:
 	float					hideOffset;
 	bool					hide;
 	bool					disabled;
-
+	
 	// berserk
 	int						berserk;
-
+	
 	// these are the player render view parms, which include bobbing
 	idVec3					playerViewOrigin;
 	idMat3					playerViewAxis;
-
+	
 	// the view weapon render entity parms
 	idVec3					viewWeaponOrigin;
 	idMat3					viewWeaponAxis;
-
+	
 	// the muzzle bone's position, used for launching projectiles and trailing smoke
 	idVec3					muzzleOrigin;
 	idMat3					muzzleAxis;
-
+	
 	idVec3					pushVelocity;
-
+	
 	// weapon definition
 	// we maintain local copies of the projectile and brass dictionaries so they
 	// do not have to be copied across the DLL boundary when entities are spawned
@@ -225,35 +225,35 @@ private:
 	idDict					brassDict;
 	int						brassDelay;
 	idStr					icon;
-
+	
 	// view weapon gui light
 	renderLight_t			guiLight;
 	int						guiLightHandle;
-
+	
 	// muzzle flash
 	renderLight_t			muzzleFlash;		// positioned on view weapon bone
 	int						muzzleFlashHandle;
-
+	
 	renderLight_t			worldMuzzleFlash;	// positioned on world weapon bone
 	int						worldMuzzleFlashHandle;
-
+	
 	idVec3					flashColor;
 	int						muzzleFlashEnd;
 	int						flashTime;
 	bool					lightOn;
 	bool					silent_fire;
 	bool					allowDrop;
-
+	
 	// effects
 	bool					hasBloodSplat;
-
+	
 	// weapon kick
 	int						kick_endtime;
 	int						muzzle_kick_time;
 	int						muzzle_kick_maxtime;
 	idAngles				muzzle_kick_angles;
 	idVec3					muzzle_kick_offset;
-
+	
 	// ammo management
 	ammo_t					ammoType;
 	int						ammoRequired;		// amount of ammo to use each shot.  0 means weapon doesn't need ammo.
@@ -264,24 +264,24 @@ private:
 	// a projectile is launched
 	// mp client
 	bool					isFiring;
-
+	
 	// zoom
 	int						zoomFov;			// variable zoom fov per weapon
-
+	
 	// joints from models
 	jointHandle_t			barrelJointView;
 	jointHandle_t			flashJointView;
 	jointHandle_t			ejectJointView;
 	jointHandle_t			guiLightJointView;
 	jointHandle_t			ventLightJointView;
-
+	
 	jointHandle_t			flashJointWorld;
 	jointHandle_t			barrelJointWorld;
 	jointHandle_t			ejectJointWorld;
-
+	
 	// sound
 	const idSoundShader 	*sndHum;
-
+	
 	// new style muzzle smokes
 	const idDeclParticle 	*weaponSmoke;			// null if it doesn't smoke
 	int						weaponSmokeStartTime;	// set to gameLocal.time every weapon fire
@@ -291,7 +291,7 @@ private:
 	idVec3					strikePos;				// position of last melee strike
 	idMat3					strikeAxis;				// axis of last melee strike
 	int						nextStrikeFx;			// used for sound and decal ( may use for strike smoke too )
-
+	
 	// nozzle effects
 	bool					nozzleFx;			// does this use nozzle effects ( parm5 at rest, parm6 firing )
 	// this also assumes a nozzle light atm
@@ -299,28 +299,28 @@ private:
 	int						lastAttack;			// last time an attack occured
 	renderLight_t			nozzleGlow;			// nozzle light
 	int						nozzleGlowHandle;	// handle for nozzle light
-
+	
 	idVec3					nozzleGlowColor;	// color of the nozzle glow
 	const idMaterial 		*nozzleGlowShader;	// shader for glow light
 	float					nozzleGlowRadius;	// radius of glow light
-
+	
 	// weighting for viewmodel angles
 	int						weaponAngleOffsetAverages;
 	float					weaponAngleOffsetScale;
 	float					weaponAngleOffsetMax;
 	float					weaponOffsetTime;
 	float					weaponOffsetScale;
-
+	
 	// flashlight
 	void					AlertMonsters( void );
-
+	
 	// Visual presentation
 	void					InitWorldModel( const idDeclEntityDef *def );
 	void					MuzzleFlashLight( void );
 	void					MuzzleRise( idVec3 &origin, idMat3 &axis );
 	void					UpdateNozzleFx( void );
 	void					UpdateFlashPosition( void );
-
+	
 	// script events
 	void					Event_Clear( void );
 	void					Event_GetOwner( void );

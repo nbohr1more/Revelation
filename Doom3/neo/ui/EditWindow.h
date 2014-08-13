@@ -41,7 +41,7 @@ public:
 	idEditWindow( idUserInterfaceLocal *gui );
 	idEditWindow( idDeviceContext *d, idUserInterfaceLocal *gui );
 	virtual 			~idEditWindow();
-
+	
 	virtual void		Draw( int time, float x, float y );
 	virtual const char *HandleEvent( const sysEvent_t *event, bool *updateVisuals );
 	virtual void		PostParse();
@@ -49,28 +49,28 @@ public:
 	virtual size_t		Allocated() {
 		return idWindow::Allocated();
 	};
-
+	
 	virtual idWinVar 	*GetWinVarByName( const char *_name, bool winLookup = false, drawWin_t **owner = NULL );
-
+	
 	virtual void 		HandleBuddyUpdate( idWindow *buddy );
 	virtual void		Activate( bool activate, idStr &act );
-
+	
 	void				RunNamedEvent( const char *eventName );
-
+	
 private:
 
 	virtual bool		ParseInternalVar( const char *name, idParser *src );
-
+	
 	void				InitCvar();
 	// true: read the updated cvar from cvar system
 	// false: write to the cvar system
 	// force == true overrides liveUpdate 0
 	void				UpdateCvar( bool read, bool force = false );
-
+	
 	void				CommonInit();
 	void				EnsureCursorVisible();
 	void				InitScroller( bool horizontal );
-
+	
 	int					maxChars;
 	int					paintOffset;
 	int					cursorPos;
@@ -86,10 +86,10 @@ private:
 	int					lastTextLength;
 	bool				forceScroll;
 	idWinBool			password;
-
+	
 	idWinStr			cvarStr;
 	idCVar 			*cvar;
-
+	
 	idWinBool			liveUpdate;
 	idWinStr			cvarGroup;
 };

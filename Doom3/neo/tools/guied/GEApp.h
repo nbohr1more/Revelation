@@ -75,13 +75,13 @@ public:
 
 	rvGEApp( );
 	~rvGEApp( );
-
+	
 	bool				Initialize( void );
 	void				RunFrame( void );
 	//	bool				Uninitialize			( void );
-
+	
 	bool				TranslateAccelerator( LPMSG msg );
-
+	
 	rvGEWorkspace		*GetActiveWorkspace( HWND *retwnd = NULL );
 	rvGENavigator		&GetNavigator( void );
 	rvGEProperties		&GetProperties( void );
@@ -91,29 +91,29 @@ public:
 	HWND				GetMDIFrame( void );
 	HWND				GetMDIClient( void );
 	rvGEStatusBar		&GetStatusBar( void );
-
+	
 	bool				OpenFile( const char *filename );
 	bool				SaveFile( const char *filename );
 	bool				NewFile( void );
-
+	
 	bool				IsActive( void );
-
+	
 	void				CloseViewer( void );
-
+	
 	int					ToolWindowActivate( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam );
-
+	
 	int					MessageBox( const char *text, int flags );
-
+	
 protected:
 
 	int						HandleCommand( WPARAM wParam, LPARAM lParam );
 	int						HandleInitMenu( WPARAM wParam, LPARAM lParam );
-
+	
 	void					HandleCommandSave( rvGEWorkspace *workspace, const char *filename );
-
+	
 	bool					InitRecentFiles( void );
 	void					UpdateRecentFiles( void );
-
+	
 	HWND					mMDIFrame;
 	HWND					mMDIClient;
 	HINSTANCE				mInstance;
@@ -123,20 +123,20 @@ protected:
 	rvGETransformer			mTransformer;
 	rvGEStatusBar			mStatusBar;
 	rvGEProperties			mProperties;
-
+	
 	HMENU					mRecentFileMenu;
 	int						mRecentFileInsertPos;
-
+	
 	rvGEViewer				*mViewer;
-
+	
 	idList<rvGEWorkspace *>	mWorkspaces;
 	idList<HWND>			mToolWindows;
-
+	
 private:
 
 	static LRESULT CALLBACK	FrameWndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 	static LRESULT CALLBACK	MDIChildProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
-
+	
 };
 
 ID_INLINE bool rvGEApp::IsActive( void ) {

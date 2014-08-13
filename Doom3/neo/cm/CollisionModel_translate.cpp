@@ -57,7 +57,7 @@ idCollisionModelManagerLocal::TranslateEdgeThroughEdge
 ID_FORCE_INLINE int idCollisionModelManagerLocal::TranslateEdgeThroughEdge( idVec3 &cross, idPluecker &l1, idPluecker &l2, float *fraction ) {
 	float d, t;
 	/*
-
+	
 	a = start of line
 	b = end of line
 	dir = movement direction
@@ -67,64 +67,64 @@ ID_FORCE_INLINE int idCollisionModelManagerLocal::TranslateEdgeThroughEdge( idVe
 	b+dir = end of line after movement
 	t = scale factor
 	solve pluecker inner product for t of line (a+t*dir : b+t*dir) and line l2
-
+	
 	v[0] = (a[0]+t*dir[0]) * (b[1]+t*dir[1]) - (b[0]+t*dir[0]) * (a[1]+t*dir[1]);
 	v[1] = (a[0]+t*dir[0]) * (b[2]+t*dir[2]) - (b[0]+t*dir[0]) * (a[2]+t*dir[2]);
 	v[2] = (a[0]+t*dir[0]) - (b[0]+t*dir[0]);
 	v[3] = (a[1]+t*dir[1]) * (b[2]+t*dir[2]) - (b[1]+t*dir[1]) * (a[2]+t*dir[2]);
 	v[4] = (a[2]+t*dir[2]) - (b[2]+t*dir[2]);
 	v[5] = (b[1]+t*dir[1]) - (a[1]+t*dir[1]);
-
+	
 	l2[0] * v[4] + l2[1] * v[5] + l2[2] * v[3] + l2[4] * v[0] + l2[5] * v[1] + l2[3] * v[2] = 0;
-
+	
 	solve t
-
+	
 	v[0] = (a[0]+t*dir[0]) * (b[1]+t*dir[1]) - (b[0]+t*dir[0]) * (a[1]+t*dir[1]);
 	v[0] = (a[0]*b[1]) + a[0]*t*dir[1] + b[1]*t*dir[0] + (t*t*dir[0]*dir[1]) -
 			((b[0]*a[1]) + b[0]*t*dir[1] + a[1]*t*dir[0] + (t*t*dir[0]*dir[1]));
 	v[0] = a[0]*b[1] + a[0]*t*dir[1] + b[1]*t*dir[0] - b[0]*a[1] - b[0]*t*dir[1] - a[1]*t*dir[0];
-
+	
 	v[1] = (a[0]+t*dir[0]) * (b[2]+t*dir[2]) - (b[0]+t*dir[0]) * (a[2]+t*dir[2]);
 	v[1] = (a[0]*b[2]) + a[0]*t*dir[2] + b[2]*t*dir[0] + (t*t*dir[0]*dir[2]) -
 			((b[0]*a[2]) + b[0]*t*dir[2] + a[2]*t*dir[0] + (t*t*dir[0]*dir[2]));
 	v[1] = a[0]*b[2] + a[0]*t*dir[2] + b[2]*t*dir[0] - b[0]*a[2] - b[0]*t*dir[2] - a[2]*t*dir[0];
-
+	
 	v[2] = (a[0]+t*dir[0]) - (b[0]+t*dir[0]);
 	v[2] = a[0] - b[0];
-
+	
 	v[3] = (a[1]+t*dir[1]) * (b[2]+t*dir[2]) - (b[1]+t*dir[1]) * (a[2]+t*dir[2]);
 	v[3] = (a[1]*b[2]) + a[1]*t*dir[2] + b[2]*t*dir[1] + (t*t*dir[1]*dir[2]) -
 			((b[1]*a[2]) + b[1]*t*dir[2] + a[2]*t*dir[1] + (t*t*dir[1]*dir[2]));
 	v[3] = a[1]*b[2] + a[1]*t*dir[2] + b[2]*t*dir[1] - b[1]*a[2] - b[1]*t*dir[2] - a[2]*t*dir[1];
-
+	
 	v[4] = (a[2]+t*dir[2]) - (b[2]+t*dir[2]);
 	v[4] = a[2] - b[2];
-
+	
 	v[5] = (b[1]+t*dir[1]) - (a[1]+t*dir[1]);
 	v[5] = b[1] - a[1];
-
-
+	
+	
 	v[0] = a[0]*b[1] + a[0]*t*dir[1] + b[1]*t*dir[0] - b[0]*a[1] - b[0]*t*dir[1] - a[1]*t*dir[0];
 	v[1] = a[0]*b[2] + a[0]*t*dir[2] + b[2]*t*dir[0] - b[0]*a[2] - b[0]*t*dir[2] - a[2]*t*dir[0];
 	v[2] = a[0] - b[0];
 	v[3] = a[1]*b[2] + a[1]*t*dir[2] + b[2]*t*dir[1] - b[1]*a[2] - b[1]*t*dir[2] - a[2]*t*dir[1];
 	v[4] = a[2] - b[2];
 	v[5] = b[1] - a[1];
-
+	
 	v[0] = (a[0]*dir[1] + b[1]*dir[0] - b[0]*dir[1] - a[1]*dir[0]) * t + a[0]*b[1] - b[0]*a[1];
 	v[1] = (a[0]*dir[2] + b[2]*dir[0] - b[0]*dir[2] - a[2]*dir[0]) * t + a[0]*b[2] - b[0]*a[2];
 	v[2] = a[0] - b[0];
 	v[3] = (a[1]*dir[2] + b[2]*dir[1] - b[1]*dir[2] - a[2]*dir[1]) * t + a[1]*b[2] - b[1]*a[2];
 	v[4] = a[2] - b[2];
 	v[5] = b[1] - a[1];
-
+	
 	l2[4] * (a[0]*dir[1] + b[1]*dir[0] - b[0]*dir[1] - a[1]*dir[0]) * t + l2[4] * (a[0]*b[1] - b[0]*a[1])
 		+ l2[5] * (a[0]*dir[2] + b[2]*dir[0] - b[0]*dir[2] - a[2]*dir[0]) * t + l2[5] * (a[0]*b[2] - b[0]*a[2])
 		+ l2[3] * (a[0] - b[0])
 		+ l2[2] * (a[1]*dir[2] + b[2]*dir[1] - b[1]*dir[2] - a[2]*dir[1]) * t + l2[2] * (a[1]*b[2] - b[1]*a[2])
 		+ l2[0] * (a[2] - b[2])
 		+ l2[1] * (b[1] - a[1]) = 0
-
+	
 	t = (- l2[4] * (a[0]*b[1] - b[0]*a[1]) -
 			l2[5] * (a[0]*b[2] - b[0]*a[2]) -
 			l2[3] * (a[0] - b[0]) -
@@ -134,11 +134,11 @@ ID_FORCE_INLINE int idCollisionModelManagerLocal::TranslateEdgeThroughEdge( idVe
 				(l2[4] * (a[0]*dir[1] + b[1]*dir[0] - b[0]*dir[1] - a[1]*dir[0]) +
 				l2[5] * (a[0]*dir[2] + b[2]*dir[0] - b[0]*dir[2] - a[2]*dir[0]) +
 				l2[2] * (a[1]*dir[2] + b[2]*dir[1] - b[1]*dir[2] - a[2]*dir[1]));
-
+	
 	d = l2[4] * (a[0]*dir[1] + b[1]*dir[0] - b[0]*dir[1] - a[1]*dir[0]) +
 		l2[5] * (a[0]*dir[2] + b[2]*dir[0] - b[0]*dir[2] - a[2]*dir[0]) +
 		l2[2] * (a[1]*dir[2] + b[2]*dir[1] - b[1]*dir[2] - a[2]*dir[1]);
-
+	
 	t = - ( l2[4] * (a[0]*b[1] - b[0]*a[1]) +
 			l2[5] * (a[0]*b[2] - b[0]*a[2]) +
 			l2[3] * (a[0] - b[0]) +
@@ -146,9 +146,9 @@ ID_FORCE_INLINE int idCollisionModelManagerLocal::TranslateEdgeThroughEdge( idVe
 			l2[0] * (a[2] - b[2]) +
 			l2[1] * (b[1] - a[1]));
 	t /= d;
-
+	
 	MrE pats Pluecker on the head.. good monkey
-
+	
 	edgeDir = a - b;
 	d = l2[4] * (edgeDir[0]*dir[1] - edgeDir[1]*dir[0]) +
 		l2[5] * (edgeDir[0]*dir[2] - edgeDir[2]*dir[0]) +

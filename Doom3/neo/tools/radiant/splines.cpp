@@ -919,10 +919,10 @@ void idCameraDef::getActiveSegmentInfo( int segment, idVec3 &origin, idVec3 &dir
 			buildCamera();
 		}
 		origin = *cameraSpline.getSegmentPoint(segment);
-
-
+	
+	
 		idVec3 temp;
-
+	
 		int numTargets = getTargetSpline()->controlPoints.Num();
 		int count = cameraSpline.splineTime.Num();
 		if (numTargets == 0) {
@@ -935,7 +935,7 @@ void idCameraDef::getActiveSegmentInfo( int segment, idVec3 &origin, idVec3 &dir
 		} else {
 			temp = *getTargetSpline()->getSegmentPoint(segment);
 		}
-
+	
 		temp -= origin;
 		temp.Normalize();
 		direction = temp;
@@ -1112,23 +1112,23 @@ void idCameraDef::buildCamera() {
 							int index = events[i]->getSegment();
 							total = 0;
 							count = 0;
-
+			
 							// get total amount of time over the remainder of the segment
 							for (j = index; j < cameraSpline.numSegments() - 1; j++) {
 								total += cameraSpline.getSegmentTime(j + 1) - cameraSpline.getSegmentTime(j);
 								count++;
 							}
-
+			
 							// multiply that by the adjustment
 							double newTotal = total * adjust;
 							// what is the difference..
 							newTotal -= total;
 							totalTime += newTotal / 1000;
-
+			
 							// per segment difference
 							newTotal /= count;
 							int additive = newTotal;
-
+			
 							// now propogate that difference out to each segment
 							for (j = index; j < cameraSpline.numSegments(); j++) {
 								cameraSpline.addSegmentTime(j, additive);

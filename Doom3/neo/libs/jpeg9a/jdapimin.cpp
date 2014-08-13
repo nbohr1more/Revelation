@@ -28,14 +28,12 @@
  */
 
 GLOBAL( void )
-jpeg_CreateDecompress( j_decompress_ptr cinfo, int version, size_t structsize )
-{
+jpeg_CreateDecompress( j_decompress_ptr cinfo, int version, size_t structsize ) {
 	int i;
 	
 	/* Guard against version mismatches between library and caller. */
 	cinfo->mem = NULL;		/* so jpeg_destroy knows mem mgr not called */
-	if( version != JPEG_LIB_VERSION )
-	{
+	if( version != JPEG_LIB_VERSION ) {
 		ERREXIT2( cinfo, JERR_BAD_LIB_VERSION, JPEG_LIB_VERSION, version );
 	}
 	if( structsize != SIZEOF( struct jpeg_decompress_struct ) )
@@ -64,13 +62,11 @@ jpeg_CreateDecompress( j_decompress_ptr cinfo, int version, size_t structsize )
 	cinfo->progress = NULL;
 	cinfo->src = NULL;
 	
-	for( i = 0; i < NUM_QUANT_TBLS; i++ )
-	{
+	for( i = 0; i < NUM_QUANT_TBLS; i++ ) {
 		cinfo->quant_tbl_ptrs[i] = NULL;
 	}
 	
-	for( i = 0; i < NUM_HUFF_TBLS; i++ )
-	{
+	for( i = 0; i < NUM_HUFF_TBLS; i++ ) {
 		cinfo->dc_huff_tbl_ptrs[i] = NULL;
 		cinfo->ac_huff_tbl_ptrs[i] = NULL;
 	}
@@ -94,8 +90,7 @@ jpeg_CreateDecompress( j_decompress_ptr cinfo, int version, size_t structsize )
  */
 
 GLOBAL( void )
-jpeg_destroy_decompress( j_decompress_ptr cinfo )
-{
+jpeg_destroy_decompress( j_decompress_ptr cinfo ) {
 	jpeg_destroy( ( j_common_ptr ) cinfo ); /* use common routine */
 }
 
@@ -106,8 +101,7 @@ jpeg_destroy_decompress( j_decompress_ptr cinfo )
  */
 
 GLOBAL( void )
-jpeg_abort_decompress( j_decompress_ptr cinfo )
-{
+jpeg_abort_decompress( j_decompress_ptr cinfo ) {
 	jpeg_abort( ( j_common_ptr ) cinfo ); /* use common routine */
 }
 
@@ -117,14 +111,12 @@ jpeg_abort_decompress( j_decompress_ptr cinfo )
  */
 
 LOCAL( void )
-default_decompress_parms( j_decompress_ptr cinfo )
-{
+default_decompress_parms( j_decompress_ptr cinfo ) {
 	int cid0, cid1, cid2;
 	
 	/* Guess the input colorspace, and set output colorspace accordingly. */
 	/* Note application may override our guesses. */
-	switch( cinfo->num_components )
-	{
+	switch( cinfo->num_components ) {
 	case 1:
 		cinfo->jpeg_color_space = JCS_GRAYSCALE;
 		cinfo->out_color_space = JCS_GRAYSCALE;
@@ -136,30 +128,18 @@ default_decompress_parms( j_decompress_ptr cinfo )
 		cid2 = cinfo->comp_info[2].component_id;
 		
 		/* First try to guess from the component IDs */
-		if( cid0 == 0x01 && cid1 == 0x02 && cid2 == 0x03 )
-		{
+		if( cid0 == 0x01 && cid1 == 0x02 && cid2 == 0x03 ) {
 			cinfo->jpeg_color_space = JCS_YCbCr;
-		}
-		else if( cid0 == 0x01 && cid1 == 0x22 && cid2 == 0x23 )
-		{
+		} else if( cid0 == 0x01 && cid1 == 0x22 && cid2 == 0x23 ) {
 			cinfo->jpeg_color_space = JCS_BG_YCC;
-		}
-		else if( cid0 == 0x52 && cid1 == 0x47 && cid2 == 0x42 )
-		{
+		} else if( cid0 == 0x52 && cid1 == 0x47 && cid2 == 0x42 ) {
 			cinfo->jpeg_color_space = JCS_RGB;    /* ASCII 'R', 'G', 'B' */
-		}
-		else if( cid0 == 0x72 && cid1 == 0x67 && cid2 == 0x62 )
-		{
+		} else if( cid0 == 0x72 && cid1 == 0x67 && cid2 == 0x62 ) {
 			cinfo->jpeg_color_space = JCS_BG_RGB;    /* ASCII 'r', 'g', 'b' */
-		}
-		else if( cinfo->saw_JFIF_marker )
-		{
+		} else if( cinfo->saw_JFIF_marker ) {
 			cinfo->jpeg_color_space = JCS_YCbCr;    /* assume it's YCbCr */
-		}
-		else if( cinfo->saw_Adobe_marker )
-		{
-			switch( cinfo->Adobe_transform )
-			{
+		} else if( cinfo->saw_Adobe_marker ) {
+			switch( cinfo->Adobe_transform ) {
 			case 0:
 				cinfo->jpeg_color_space = JCS_RGB;
 				break;
@@ -171,9 +151,7 @@ default_decompress_parms( j_decompress_ptr cinfo )
 				cinfo->jpeg_color_space = JCS_YCbCr;	/* assume it's YCbCr */
 				break;
 			}
-		}
-		else
-		{
+		} else {
 			TRACEMS3( cinfo, 1, JTRC_UNKNOWN_IDS, cid0, cid1, cid2 );
 			cinfo->jpeg_color_space = JCS_YCbCr;	/* assume it's YCbCr */
 		}
@@ -182,10 +160,8 @@ default_decompress_parms( j_decompress_ptr cinfo )
 		break;
 		
 	case 4:
-		if( cinfo->saw_Adobe_marker )
-		{
-			switch( cinfo->Adobe_transform )
-			{
+		if( cinfo->saw_Adobe_marker ) {
+			switch( cinfo->Adobe_transform ) {
 			case 0:
 				cinfo->jpeg_color_space = JCS_CMYK;
 				break;
@@ -197,9 +173,7 @@ default_decompress_parms( j_decompress_ptr cinfo )
 				cinfo->jpeg_color_space = JCS_YCCK;	/* assume it's YCCK */
 				break;
 			}
-		}
-		else
-		{
+		} else {
 			/* No special markers, assume straight CMYK. */
 			cinfo->jpeg_color_space = JCS_CMYK;
 		}
@@ -266,26 +240,22 @@ default_decompress_parms( j_decompress_ptr cinfo )
  */
 
 GLOBAL( int )
-jpeg_read_header( j_decompress_ptr cinfo, boolean require_image )
-{
+jpeg_read_header( j_decompress_ptr cinfo, boolean require_image ) {
 	int retcode;
 	
 	if( cinfo->global_state != DSTATE_START &&
-			cinfo->global_state != DSTATE_INHEADER )
-	{
+			cinfo->global_state != DSTATE_INHEADER ) {
 		ERREXIT1( cinfo, JERR_BAD_STATE, cinfo->global_state );
 	}
 	
 	retcode = jpeg_consume_input( cinfo );
 	
-	switch( retcode )
-	{
+	switch( retcode ) {
 	case JPEG_REACHED_SOS:
 		retcode = JPEG_HEADER_OK;
 		break;
 	case JPEG_REACHED_EOI:
-		if( require_image )		/* Complain if application wanted an image */
-		{
+		if( require_image ) {	/* Complain if application wanted an image */
 			ERREXIT( cinfo, JERR_NO_IMAGE );
 		}
 		/* Reset to start state; it would be safer to require the application to
@@ -317,13 +287,11 @@ jpeg_read_header( j_decompress_ptr cinfo, boolean require_image )
  */
 
 GLOBAL( int )
-jpeg_consume_input( j_decompress_ptr cinfo )
-{
+jpeg_consume_input( j_decompress_ptr cinfo ) {
 	int retcode = JPEG_SUSPENDED;
 	
 	/* NB: every possible DSTATE value should be listed in this switch */
-	switch( cinfo->global_state )
-	{
+	switch( cinfo->global_state ) {
 	case DSTATE_START:
 		/* Start-of-datastream actions: reset appropriate modules */
 		( *cinfo->inputctl->reset_input_controller )( cinfo );
@@ -333,8 +301,7 @@ jpeg_consume_input( j_decompress_ptr cinfo )
 		/*FALLTHROUGH*/
 	case DSTATE_INHEADER:
 		retcode = ( *cinfo->inputctl->consume_input )( cinfo );
-		if( retcode == JPEG_REACHED_SOS )  /* Found SOS, prepare to decompress */
-		{
+		if( retcode == JPEG_REACHED_SOS ) { /* Found SOS, prepare to decompress */
 			/* Set up default parameters based on header data */
 			default_decompress_parms( cinfo );
 			/* Set global state: ready for start_decompress */
@@ -366,12 +333,10 @@ jpeg_consume_input( j_decompress_ptr cinfo )
  */
 
 GLOBAL( boolean )
-jpeg_input_complete( j_decompress_ptr cinfo )
-{
+jpeg_input_complete( j_decompress_ptr cinfo ) {
 	/* Check for valid jpeg object */
 	if( cinfo->global_state < DSTATE_START ||
-			cinfo->global_state > DSTATE_STOPPING )
-	{
+			cinfo->global_state > DSTATE_STOPPING ) {
 		ERREXIT1( cinfo, JERR_BAD_STATE, cinfo->global_state );
 	}
 	return cinfo->inputctl->eoi_reached;
@@ -383,12 +348,10 @@ jpeg_input_complete( j_decompress_ptr cinfo )
  */
 
 GLOBAL( boolean )
-jpeg_has_multiple_scans( j_decompress_ptr cinfo )
-{
+jpeg_has_multiple_scans( j_decompress_ptr cinfo ) {
 	/* Only valid after jpeg_read_header completes */
 	if( cinfo->global_state < DSTATE_READY ||
-			cinfo->global_state > DSTATE_STOPPING )
-	{
+			cinfo->global_state > DSTATE_STOPPING ) {
 		ERREXIT1( cinfo, JERR_BAD_STATE, cinfo->global_state );
 	}
 	return cinfo->inputctl->has_multiple_scans;
@@ -405,34 +368,25 @@ jpeg_has_multiple_scans( j_decompress_ptr cinfo )
  */
 
 GLOBAL( boolean )
-jpeg_finish_decompress( j_decompress_ptr cinfo )
-{
+jpeg_finish_decompress( j_decompress_ptr cinfo ) {
 	if( ( cinfo->global_state == DSTATE_SCANNING ||
-			cinfo->global_state == DSTATE_RAW_OK ) && ! cinfo->buffered_image )
-	{
+			cinfo->global_state == DSTATE_RAW_OK ) && ! cinfo->buffered_image ) {
 		/* Terminate final pass of non-buffered mode */
-		if( cinfo->output_scanline < cinfo->output_height )
-		{
+		if( cinfo->output_scanline < cinfo->output_height ) {
 			ERREXIT( cinfo, JERR_TOO_LITTLE_DATA );
 		}
 		( *cinfo->master->finish_output_pass )( cinfo );
 		cinfo->global_state = DSTATE_STOPPING;
-	}
-	else if( cinfo->global_state == DSTATE_BUFIMAGE )
-	{
+	} else if( cinfo->global_state == DSTATE_BUFIMAGE ) {
 		/* Finishing after a buffered-image operation */
 		cinfo->global_state = DSTATE_STOPPING;
-	}
-	else if( cinfo->global_state != DSTATE_STOPPING )
-	{
+	} else if( cinfo->global_state != DSTATE_STOPPING ) {
 		/* STOPPING = repeat call after a suspension, anything else is error */
 		ERREXIT1( cinfo, JERR_BAD_STATE, cinfo->global_state );
 	}
 	/* Read until EOI */
-	while( ! cinfo->inputctl->eoi_reached )
-	{
-		if( ( *cinfo->inputctl->consume_input )( cinfo ) == JPEG_SUSPENDED )
-		{
+	while( ! cinfo->inputctl->eoi_reached ) {
+		if( ( *cinfo->inputctl->consume_input )( cinfo ) == JPEG_SUSPENDED ) {
 			return FALSE;    /* Suspend, come back later */
 		}
 	}

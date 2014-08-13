@@ -36,15 +36,12 @@
  */
 
 GLOBAL( void )
-jpeg_start_compress( j_compress_ptr cinfo, boolean write_all_tables )
-{
-	if( cinfo->global_state != CSTATE_START )
-	{
+jpeg_start_compress( j_compress_ptr cinfo, boolean write_all_tables ) {
+	if( cinfo->global_state != CSTATE_START ) {
 		ERREXIT1( cinfo, JERR_BAD_STATE, cinfo->global_state );
 	}
 	
-	if( write_all_tables )
-	{
+	if( write_all_tables ) {
 		jpeg_suppress_tables( cinfo, FALSE );    /* mark all tables to be written */
 	}
 	
@@ -80,22 +77,18 @@ jpeg_start_compress( j_compress_ptr cinfo, boolean write_all_tables )
 
 GLOBAL( JDIMENSION )
 jpeg_write_scanlines( j_compress_ptr cinfo, JSAMPARRAY scanlines,
-					  JDIMENSION num_lines )
-{
+					  JDIMENSION num_lines ) {
 	JDIMENSION row_ctr, rows_left;
 	
-	if( cinfo->global_state != CSTATE_SCANNING )
-	{
+	if( cinfo->global_state != CSTATE_SCANNING ) {
 		ERREXIT1( cinfo, JERR_BAD_STATE, cinfo->global_state );
 	}
-	if( cinfo->next_scanline >= cinfo->image_height )
-	{
+	if( cinfo->next_scanline >= cinfo->image_height ) {
 		WARNMS( cinfo, JWRN_TOO_MUCH_DATA );
 	}
 	
 	/* Call progress monitor hook if present */
-	if( cinfo->progress != NULL )
-	{
+	if( cinfo->progress != NULL ) {
 		cinfo->progress->pass_counter = ( long ) cinfo->next_scanline;
 		cinfo->progress->pass_limit = ( long ) cinfo->image_height;
 		( *cinfo->progress->progress_monitor )( ( j_common_ptr ) cinfo );
@@ -106,15 +99,13 @@ jpeg_write_scanlines( j_compress_ptr cinfo, JSAMPARRAY scanlines,
 	 * delayed so that application can write COM, etc, markers between
 	 * jpeg_start_compress and jpeg_write_scanlines.
 	 */
-	if( cinfo->master->call_pass_startup )
-	{
+	if( cinfo->master->call_pass_startup ) {
 		( *cinfo->master->pass_startup )( cinfo );
 	}
 	
 	/* Ignore any extra scanlines at bottom of image. */
 	rows_left = cinfo->image_height - cinfo->next_scanline;
-	if( num_lines > rows_left )
-	{
+	if( num_lines > rows_left ) {
 		num_lines = rows_left;
 	}
 	
@@ -132,23 +123,19 @@ jpeg_write_scanlines( j_compress_ptr cinfo, JSAMPARRAY scanlines,
 
 GLOBAL( JDIMENSION )
 jpeg_write_raw_data( j_compress_ptr cinfo, JSAMPIMAGE data,
-					 JDIMENSION num_lines )
-{
+					 JDIMENSION num_lines ) {
 	JDIMENSION lines_per_iMCU_row;
 	
-	if( cinfo->global_state != CSTATE_RAW_OK )
-	{
+	if( cinfo->global_state != CSTATE_RAW_OK ) {
 		ERREXIT1( cinfo, JERR_BAD_STATE, cinfo->global_state );
 	}
-	if( cinfo->next_scanline >= cinfo->image_height )
-	{
+	if( cinfo->next_scanline >= cinfo->image_height ) {
 		WARNMS( cinfo, JWRN_TOO_MUCH_DATA );
 		return 0;
 	}
 	
 	/* Call progress monitor hook if present */
-	if( cinfo->progress != NULL )
-	{
+	if( cinfo->progress != NULL ) {
 		cinfo->progress->pass_counter = ( long ) cinfo->next_scanline;
 		cinfo->progress->pass_limit = ( long ) cinfo->image_height;
 		( *cinfo->progress->progress_monitor )( ( j_common_ptr ) cinfo );
@@ -159,21 +146,18 @@ jpeg_write_raw_data( j_compress_ptr cinfo, JSAMPIMAGE data,
 	 * delayed so that application can write COM, etc, markers between
 	 * jpeg_start_compress and jpeg_write_raw_data.
 	 */
-	if( cinfo->master->call_pass_startup )
-	{
+	if( cinfo->master->call_pass_startup ) {
 		( *cinfo->master->pass_startup )( cinfo );
 	}
 	
 	/* Verify that at least one iMCU row has been passed. */
 	lines_per_iMCU_row = cinfo->max_v_samp_factor * cinfo->min_DCT_v_scaled_size;
-	if( num_lines < lines_per_iMCU_row )
-	{
+	if( num_lines < lines_per_iMCU_row ) {
 		ERREXIT( cinfo, JERR_BUFFER_SIZE );
 	}
 	
 	/* Directly compress the row. */
-	if( !( *cinfo->coef->compress_data )( cinfo, data ) )
-	{
+	if( !( *cinfo->coef->compress_data )( cinfo, data ) ) {
 		/* If compressor did not consume the whole row, suspend processing. */
 		return 0;
 	}

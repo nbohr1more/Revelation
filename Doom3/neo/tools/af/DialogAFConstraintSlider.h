@@ -32,7 +32,7 @@ If you have questions concerning this license or the applicable additional terms
 class DialogAFConstraintSlider : public CDialog {
 
 	DECLARE_DYNAMIC( DialogAFConstraintSlider )
-
+	
 public:
 	DialogAFConstraintSlider( CWnd *pParent = NULL ); // standard constructor
 	virtual				~DialogAFConstraintSlider();
@@ -41,9 +41,9 @@ public:
 	void				LoadConstraint( idDeclAF_Constraint *c );
 	void				SaveConstraint( void );
 	void				UpdateFile( void );
-
+	
 	enum { IDD = IDD_DIALOG_AF_CONSTRAINT_HINGE };
-
+	
 protected:
 	virtual void		DoDataExchange( CDataExchange *pDX );  // DDX/DDV support
 	virtual int			OnToolHitTest( CPoint point, TOOLINFO *pTI ) const;
@@ -56,22 +56,22 @@ protected:
 	afx_msg void		OnDeltaposSpinSliderAxisPitch( NMHDR *pNMHDR, LRESULT *pResult );
 	afx_msg void		OnEnChangeEditSliderAxisYaw();
 	afx_msg void		OnDeltaposSpinSliderAxisYaw( NMHDR *pNMHDR, LRESULT *pResult );
-
+	
 	DECLARE_MESSAGE_MAP()
-
+	
 private:
 	idDeclAF 			*file;
 	idDeclAF_Constraint *constraint;
-
+	
 	//{{AFX_DATA(DialogAFConstraintSlider)
 	CComboBox			m_comboAxisJoint1;
 	CComboBox			m_comboAxisJoint2;
 	float				m_axisPitch;
 	float				m_axisYaw;
 	//}}AFX_DATA
-
+	
 	static toolTip_t	toolTips[];
-
+	
 private:
 	void				InitJointLists( void );
 };

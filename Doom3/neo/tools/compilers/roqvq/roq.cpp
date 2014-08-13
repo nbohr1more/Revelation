@@ -183,7 +183,7 @@ int roq::SizeFile( idFile *ftosize ) {
 
 typedef struct {
 	struct jpeg_destination_mgr pub; /* public fields */
-
+	
 	byte *outfile;		/* target stream */
 	int	size;
 } my_destination_mgr;

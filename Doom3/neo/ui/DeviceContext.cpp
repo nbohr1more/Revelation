@@ -793,19 +793,19 @@ idRegion *idDeviceContext::GetTextRegion( const char *text, float textScale, idR
 		if (text == NULL) {
 			return;
 		}
-
+	
 		textPtr = text;
 		if (*textPtr == '\0') {
 			return;
 		}
-
+	
 		y = lineSkip + rectDraw.y + yStart;
 		len = 0;
 		buff[0] = '\0';
 		newLine = 0;
 		newLineWidth = 0;
 		p = textPtr;
-
+	
 		textWidth = 0;
 		while (p) {
 			if (*p == ' ' || *p == '\t' || *p == '\n' || *p == '\0') {
@@ -813,23 +813,23 @@ idRegion *idDeviceContext::GetTextRegion( const char *text, float textScale, idR
 				newLinePtr = p + 1;
 				newLineWidth = textWidth;
 			}
-
+	
 			if ((newLine && textWidth > rectDraw.w) || *p == '\n' || *p == '\0') {
 				if (len) {
-
+	
 					float x = rectDraw.x ;
-
+	
 					buff[newLine] = '\0';
 					DrawText(x, y, textScale, color, buff, 0, 0, 0);
 					if (!wrap) {
 						return;
 					}
 				}
-
+	
 				if (*p == '\0') {
 					break;
 				}
-
+	
 				y += lineSkip + 5;
 				p = newLinePtr;
 				len = 0;
@@ -837,7 +837,7 @@ idRegion *idDeviceContext::GetTextRegion( const char *text, float textScale, idR
 				newLineWidth = 0;
 				continue;
 			}
-
+	
 			buff[len++] = *p++;
 			buff[len] = '\0';
 			textWidth = TextWidth( buff, textScale, -1 );

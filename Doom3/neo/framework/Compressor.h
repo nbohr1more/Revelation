@@ -51,12 +51,12 @@ public:
 	static idCompressor 	*AllocLZSS( void );
 	static idCompressor 	*AllocLZSS_WordAligned( void );
 	static idCompressor 	*AllocLZW( void );
-
+	
 	// initialization
 	virtual void			Init( idFile *f, bool compress, int wordLength ) = 0;
 	virtual void			FinishCompress( void ) = 0;
 	virtual float			GetCompressionRatio( void ) const = 0;
-
+	
 	// common idFile interface
 	virtual const char 	*GetName( void ) = 0;
 	virtual const char 	*GetFullPath( void ) = 0;

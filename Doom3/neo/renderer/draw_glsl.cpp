@@ -69,21 +69,21 @@ static void RB_GLSL_DrawInteraction( const drawInteraction_t *din ) {
 		glUniform4fvARB( ambientInteractionShader.bumpMatrixT, 1, din->bumpMatrix[1].ToFloatPtr() );
 		glUniform4fvARB( ambientInteractionShader.diffuseMatrixS, 1, din->diffuseMatrix[0].ToFloatPtr() );
 		glUniform4fvARB( ambientInteractionShader.diffuseMatrixT, 1, din->diffuseMatrix[1].ToFloatPtr() );
-		static const float zero[4] = { 0, 0, 0, 0 };
-		static const float one[4] = { 1, 1, 1, 1 };
-		static const float negOne[4] = { -1, -1, -1, -1 };
+		static const float zero[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+		static const float one[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		static const float negOne[4] = { -1.0f, -1.0f, -1.0f, -1.0f };
 		switch( din->vertexColor ) {
 		case SVC_IGNORE:
-			glUniform4fARB( ambientInteractionShader.colorModulate, zero[0], zero[1], zero[2], zero[3] );
-			glUniform4fARB( ambientInteractionShader.colorAdd, one[0], one[1], one[2], one[3] );
+			glUniform4fvARB( ambientInteractionShader.colorModulate, 1, zero );
+			glUniform4fvARB( ambientInteractionShader.colorAdd, 1, one );
 			break;
 		case SVC_MODULATE:
-			glUniform4fARB( ambientInteractionShader.colorModulate, one[0], one[1], one[2], one[3] );
-			glUniform4fARB( ambientInteractionShader.colorAdd, zero[0], zero[1], zero[2], zero[3] );
+			glUniform4fvARB( ambientInteractionShader.colorModulate, 1, one );
+			glUniform4fvARB( ambientInteractionShader.colorAdd, 1, zero );
 			break;
 		case SVC_INVERSE_MODULATE:
-			glUniform4fARB( ambientInteractionShader.colorModulate, negOne[0], negOne[1], negOne[2], negOne[3] );
-			glUniform4fARB( ambientInteractionShader.colorAdd, one[0], one[1], one[2], one[3] );
+			glUniform4fvARB( ambientInteractionShader.colorModulate, 1, negOne );
+			glUniform4fvARB( ambientInteractionShader.colorAdd, 1, one );
 			break;
 		}
 		// set the constant color
@@ -101,21 +101,21 @@ static void RB_GLSL_DrawInteraction( const drawInteraction_t *din ) {
 		glUniform4fvARB( interactionShader.diffuseMatrixT, 1, din->diffuseMatrix[1].ToFloatPtr() );
 		glUniform4fvARB( interactionShader.specularMatrixS, 1, din->specularMatrix[0].ToFloatPtr() );
 		glUniform4fvARB( interactionShader.specularMatrixT, 1, din->specularMatrix[1].ToFloatPtr() );
-		static const float zero[4] = { 0, 0, 0, 0 };
-		static const float one[4] = { 1, 1, 1, 1 };
-		static const float negOne[4] = { -1, -1, -1, -1 };
+		static const float zero[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+		static const float one[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+		static const float negOne[4] = { -1.0f, -1.0f, -1.0f, -1.0f };
 		switch( din->vertexColor ) {
 		case SVC_IGNORE:
-			glUniform4fARB( interactionShader.colorModulate, zero[0], zero[1], zero[2], zero[3] );
-			glUniform4fARB( interactionShader.colorAdd, one[0], one[1], one[2], one[3] );
+			glUniform4fvARB( interactionShader.colorModulate, 1, zero );
+			glUniform4fvARB( interactionShader.colorAdd, 1, one );
 			break;
 		case SVC_MODULATE:
-			glUniform4fARB( interactionShader.colorModulate, one[0], one[1], one[2], one[3] );
-			glUniform4fARB( interactionShader.colorAdd, zero[0], zero[1], zero[2], zero[3] );
+			glUniform4fvARB( interactionShader.colorModulate, 1, one );
+			glUniform4fvARB( interactionShader.colorAdd, 1, zero );
 			break;
 		case SVC_INVERSE_MODULATE:
-			glUniform4fARB( interactionShader.colorModulate, negOne[0], negOne[1], negOne[2], negOne[3] );
-			glUniform4fARB( interactionShader.colorAdd, one[0], one[1], one[2], one[3] );
+			glUniform4fvARB( interactionShader.colorModulate, 1, negOne );
+			glUniform4fvARB( interactionShader.colorAdd, 1, one );
 			break;
 		}
 		// set the constant colors
@@ -180,7 +180,7 @@ static void RB_GLSL_CreateDrawInteractions( const drawSurf_t *surf ) {
 		// perform setup here that will not change over multiple interaction passes
 		// set the vertex pointers
 		idDrawVert	*ac = ( idDrawVert * )vertexCache.Position( surf->geo->ambientCache );
-		glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ac->color );
+		glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ( const GLvoid * )&ac->color );
 		glVertexAttribPointerARB( 11, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac->normal.ToFloatPtr() );
 		glVertexAttribPointerARB( 10, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac->tangents[1].ToFloatPtr() );
 		glVertexAttribPointerARB( 9, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac->tangents[0].ToFloatPtr() );
@@ -239,7 +239,6 @@ void RB_GLSL_DrawInteractions( void ) {
 		if( !vLight->localInteractions && !vLight->globalInteractions && !vLight->translucentInteractions ) {
 			continue;
 		}
-		// turn on depthbounds testing for shadows
 		GL_DepthBoundsTest( vLight->scissorRect.zmin, vLight->scissorRect.zmax );
 		// clear the stencil buffer if needed
 		if( vLight->globalShadows || vLight->localShadows ) {
@@ -420,6 +419,10 @@ RB_GLSL_InitShaders
 =================
 */
 static bool RB_GLSL_InitShaders( ) {
+	// initialize to 0 at first
+	memset( &interactionShader, 0, sizeof( shaderProgram_t ) );
+	memset( &ambientInteractionShader, 0, sizeof( shaderProgram_t ) );
+	memset( &stencilShadowShader, 0, sizeof( shaderProgram_t ) );
 	// load interation shaders
 	R_LoadGLSLShader( "interaction.vp", &interactionShader, GL_VERTEX_SHADER_ARB );
 	R_LoadGLSLShader( "interaction.fp", &interactionShader, GL_FRAGMENT_SHADER_ARB );
@@ -547,6 +550,7 @@ void R_GLSL_Init( void ) {
 		common->Printf( "GLSL shaders failed to init.\n" );
 		return;
 	}
+	GL_CheckErrors();
 	common->Printf( "Available.\n" );
 	common->Printf( "---------------------------------\n" );
 	glConfig.allowGLSLPath = true;

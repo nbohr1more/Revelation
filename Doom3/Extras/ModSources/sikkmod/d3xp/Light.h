@@ -44,21 +44,21 @@ extern const idEventDef EV_Light_SetLightParms;
 class idLight : public idEntity {
 public:
 	CLASS_PROTOTYPE( idLight );
-
+	
 	idLight();
 	~idLight();
-
+	
 	void			Spawn( void );
-
+	
 	void			Save( idSaveGame *savefile ) const;					// archives object for save game file
 	void			Restore( idRestoreGame *savefile );					// unarchives object from save game file
-
+	
 	virtual void	UpdateChangeableSpawnArgs( const idDict *source );
 	virtual void	Think( void );
 	virtual void	FreeLightDef( void );
 	virtual bool	GetPhysicsToSoundTransform( idVec3 &origin, idMat3 &axis );
 	void			Present( void );
-
+	
 	void			SaveState( idDict *args );
 	virtual void	SetColor( float red, float green, float blue );
 	virtual void	SetColor( const idVec4 &color );
@@ -86,19 +86,19 @@ public:
 		lightParent = lparent;
 	}
 	void			SetLightLevel( void );
-
+	
 	virtual void	ShowEditingDialog( void );
-
+	
 	enum {
 		EVENT_BECOMEBROKEN = idEntity::EVENT_MAXEVENTS,
 		EVENT_MAXEVENTS
 	};
-
+	
 	virtual void	ClientPredictionThink( void );
 	virtual void	WriteToSnapshot( idBitMsgDelta &msg ) const;
 	virtual void	ReadFromSnapshot( const idBitMsgDelta &msg );
 	virtual bool	ClientReceiveEvent( int event, int time, const idBitMsg &msg );
-
+	
 private:
 	renderLight_t	renderLight;				// light presented to the renderer
 	idVec3			localLightOrigin;			// light origin relative to the physics origin
@@ -117,11 +117,11 @@ private:
 	int				fadeStart;
 	int				fadeEnd;
 	bool			soundWasPlaying;
-
+	
 private:
 	void			PresentLightDefChange( void );
 	void			PresentModelDefChange( void );
-
+	
 	void			Event_SetShader( const char *shadername );
 	void			Event_GetLightParm( int parmnum );
 	void			Event_SetLightParm( int parmnum, float value );

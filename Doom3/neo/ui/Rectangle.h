@@ -68,7 +68,7 @@ public:
 	void Empty() {
 		x = y = w = h = 0.0;
 	};
-
+	
 	void ClipAgainst( idRectangle r, bool sizeOnly ) {
 		if( !sizeOnly ) {
 			if( x < r.x ) {
@@ -85,9 +85,9 @@ public:
 			h = ( r.y + r.h ) - y;
 		}
 	}
-
-
-
+	
+	
+	
 	void Rotate( float a, idRectangle &out ) {
 		idVec3 p1, p2, p3, p4, p5;
 		float c, s;
@@ -110,7 +110,7 @@ public:
 		out.w = ( p2 - p1 ).Length();
 		out.h = ( p4 - p1 ).Length();
 	}
-
+	
 	idRectangle &operator+=( const idRectangle &a );
 	idRectangle &operator-=( const idRectangle &a );
 	idRectangle &operator/=( const idRectangle &a );
@@ -121,7 +121,7 @@ public:
 	float 	&operator[]( const int index );
 	char *String( void ) const;
 	const idVec4 &ToVec4() const;
-
+	
 };
 
 ID_FORCE_INLINE const idVec4 &idRectangle::ToVec4() const {
@@ -190,11 +190,11 @@ ID_FORCE_INLINE float &idRectangle::operator[]( int index ) {
 class idRegion {
 public:
 	idRegion() { };
-
+	
 	void Empty() {
 		rects.Clear();
 	}
-
+	
 	bool Contains( float xt, float yt ) {
 		int c = rects.Num();
 		for( int i = 0; i < c; i++ ) {
@@ -204,22 +204,22 @@ public:
 		}
 		return false;
 	}
-
+	
 	void AddRect( float x, float y, float w, float h ) {
 		rects.Append( idRectangle( x, y, w, h ) );
 	}
-
+	
 	int GetRectCount() {
 		return rects.Num();
 	}
-
+	
 	idRectangle *GetRect( int index ) {
 		if( index >= 0 && index < rects.Num() ) {
 			return &rects[index];
 		}
 		return NULL;
 	}
-
+	
 protected:
 
 	idList<idRectangle> rects;

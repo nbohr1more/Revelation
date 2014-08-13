@@ -89,8 +89,7 @@ typedef JCOEF FAR *JCOEFPTR;	/* useful in a couple of places */
 
 /* DCT coefficient quantization tables. */
 
-typedef struct
-{
+typedef struct {
 	/* This array gives the coefficient quantizers in natural array order
 	 * (not the zigzag order in which they are stored in a JPEG DQT marker).
 	 * CAUTION: IJG versions prior to v6a kept this array in zigzag order.
@@ -107,8 +106,7 @@ typedef struct
 
 /* Huffman coding tables. */
 
-typedef struct
-{
+typedef struct {
 	/* These two fields directly represent the contents of a JPEG DHT marker */
 	UINT8 bits[17];		/* bits[k] = # of symbols with codes of */
 	/* length k bits; bits[0] is unused */
@@ -124,8 +122,7 @@ typedef struct
 
 /* Basic info about one component (color channel). */
 
-typedef struct
-{
+typedef struct {
 	/* These values are fixed over the whole image. */
 	/* For compression, they must be supplied by parameter setup; */
 	/* for decompression, they are read from the SOF marker. */
@@ -198,8 +195,7 @@ typedef struct
 
 /* The script for encoding a multiple-scan file is an array of these: */
 
-typedef struct
-{
+typedef struct {
 	int comps_in_scan;		/* number of components encoded in this scan */
 	int component_index[MAX_COMPS_IN_SCAN]; /* their SOF/comp_info[] indexes */
 	int Ss, Se;			/* progressive JPEG spectral selection parms */
@@ -210,8 +206,7 @@ typedef struct
 
 typedef struct jpeg_marker_struct FAR *jpeg_saved_marker_ptr;
 
-struct jpeg_marker_struct
-{
+struct jpeg_marker_struct {
 	jpeg_saved_marker_ptr next;	/* next in list, or NULL */
 	UINT8 marker;			/* marker code: JPEG_COM, or JPEG_APP0+n */
 	unsigned int original_length;	/* # bytes of data in the file */
@@ -222,8 +217,7 @@ struct jpeg_marker_struct
 
 /* Known color spaces. */
 
-typedef enum
-{
+typedef enum {
 	JCS_UNKNOWN,		/* error/unspecified */
 	JCS_GRAYSCALE,		/* monochrome */
 	JCS_RGB,		/* red/green/blue, standard RGB (sRGB) */
@@ -236,16 +230,14 @@ typedef enum
 
 /* Supported color transforms. */
 
-typedef enum
-{
+typedef enum {
 	JCT_NONE           = 0,
 	JCT_SUBTRACT_GREEN = 1
 } J_COLOR_TRANSFORM;
 
 /* DCT/IDCT algorithm options. */
 
-typedef enum
-{
+typedef enum {
 	JDCT_ISLOW,		/* slow but accurate integer algorithm */
 	JDCT_IFAST,		/* faster, less accurate integer method */
 	JDCT_FLOAT		/* floating-point: accurate, fast on fast HW */
@@ -260,8 +252,7 @@ typedef enum
 
 /* Dithering options for decompression. */
 
-typedef enum
-{
+typedef enum {
 	JDITHER_NONE,		/* no dithering */
 	JDITHER_ORDERED,	/* simple ordered dither */
 	JDITHER_FS		/* Floyd-Steinberg error diffusion dither */
@@ -282,8 +273,7 @@ typedef enum
  * to receive a pointer to this structure.  There are no actual instances of
  * jpeg_common_struct, only of jpeg_compress_struct and jpeg_decompress_struct.
  */
-struct jpeg_common_struct
-{
+struct jpeg_common_struct {
 	jpeg_common_fields;		/* Fields common to both master struct types */
 	/* Additional fields follow in an actual jpeg_compress_struct or
 	 * jpeg_decompress_struct.  All three structs must agree on these
@@ -298,8 +288,7 @@ typedef struct jpeg_decompress_struct *j_decompress_ptr;
 
 /* Master record for a compression instance */
 
-struct jpeg_compress_struct
-{
+struct jpeg_compress_struct {
 	jpeg_common_fields;		/* Fields shared with jpeg_decompress_struct */
 	
 	/* Destination for compressed data */
@@ -467,8 +456,7 @@ struct jpeg_compress_struct
 
 /* Master record for a decompression instance */
 
-struct jpeg_decompress_struct
-{
+struct jpeg_decompress_struct {
 	jpeg_common_fields;		/* Fields shared with jpeg_compress_struct */
 	
 	/* Source of compressed data */
@@ -711,8 +699,7 @@ struct jpeg_decompress_struct
 
 /* Error handler object */
 
-struct jpeg_error_mgr
-{
+struct jpeg_error_mgr {
 	/* Error exit handler: does not return to caller */
 	JMETHOD( noreturn_t, error_exit, ( j_common_ptr cinfo ) );
 	/* Conditionally emit a trace or warning message */
@@ -730,8 +717,7 @@ struct jpeg_error_mgr
 	 */
 	int msg_code;
 #define JMSG_STR_PARM_MAX  80
-	union
-	{
+	union {
 		int i[8];
 		char s[JMSG_STR_PARM_MAX];
 	} msg_parm;
@@ -771,8 +757,7 @@ struct jpeg_error_mgr
 
 /* Progress monitor object */
 
-struct jpeg_progress_mgr
-{
+struct jpeg_progress_mgr {
 	JMETHOD( void, progress_monitor, ( j_common_ptr cinfo ) );
 	
 	long pass_counter;		/* work units completed in this pass */
@@ -784,8 +769,7 @@ struct jpeg_progress_mgr
 
 /* Data destination object for compression */
 
-struct jpeg_destination_mgr
-{
+struct jpeg_destination_mgr {
 	JOCTET *next_output_byte;	/* => next byte to write in buffer */
 	size_t free_in_buffer;	/* # of byte spaces remaining in buffer */
 	
@@ -797,8 +781,7 @@ struct jpeg_destination_mgr
 
 /* Data source object for decompression */
 
-struct jpeg_source_mgr
-{
+struct jpeg_source_mgr {
 	const JOCTET *next_input_byte;  /* => next byte to read from buffer */
 	size_t bytes_in_buffer;	/* # of bytes remaining in buffer */
 	
@@ -829,8 +812,7 @@ typedef struct jvirt_sarray_control *jvirt_sarray_ptr;
 typedef struct jvirt_barray_control *jvirt_barray_ptr;
 
 
-struct jpeg_memory_mgr
-{
+struct jpeg_memory_mgr {
 	/* Method pointers */
 	JMETHOD( void *, alloc_small, ( j_common_ptr cinfo, int pool_id,
 									size_t sizeofobject ) );
@@ -1151,92 +1133,70 @@ EXTERN( boolean ) jpeg_resync_to_restart JPP( ( j_decompress_ptr cinfo,
 
 #ifdef INCOMPLETE_TYPES_BROKEN
 #ifndef JPEG_INTERNALS		/* will be defined in jpegint.h */
-struct jvirt_sarray_control
-{
+struct jvirt_sarray_control {
 	long dummy;
 };
-struct jvirt_barray_control
-{
+struct jvirt_barray_control {
 	long dummy;
 };
-struct jpeg_comp_master
-{
+struct jpeg_comp_master {
 	long dummy;
 };
-struct jpeg_c_main_controller
-{
+struct jpeg_c_main_controller {
 	long dummy;
 };
-struct jpeg_c_prep_controller
-{
+struct jpeg_c_prep_controller {
 	long dummy;
 };
-struct jpeg_c_coef_controller
-{
+struct jpeg_c_coef_controller {
 	long dummy;
 };
-struct jpeg_marker_writer
-{
+struct jpeg_marker_writer {
 	long dummy;
 };
-struct jpeg_color_converter
-{
+struct jpeg_color_converter {
 	long dummy;
 };
-struct jpeg_downsampler
-{
+struct jpeg_downsampler {
 	long dummy;
 };
-struct jpeg_forward_dct
-{
+struct jpeg_forward_dct {
 	long dummy;
 };
-struct jpeg_entropy_encoder
-{
+struct jpeg_entropy_encoder {
 	long dummy;
 };
-struct jpeg_decomp_master
-{
+struct jpeg_decomp_master {
 	long dummy;
 };
-struct jpeg_d_main_controller
-{
+struct jpeg_d_main_controller {
 	long dummy;
 };
-struct jpeg_d_coef_controller
-{
+struct jpeg_d_coef_controller {
 	long dummy;
 };
-struct jpeg_d_post_controller
-{
+struct jpeg_d_post_controller {
 	long dummy;
 };
-struct jpeg_input_controller
-{
+struct jpeg_input_controller {
 	long dummy;
 };
-struct jpeg_marker_reader
-{
+struct jpeg_marker_reader {
 	long dummy;
 };
-struct jpeg_entropy_decoder
-{
+struct jpeg_entropy_decoder {
 	long dummy;
 };
-struct jpeg_inverse_dct
-{
+struct jpeg_inverse_dct {
 	long dummy;
 };
-struct jpeg_upsampler
-{
+struct jpeg_upsampler {
 	long dummy;
 };
-struct jpeg_color_deconverter
-{
+struct jpeg_color_deconverter {
 	long dummy;
 };
-struct jpeg_color_quantizer
-{
+struct jpeg_color_quantizer {
 	long dummy;
 };
 #endif /* JPEG_INTERNALS */

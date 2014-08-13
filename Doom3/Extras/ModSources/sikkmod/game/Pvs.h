@@ -62,14 +62,14 @@ public:
 	void				DrawPVS( const idBounds &source, const pvsType_t type = PVS_NORMAL ) const;
 	// visualize the PVS the handle points to
 	void				DrawCurrentPVS( const pvsHandle_t handle, const idVec3 &source ) const;
-
+	
 #if ASYNC_WRITE_PVS
 	void				WritePVS( const pvsHandle_t handle, idBitMsg &msg );
 	void				ReadPVS( const pvsHandle_t handle, const idBitMsg &msg );
 #endif
-
+	
 	bool				CheckAreasForPortalSky( const pvsHandle_t handle, const idVec3 &origin );	// sikk - Portal Sky Box
-
+	
 private:
 	int					numAreas;
 	int					numPortals;
@@ -85,7 +85,7 @@ private:
 	int					areaVisInts;
 	struct pvsPortal_s *pvsPortals;
 	struct pvsArea_s 	*pvsAreas;
-
+	
 private:
 	int					GetPortalCount( void ) const;
 	void				CreatePVSData( void );

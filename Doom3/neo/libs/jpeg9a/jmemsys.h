@@ -121,8 +121,7 @@ EXTERN( long ) jpeg_mem_available JPP( ( j_common_ptr cinfo,
 typedef unsigned short XMSH;	/* type of extended-memory handles */
 typedef unsigned short EMSH;	/* type of expanded-memory handles */
 
-typedef union
-{
+typedef union {
 	short file_handle;		/* DOS file handle if it's a temp file */
 	XMSH xms_handle;		/* handle if it's a chunk of XMS */
 	EMSH ems_handle;		/* handle if it's a chunk of EMS */
@@ -137,8 +136,7 @@ typedef union
 
 typedef struct backing_store_struct *backing_store_ptr;
 
-typedef struct backing_store_struct
-{
+typedef struct backing_store_struct {
 	/* Methods for reading/writing/closing this backing-store object */
 	JMETHOD( void, read_backing_store, ( j_common_ptr cinfo,
 										 backing_store_ptr info,

@@ -56,27 +56,27 @@ static idMiniDrawVert cubeData[] = {
 	idMiniDrawVert( +1.0, -1.0, +1.0, 1.0, 0.0 ),
 	idMiniDrawVert( +1.0, +1.0, +1.0, 1.0, 1.0 ),
 	idMiniDrawVert( -1.0, +1.0, +1.0, 0.0, 1.0 ),
-
+	
 	idMiniDrawVert( -1.0, -1.0, -1.0, 1.0, 0.0 ),
 	idMiniDrawVert( -1.0, +1.0, +1.0, 1.0, 1.0 ),
 	idMiniDrawVert( +1.0, +1.0, -1.0, 0.0, 1.0 ),
 	idMiniDrawVert( +1.0, -1.0, -1.0, 0.0, 0.0 ),
-
+	
 	idMiniDrawVert( -1.0, +1.0, -1.0, 0.0, 1.0 ),
 	idMiniDrawVert( -1.0, +1.0, +1.0, 0.0, 0.0 ),
 	idMiniDrawVert( +1.0, +1.0, +1.0, 1.0, 0.0 ),
 	idMiniDrawVert( +1.0, +1.0, -1.0, 1.0, 1.0 ),
-
+	
 	idMiniDrawVert( -1.0, -1.0, -1.0, 1.0, 1.0 ),
 	idMiniDrawVert( +1.0, -1.0, -1.0, 0.0, 1.0 ),
 	idMiniDrawVert( +1.0, -1.0, +1.0, 0.0, 0.0 ),
 	idMiniDrawVert( -1.0, -1.0, +1.0, 1.0, 0.0 ),
-
+	
 	idMiniDrawVert( +1.0, -1.0, -1.0, 1.0, 0.0 ),
 	idMiniDrawVert( +1.0, +1.0, -1.0, 1.0, 1.0 ),
 	idMiniDrawVert( +1.0, +1.0, +1.0, 0.0, 1.0 ),
 	idMiniDrawVert( +1.0, -1.0, +1.0, 0.0, 0.0 ),
-
+	
 	idMiniDrawVert( -1.0, -1.0, -1.0, 0.0, 0.0 ),
 	idMiniDrawVert( -1.0, -1.0, +1.0, 1.0, 0.0 ),
 	idMiniDrawVert( -1.0, +1.0, +1.0, 1.0, 1.0 ),

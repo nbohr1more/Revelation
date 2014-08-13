@@ -1034,15 +1034,15 @@ void CCamWnd::ShiftTexture_BrushPrimit( face_t *f, int x, int y ) {
 	#endif
 		// compute face axis base
 		//ComputeAxisBase(f->plane.Normal(), texS, texT);
-
+	
 		// compute camera view vectors
 		VectorCopy(m_Camera.vup, viewY);
 		VectorCopy(m_Camera.vright, viewX);
-
+	
 		// compute best vectors
 		//ComputeBest2DVector(viewX, texS, texT, XS, XT);
 		//ComputeBest2DVector(viewY, texS, texT, YS, YT);
-
+	
 		// check this is not a degenerate case
 		if ((XS == YS) && (XT == YT))
 		{
@@ -1053,11 +1053,11 @@ void CCamWnd::ShiftTexture_BrushPrimit( face_t *f, int x, int y ) {
 			Select_ShiftTexture_BrushPrimit(f, x, y, false);
 			return;
 		}
-
+	
 		// compute best fitted translation in face axis base
 		outS = XS * x + YS * y;
 		outT = XT * x + YT * y;
-
+	
 		// call actual texture shifting code
 		Select_ShiftTexture_BrushPrimit(f, outS, outT, false);
 	*/

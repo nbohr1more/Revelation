@@ -50,8 +50,7 @@ typedef HRESULT( FAR PASCAL *LPEAXDIRECTSOUNDCREATE )( GUID *, LPDIRECTSOUND *, 
 
 #ifndef GUID_DEFINED
 #define GUID_DEFINED
-typedef struct _GUID
-{
+typedef struct _GUID {
 	unsigned long Data1;
 	unsigned short Data2;
 	unsigned short Data3;
@@ -93,8 +92,7 @@ DEFINE_GUID( DSPROPSETID_EAX30_ListenerProperties,
 // For compatibility with future EAX versions:
 #define DSPROPSETID_EAX_ListenerProperties DSPROPSETID_EAX30_ListenerProperties
 
-typedef enum
-{
+typedef enum {
 	DSPROPERTY_EAXLISTENER_NONE,
 	DSPROPERTY_EAXLISTENER_ALLPARAMETERS,
 	DSPROPERTY_EAXLISTENER_ENVIRONMENT,
@@ -130,8 +128,7 @@ typedef enum
                                                        DSPROPERTY_EAXLISTENER_IMMEDIATE)
 #ifndef EAXVECTOR_DEFINED
 #define EAXVECTOR_DEFINED
-typedef struct _EAXVECTOR
-{
+typedef struct _EAXVECTOR {
 	float x;
 	float y;
 	float z;
@@ -153,8 +150,7 @@ typedef struct _EAXVECTOR
 //       If you want to save and load presets in binary form, you
 //       should define your own structure to insure future compatibility.
 //
-typedef struct _EAXLISTENERPROPERTIES
-{
+typedef struct _EAXLISTENERPROPERTIES {
 	unsigned long ulEnvironment;   // sets all listener properties
 	float flEnvironmentSize;       // environment size in meters
 	float flEnvironmentDiffusion;  // environment diffusion
@@ -184,8 +180,7 @@ typedef struct _EAXLISTENERPROPERTIES
 // used by DSPROPERTY_EAXLISTENER_ENVIRONMENT
 #ifndef EAX_ENVIRONMENTS_DEFINED
 #define EAX_ENVIRONMENTS_DEFINED
-enum
-{
+enum {
 	EAX_ENVIRONMENT_GENERIC,
 	EAX_ENVIRONMENT_PADDEDCELL,
 	EAX_ENVIRONMENT_ROOM,
@@ -349,8 +344,7 @@ DEFINE_GUID( DSPROPSETID_EAX30_BufferProperties,
 #define DSPROPSETID_EAX_BufferProperties DSPROPSETID_EAX30_BufferProperties
 #define DSPROPSETID_EAX_SourceProperties DSPROPSETID_EAX30_BufferProperties
 
-typedef enum
-{
+typedef enum {
 	DSPROPERTY_EAXBUFFER_NONE,
 	DSPROPERTY_EAXBUFFER_ALLPARAMETERS,
 	DSPROPERTY_EAXBUFFER_OBSTRUCTIONPARAMETERS,
@@ -395,8 +389,7 @@ typedef enum
 //       instead of:
 //              myBuffer = { 0, -200, ... , 0x00000003 };
 //
-typedef struct _EAXBUFFERPROPERTIES
-{
+typedef struct _EAXBUFFERPROPERTIES {
 	long lDirect;                 // direct path level (at low and mid frequencies)
 	long lDirectHF;               // relative direct path level at high frequencies
 	long lRoom;                   // room effect level (at low and mid frequencies)
@@ -420,8 +413,7 @@ typedef struct _EAXBUFFERPROPERTIES
 // Use this structure for DSPROPERTY_EAXBUFFER_OBSTRUCTION,
 #ifndef EAX_OBSTRUCTIONPROPERTIES_DEFINED
 #define EAX_OBSTRUCTIONPROPERTIES_DEFINED
-typedef struct _EAXOBSTRUCTIONPROPERTIES
-{
+typedef struct _EAXOBSTRUCTIONPROPERTIES {
 	long lObstruction;
 	float flObstructionLFRatio;
 } EAXOBSTRUCTIONPROPERTIES, *LPEAXOBSTRUCTIONPROPERTIES;
@@ -430,8 +422,7 @@ typedef struct _EAXOBSTRUCTIONPROPERTIES
 // Use this structure for DSPROPERTY_EAXBUFFER_OCCLUSION
 #ifndef EAX_OCCLUSIONPROPERTIES_DEFINED
 #define EAX_OCCLUSIONPROPERTIES_DEFINED
-typedef struct _EAXOCCLUSIONPROPERTIES
-{
+typedef struct _EAXOCCLUSIONPROPERTIES {
 	long lOcclusion;
 	float flOcclusionLFRatio;
 	float flOcclusionRoomRatio;
@@ -442,8 +433,7 @@ typedef struct _EAXOCCLUSIONPROPERTIES
 // Use this structure for DSPROPERTY_EAXBUFFER_EXCLUSION
 #ifndef EAX_EXCLUSIONPROPERTIES_DEFINED
 #define EAX_EXCLUSIONPROPERTIES_DEFINED
-typedef struct _EAXEXCLUSIONPROPERTIES
-{
+typedef struct _EAXEXCLUSIONPROPERTIES {
 	long lExclusion;
 	float flExclusionLFRatio;
 } EAXEXCLUSIONPROPERTIES, *LPEAXEXCLUSIONPROPERTIES;

@@ -315,17 +315,17 @@ public:
 	float			operator[]( const int index ) const;
 	float 			&operator[]( const int index );
 	idVec3			operator-() const;
-	idVec3 		&operator=( const idVec3 &a );		// required because of a msvc 6 & 7 bug
+	idVec3 			&operator=( const idVec3 &a );		// required because of a msvc 6 & 7 bug
 	float			operator*( const idVec3 &a ) const;
 	idVec3			operator*( const float a ) const;
 	idVec3			operator/( const float a ) const;
 	idVec3			operator+( const idVec3 &a ) const;
 	idVec3			operator-( const idVec3 &a ) const;
-	idVec3 		&operator+=( const idVec3 &a );
-	idVec3 		&operator-=( const idVec3 &a );
-	idVec3 		&operator/=( const idVec3 &a );
-	idVec3 		&operator/=( const float a );
-	idVec3 		&operator*=( const float a );
+	idVec3 			&operator+=( const idVec3 &a );
+	idVec3 			&operator-=( const idVec3 &a );
+	idVec3 			&operator/=( const idVec3 &a );
+	idVec3 			&operator/=( const float a );
+	idVec3 			&operator*=( const float a );
 
 	friend idVec3	operator*( const float a, const idVec3 b );
 
@@ -338,13 +338,13 @@ public:
 	bool			FixDenormals( void );			// change tiny numbers to zero
 
 	idVec3			Cross( const idVec3 &a ) const;
-	idVec3 		&Cross( const idVec3 &a, const idVec3 &b );
+	idVec3 			&Cross( const idVec3 &a, const idVec3 &b );
 	float			Length( void ) const;
 	float			LengthSqr( void ) const;
 	float			LengthFast( void ) const;
 	float			Normalize( void );				// returns length
 	float			NormalizeFast( void );			// returns length
-	idVec3 		&Truncate( float length );		// cap length
+	idVec3 			&Truncate( float length );		// cap length
 	void			Clamp( const idVec3 &min, const idVec3 &max );
 	void			Snap( void );					// snap to closest integer value
 	void			SnapInt( void );				// snap towards integer (floor)
@@ -357,10 +357,10 @@ public:
 	idPolar3		ToPolar( void ) const;
 	idMat3			ToMat3( void ) const;		// vector should be normalized
 	const idVec2 	&ToVec2( void ) const;
-	idVec2 		&ToVec2( void );
+	idVec2 			&ToVec2( void );
 	const float 	*ToFloatPtr( void ) const;
 	float 			*ToFloatPtr( void );
-	const char 	*ToString( int precision = 2 ) const;
+	const char 		*ToString( int precision = 2 ) const;
 
 	void			NormalVectors( idVec3 &left, idVec3 &down ) const;	// vector should be normalized
 	void			OrthogonalBasis( idVec3 &left, idVec3 &up ) const;
@@ -791,11 +791,11 @@ public:
 	idVec4			operator/( const float a ) const;
 	idVec4			operator+( const idVec4 &a ) const;
 	idVec4			operator-( const idVec4 &a ) const;
-	idVec4 		&operator+=( const idVec4 &a );
-	idVec4 		&operator-=( const idVec4 &a );
-	idVec4 		&operator/=( const idVec4 &a );
-	idVec4 		&operator/=( const float a );
-	idVec4 		&operator*=( const float a );
+	idVec4 			&operator+=( const idVec4 &a );
+	idVec4 			&operator-=( const idVec4 &a );
+	idVec4 			&operator/=( const idVec4 &a );
+	idVec4 			&operator/=( const float a );
+	idVec4 			&operator*=( const float a );
 
 	friend idVec4	operator*( const float a, const idVec4 b );
 
@@ -812,12 +812,12 @@ public:
 	int				GetDimension( void ) const;
 
 	const idVec2 	&ToVec2( void ) const;
-	idVec2 		&ToVec2( void );
+	idVec2 			&ToVec2( void );
 	const idVec3 	&ToVec3( void ) const;
-	idVec3 		&ToVec3( void );
+	idVec3 			&ToVec3( void );
 	const float 	*ToFloatPtr( void ) const;
 	float 			*ToFloatPtr( void );
-	const char 	*ToString( int precision = 2 ) const;
+	const char 		*ToString( int precision = 2 ) const;
 
 	void			Lerp( const idVec4 &v1, const idVec4 &v2, const float l );
 };
@@ -1031,15 +1031,15 @@ public:
 
 	float			operator[]( int index ) const;
 	float 			&operator[]( int index );
-	idVec5 		&operator=( const idVec3 &a );
+	idVec5 			&operator=( const idVec3 &a );
 
 	int				GetDimension( void ) const;
 
 	const idVec3 	&ToVec3( void ) const;
-	idVec3 		&ToVec3( void );
+	idVec3 			&ToVec3( void );
 	const float 	*ToFloatPtr( void ) const;
 	float 			*ToFloatPtr( void );
-	const char 	*ToString( int precision = 2 ) const;
+	const char 		*ToString( int precision = 2 ) const;
 
 	void			Lerp( const idVec5 &v1, const idVec5 &v2, const float l );
 };
@@ -1126,10 +1126,10 @@ public:
 	float			operator*( const idVec6 &a ) const;
 	idVec6			operator-( const idVec6 &a ) const;
 	idVec6			operator+( const idVec6 &a ) const;
-	idVec6 		&operator*=( const float a );
-	idVec6 		&operator/=( const float a );
-	idVec6 		&operator+=( const idVec6 &a );
-	idVec6 		&operator-=( const idVec6 &a );
+	idVec6 			&operator*=( const float a );
+	idVec6 			&operator/=( const float a );
+	idVec6 			&operator+=( const idVec6 &a );
+	idVec6 			&operator-=( const idVec6 &a );
 
 	friend idVec6	operator*( const float a, const idVec6 b );
 
@@ -1146,10 +1146,10 @@ public:
 	int				GetDimension( void ) const;
 
 	const idVec3 	&SubVec3( int index ) const;
-	idVec3 		&SubVec3( int index );
+	idVec3 			&SubVec3( int index );
 	const float 	*ToFloatPtr( void ) const;
 	float 			*ToFloatPtr( void );
-	const char 	*ToString( int precision = 2 ) const;
+	const char 		*ToString( int precision = 2 ) const;
 
 private:
 	float			p[6];
@@ -1418,7 +1418,7 @@ public:
 	void			Random( int length, int seed, float l = 0.0f, float u = 1.0f );
 	void			Negate( void );
 	void			Clamp( float min, float max );
-	idVecX 		&SwapElements( int e1, int e2 );
+	idVecX 			&SwapElements( int e1, int e2 );
 
 	float			Length( void ) const;
 	float			LengthSqr( void ) const;
@@ -1428,12 +1428,12 @@ public:
 	int				GetDimension( void ) const;
 
 	const idVec3 	&SubVec3( int index ) const;
-	idVec3 		&SubVec3( int index );
+	idVec3 			&SubVec3( int index );
 	const idVec6 	&SubVec6( int index ) const;
-	idVec6 		&SubVec6( int index );
+	idVec6 			&SubVec6( int index );
 	const float 	*ToFloatPtr( void ) const;
 	float 			*ToFloatPtr( void );
-	const char 	*ToString( int precision = 2 ) const;
+	const char 		*ToString( int precision = 2 ) const;
 
 private:
 	int				size;					// size of the vector

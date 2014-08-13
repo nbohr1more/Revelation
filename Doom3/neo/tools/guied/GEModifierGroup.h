@@ -37,24 +37,24 @@ public:
 
 	rvGEModifierGroup( );
 	~rvGEModifierGroup( );
-
+	
 	virtual bool		Apply( void );
 	virtual bool		Undo( void );
-
+	
 	virtual bool		CanMerge( rvGEModifier *merge );
-
+	
 	virtual bool		Merge( rvGEModifier *merge );
-
+	
 	virtual bool		IsValid( void );
-
+	
 	bool				Append( rvGEModifier *mod );
 	int					GetCount( void );
-
-
+	
+	
 protected:
 
 	idList<rvGEModifier *>	mModifiers;
-
+	
 };
 
 ID_INLINE int rvGEModifierGroup::GetCount( void ) {

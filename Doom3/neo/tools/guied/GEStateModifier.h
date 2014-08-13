@@ -36,14 +36,14 @@ class rvGEStateModifier : public rvGEModifier {
 public:
 
 	rvGEStateModifier( const char *name, idWindow *window, idDict &dict );
-
+	
 	virtual bool		Apply( void );
 	virtual bool		Undo( void );
-
+	
 protected:
 
 	bool	SetState( idDict &dict );
-
+	
 	rvGEWindowWrapper::EWindowType	mWindowType;
 	rvGEWindowWrapper::EWindowType	mUndoWindowType;
 	idDict							mDict;

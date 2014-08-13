@@ -40,7 +40,7 @@ If you have questions concerning this license or the applicable additional terms
 class idDeclEntityDef : public idDecl {
 public:
 	idDict					dict;
-
+	
 	virtual size_t			Size( void ) const;
 	virtual const char 		*DefaultDefinition() const;
 	virtual bool			Parse( const char *text, const int textLength );

@@ -33,22 +33,22 @@ class rvGETransformer {
 public:
 
 	rvGETransformer( );
-
+	
 	bool		Create( HWND parent, bool visible );
 	void		Show( bool show );
-
+	
 	void		SetWorkspace( rvGEWorkspace *workspace );
 	void		Update( void );
-
+	
 	HWND		GetWindow( void );
-
+	
 protected:
 
 	HWND			mWnd;
 	HWND			mDlg;
 	rvGEWorkspace	*mWorkspace;
 	idWindow		*mRelative;
-
+	
 private:
 
 	static LRESULT CALLBACK		WndProc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam );

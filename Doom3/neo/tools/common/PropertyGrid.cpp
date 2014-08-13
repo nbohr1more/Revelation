@@ -37,7 +37,7 @@ public:
 
 	rvPropertyGridItem( ) {
 	}
-
+	
 	idStr						mName;
 	idStr						mValue;
 	rvPropertyGrid::EItemType	mType;

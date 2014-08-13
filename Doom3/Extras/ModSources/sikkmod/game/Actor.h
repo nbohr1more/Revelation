@@ -36,14 +36,14 @@ public:
 	idStr					state;
 	int						animBlendFrames;
 	int						lastAnimBlendFrames;		// allows override anims to blend based on the last transition time
-
+	
 public:
 	idAnimState();
 	~idAnimState();
-
+	
 	void					Save( idSaveGame *savefile ) const;
 	void					Restore( idRestoreGame *savefile );
-
+	
 	void					Init( idActor *owner, idAnimator *_animator, int animchannel );
 	void					Shutdown( void );
 	void					SetState( const char *name, int blendFrames );
@@ -58,7 +58,7 @@ public:
 	bool					AnimDone( int blendFrames ) const;
 	bool					IsIdle( void ) const;
 	animFlags_t				GetAnimFlags( void ) const;
-
+	
 private:
 	idActor 				*self;
 	idAnimator 			*animator;
@@ -82,37 +82,37 @@ typedef struct {
 class idActor : public idAFEntity_Gibbable {
 public:
 	CLASS_PROTOTYPE( idActor );
-
+	
 	int						team;
 	int						rank;				// monsters don't fight back if the attacker's rank is higher
 	idMat3					viewAxis;			// view axis of the actor
-
+	
 	idLinkList<idActor>		enemyNode;			// node linked into an entity's enemy list for quick lookups of who is attacking him
 	idLinkList<idActor>		enemyList;			// list of characters that have targeted the player as their enemy
-
+	
 public:
 	idActor( void );
 	virtual					~idActor( void );
-
+	
 	void					Spawn( void );
 	virtual void			Restart( void );
-
+	
 	void					Save( idSaveGame *savefile ) const;
 	void					Restore( idRestoreGame *savefile );
-
+	
 	virtual void			Hide( void );
 	virtual void			Show( void );
 	virtual int				GetDefaultSurfaceType( void ) const;
 	virtual void			ProjectOverlay( const idVec3 &origin, const idVec3 &dir, float size, const char *material );
-
+	
 	virtual bool			LoadAF( void );
 	void					SetupBody( void );
-
+	
 	void					CheckBlink( void );
-
+	
 	virtual bool			GetPhysicsToVisualTransform( idVec3 &origin, idMat3 &axis );
 	virtual bool			GetPhysicsToSoundTransform( idVec3 &origin, idMat3 &axis );
-
+	
 	// script state management
 	void					ShutdownThreads( void );
 	virtual bool			ShouldConstructScriptObjectAtSpawn( void ) const;
@@ -121,7 +121,7 @@ public:
 	const function_t		*GetScriptFunction( const char *funcname );
 	void					SetState( const function_t *newState );
 	void					SetState( const char *statename );
-
+	
 	// vision testing
 	void					SetEyeHeight( float height );
 	float					EyeHeight( void ) const;
@@ -133,7 +133,7 @@ public:
 	bool					CanSee( idEntity *ent, bool useFOV ) const;
 	bool					PointVisible( const idVec3 &point ) const;
 	virtual void			GetAIAimTargets( const idVec3 &lastSightPos, idVec3 &headPos, idVec3 &chestPos );
-
+	
 	// damage
 	void					SetupDamageGroups( void );
 	virtual	void			Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &dir, const char *damageDefName, const float damageScale, const int location );
@@ -141,7 +141,7 @@ public:
 	const char 			*GetDamageGroup( int location );
 	void					ClearPain( void );
 	virtual bool			Pain( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location );
-
+	
 	// model/combat model/ragdoll
 	void					SetCombatModel( void );
 	idClipModel 			*GetCombatModel( void ) const;
@@ -150,25 +150,25 @@ public:
 	bool					StartRagdoll( void );
 	void					StopRagdoll( void );
 	virtual bool			UpdateAnimationControllers( void );
-
+	
 	// delta view angles to allow movers to rotate the view of the actor
 	const idAngles 		&GetDeltaViewAngles( void ) const;
 	void					SetDeltaViewAngles( const idAngles &delta );
-
+	
 	bool					HasEnemies( void ) const;
 	idActor 				*ClosestEnemyToPoint( const idVec3 &pos );
 	idActor 				*EnemyWithMostHealth();
-
+	
 	virtual bool			OnLadder( void ) const;
-
+	
 	virtual void			GetAASLocation( idAAS *aas, idVec3 &pos, int &areaNum ) const;
-
+	
 	void					Attach( idEntity *ent );
-
+	
 	virtual void			Teleport( const idVec3 &origin, const idAngles &angles, idEntity *destination );
-
+	
 	virtual	renderView_t 	*GetRenderView();
-
+	
 	// animation state control
 	int						GetAnim( int channel, const char *name );
 	void					UpdateAnimState( void );
@@ -179,80 +179,80 @@ public:
 	void					SetWaitState( const char *_waitstate );
 	bool					AnimDone( int channel, int blendFrames ) const;
 	virtual void			SpawnGibs( const idVec3 &dir, const char *damageDefName );
-
+	
 	bool					GetFinalBoss( void ) const {
 		return finalBoss;
 	};	// sikk - Cyberdemon Damage Type
-
+	
 protected:
 	friend class			idAnimState;
-
+	
 	float					fovDot;				// cos( fovDegrees )
 	idVec3					eyeOffset;			// offset of eye relative to physics origin
 	idVec3					modelOffset;		// offset of visual model relative to the physics origin
-
+	
 	idAngles				deltaViewAngles;	// delta angles relative to view input angles
-
+	
 	int						pain_debounce_time;	// next time the actor can show pain
 	int						pain_delay;			// time between playing pain sound
 	int						pain_threshold;		// how much damage monster can take at any one time before playing pain animation
-
+	
 	idStrList				damageGroups;		// body damage groups
 	idList<float>			damageScale;		// damage scale per damage gruop
-
+	
 	bool						use_combat_bbox;	// whether to use the bounding box for combat collision
 	idEntityPtr<idAFAttachment>	head;
 	idList<copyJoints_t>		copyJoints;			// copied from the body animation to the head model
-
+	
 	// state variables
 	const function_t		*state;
 	const function_t		*idealState;
-
+	
 	// joint handles
 	jointHandle_t			leftEyeJoint;
 	jointHandle_t			rightEyeJoint;
 	jointHandle_t			soundJoint;
-
+	
 	idIK_Walk				walkIK;
-
+	
 	idStr					animPrefix;
 	idStr					painAnim;
-
+	
 	// blinking
 	int						blink_anim;
 	int						blink_time;
 	int						blink_min;
 	int						blink_max;
-
+	
 	// script variables
 	idThread 				*scriptThread;
 	idStr					waitState;
 	idAnimState				headAnim;
 	idAnimState				torsoAnim;
 	idAnimState				legsAnim;
-
+	
 	bool					allowPain;
 	bool					allowEyeFocus;
 	bool					finalBoss;
-
+	
 	int						painTime;
-
+	
 	idList<idAttachInfo>	attachments;
-
+	
 	virtual void			Gib( const idVec3 &dir, const char *damageDefName );
-
+	
 	// removes attachments with "remove" set for when character dies
 	void					RemoveAttachments( void );
-
+	
 	// copies animation from body to head joints
 	void					CopyJointsFromBodyToHead( void );
-
+	
 private:
 	void					SyncAnimChannels( int channel, int syncToChannel, int blendFrames );
 	void					FinishSetup( void );
 	void					SetupHead( void );
 	void					PlayFootStepSound( void );
-
+	
 	void					Event_EnableEyeFocus( void );
 	void					Event_DisableEyeFocus( void );
 	void					Event_Footstep( void );

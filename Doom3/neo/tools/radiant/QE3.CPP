@@ -179,13 +179,13 @@ void QE_CheckAutoSave( void ) {
 
 const char	*g_pPathFixups[] = {
 	"basepath",
-
+	
 	// "remotebasepath",
 	"entitypath",
-
+	
 	// "texturepath",
 	"autosave",
-
+	
 	// "mapspath"
 };
 

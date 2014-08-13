@@ -31,22 +31,22 @@ If you have questions concerning this license or the applicable additional terms
 class idAudioHardwareOSS : public idAudioHardware {
 	// if you can't write MIXBUFFER_SAMPLES all at once to the audio device, split in MIXBUFFER_CHUNKS
 	static const int MIXBUFFER_CHUNKS = 4;
-
+	
 	int				m_audio_fd;
 	int				m_sample_format;
 	unsigned int	m_channels;
 	unsigned int	m_speed;
 	void			*m_buffer;
 	int				m_buffer_size;
-
+	
 	// counting the loops through the dma buffer
 	int				m_loops;
-
+	
 	// how many chunks we have left to write in cases where we need to split
 	int				m_writeChunks;
 	// how many chunks we can write to the audio device without blocking
 	int				m_freeWriteChunks;
-
+	
 public:
 	idAudioHardwareOSS() {
 		m_audio_fd = 0;
@@ -60,9 +60,9 @@ public:
 		m_freeWriteChunks	= 0;
 	}
 	virtual		~idAudioHardwareOSS();
-
+	
 	bool		Initialize( void );
-
+	
 	// Linux driver doesn't support memory map API
 	bool		Lock( void **pDSLockedBuffer, ulong *dwDSLockedBufferSize ) {
 		return false;
@@ -73,16 +73,16 @@ public:
 	bool		GetCurrentPosition( ulong *pdwCurrentWriteCursor ) {
 		return false;
 	}
-
+	
 	bool		Flush();
 	void		Write( bool flushing );
-
+	
 	int			GetNumberOfSpeakers() {
 		return m_channels;
 	}
 	int			GetMixBufferSize();
 	short		*GetMixBuffer();
-
+	
 private:
 	void		Release( bool bSilent = false );
 	void		InitFailed();
@@ -123,17 +123,17 @@ class idAudioHardwareALSA : public idAudioHardware {
 private:
 	// if you can't write MIXBUFFER_SAMPLES all at once to the audio device, split in MIXBUFFER_CHUNKS
 	static const int	MIXBUFFER_CHUNKS = 4;
-
+	
 	snd_pcm_t			*m_pcm_handle;
 	unsigned int		m_channels;
 	void				*m_buffer;
 	int					m_buffer_size;
-
+	
 	// how many frames remaining to be written to the device
 	int					m_remainingFrames;
-
+	
 	void				*m_handle;
-
+	
 public:
 	idAudioHardwareALSA() {
 		m_pcm_handle		= NULL;
@@ -144,13 +144,13 @@ public:
 		m_handle			= NULL;
 	}
 	virtual				~idAudioHardwareALSA();
-
+	
 	// dlopen the lib ( check minimum version )
 	bool				DLOpen();
-
+	
 	bool				Initialize( void );
-
-
+	
+	
 	// Linux driver doesn't support memory map API
 	bool				Lock( void **pDSLockedBuffer, ulong *dwDSLockedBufferSize ) {
 		return false;
@@ -161,24 +161,24 @@ public:
 	bool				GetCurrentPosition( ulong *pdwCurrentWriteCursor ) {
 		return false;
 	}
-
+	
 	bool				Flush();
 	void				Write( bool flushing );
-
+	
 	int					GetNumberOfSpeakers( void ) {
 		return m_channels;
 	}
 	int					GetMixBufferSize( void );
 	short				*GetMixBuffer( void );
-
+	
 private:
 	void				Release();
 	void				InitFailed();
 	void				PlayTestPattern();
-
+	
 	// may be NULL, outdated alsa versions are missing it and we just ignore
 	pfn_snd_asoundlib_version id_snd_asoundlib_version;
-
+	
 	pfn_snd_pcm_avail_update id_snd_pcm_avail_update;
 	pfn_snd_pcm_close id_snd_pcm_close;
 	pfn_snd_strerror id_snd_strerror;
@@ -195,7 +195,7 @@ private:
 	pfn_snd_pcm_prepare id_snd_pcm_prepare;
 	pfn_snd_pcm_state id_snd_pcm_state;
 	pfn_snd_pcm_writei id_snd_pcm_writei;
-
+	
 };
 
 #endif // NO_ALSA

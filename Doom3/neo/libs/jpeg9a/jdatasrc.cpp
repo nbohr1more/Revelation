@@ -23,8 +23,7 @@
 
 /* Expanded data source object for stdio input */
 
-typedef struct
-{
+typedef struct {
 	struct jpeg_source_mgr pub;	/* public fields */
 	
 	FILE *infile;		/* source stream */
@@ -43,8 +42,7 @@ typedef my_source_mgr *my_src_ptr;
  */
 
 METHODDEF( void )
-init_source( j_decompress_ptr cinfo )
-{
+init_source( j_decompress_ptr cinfo ) {
 	my_src_ptr src = ( my_src_ptr ) cinfo->src;
 	
 	/* We reset the empty-input-file flag for each image,
@@ -55,8 +53,7 @@ init_source( j_decompress_ptr cinfo )
 }
 
 METHODDEF( void )
-init_mem_source( j_decompress_ptr cinfo )
-{
+init_mem_source( j_decompress_ptr cinfo ) {
 	/* no work necessary here */
 }
 
@@ -95,17 +92,14 @@ init_mem_source( j_decompress_ptr cinfo )
  */
 
 METHODDEF( boolean )
-fill_input_buffer( j_decompress_ptr cinfo )
-{
+fill_input_buffer( j_decompress_ptr cinfo ) {
 	my_src_ptr src = ( my_src_ptr ) cinfo->src;
 	size_t nbytes;
 	
 	nbytes = JFREAD( src->infile, src->buffer, INPUT_BUF_SIZE );
 	
-	if( nbytes <= 0 )
-	{
-		if( src->start_of_file )	/* Treat empty input file as fatal error */
-		{
+	if( nbytes <= 0 ) {
+		if( src->start_of_file ) {	/* Treat empty input file as fatal error */
 			ERREXIT( cinfo, JERR_INPUT_EMPTY );
 		}
 		WARNMS( cinfo, JWRN_JPEG_EOF );
@@ -123,10 +117,8 @@ fill_input_buffer( j_decompress_ptr cinfo )
 }
 
 METHODDEF( boolean )
-fill_mem_input_buffer( j_decompress_ptr cinfo )
-{
-	static const JOCTET mybuffer[4] =
-	{
+fill_mem_input_buffer( j_decompress_ptr cinfo ) {
+	static const JOCTET mybuffer[4] = {
 		( JOCTET ) 0xFF, ( JOCTET ) JPEG_EOI, 0, 0
 	};
 	
@@ -158,18 +150,15 @@ fill_mem_input_buffer( j_decompress_ptr cinfo )
  */
 
 METHODDEF( void )
-skip_input_data( j_decompress_ptr cinfo, long num_bytes )
-{
+skip_input_data( j_decompress_ptr cinfo, long num_bytes ) {
 	struct jpeg_source_mgr *src = cinfo->src;
 	
 	/* Just a dumb implementation for now.  Could use fseek() except
 	 * it doesn't work on pipes.  Not clear that being smart is worth
 	 * any trouble anyway --- large skips are infrequent.
 	 */
-	if( num_bytes > 0 )
-	{
-		while( num_bytes > ( long ) src->bytes_in_buffer )
-		{
+	if( num_bytes > 0 ) {
+		while( num_bytes > ( long ) src->bytes_in_buffer ) {
 			num_bytes -= ( long ) src->bytes_in_buffer;
 			( void )( *src->fill_input_buffer )( cinfo );
 			/* note we assume that fill_input_buffer will never return FALSE,
@@ -201,8 +190,7 @@ skip_input_data( j_decompress_ptr cinfo, long num_bytes )
  */
 
 METHODDEF( void )
-term_source( j_decompress_ptr cinfo )
-{
+term_source( j_decompress_ptr cinfo ) {
 	/* no work necessary here */
 }
 
@@ -214,8 +202,7 @@ term_source( j_decompress_ptr cinfo )
  */
 
 GLOBAL( void )
-jpeg_stdio_src( j_decompress_ptr cinfo, FILE *infile )
-{
+jpeg_stdio_src( j_decompress_ptr cinfo, FILE *infile ) {
 	my_src_ptr src;
 	
 	/* The source object and input buffer are made permanent so that a series
@@ -225,8 +212,7 @@ jpeg_stdio_src( j_decompress_ptr cinfo, FILE *infile )
 	 * This makes it unsafe to use this manager and a different source
 	 * manager serially with the same JPEG object.  Caveat programmer.
 	 */
-	if( cinfo->src == NULL )  	/* first time for this JPEG object? */
-	{
+	if( cinfo->src == NULL ) {	/* first time for this JPEG object? */
 		cinfo->src = ( struct jpeg_source_mgr * )
 					 ( *cinfo->mem->alloc_small )( ( j_common_ptr ) cinfo, JPOOL_PERMANENT,
 							 SIZEOF( my_source_mgr ) );
@@ -255,12 +241,10 @@ jpeg_stdio_src( j_decompress_ptr cinfo, FILE *infile )
 
 GLOBAL( void )
 jpeg_mem_src( j_decompress_ptr cinfo,
-			  unsigned char *inbuffer, unsigned long insize )
-{
+			  unsigned char *inbuffer, unsigned long insize ) {
 	struct jpeg_source_mgr *src;
 	
-	if( inbuffer == NULL || insize == 0 )	/* Treat empty input as fatal error */
-	{
+	if( inbuffer == NULL || insize == 0 ) {	/* Treat empty input as fatal error */
 		ERREXIT( cinfo, JERR_INPUT_EMPTY );
 	}
 	
@@ -268,8 +252,7 @@ jpeg_mem_src( j_decompress_ptr cinfo,
 	 * can be read from the same buffer by calling jpeg_mem_src only before
 	 * the first one.
 	 */
-	if( cinfo->src == NULL )  	/* first time for this JPEG object? */
-	{
+	if( cinfo->src == NULL ) {	/* first time for this JPEG object? */
 		cinfo->src = ( struct jpeg_source_mgr * )
 					 ( *cinfo->mem->alloc_small )( ( j_common_ptr ) cinfo, JPOOL_PERMANENT,
 							 SIZEOF( struct jpeg_source_mgr ) );

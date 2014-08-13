@@ -48,25 +48,25 @@ typedef enum {
 	K_ENTER = 13,
 	K_ESCAPE = 27,
 	K_SPACE = 32,
-
+	
 	K_BACKSPACE = 127,
-
+	
 	K_COMMAND = 128,
 	K_CAPSLOCK,
 	K_SCROLL,
 	K_POWER,
 	K_PAUSE,
-
+	
 	K_UPARROW = 133,
 	K_DOWNARROW,
 	K_LEFTARROW,
 	K_RIGHTARROW,
-
+	
 	// The 3 windows keys
 	K_LWIN = 137,
 	K_RWIN,
 	K_MENU,
-
+	
 	K_ALT = 140,
 	K_CTRL,
 	K_SHIFT,
@@ -76,7 +76,7 @@ typedef enum {
 	K_PGUP,
 	K_HOME,
 	K_END,
-
+	
 	K_F1 = 149,
 	K_F2,
 	K_F3,
@@ -93,7 +93,7 @@ typedef enum {
 	K_F13,
 	K_F14,
 	K_F15,
-
+	
 	K_KP_HOME = 165,
 	K_KP_UPARROW,
 	K_KP_PGUP,
@@ -114,7 +114,7 @@ typedef enum {
 	K_KP_NUMLOCK,
 	K_KP_STAR,
 	K_KP_EQUALS,
-
+	
 	K_MASCULINE_ORDINATOR = 186,
 	// K_MOUSE enums must be contiguous (no char codes in the middle)
 	K_MOUSE1 = 187,
@@ -125,10 +125,10 @@ typedef enum {
 	K_MOUSE6,
 	K_MOUSE7,
 	K_MOUSE8,
-
+	
 	K_MWHEELDOWN = 195,
 	K_MWHEELUP,
-
+	
 	K_JOY1 = 197,
 	K_JOY2,
 	K_JOY3,
@@ -162,7 +162,7 @@ typedef enum {
 	K_JOY30,
 	K_JOY31,
 	K_JOY32,
-
+	
 	K_AUX1 = 230,
 	K_CEDILLA_C = 231,	// lowercase c with Cedilla
 	K_GRAVE_E = 232,	// lowercase e with grave accent
@@ -185,7 +185,7 @@ typedef enum {
 	K_GRAVE_U = 249,	// lowercase u with grave accent
 	K_AUX15,
 	K_AUX16,
-
+	
 	K_PRINT_SCR	= 252,	// SysRq / PrintScr
 	K_RIGHT_ALT = 253,	// used by some languages as "Alt-Gr"
 	K_LAST_KEY  = 254	// this better be < 256!
@@ -196,7 +196,7 @@ class idKeyInput {
 public:
 	static void			Init( void );
 	static void			Shutdown( void );
-
+	
 	static void			ArgCompletion_KeyName( const idCmdArgs &args, void( *callback )( const char *s ) );
 	static void			PreliminaryKeyEvent( int keyNum, bool down );
 	static bool			IsDown( int keyNum );
@@ -206,7 +206,7 @@ public:
 	static void			ClearStates( void );
 	static int			StringToKeyNum( const char *str );
 	static const char 	*KeyNumToString( int keyNum, bool localized );
-
+	
 	static void			SetBinding( int keyNum, const char *binding );
 	static const char 	*GetBinding( int keyNum );
 	static bool			UnbindBinding( const char *bind );

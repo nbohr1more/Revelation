@@ -41,13 +41,13 @@ public:
 		ZO_FRONT,
 		ZO_BACK,
 	};
-
+	
 	rvGEZOrderModifier( const char *name, idWindow *window, EZOrderChange change );
-
+	
 	virtual bool		Apply( void );
 	virtual bool		Undo( void );
 	virtual bool		IsValid( void );
-
+	
 protected:
 
 	idWindow	*mBefore;

@@ -248,10 +248,10 @@ struct patch_info {
 #define WAVE_PATCH	_PATCHKEY(0x04)
 #define GUS_PATCH	WAVE_PATCH
 #define WAVEFRONT_PATCH _PATCHKEY(0x06)
-
+	
 	short device_no;		/* Synthesizer number */
 	short instr_no;		/* Midi pgm# */
-
+	
 	unsigned int mode;
 	/*
 	 * The least significant byte has the same format than the GUS .PAT
@@ -275,10 +275,10 @@ struct patch_info {
 #define WAVE_ROM	0x40000000	/* For future use */
 #define WAVE_MULAW	0x20000000	/* For future use */
 	/* Other bits must be zeroed */
-
+	
 	int len;			/* Size of the wave data in bytes */
 	int loop_start, loop_end;	/* Byte offsets from the beginning */
-
+	
 	/*
 	 * The base_freq and base_note fields are used when computing the
 	 * playback speed for a note. The base_note defines the tone frequency
@@ -294,37 +294,37 @@ struct patch_info {
 	 * the note frequency multiplied by 1000. For example value for the
 	 * middle A is 440*1000.
 	 */
-
+	
 	unsigned int base_freq;
 	unsigned int base_note;
 	unsigned int high_note;
 	unsigned int low_note;
 	int panning;			/* -128=left, 127=right */
 	int detuning;
-
+	
 	/* New fields introduced in version 1.99.5 */
-
+	
 	/* Envelope. Enabled by mode bit WAVE_ENVELOPES  */
 	unsigned char env_rate[6];	/* GUS HW ramping rate */
 	unsigned char env_offset[6];	/* 255 == 100% */
-
+	
 	/*
 	 * The tremolo, vibrato and scale info are not supported yet.
 	 * Enable by setting the mode bits WAVE_TREMOLO, WAVE_VIBRATO or
 	 * WAVE_SCALE
 	 */
-
+	
 	unsigned char tremolo_sweep;
 	unsigned char tremolo_rate;
 	unsigned char tremolo_depth;
-
+	
 	unsigned char vibrato_sweep;
 	unsigned char vibrato_rate;
 	unsigned char vibrato_depth;
-
+	
 	int scale_frequency;
 	unsigned int scale_factor;	/* from 0 to 2048 or 0 to 2 */
-
+	
 	int volume;
 	int fractions;
 	int reserved1;
@@ -523,16 +523,16 @@ struct synth_info {
 #define SYNTH_TYPE_FM			0
 #define SYNTH_TYPE_SAMPLE		1
 #define SYNTH_TYPE_MIDI			2	/* Midi interface */
-
+	
 	int synth_subtype;
 #define FM_TYPE_ADLIB			0x00
 #define FM_TYPE_OPL3			0x01
 #define MIDI_TYPE_MPU401		0x401
-
+	
 #define SAMPLE_TYPE_BASIC		0x10
 #define SAMPLE_TYPE_GUS			SAMPLE_TYPE_BASIC
 #define SAMPLE_TYPE_WAVEFRONT   	0x11
-
+	
 	int perc_mode;		/* No longer supported */
 	int nr_voices;
 	int nr_drums;			/* Obsolete field */
@@ -787,7 +787,7 @@ typedef struct oss_digital_control {
 #define DIG_CONSUMER			0x00040000
 #define DIG_PASSTHROUGH			0x00080000
 #define DIG_OUTSEL			0x00100000
-
+	
 	unsigned int valid;
 #define VAL_CBITIN			0x00000001
 #define VAL_UBITIN			0x00000002
@@ -800,51 +800,51 @@ typedef struct oss_digital_control {
 #define VAL_OUTBITS			0x00000100
 #define VAL_REQUEST			0x00000200
 #define VAL_OUTSEL			0x00000400
-
+	
 #define VAL_OUTMASK (VAL_CBITOUT|VAL_UBITOUT|VAL_ORATE|VAL_OUTBITS|VAL_OUTSEL)
-
+	
 	unsigned int request, param;
 #define SPD_RQ_PASSTHROUGH				1
-
+	
 	unsigned char cbitin[24];
 	unsigned char ubitin[24];
 	unsigned char cbitout[24];
 	unsigned char ubitout[24];
-
+	
 	unsigned int outsel;
 #define OUTSEL_DIGITAL		1
 #define OUTSEL_ANALOG		2
 #define OUTSEL_BOTH		(OUTSEL_DIGITAL|OUTSEL_ANALOG)
-
+	
 	int in_data;			/* Audio/data if autodetectable by the receiver */
 #define IND_UNKNOWN		0
 #define IND_AUDIO		1
 #define IND_DATA		2
-
+	
 	int in_locked;		/* Receiver locked */
 #define LOCK_NOT_INDICATED	0
 #define LOCK_UNLOCKED		1
 #define LOCK_LOCKED		2
-
+	
 	int in_quality;		/* Input signal quality */
 #define IN_QUAL_NOT_INDICATED	0
 #define IN_QUAL_POOR		1
 #define IN_QUAL_GOOD		2
-
+	
 	int in_vbit, out_vbit;	/* V bits */
 #define VBIT_NOT_INDICATED	0
 #define VBIT_OFF		1
 #define VBIT_ON			2
-
+	
 	unsigned int in_errors;	/* Various input errro conditions */
 #define INERR_CRC		0x0001
 #define INERR_QCODE_CRC		0x0002
 #define INERR_PARITY		0x0004
 #define INERR_BIPHASE		0x0008
-
+	
 	int srate_in, srate_out;
 	int bits_in, bits_out;
-
+	
 	int filler[32];
 } oss_digital_control;
 
@@ -1203,15 +1203,15 @@ typedef struct oss_sysinfo {
 	char version[32];		/* For example 4.0a */
 	int versionnum;		/* See OSS_GETVERSION */
 	char options[128];		/* Reserved */
-
+	
 	int numaudios;		/* # of audio/dsp devices */
 	int openedaudio[8];		/* Bit mask telling which audio devices are busy */
-
+	
 	int numsynths;		/* # of availavle synth devices */
 	int nummidis;			/* # of available MIDI ports */
 	int numtimers;		/* # of available timer devices */
 	int nummixers;		/* # of mixer devices */
-
+	
 	int filler[SYSINFO_FILL_SIZE];	/* For future expansion (set to -1) */
 } oss_sysinfo;
 
@@ -1238,12 +1238,12 @@ typedef struct oss_mixext {
 #	define MIXT_STEREODB	16	/* Stereo atten. slider (dual 0 to -144) */
 #	define MIXT_SLIDER	17	/* Slider (mono) with full integer range */
 #	define MIXT_3D		18
-
+	
 	/* Possible value range (minvalue to maxvalue) */
 	/* Note that maxvalue may also be smaller than minvalue */
 	int maxvalue;
 	int minvalue;
-
+	
 	int flags;
 #	define MIXF_READABLE	0x00000001	/* Has readable value */
 #	define MIXF_WRITEABLE	0x00000002	/* Has writeable value */
@@ -1253,11 +1253,11 @@ typedef struct oss_mixext {
 #	define MIXF_DYNAMIC	0x00000010	/* Supports dynamic extensions */
 	char id[16];			/* Mnemonic ID (mainly for internal use) */
 	int parent;			/* Entry# of parent (group) node (-1 if root) */
-
+	
 	int dummy;			/* Internal use */
-
+	
 	int timestamp;
-
+	
 	char data[64];		/* Misc data (entry type dependent) */
 	unsigned char enum_present[32];	/* Mask of allowed enum values */
 	int control_no;		/* SOUND_MIXER_VOLUME..SOUND_MIXER_MIDI */

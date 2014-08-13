@@ -43,7 +43,7 @@ public:
 	void GetSurfaceAttributes();
 	void SetSurfaceAttributes();
 	CTextureBar();
-
+	
 	// Dialog Data
 	//{{AFX_DATA(CTextureBar)
 	enum { IDD = IDD_TEXTUREBAR };
@@ -59,15 +59,15 @@ public:
 	int	m_nVScale;
 	int		m_nRotateAmt;
 	//}}AFX_DATA
-
-
+	
+	
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CTextureBar)
 protected:
 	virtual void DoDataExchange( CDataExchange *pDX );  // DDX/DDV support
 	//}}AFX_VIRTUAL
-
+	
 	// Implementation
 protected:
 	// Generated message map functions

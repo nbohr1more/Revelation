@@ -41,7 +41,7 @@ public:
 	};
 	CDIB( HANDLE hDib = NULL, int nBits = 8 );
 	virtual			~CDIB();
-
+	
 	CDIB 			&operator=( CDIB &dib );
 	BOOL			IsValid() {
 		return ( m_pVoid && Width() && Height() );
@@ -100,7 +100,7 @@ public:
 		return m_pInfo;
 	}
 	static unsigned int Distance( RGBQUAD &rgb1, RGBQUAD &rgb2 );
-
+	
 protected:
 	HANDLE			DIBHandle();
 	BOOL			OpenBMP( CString &csFileName );
@@ -111,7 +111,7 @@ protected:
 	BOOL			SaveTIFF( CString &csFileName );
 	void			CreateGammaCurve();
 	void			Expand( int nXDest, int nYDest, int xRatio, int yRatio, CDIB &dibSrc, int xSrc, int ySrc, int nSWidth, int nSHeight );
-
+	
 	unsigned char 	*m_pBits;
 	PBITMAPINFO		m_pInfo;
 	RGBQUAD 		*m_pRGB;

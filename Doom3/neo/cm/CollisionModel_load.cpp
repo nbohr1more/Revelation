@@ -2115,12 +2115,12 @@ idCollisionModelManagerLocal::HashVec
 ID_FORCE_INLINE int idCollisionModelManagerLocal::HashVec( const idVec3 &vec ) {
 	/*
 	int x, y;
-
+	
 	x = (((int)(vec[0] - cm_modelBounds[0].x + 0.5 )) >> cm_vertexShift) & (VERTEX_HASH_BOXSIZE-1);
 	y = (((int)(vec[1] - cm_modelBounds[0].y + 0.5 )) >> cm_vertexShift) & (VERTEX_HASH_BOXSIZE-1);
-
+	
 	assert (x >= 0 && x < VERTEX_HASH_BOXSIZE && y >= 0 && y < VERTEX_HASH_BOXSIZE);
-
+	
 	return y * VERTEX_HASH_BOXSIZE + x;
 	*/
 	int x, y, z;

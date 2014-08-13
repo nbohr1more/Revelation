@@ -116,7 +116,7 @@ idGameEdit 	*gameEdit = NULL;
 class idCommonLocal : public idCommon {
 public:
 	idCommonLocal( void );
-
+	
 	virtual void				Init( int argc, const char **argv, const char *cmdline );
 	virtual void				Shutdown( void );
 	virtual void				Quit( void );
@@ -142,24 +142,24 @@ public:
 	virtual void				Error( const char *fmt, ... ) id_attribute( ( format( printf, 2, 3 ) ) );
 	virtual void				FatalError( const char *fmt, ... ) id_attribute( ( format( printf, 2, 3 ) ) );
 	virtual const idLangDict 	*GetLanguageDict( void );
-
+	
 	virtual const char 			*KeysFromBinding( const char *bind );
 	virtual const char 			*BindingFromKey( const char *key );
-
+	
 	virtual int					ButtonState( int key );
 	virtual int					KeyState( int key );
-
+	
 	void						InitGame( void );
 	void						ShutdownGame( bool reloading );
-
+	
 	// localization
 	void						InitLanguageDict( void );
 	void						LocalizeGui( const char *fileName, idLangDict &langDict );
 	void						LocalizeMapData( const char *fileName, idLangDict &langDict );
 	void						LocalizeSpecificMapData( const char *fileName, idLangDict &langDict, const idLangDict &replaceArgs );
-
+	
 	void						SetMachineSpec( void );
-
+	
 private:
 	void						InitCommands( void );
 	void						InitRenderSystem( void );
@@ -177,28 +177,28 @@ private:
 	void						UnloadGameDLL( void );
 	void						PrintLoadingMessage( const char *msg );
 	void						FilterLangList( idStrList *list, idStr lang );
-
+	
 	bool						com_fullyInitialized;
 	bool						com_refreshOnPrint;		// update the screen every print for dmap
 	int							com_errorEntered;		// 0, ERP_DROP, etc
 	bool						com_shuttingDown;
-
+	
 	idFile 						*logFile;
-
+	
 	char						errorMessage[MAX_PRINT_MSG_SIZE];
-
+	
 	char 						*rd_buffer;
 	int							rd_buffersize;
 	void	( *rd_flush )( const char *buffer );
-
+	
 	idStr						warningCaption;
 	idStrList					warningList;
 	idStrList					errorList;
-
+	
 	int							gameDLL;
-
+	
 	idLangDict					languageDict;
-
+	
 #ifdef ID_WRITE_VERSION
 	idCompressor 				*config_compressor;
 #endif
@@ -778,8 +778,8 @@ skip loading of config file (DoomConfig.cfg)
 bool idCommonLocal::SafeMode( void ) {
 	int			i;
 	for( i = 0 ; i < com_numConsoleLines ; i++ ) {
-		if( !idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "safe" )	|| 
-			!idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "cvar_restart" ) ) {
+		if( !idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "safe" )	||
+				!idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "cvar_restart" ) ) {
 			com_consoleLines[ i ].Clear();
 			return true;
 		}
@@ -807,12 +807,12 @@ void idCommonLocal::CheckToolMode( void ) {
 		else if( !idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "materialEditor" ) ) {
 			com_editors |= EDITOR_MATERIAL;
 		}
-		if( !idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "renderbump" ) || 
-			!idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "editor" ) || 
-			!idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "guieditor" ) || 
-			!idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "debugger" )	|| 
-			!idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "dmap" )	|| 
-			!idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "materialEditor" ) ) {
+		if( !idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "renderbump" ) ||
+				!idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "editor" ) ||
+				!idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "guieditor" ) ||
+				!idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "debugger" )	||
+				!idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "dmap" )	||
+				!idStr::Icmp( com_consoleLines[ i ].Argv( 0 ), "materialEditor" ) ) {
 			cvarSystem->SetCVarBool( "r_fullscreen", false );
 			return;
 		}
@@ -1302,7 +1302,7 @@ void Com_ExecMachineSpec_f( const idCmdArgs &args ) {
 		cvarSystem->SetCVarInteger( "image_useNormalCompression", 0, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "r_multiSamples", 0, CVAR_ARCHIVE );
 	} else if( com_machineSpec.GetInteger() == 2 ) {
-		 // default to GL_LINEAR_MIPMAP_NEAREST or AMD breaks.
+		// default to GL_LINEAR_MIPMAP_NEAREST or AMD breaks.
 		cvarSystem->SetCVarString( "image_filter", "GL_LINEAR_MIPMAP_NEAREST", CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_anisotropy", 8, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_lodbias", 0, CVAR_ARCHIVE );
@@ -1323,7 +1323,7 @@ void Com_ExecMachineSpec_f( const idCmdArgs &args ) {
 		cvarSystem->SetCVarInteger( "r_mode", 4, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "r_multiSamples", 0, CVAR_ARCHIVE );
 	} else if( com_machineSpec.GetInteger() == 1 ) {
-		 // default to GL_LINEAR_MIPMAP_NEAREST or AMD breaks.
+		// default to GL_LINEAR_MIPMAP_NEAREST or AMD breaks.
 		cvarSystem->SetCVarString( "image_filter", "GL_LINEAR_MIPMAP_NEAREST", CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_anisotropy", 4, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_lodbias", 0, CVAR_ARCHIVE );
@@ -1342,7 +1342,7 @@ void Com_ExecMachineSpec_f( const idCmdArgs &args ) {
 		cvarSystem->SetCVarInteger( "r_mode", 3, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "r_multiSamples", 0, CVAR_ARCHIVE );
 	} else {
-		 // default to GL_LINEAR_MIPMAP_NEAREST or AMD breaks.
+		// default to GL_LINEAR_MIPMAP_NEAREST or AMD breaks.
 		cvarSystem->SetCVarString( "image_filter", "GL_LINEAR_MIPMAP_NEAREST", CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_anisotropy", 1, CVAR_ARCHIVE );
 		cvarSystem->SetCVarInteger( "image_lodbias", 0, CVAR_ARCHIVE );

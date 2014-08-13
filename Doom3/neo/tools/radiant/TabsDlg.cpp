@@ -76,7 +76,7 @@ void CTabsDlg::OnTcnSelchange( NMHDR *pNMHDR, LRESULT *pResult ) {
 
 void CTabsDlg::DockWindow( int ID , bool dock ) {
 	DockedWindowInfo *info = NULL;
-	m_Windows.Lookup( ( WORD )ID , ( void *& )info );
+	m_Windows.Lookup( ( WORD )ID , ( void  *& )info );
 	ASSERT( info );
 	ASSERT( m_Tabs.GetSafeHwnd() );
 	ShowAllWindows( FALSE );
@@ -176,7 +176,7 @@ void CTabsDlg::OnMouseMove( UINT nFlags, CPoint point ) {
 
 void CTabsDlg::AddDockedWindow( CWnd *wnd , int ID , int imageID , const CString &title , bool dock , pfnOnDockEvent dockCallback ) {
 	DockedWindowInfo *info = NULL;
-	m_Windows.Lookup( ( WORD )ID , ( void *& )info );
+	m_Windows.Lookup( ( WORD )ID , ( void  *& )info );
 	ASSERT( wnd );
 	ASSERT( info == NULL );
 	info = new DockedWindowInfo( wnd , ID , imageID , title , dockCallback );
@@ -190,7 +190,7 @@ void CTabsDlg::ShowAllWindows( bool show ) {
 	WORD ID;
 	DockedWindowInfo *info = NULL;
 	for( pos = m_Windows.GetStartPosition(); pos != NULL ; ) {
-		m_Windows.GetNextAssoc( pos, ID, ( void *& )info );
+		m_Windows.GetNextAssoc( pos, ID, ( void  *& )info );
 		ASSERT( info->m_Window );
 		if( info->m_State == DockedWindowInfo::DOCKED ) {
 			info->m_Window->ShowWindow( show );
@@ -200,7 +200,7 @@ void CTabsDlg::ShowAllWindows( bool show ) {
 
 void CTabsDlg::FocusWindow( int ID ) {
 	DockedWindowInfo *info = NULL;
-	m_Windows.Lookup( ( WORD )ID , ( void *& )info );
+	m_Windows.Lookup( ( WORD )ID , ( void  *& )info );
 	ASSERT( info );
 	ASSERT( info->m_Window );
 	if( info->m_State == DockedWindowInfo::DOCKED ) {
@@ -244,7 +244,7 @@ bool CTabsDlg::IsDocked( CWnd *wnd ) {
 	POSITION pos;
 	WORD wID;
 	for( pos = m_Windows.GetStartPosition(); pos != NULL ; ) {
-		m_Windows.GetNextAssoc( pos, wID, ( void *& )info );
+		m_Windows.GetNextAssoc( pos, wID, ( void  *& )info );
 		if( info->m_Window == wnd ) {
 			docked = ( info->m_State == DockedWindowInfo::DOCKED );
 			break;
@@ -259,7 +259,7 @@ void CTabsDlg::SaveWindowPlacement( int ID ) {
 	POSITION pos;
 	WORD wID = ID;
 	for( pos = m_Windows.GetStartPosition(); pos != NULL ; ) {
-		m_Windows.GetNextAssoc( pos, wID, ( void *& )info );
+		m_Windows.GetNextAssoc( pos, wID, ( void  *& )info );
 		if( ( info->m_State == DockedWindowInfo::FLOATING ) && ( ( ID == -1 ) || ( ID == info->m_ID ) ) ) {
 			placementName = info->m_Title + "Placement";
 			::SaveWindowPlacement( info->m_Container.GetSafeHwnd() , placementName );

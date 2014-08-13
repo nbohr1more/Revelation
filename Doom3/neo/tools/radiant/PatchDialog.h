@@ -46,7 +46,7 @@ public:
 	void GetPatchInfo();
 	CPatchDialog( CWnd *pParent = NULL ); // standard constructor
 	void UpdateSpinners( bool bUp, int nID );
-
+	
 	// Dialog Data
 	//{{AFX_DATA(CPatchDialog)
 	enum { IDD = IDD_DIALOG_PATCH };
@@ -70,19 +70,19 @@ public:
 	float	m_fVScale;
 	float	m_fVShift;
 	//}}AFX_DATA
-
-
+	
+	
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CPatchDialog)
 protected:
 	virtual void DoDataExchange( CDataExchange *pDX );  // DDX/DDV support
 	//}}AFX_VIRTUAL
-
+	
 	// Implementation
 protected:
 	void UpdateRowColInfo();
-
+	
 	// Generated message map functions
 	//{{AFX_MSG(CPatchDialog)
 	afx_msg void OnBtnPatchdetails();

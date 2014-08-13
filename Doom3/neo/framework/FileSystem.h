@@ -135,7 +135,7 @@ public:
 	const idStrList 		&GetList( void ) const {
 		return list;
 	}
-
+	
 private:
 	idStr					basePath;
 	idStrList				list;
@@ -154,7 +154,7 @@ public:
 	const char 			*GetDescription( int index ) const {
 		return descriptions[index];
 	}
-
+	
 private:
 	idStrList				mods;
 	idStrList				descriptions;
@@ -268,33 +268,33 @@ public:
 	// the cache is cleared when calling OpenFileWrite and RemoveFile
 	// in some cases you may need to use this directly
 	virtual void			ClearDirCache( void ) = 0;
-
+	
 	// is D3XP installed? even if not running it atm
 	virtual bool			HasD3XP( void ) = 0;
 	// are we using D3XP content ( through a real d3xp run or through a double mod )
 	virtual bool			RunningD3XP( void ) = 0;
-
+	
 	// don't use for large copies - allocates a single memory block for the copy
 	virtual void			CopyFile( const char *fromOSPath, const char *toOSPath ) = 0;
-
+	
 	// lookup a relative path, return the size or 0 if not found
 	virtual int				ValidateDownloadPakForChecksum( int checksum, char path[ MAX_STRING_CHARS ], bool isGamePak ) = 0;
-
+	
 	virtual idFile 		*MakeTemporaryFile( void ) = 0;
-
+	
 	// make downloaded pak files known so pure negociation works next time
 	virtual int				AddZipFile( const char *path ) = 0;
-
+	
 	// look for a file in the loaded paks or the addon paks
 	// if the file is found in addons, FS's internal structures are ready for a reloadEngine
 	virtual findFile_t		FindFile( const char *path, bool scheduleAddons = false ) = 0;
-
+	
 	// get map/addon decls and take into account addon paks that are not on the search list
 	// the decl 'name' is in the "path" entry of the dict
 	virtual int				GetNumMaps() = 0;
 	virtual const idDict 	*GetMapDecl( int i ) = 0;
 	virtual void			FindMapScreenshot( const char *path, char *buf, int len ) = 0;
-
+	
 	// ignore case and seperator char distinctions
 	virtual bool			FilenameCompare( const char *s1, const char *s2 ) const = 0;
 };

@@ -230,8 +230,7 @@ extern int vorbis_encode_ctl( vorbis_info *vi, int number, void *arg );
  * query and modify specifics of the encoder's bitrate management
  * configuration.
 */
-struct ovectl_ratemanage_arg
-{
+struct ovectl_ratemanage_arg {
 	int    management_active; /**< nonzero if bitrate management is active*/
 	/** hard lower limit (in kilobits per second) below which the stream bitrate
 	    will never be allowed for any given bitrate_hard_window seconds of time.*/
@@ -268,8 +267,7 @@ struct ovectl_ratemanage_arg
  * configuration.
  *
 */
-struct ovectl_ratemanage2_arg
-{
+struct ovectl_ratemanage2_arg {
 	int    management_active; /**< nonzero if bitrate management is active */
 	/** Lower allowed bitrate limit in kilobits per second */
 	long   bitrate_limit_min_kbps;

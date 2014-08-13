@@ -47,8 +47,6 @@ patchMesh_t *MakeNewPatch( int width, int height ) {
 	pm->width = width;
 	pm->height = height;
 	pm->verts = reinterpret_cast< idDrawVert *>( Mem_ClearedAlloc( sizeof( idDrawVert ) * width * height ) );
-	//pm->ctrl = reinterpret_cast<idDrawVert*>(Mem_ClearedAlloc(sizeof(idDrawVert) * width * height));
-	//pm->ctrl = &pm->verts;
 	return pm;
 }
 
@@ -105,7 +103,6 @@ bool RayIntersectsTri( const idVec3 &origin, const idVec3 &direction, const idVe
 
 bool Patch_Intersect( patchMesh_t *pm, idVec3 origin, idVec3 direction, float &scale ) {
 	int				i, j;
-	//float scale;
 	idSurface_Patch	cp( pm->width * 6, pm->height * 6 );
 	cp.SetSize( pm->width, pm->height );
 	for( i = 0; i < pm->width; i++ ) {
@@ -124,27 +121,6 @@ bool Patch_Intersect( patchMesh_t *pm, idVec3 origin, idVec3 direction, float &s
 	} else {
 		return false;
 	}
-	/*
-	int width = cp.GetWidth();
-	int height = cp.GetHeight();
-	for ( i = 0 ; i < width - 1; i++ ) {
-		for ( j = 0 ; j < height - 1; j++ ) {
-			// v1-v2-v3-v4 makes a quad
-			int v1, v2, v3, v4;
-			v1 = j * width + i;
-			v2 = v1 + 1;
-			v3 = v1 + width + 1;
-			v4 = v1 + width;
-			if (RayIntersectsTri(origin, direction, (cp)[v1].xyz, (cp)[v2].xyz, (cp)[v3].xyz)) {
-				return true;
-			}
-			if (RayIntersectsTri(origin, direction, (cp)[v3].xyz, (cp)[v4].xyz, (cp)[v1].xyz)) {
-				return true;
-			}
-		}
-	}
-	return false;
-	*/
 }
 
 patchMesh_t *Patch_MakeNew( patchMesh_t *p, int newWidth, int newHeight ) {

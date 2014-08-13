@@ -520,7 +520,7 @@ Removes links and puts it back on the free list.
 void idInteraction::UnlinkAndFree( void ) {
 	// clear the table pointer
 	idRenderWorldLocal *renderWorld = this->lightDef->world;
-	if( renderWorld->interactionTable ) {
+	if( renderWorld->interactionTable != NULL ) {
 		int index = this->lightDef->index * renderWorld->interactionTableWidth + this->entityDef->index;
 		if( renderWorld->interactionTable[index] != this ) {
 			common->Error( "idInteraction::UnlinkAndFree: interactionTable wasn't set" );

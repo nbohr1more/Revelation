@@ -63,10 +63,10 @@ class idRenderModelOverlay {
 public:
 	idRenderModelOverlay();
 	~idRenderModelOverlay();
-
+	
 	static idRenderModelOverlay *Alloc( void );
 	static void					Free( idRenderModelOverlay *overlay );
-
+	
 	// Projects an overlay onto deformable geometry and can be added to
 	// a render entity to allow decals on top of dynamic models.
 	// This does not generate tangent vectors, so it can't be used with
@@ -74,19 +74,19 @@ public:
 	// be clamped, because the projected texcoords can run well off the
 	// texture since no new clip vertexes are generated.
 	void						CreateOverlay( const idRenderModel *model, const idPlane localTextureAxis[2], const idMaterial *material );
-
+	
 	// Creates new model surfaces for baseModel, which should be a static instantiation of a dynamic model.
 	void						AddOverlaySurfacesToModel( idRenderModel *baseModel );
-
+	
 	// Removes overlay surfaces from the model.
 	static void					RemoveOverlaySurfacesFromModel( idRenderModel *baseModel );
-
+	
 	void						ReadFromDemoFile( class idDemoFile *f );
 	void						WriteToDemoFile( class idDemoFile *f ) const;
-
+	
 private:
 	idList<overlayMaterial_t *>	materials;
-
+	
 	void						FreeSurface( overlaySurface_t *surface );
 };
 

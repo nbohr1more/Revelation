@@ -41,7 +41,7 @@ class CRotateDlg : public CDialog {
 	// Construction
 public:
 	CRotateDlg( CWnd *pParent = NULL ); // standard constructor
-
+	
 	// Dialog Data
 	//{{AFX_DATA(CRotateDlg)
 	enum { IDD = IDD_ROTATE };
@@ -52,19 +52,19 @@ public:
 	CString	m_strY;
 	CString	m_strZ;
 	//}}AFX_DATA
-
-
+	
+	
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CRotateDlg)
 protected:
 	virtual void DoDataExchange( CDataExchange *pDX );  // DDX/DDV support
 	//}}AFX_VIRTUAL
-
+	
 	// Implementation
 protected:
 	void ApplyNoPaint();
-
+	
 	// Generated message map functions
 	//{{AFX_MSG(CRotateDlg)
 	virtual void OnOK();

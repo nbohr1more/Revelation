@@ -217,8 +217,8 @@ GLenum idImage::SelectInternalFormat( const byte **dataPtrs, int numDataPtrs, in
 			// allowing the values to be off by several units and
 			// still use the NV20 mono path
 			if( *monochromeResult ) {
-				if( abs( scan[0] - scan[1] ) > 16
-						|| abs( scan[0] - scan[2] ) > 16 ) {
+				if( abs( scan[0] - scan[1] ) > 16 || 
+					abs( scan[0] - scan[2] ) > 16 ) {
 					*monochromeResult = false;
 				}
 			}
@@ -948,7 +948,8 @@ void idImage::WritePrecompressedImage() {
 				break;
 			}
 		}
-		globalImages->AddDDSCommand( va( "z:/d3xp/compressonator/thecompressonator -convert \"%s\" \"%s\" %s -mipmaps\n", inFile.c_str(), outFile.c_str(), format.c_str() ) );
+		globalImages->AddDDSCommand( va( "z:/d3xp/compressonator/thecompressonator -convert \"%s\" \"%s\" %s -mipmaps\n", 
+									 inFile.c_str(), outFile.c_str(), format.c_str() ) );
 		return;
 	}
 	ddsFileHeader_t header;
@@ -1686,7 +1687,7 @@ void idImage::UploadScratch( const byte *data, int cols, int rows ) {
 		// these probably should be clamp, but we have a lot of issues with editor
 		// geometry coming out with texcoords slightly off one side, resulting in
 		// a smear across the entire polygon. FIXED
-		if ( com_editorActive ) {
+		if( com_editorActive ) {
 			glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
 			glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
 		} else {

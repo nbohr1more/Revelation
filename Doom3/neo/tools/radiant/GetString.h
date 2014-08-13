@@ -43,20 +43,20 @@ public:
 	CGetString( LPCSTR pPrompt, CString *pFeedback, CWnd *pParent = NULL ); // standard constructor
 	virtual ~CGetString();
 	// Overrides
-
+	
 	// Dialog Data
-
+	
 	enum { IDD = IDD_DIALOG_GETSTRING };
-
+	
 	CString	m_strEditBox;
 	CString *m_pFeedback;
 	LPCSTR	m_pPrompt;
-
+	
 protected:
 	virtual void DoDataExchange( CDataExchange *pDX );  // DDX/DDV support
 	virtual BOOL OnInitDialog();
 	virtual void OnOK();
-
+	
 	DECLARE_MESSAGE_MAP()
 };
 

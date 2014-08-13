@@ -34,7 +34,7 @@ public:
 	idRenderWindow( idUserInterfaceLocal *gui );
 	idRenderWindow( idDeviceContext *d, idUserInterfaceLocal *gui );
 	virtual ~idRenderWindow();
-
+	
 	virtual void PostParse();
 	virtual void Draw( int time, float x, float y );
 	virtual size_t Allocated() {
@@ -44,7 +44,7 @@ public:
 	//
 	virtual idWinVar *GetWinVarByName( const char *_name, bool winLookup = false, drawWin_t **owner = NULL );
 	//
-
+	
 private:
 	void CommonInit();
 	virtual bool ParseInternalVar( const char *name, idParser *src );
@@ -56,7 +56,7 @@ private:
 	renderEntity_t worldEntity;
 	renderLight_t rLight;
 	const idMD5Anim *modelAnim;
-
+	
 	qhandle_t	worldModelDef;
 	qhandle_t	lightDef;
 	qhandle_t   modelDef;

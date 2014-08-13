@@ -46,7 +46,7 @@ class CMyColorDialog : public CColorDialog {
 public:
 	CMyColorDialog( COLORREF clrInit = 0, DWORD dwFlags = 0, CWnd *pParentWnd = NULL );
 	virtual int DoModal();
-
+	
 protected:
 	enum { NCUSTCOLORS = 16 };
 	static COLORREF	c_CustColors[NCUSTCOLORS];
@@ -54,17 +54,17 @@ protected:
 	static bool		c_NeedToInitCustColors;
 	static void		InitCustColors();
 	static void		SaveCustColors();
-
+	
 	// Dialog Data
 	//{{AFX_DATA(CMyColorDialog)
 	//}}AFX_DATA
-
+	
 protected:
 	// ClassWizard generate virtual function overrides
 	//{{AFX_VIRTUAL(CMyColorDialog)
 	virtual void DoDataExchange( CDataExchange *pDX );  // DDX/DDV support
 	//}}AFX_VIRTUAL
-
+	
 	// Generated message map functions
 	//{{AFX_MSG(CMyColorDialog)
 	//}}AFX_MSG
@@ -749,7 +749,7 @@ void CDialogColorPicker::DrawLines( CDC *pDC ) {
 	oldMode = pDC->SetROP2( R2_XORPEN );
 	/*
 	Draw the following lines :
-
+	
 		1 -2
 		2 -3
 		3 - 4

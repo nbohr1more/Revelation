@@ -119,14 +119,14 @@ SCommandInfo	g_Commands[] = {
 	{ "Texture_InvertX",         'I', RAD_CONTROL | RAD_SHIFT, ID_CURVE_NEGATIVETEXTUREY },
 	{ "Texture_InvertY",         'I', RAD_SHIFT, ID_CURVE_NEGATIVETEXTUREX },
 	{ "Texture_ToggleLock",      'T', RAD_SHIFT, ID_TOGGLE_LOCK },
-
+	
 	{ "Texture_ShowAllTextures", 'A', RAD_CONTROL, ID_TEXTURES_SHOWALL },
-
+	
 	{ "Edit_Copy",              'C', RAD_CONTROL, ID_EDIT_COPYBRUSH },
 	{ "Edit_Paste",             'V', RAD_CONTROL, ID_EDIT_PASTEBRUSH },
 	{ "Edit_Undo",              'Z', RAD_CONTROL, ID_EDIT_UNDO },
 	{ "Edit_Redo",              'Y', RAD_CONTROL, ID_EDIT_REDO },
-
+	
 	{ "Camera_Forward",          VK_UP, 0, ID_CAMERA_FORWARD },
 	{ "Camera_Back",             VK_DOWN, 0, ID_CAMERA_BACK },
 	{ "Camera_Left",             VK_LEFT, 0, ID_CAMERA_LEFT },
@@ -140,13 +140,13 @@ SCommandInfo	g_Commands[] = {
 	{ "Camera_UpFloor",          VK_PRIOR, 0, ID_VIEW_UPFLOOR },
 	{ "Camera_DownFloor",        VK_NEXT, 0, ID_VIEW_DOWNFLOOR },
 	{ "Camera_CenterView",       VK_END, 0, ID_VIEW_CENTER },
-
+	
 	{ "Grid_ZoomOut",            VK_INSERT, 0, ID_VIEW_ZOOMOUT },
 	{ "FileSaveCopy",            'C', RAD_CONTROL | RAD_ALT | RAD_SHIFT, D3XP_ID_FILE_SAVE_COPY },
 	{ "ShowHideModels",          'M', RAD_CONTROL, D3XP_ID_SHOW_MODELS },
 	{ "NextView",                VK_HOME, 0, ID_VIEW_NEXTVIEW },
 	{ "Grid_ZoomIn",             VK_DELETE, 0, ID_VIEW_ZOOMIN },
-
+	
 	{ "Grid_SetPoint5",          '4', RAD_SHIFT, ID_GRID_POINT5 },
 	{ "Grid_SetPoint25",         '3', RAD_SHIFT, ID_GRID_POINT25 },
 	{ "Grid_SetPoint125",        '2', RAD_SHIFT, ID_GRID_POINT125 },
@@ -160,18 +160,18 @@ SCommandInfo	g_Commands[] = {
 	{ "Grid_Set64",              '7', 0, ID_GRID_64 },
 	{ "Grid_Down",               219, 0, ID_GRID_PREV },
 	{ "Grid_Up",                 221, 0, ID_GRID_NEXT },
-
+	
 	{ "Grid_Toggle",             '0', 0, ID_GRID_TOGGLE },
 	{ "Grid_ToggleSizePaint",    'Q', RAD_PRESS, ID_SELECTION_TOGGLESIZEPAINT },
-
+	
 	{ "Grid_PrecisionCursorMode", VK_F11, 0 , ID_PRECISION_CURSOR_CYCLE},
-
+	
 	{ "Grid_NextView",           VK_TAB, RAD_CONTROL, ID_VIEW_NEXTVIEW },
 	{ "Grid_ToggleCrosshairs",   'X', RAD_SHIFT, ID_VIEW_CROSSHAIR },
-
+	
 	{ "Grid_ZZoomOut",           VK_INSERT, RAD_CONTROL, ID_VIEW_ZZOOMOUT },
 	{ "Grid_ZZoomIn",            VK_DELETE, RAD_CONTROL, ID_VIEW_ZZOOMIN },
-
+	
 	{ "Brush_Make3Sided",        '3', RAD_CONTROL, ID_BRUSH_3SIDED },
 	{ "Brush_Make4Sided",        '4', RAD_CONTROL, ID_BRUSH_4SIDED },
 	{ "Brush_Make5Sided",        '5', RAD_CONTROL, ID_BRUSH_5SIDED },
@@ -179,16 +179,16 @@ SCommandInfo	g_Commands[] = {
 	{ "Brush_Make7Sided",        '7', RAD_CONTROL, ID_BRUSH_7SIDED },
 	{ "Brush_Make8Sided",        '8', RAD_CONTROL, ID_BRUSH_8SIDED },
 	{ "Brush_Make9Sided",        '9', RAD_CONTROL, ID_BRUSH_9SIDED },
-
+	
 	{ "Leak_NextSpot",           'K', RAD_CONTROL | RAD_SHIFT, ID_MISC_NEXTLEAKSPOT },
 	{ "Leak_PrevSpot",           'L', RAD_CONTROL | RAD_SHIFT, ID_MISC_PREVIOUSLEAKSPOT },
-
+	
 	{ "File_Open",               'O', RAD_CONTROL, ID_FILE_OPEN },
 	{ "File_Save",               'S', RAD_CONTROL, ID_FILE_SAVE },
-
+	
 	{ "TAB",                      VK_TAB, 0, ID_PATCH_TAB },
 	{ "TAB",                      VK_TAB, RAD_SHIFT, ID_PATCH_TAB },
-
+	
 	{ "Patch_BendMode",           'B', 0, ID_PATCH_BEND },
 	{ "Patch_FreezeVertices",     'F', 0, ID_CURVE_FREEZE },
 	{ "Patch_UnFreezeVertices",   'F', RAD_CONTROL, ID_CURVE_UNFREEZE },
@@ -208,21 +208,21 @@ SCommandInfo	g_Commands[] = {
 	{ "Patch_Naturalize",         'N', RAD_CONTROL, ID_PATCH_NATURALIZE },
 	{ "Patch_SnapToGrid",         'G', RAD_CONTROL, ID_SELECT_SNAPTOGRID },
 	{ "Patch_CapCurrentCurve",    'C', RAD_SHIFT, ID_CURVE_CAP },
-
+	
 	{ "Clipper_Toggle",          'X', 0, ID_VIEW_CLIPPER },
 	{ "Clipper_ClipSelected",    VK_RETURN, 0, ID_CLIP_SELECTED },
 	{ "Clipper_SplitSelected",   VK_RETURN, RAD_SHIFT, ID_SPLIT_SELECTED },
 	{ "Clipper_FlipClip",        VK_RETURN, RAD_CONTROL, ID_FLIP_CLIP },
-
+	
 	{ "CameraClip_ZoomOut",       219, RAD_CONTROL, ID_VIEW_CUBEOUT },
 	{ "CameraClip_ZoomIn",        221, RAD_CONTROL, ID_VIEW_CUBEIN },
 	{ "CameraClip_Toggle",        220, RAD_CONTROL, ID_VIEW_CUBICCLIPPING },
-
+	
 	{ "ViewTab_EntityInfo",     'N', 0, ID_VIEW_ENTITY },
 	{ "ViewTab_Console",        'O', 0, ID_VIEW_CONSOLE },
 	{ "ViewTab_Textures",       'T', 0, ID_VIEW_TEXTURE },
 	{ "ViewTab_MediaBrowser",   'M', 0, ID_VIEW_MEDIABROWSER },
-
+	
 	{ "Window_SurfaceInspector", 'S', 0, ID_TEXTURES_INSPECTOR },
 	{ "Window_PatchInspector",  'S', RAD_SHIFT, ID_PATCH_INSPECTOR },
 	{ "Window_EntityList",      'I', 0, ID_EDIT_ENTITYINFO },
@@ -232,7 +232,7 @@ SCommandInfo	g_Commands[] = {
 	{ "Window_ToggleZ",         'Z', RAD_CONTROL | RAD_SHIFT, ID_TOGGLEZ },
 	{ "Window_LightEditor",     'J', 0, ID_PROJECTED_LIGHT },
 	{ "Window_EntityColor",     'K', 0, ID_MISC_SELECTENTITYCOLOR },
-
+	
 	{ "Selection_DragEdges",     'E', 0, ID_SELECTION_DRAGEDGES },
 	{ "Selection_DragVertices",  'V', 0, ID_SELECTION_DRAGVERTECIES },
 	{ "Selection_Clone",         VK_SPACE, 0, ID_SELECTION_CLONE },
@@ -240,7 +240,7 @@ SCommandInfo	g_Commands[] = {
 	{ "Selection_UnSelect",      VK_ESCAPE, 0, ID_SELECTION_DESELECT },
 	{ "Selection_Invert",        'I' , 0 , ID_SELECTION_INVERT },
 	{ "Selection_ToggleMoveOnly", 'W', 0, ID_SELECTION_MOVEONLY },
-
+	
 	{ "Selection_MoveDown",     VK_SUBTRACT, 0, ID_SELECTION_MOVEDOWN },
 	{ "Selection_MoveUp",       VK_ADD, 0, ID_SELECTION_MOVEUP },
 	{ "Selection_DumpBrush",    'D', RAD_SHIFT, ID_SELECTION_PRINT },
@@ -252,19 +252,19 @@ SCommandInfo	g_Commands[] = {
 	{ "Selection_Connect",      'K', RAD_CONTROL, ID_SELECTION_CONNECT },
 	{ "Selection_Ungroup",      'G', RAD_SHIFT, ID_SELECTION_UNGROUPENTITY },
 	{ "Selection_CSGMerge",     'M', RAD_SHIFT, ID_SELECTION_CSGMERGE },
-
+	
 	{ "Selection_CenterOrigin",           'O', RAD_SHIFT, ID_SELECTION_CENTER_ORIGIN },
 	{ "Selection_SelectCompleteEntity",   'E' , RAD_CONTROL | RAD_ALT | RAD_SHIFT , ID_SELECT_COMPLETE_ENTITY },
 	{ "Selection_SelectAllOfType",        'A', RAD_SHIFT, ID_SELECT_ALL },
-
+	
 	{ "Show_ToggleLights",       '0' , RAD_ALT , ID_VIEW_SHOWLIGHTS },
 	{ "Show_TogglePatches",      'P', RAD_CONTROL, ID_VIEW_SHOWCURVES },
 	{ "Show_ToggleClip",         'L', RAD_CONTROL, ID_VIEW_SHOWCLIP },
-
+	
 	{ "Show_HideSelected",       'H', 0, ID_VIEW_HIDESHOW_HIDESELECTED },
 	{ "Show_ShowHidden",         'H', RAD_SHIFT, ID_VIEW_HIDESHOW_SHOWHIDDEN },
 	{ "Show_HideNotSelected",    'H', RAD_CONTROL | RAD_SHIFT, ID_VIEW_HIDESHOW_HIDENOTSELECTED },
-
+	
 	{ "Render_ToggleSound",      VK_F9, 0, ID_VIEW_RENDERSOUND },
 	{ "Render_ToggleSelections", VK_F8, 0, ID_VIEW_RENDERSELECTION },
 	{ "Render_RebuildData",      VK_F7, 0, ID_VIEW_REBUILDRENDERDATA },
@@ -272,17 +272,17 @@ SCommandInfo	g_Commands[] = {
 	{ "Render_ToggleEntityOutlines", VK_F5, 0, ID_VIEW_RENDERENTITYOUTLINES },
 	{ "Render_ToggleRealtimeBuild",  VK_F4, 0, ID_VIEW_REALTIMEREBUILD },
 	{ "Render_Toggle",           VK_F3, 0, ID_VIEW_RENDERMODE },
-
+	
 	{ "Find_Textures",    'F', RAD_SHIFT, ID_TEXTURE_REPLACEALL },
 	{ "Find_Entity",       VK_F3, RAD_CONTROL, ID_MISC_FINDORREPLACEENTITY},
 	{ "Find_NextEntity",   VK_F3, RAD_SHIFT, ID_MISC_FINDNEXTENT},
-
+	
 	{ "_ShowDOOM",               VK_F2, 0, ID_SHOW_DOOM },
-
+	
 	{ "Rotate_MouseRotate",            'R', 0, ID_SELECT_MOUSEROTATE },
 	{ "Rotate_ToggleFlatRotation",     'R', RAD_CONTROL, ID_VIEW_CAMERAUPDATE },
 	{ "Rotate_CycleRotationAxis",      'R', RAD_SHIFT, ID_TOGGLE_ROTATELOCK },
-
+	
 	{ "_AutoCaulk",	             'A', RAD_CONTROL | RAD_SHIFT, ID_AUTOCAULK },	// ctrl-shift-a, since SHIFT-A is already taken
 };
 

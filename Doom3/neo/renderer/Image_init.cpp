@@ -425,8 +425,8 @@ static void CreateSquareLight( void ) {
 				d = 0;
 			}
 			buffer[( y * 128 + x ) * 4 + 0] =
-			buffer[( y * 128 + x ) * 4 + 1] =
-			buffer[( y * 128 + x ) * 4 + 2] = d;
+				buffer[( y * 128 + x ) * 4 + 1] =
+					buffer[( y * 128 + x ) * 4 + 2] = d;
 			buffer[( y * 128 + x ) * 4 + 3] = 255;
 		}
 	}

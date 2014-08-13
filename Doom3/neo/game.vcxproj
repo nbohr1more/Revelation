@@ -197,7 +197,9 @@
     <PreBuildEvent />
     <ClCompile />
     <ClCompile />
-    <ClCompile />
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="game\ai\AAS.cpp" />

@@ -792,9 +792,9 @@ void CDialogTextures::addGuis( bool rootItems ) {
 void CDialogTextures::addScripts( bool rootItems ) {
 	/*
 		idFileList *files;
-
+	
 		files = fileSystem->ListFilesExt( "def", ".script" );
-
+	
 		if ( files->GetNumFiles() ) {
 			addStrList("Scripts", files->GetList(), 3);
 		}

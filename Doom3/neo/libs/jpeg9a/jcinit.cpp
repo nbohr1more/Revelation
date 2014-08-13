@@ -28,29 +28,25 @@
  */
 
 GLOBAL( void )
-jinit_compress_master( j_compress_ptr cinfo )
-{
+jinit_compress_master( j_compress_ptr cinfo ) {
 	long samplesperrow;
 	JDIMENSION jd_samplesperrow;
 	
 	/* For now, precision must match compiled-in value... */
-	if( cinfo->data_precision != BITS_IN_JSAMPLE )
-	{
+	if( cinfo->data_precision != BITS_IN_JSAMPLE ) {
 		ERREXIT1( cinfo, JERR_BAD_PRECISION, cinfo->data_precision );
 	}
 	
 	/* Sanity check on image dimensions */
 	if( cinfo->image_height <= 0 || cinfo->image_width <= 0 ||
-			cinfo->input_components <= 0 )
-	{
+			cinfo->input_components <= 0 ) {
 		ERREXIT( cinfo, JERR_EMPTY_IMAGE );
 	}
 	
 	/* Width of an input scanline must be representable as JDIMENSION. */
 	samplesperrow = ( long ) cinfo->image_width * ( long ) cinfo->input_components;
 	jd_samplesperrow = ( JDIMENSION ) samplesperrow;
-	if( ( long ) jd_samplesperrow != samplesperrow )
-	{
+	if( ( long ) jd_samplesperrow != samplesperrow ) {
 		ERREXIT( cinfo, JERR_WIDTH_OVERFLOW );
 	}
 	
@@ -58,8 +54,7 @@ jinit_compress_master( j_compress_ptr cinfo )
 	jinit_c_master_control( cinfo, FALSE /* full compression */ );
 	
 	/* Preprocessing */
-	if( ! cinfo->raw_data_in )
-	{
+	if( ! cinfo->raw_data_in ) {
 		jinit_color_converter( cinfo );
 		jinit_downsampler( cinfo );
 		jinit_c_prep_controller( cinfo, FALSE /* never need full buffer here */ );
@@ -67,12 +62,9 @@ jinit_compress_master( j_compress_ptr cinfo )
 	/* Forward DCT */
 	jinit_forward_dct( cinfo );
 	/* Entropy encoding: either Huffman or arithmetic coding. */
-	if( cinfo->arith_code )
-	{
+	if( cinfo->arith_code ) {
 		jinit_arith_encoder( cinfo );
-	}
-	else
-	{
+	} else {
 		jinit_huff_encoder( cinfo );
 	}
 	

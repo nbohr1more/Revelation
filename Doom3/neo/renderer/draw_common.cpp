@@ -294,8 +294,8 @@ static void RB_T_FillDepthBuffer( const drawSurf_t *surf ) {
 		color[3] = 1.0f;
 	} else {
 		// others just draw black
-		color[0] = 0.0f;
-		color[1] = 0.0f;
+		color[0] =
+		color[1] =
 		color[2] = 0.0f;
 		color[3] = 1.0f;
 	}
@@ -331,7 +331,7 @@ static void RB_T_FillDepthBuffer( const drawSurf_t *surf ) {
 			if( color[3] <= 0 ) {
 				continue;
 			}
-			glColor4fv( color );
+			GL_Color( color[0], color[1], color[2], color[3] );
 			glAlphaFunc( GL_GREATER, regs[ pStage->alphaTestRegister ] );
 			// bind the texture
 			pStage->texture.image->Bind();
@@ -348,7 +348,7 @@ static void RB_T_FillDepthBuffer( const drawSurf_t *surf ) {
 	}
 	// draw the entire surface solid
 	if( drawSolid ) {
-		glColor4fv( color );
+		GL_Color( color[0], color[1], color[2], color[3] );
 		globalImages->whiteImage->Bind();
 		// draw it
 		RB_DrawElementsWithCounters( tri );
@@ -507,7 +507,7 @@ static void RB_STD_T_RenderShaderPassesStage1( const drawSurf_t *surf, const srf
 		return;
 	}
 	newShaderStage_t *newStage = pStage->newStage;
-	glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ( void * )&ac->color );
+	glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ( const GLvoid * )&ac->color );
 	glVertexAttribPointerARB( 9, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac->tangents[0].ToFloatPtr() );
 	glVertexAttribPointerARB( 10, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac->tangents[1].ToFloatPtr() );
 	glNormalPointer( GL_FLOAT, sizeof( idDrawVert ), ac->normal.ToFloatPtr() );
@@ -586,9 +586,9 @@ static void RB_STD_T_RenderShaderPassesStage2( const drawSurf_t *surf, const srf
 	}
 	// select the vertex color source
 	if( pStage->vertexColor == SVC_IGNORE ) {
-		glColor4fv( color );
+		GL_Color( color[0], color[1], color[2], color[3] );
 	} else {
-		glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ( void * )&ac->color );
+		glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ( const GLvoid * )&ac->color );
 		glEnableClientState( GL_COLOR_ARRAY );
 		if( pStage->vertexColor == SVC_INVERSE_MODULATE ) {
 			GL_TexEnv( GL_COMBINE_ARB );
@@ -753,11 +753,11 @@ static int RB_STD_DrawShaderPasses( drawSurf_t **drawSurfs, int numDrawSurfs ) {
 		// only dump if in a 3d view
 		if( backEnd.viewDef->viewEntitys && ( tr.backEndRenderer == BE_ARB2 || tr.backEndRenderer == BE_GLSL ) ) {
 			globalImages->currentRenderImage->CopyFramebuffer( backEnd.viewDef->viewport.x1,
-															   backEnd.viewDef->viewport.y1,  
-															   backEnd.viewDef->viewport.x2 -  
-															   backEnd.viewDef->viewport.x1 + 1,
-															   backEnd.viewDef->viewport.y2 -  
-															   backEnd.viewDef->viewport.y1 + 1, true );
+			backEnd.viewDef->viewport.y1,
+			backEnd.viewDef->viewport.x2 -
+			backEnd.viewDef->viewport.x1 + 1,
+			backEnd.viewDef->viewport.y2 -
+			backEnd.viewDef->viewport.y1 + 1, true );
 		}
 		backEnd.currentRenderCopied = true;
 	}
@@ -786,7 +786,7 @@ static int RB_STD_DrawShaderPasses( drawSurf_t **drawSurfs, int numDrawSurfs ) {
 		RB_STD_T_RenderShaderPasses( drawSurfs[shaderPasses] );
 	}
 	GL_Cull( CT_FRONT_SIDED );
-	glColor3f( 1, 1, 1 );
+	GL_Color( 1.0f, 1.0f, 1.0f );
 	return shaderPasses;
 }
 
@@ -859,26 +859,26 @@ static void RB_T_Shadow( const drawSurf_t *surf ) {
 	if( r_showShadows.GetInteger() ) {
 		if( r_showShadows.GetInteger() == 3 ) {
 			if( external ) {
-				glColor3f( 0.1 / backEnd.overBright, 1 / backEnd.overBright, 0.1 / backEnd.overBright );
+				GL_Color( 0.1f / backEnd.overBright, 1.0f / backEnd.overBright, 0.1f / backEnd.overBright );
 			} else {
 				// these are the surfaces that require the reverse
-				glColor3f( 1 / backEnd.overBright, 0.1 / backEnd.overBright, 0.1 / backEnd.overBright );
+				GL_Color( 1.0f / backEnd.overBright, 0.1f / backEnd.overBright, 0.1f / backEnd.overBright );
 			}
 		} else {
 			// draw different color for turboshadows
 			if( surf->geo->shadowCapPlaneBits & SHADOW_CAP_INFINITE ) {
 				if( numIndexes == tri->numIndexes ) {
-					glColor3f( 1 / backEnd.overBright, 0.1 / backEnd.overBright, 0.1 / backEnd.overBright );
+					GL_Color( 1.0f / backEnd.overBright, 0.1f / backEnd.overBright, 0.1f / backEnd.overBright );
 				} else {
-					glColor3f( 1 / backEnd.overBright, 0.4 / backEnd.overBright, 0.1 / backEnd.overBright );
+					GL_Color( 1.0f / backEnd.overBright, 0.4f / backEnd.overBright, 0.1f / backEnd.overBright );
 				}
 			} else {
 				if( numIndexes == tri->numIndexes ) {
-					glColor3f( 0.1 / backEnd.overBright, 1 / backEnd.overBright, 0.1 / backEnd.overBright );
+					GL_Color( 0.1f / backEnd.overBright, 1.0f / backEnd.overBright, 0.1f / backEnd.overBright );
 				} else if( numIndexes == tri->numShadowIndexesNoFrontCaps ) {
-					glColor3f( 0.1 / backEnd.overBright, 1 / backEnd.overBright, 0.6 / backEnd.overBright );
+					GL_Color( 0.1f / backEnd.overBright, 1.0f / backEnd.overBright, 0.6f / backEnd.overBright );
 				} else {
-					glColor3f( 0.6 / backEnd.overBright, 1 / backEnd.overBright, 0.1 / backEnd.overBright );
+					GL_Color( 0.6f / backEnd.overBright, 1.0f / backEnd.overBright, 0.1f / backEnd.overBright );
 				}
 			}
 		}
@@ -1091,7 +1091,7 @@ static void RB_BlendLight( const drawSurf_t *drawSurfs,  const drawSurf_t *drawS
 		backEnd.lightColor[1] = regs[ stage->color.registers[1] ];
 		backEnd.lightColor[2] = regs[ stage->color.registers[2] ];
 		backEnd.lightColor[3] = regs[ stage->color.registers[3] ];
-		glColor4fv( backEnd.lightColor );
+		GL_Color( backEnd.lightColor[0], backEnd.lightColor[1], backEnd.lightColor[2], backEnd.lightColor[3] );
 		RB_RenderDrawSurfChainWithFunction( drawSurfs, RB_T_BlendLight );
 		RB_RenderDrawSurfChainWithFunction( drawSurfs2, RB_T_BlendLight );
 		if( stage->texture.hasMatrix ) {
@@ -1129,8 +1129,8 @@ static void RB_T_BasicFog( const drawSurf_t *surf ) {
 		local[3] += 0.5;
 		glTexGenfv( GL_S, GL_OBJECT_PLANE, local.ToFloatPtr() );
 		local[0] =
-			local[1] =
-				local[2] = 0;
+		local[1] =
+		local[2] = 0;
 		local[3] = 0.5;
 		glTexGenfv( GL_T, GL_OBJECT_PLANE, local.ToFloatPtr() );
 		GL_SelectTexture( 1 );
@@ -1174,7 +1174,7 @@ static void RB_FogPass( const drawSurf_t *drawSurfs,  const drawSurf_t *drawSurf
 	backEnd.lightColor[1] = regs[ stage->color.registers[1] ];
 	backEnd.lightColor[2] = regs[ stage->color.registers[2] ];
 	backEnd.lightColor[3] = regs[ stage->color.registers[3] ];
-	glColor3fv( backEnd.lightColor );
+	GL_Color( backEnd.lightColor[0], backEnd.lightColor[1], backEnd.lightColor[2] );
 	// calculate the falloff planes
 	float	a;
 	// if they left the default value on, set a fog distance of 500
@@ -1307,13 +1307,13 @@ static void RB_STD_LightScale( void ) {
 		if( f > 1 ) {
 			f = 1;
 		}
-		glColor3f( f, f, f );
+		GL_Color( f, f, f );
 		v = v * f * 2;
 		glBegin( GL_QUADS );
-		glVertex2f( 0, 0 );
-		glVertex2f( 0, 1 );
-		glVertex2f( 1, 1 );
-		glVertex2f( 1, 0 );
+		glVertex2f( 0.0f, 0.0f );
+		glVertex2f( 0.0f, 1.0f );
+		glVertex2f( 1.0f, 1.0f );
+		glVertex2f( 1.0f, 0.0f );
 		glEnd();
 	}
 	glPopMatrix();

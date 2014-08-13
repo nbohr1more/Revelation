@@ -172,8 +172,7 @@ Sorry, this code only copes with 8x8 DCT blocks. /* deliberate syntax err */
 GLOBAL( void )
 jpeg_idct_islow( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 				 JCOEFPTR coef_block,
-				 JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+				 JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp0, tmp1, tmp2, tmp3;
 	INT32 tmp10, tmp11, tmp12, tmp13;
 	INT32 z1, z2, z3;
@@ -194,8 +193,7 @@ jpeg_idct_islow( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = DCTSIZE; ctr > 0; ctr-- )
-	{
+	for( ctr = DCTSIZE; ctr > 0; ctr-- ) {
 		/* Due to quantization, we will usually find that many of the input
 		 * coefficients are zero, especially the AC terms.  We can exploit this
 		 * by short-circuiting the IDCT calculation for any column in which all
@@ -208,8 +206,7 @@ jpeg_idct_islow( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 		if( inptr[DCTSIZE * 1] == 0 && inptr[DCTSIZE * 2] == 0 &&
 				inptr[DCTSIZE * 3] == 0 && inptr[DCTSIZE * 4] == 0 &&
 				inptr[DCTSIZE * 5] == 0 && inptr[DCTSIZE * 6] == 0 &&
-				inptr[DCTSIZE * 7] == 0 )
-		{
+				inptr[DCTSIZE * 7] == 0 ) {
 			/* AC terms all zero */
 			int dcval = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] ) << PASS1_BITS;
 			
@@ -306,8 +303,7 @@ jpeg_idct_islow( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	 */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < DCTSIZE; ctr++ )
-	{
+	for( ctr = 0; ctr < DCTSIZE; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		/* Rows of zeroes can be exploited in the same way as we did with columns.
 		 * However, the column calculation has created many nonzero AC terms, so
@@ -319,8 +315,7 @@ jpeg_idct_islow( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 		
 #ifndef NO_ZERO_ROW_TEST
 		if( wsptr[1] == 0 && wsptr[2] == 0 && wsptr[3] == 0 && wsptr[4] == 0 &&
-				wsptr[5] == 0 && wsptr[6] == 0 && wsptr[7] == 0 )
-		{
+				wsptr[5] == 0 && wsptr[6] == 0 && wsptr[7] == 0 ) {
 			/* AC terms all zero */
 			JSAMPLE dcval = range_limit[( int ) DESCALE( ( INT32 ) wsptr[0], PASS1_BITS + 3 )
 										& RANGE_MASK];
@@ -437,8 +432,7 @@ jpeg_idct_islow( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_7x7( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 			   JCOEFPTR coef_block,
-			   JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+			   JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp0, tmp1, tmp2, tmp10, tmp11, tmp12, tmp13;
 	INT32 z1, z2, z3;
 	JCOEFPTR inptr;
@@ -455,8 +449,7 @@ jpeg_idct_7x7( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 7; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 7; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		tmp13 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -508,8 +501,7 @@ jpeg_idct_7x7( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	/* Pass 2: process 7 rows from work array, store into output array. */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 7; ctr++ )
-	{
+	for( ctr = 0; ctr < 7; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -588,8 +580,7 @@ jpeg_idct_7x7( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_6x6( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 			   JCOEFPTR coef_block,
-			   JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+			   JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp0, tmp1, tmp2, tmp10, tmp11, tmp12;
 	INT32 z1, z2, z3;
 	JCOEFPTR inptr;
@@ -606,8 +597,7 @@ jpeg_idct_6x6( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 6; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 6; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		tmp0 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -646,8 +636,7 @@ jpeg_idct_6x6( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	/* Pass 2: process 6 rows from work array, store into output array. */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 6; ctr++ )
-	{
+	for( ctr = 0; ctr < 6; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -711,8 +700,7 @@ jpeg_idct_6x6( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_5x5( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 			   JCOEFPTR coef_block,
-			   JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+			   JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp0, tmp1, tmp10, tmp11, tmp12;
 	INT32 z1, z2, z3;
 	JCOEFPTR inptr;
@@ -729,8 +717,7 @@ jpeg_idct_5x5( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 5; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 5; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		tmp12 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -767,8 +754,7 @@ jpeg_idct_5x5( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	/* Pass 2: process 5 rows from work array, store into output array. */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 5; ctr++ )
-	{
+	for( ctr = 0; ctr < 5; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -828,8 +814,7 @@ jpeg_idct_5x5( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_4x4( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 			   JCOEFPTR coef_block,
-			   JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+			   JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp0, tmp2, tmp10, tmp12;
 	INT32 z1, z2, z3;
 	JCOEFPTR inptr;
@@ -846,8 +831,7 @@ jpeg_idct_4x4( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 4; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 4; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		tmp0 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -881,8 +865,7 @@ jpeg_idct_4x4( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	/* Pass 2: process 4 rows from work array, store into output array. */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 4; ctr++ )
-	{
+	for( ctr = 0; ctr < 4; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -935,8 +918,7 @@ jpeg_idct_4x4( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_3x3( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 			   JCOEFPTR coef_block,
-			   JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+			   JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp0, tmp2, tmp10, tmp12;
 	JCOEFPTR inptr;
 	ISLOW_MULT_TYPE *quantptr;
@@ -952,8 +934,7 @@ jpeg_idct_3x3( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 3; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 3; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		tmp0 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -980,8 +961,7 @@ jpeg_idct_3x3( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	/* Pass 2: process 3 rows from work array, store into output array. */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 3; ctr++ )
-	{
+	for( ctr = 0; ctr < 3; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -1026,8 +1006,7 @@ jpeg_idct_3x3( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_2x2( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 			   JCOEFPTR coef_block,
-			   JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+			   JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp0, tmp1, tmp2, tmp3, tmp4, tmp5;
 	ISLOW_MULT_TYPE *quantptr;
 	JSAMPROW outptr;
@@ -1081,8 +1060,7 @@ jpeg_idct_2x2( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_1x1( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 			   JCOEFPTR coef_block,
-			   JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+			   JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	int dcval;
 	ISLOW_MULT_TYPE *quantptr;
 	JSAMPLE *range_limit = IDCT_range_limit( cinfo );
@@ -1108,8 +1086,7 @@ jpeg_idct_1x1( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_9x9( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 			   JCOEFPTR coef_block,
-			   JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+			   JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp0, tmp1, tmp2, tmp3, tmp10, tmp11, tmp12, tmp13, tmp14;
 	INT32 z1, z2, z3, z4;
 	JCOEFPTR inptr;
@@ -1126,8 +1103,7 @@ jpeg_idct_9x9( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		tmp0 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -1188,8 +1164,7 @@ jpeg_idct_9x9( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	/* Pass 2: process 9 rows from work array, store into output array. */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 9; ctr++ )
-	{
+	for( ctr = 0; ctr < 9; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -1281,8 +1256,7 @@ jpeg_idct_9x9( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_10x10( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 				 JCOEFPTR coef_block,
-				 JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+				 JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp10, tmp11, tmp12, tmp13, tmp14;
 	INT32 tmp20, tmp21, tmp22, tmp23, tmp24;
 	INT32 z1, z2, z3, z4, z5;
@@ -1300,8 +1274,7 @@ jpeg_idct_10x10( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		z3 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -1373,8 +1346,7 @@ jpeg_idct_10x10( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	/* Pass 2: process 10 rows from work array, store into output array. */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 10; ctr++ )
-	{
+	for( ctr = 0; ctr < 10; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -1478,8 +1450,7 @@ jpeg_idct_10x10( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_11x11( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 				 JCOEFPTR coef_block,
-				 JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+				 JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp10, tmp11, tmp12, tmp13, tmp14;
 	INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25;
 	INT32 z1, z2, z3, z4;
@@ -1497,8 +1468,7 @@ jpeg_idct_11x11( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		tmp10 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -1568,8 +1538,7 @@ jpeg_idct_11x11( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	/* Pass 2: process 11 rows from work array, store into output array. */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 11; ctr++ )
-	{
+	for( ctr = 0; ctr < 11; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -1674,8 +1643,7 @@ jpeg_idct_11x11( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_12x12( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 				 JCOEFPTR coef_block,
-				 JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+				 JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15;
 	INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25;
 	INT32 z1, z2, z3, z4;
@@ -1693,8 +1661,7 @@ jpeg_idct_12x12( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		z3 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -1774,8 +1741,7 @@ jpeg_idct_12x12( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	/* Pass 2: process 12 rows from work array, store into output array. */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 12; ctr++ )
-	{
+	for( ctr = 0; ctr < 12; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -1892,8 +1858,7 @@ jpeg_idct_12x12( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_13x13( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 				 JCOEFPTR coef_block,
-				 JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+				 JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15;
 	INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25, tmp26;
 	INT32 z1, z2, z3, z4;
@@ -1911,8 +1876,7 @@ jpeg_idct_13x13( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		z1 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -1997,8 +1961,7 @@ jpeg_idct_13x13( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	/* Pass 2: process 13 rows from work array, store into output array. */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 13; ctr++ )
-	{
+	for( ctr = 0; ctr < 13; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -2122,8 +2085,7 @@ jpeg_idct_13x13( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_14x14( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 				 JCOEFPTR coef_block,
-				 JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+				 JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15, tmp16;
 	INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25, tmp26;
 	INT32 z1, z2, z3, z4;
@@ -2141,8 +2103,7 @@ jpeg_idct_14x14( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		z1 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -2226,8 +2187,7 @@ jpeg_idct_14x14( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	/* Pass 2: process 14 rows from work array, store into output array. */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 14; ctr++ )
-	{
+	for( ctr = 0; ctr < 14; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -2350,8 +2310,7 @@ jpeg_idct_14x14( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_15x15( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 				 JCOEFPTR coef_block,
-				 JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+				 JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15, tmp16;
 	INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25, tmp26, tmp27;
 	INT32 z1, z2, z3, z4;
@@ -2369,8 +2328,7 @@ jpeg_idct_15x15( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		z1 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -2460,8 +2418,7 @@ jpeg_idct_15x15( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	/* Pass 2: process 15 rows from work array, store into output array. */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 15; ctr++ )
-	{
+	for( ctr = 0; ctr < 15; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -2594,8 +2551,7 @@ jpeg_idct_15x15( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_16x16( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 				 JCOEFPTR coef_block,
-				 JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+				 JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp0, tmp1, tmp2, tmp3, tmp10, tmp11, tmp12, tmp13;
 	INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25, tmp26, tmp27;
 	INT32 z1, z2, z3, z4;
@@ -2613,8 +2569,7 @@ jpeg_idct_16x16( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		tmp0 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -2713,8 +2668,7 @@ jpeg_idct_16x16( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	/* Pass 2: process 16 rows from work array, store into output array. */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 16; ctr++ )
-	{
+	for( ctr = 0; ctr < 16; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -2857,8 +2811,7 @@ jpeg_idct_16x16( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_16x8( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 				JCOEFPTR coef_block,
-				JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+				JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp0, tmp1, tmp2, tmp3, tmp10, tmp11, tmp12, tmp13;
 	INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25, tmp26, tmp27;
 	INT32 z1, z2, z3, z4;
@@ -2880,8 +2833,7 @@ jpeg_idct_16x8( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = DCTSIZE; ctr > 0; ctr-- )
-	{
+	for( ctr = DCTSIZE; ctr > 0; ctr-- ) {
 		/* Due to quantization, we will usually find that many of the input
 		 * coefficients are zero, especially the AC terms.  We can exploit this
 		 * by short-circuiting the IDCT calculation for any column in which all
@@ -2894,8 +2846,7 @@ jpeg_idct_16x8( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 		if( inptr[DCTSIZE * 1] == 0 && inptr[DCTSIZE * 2] == 0 &&
 				inptr[DCTSIZE * 3] == 0 && inptr[DCTSIZE * 4] == 0 &&
 				inptr[DCTSIZE * 5] == 0 && inptr[DCTSIZE * 6] == 0 &&
-				inptr[DCTSIZE * 7] == 0 )
-		{
+				inptr[DCTSIZE * 7] == 0 ) {
 			/* AC terms all zero */
 			int dcval = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] ) << PASS1_BITS;
 			
@@ -2991,8 +2942,7 @@ jpeg_idct_16x8( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	 */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 8; ctr++ )
-	{
+	for( ctr = 0; ctr < 8; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -3135,8 +3085,7 @@ jpeg_idct_16x8( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_14x7( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 				JCOEFPTR coef_block,
-				JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+				JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15, tmp16;
 	INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25, tmp26;
 	INT32 z1, z2, z3, z4;
@@ -3156,8 +3105,7 @@ jpeg_idct_14x7( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		tmp23 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -3211,8 +3159,7 @@ jpeg_idct_14x7( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	 */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 7; ctr++ )
-	{
+	for( ctr = 0; ctr < 7; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -3334,8 +3281,7 @@ jpeg_idct_14x7( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_12x6( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 				JCOEFPTR coef_block,
-				JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+				JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15;
 	INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25;
 	INT32 z1, z2, z3, z4;
@@ -3355,8 +3301,7 @@ jpeg_idct_12x6( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		tmp10 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -3397,8 +3342,7 @@ jpeg_idct_12x6( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	 */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 6; ctr++ )
-	{
+	for( ctr = 0; ctr < 6; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -3514,8 +3458,7 @@ jpeg_idct_12x6( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_10x5( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 				JCOEFPTR coef_block,
-				JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+				JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp10, tmp11, tmp12, tmp13, tmp14;
 	INT32 tmp20, tmp21, tmp22, tmp23, tmp24;
 	INT32 z1, z2, z3, z4;
@@ -3535,8 +3478,7 @@ jpeg_idct_10x5( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		tmp12 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -3575,8 +3517,7 @@ jpeg_idct_10x5( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	 */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 5; ctr++ )
-	{
+	for( ctr = 0; ctr < 5; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -3679,8 +3620,7 @@ jpeg_idct_10x5( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_8x4( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 			   JCOEFPTR coef_block,
-			   JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+			   JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp0, tmp1, tmp2, tmp3;
 	INT32 tmp10, tmp11, tmp12, tmp13;
 	INT32 z1, z2, z3;
@@ -3701,8 +3641,7 @@ jpeg_idct_8x4( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		tmp0 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -3740,8 +3679,7 @@ jpeg_idct_8x4( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	 */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 4; ctr++ )
-	{
+	for( ctr = 0; ctr < 4; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part: reverse the even part of the forward DCT.
@@ -3839,8 +3777,7 @@ jpeg_idct_8x4( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_6x3( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 			   JCOEFPTR coef_block,
-			   JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+			   JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp0, tmp1, tmp2, tmp10, tmp11, tmp12;
 	INT32 z1, z2, z3;
 	JCOEFPTR inptr;
@@ -3859,8 +3796,7 @@ jpeg_idct_6x3( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 6; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 6; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		tmp0 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -3889,8 +3825,7 @@ jpeg_idct_6x3( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	 */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 3; ctr++ )
-	{
+	for( ctr = 0; ctr < 3; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -3953,8 +3888,7 @@ jpeg_idct_6x3( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_4x2( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 			   JCOEFPTR coef_block,
-			   JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+			   JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp0, tmp2, tmp10, tmp12;
 	INT32 z1, z2, z3;
 	JCOEFPTR inptr;
@@ -3971,8 +3905,7 @@ jpeg_idct_4x2( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 4; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 4; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		tmp10 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -3993,8 +3926,7 @@ jpeg_idct_4x2( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	 */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 2; ctr++ )
-	{
+	for( ctr = 0; ctr < 2; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -4046,8 +3978,7 @@ jpeg_idct_4x2( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_2x1( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 			   JCOEFPTR coef_block,
-			   JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+			   JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp0, tmp1;
 	ISLOW_MULT_TYPE *quantptr;
 	JSAMPROW outptr;
@@ -4088,8 +4019,7 @@ jpeg_idct_2x1( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_8x16( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 				JCOEFPTR coef_block,
-				JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+				JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp0, tmp1, tmp2, tmp3, tmp10, tmp11, tmp12, tmp13;
 	INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25, tmp26, tmp27;
 	INT32 z1, z2, z3, z4;
@@ -4109,8 +4039,7 @@ jpeg_idct_8x16( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 8; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		tmp0 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -4213,8 +4142,7 @@ jpeg_idct_8x16( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	 */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 16; ctr++ )
-	{
+	for( ctr = 0; ctr < 16; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part: reverse the even part of the forward DCT.
@@ -4312,8 +4240,7 @@ jpeg_idct_8x16( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_7x14( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 				JCOEFPTR coef_block,
-				JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+				JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15, tmp16;
 	INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25, tmp26;
 	INT32 z1, z2, z3, z4;
@@ -4333,8 +4260,7 @@ jpeg_idct_7x14( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 7; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 7; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		z1 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -4420,8 +4346,7 @@ jpeg_idct_7x14( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	 */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 14; ctr++ )
-	{
+	for( ctr = 0; ctr < 14; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -4499,8 +4424,7 @@ jpeg_idct_7x14( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_6x12( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 				JCOEFPTR coef_block,
-				JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+				JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp10, tmp11, tmp12, tmp13, tmp14, tmp15;
 	INT32 tmp20, tmp21, tmp22, tmp23, tmp24, tmp25;
 	INT32 z1, z2, z3, z4;
@@ -4520,8 +4444,7 @@ jpeg_idct_6x12( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 6; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 6; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		z3 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -4603,8 +4526,7 @@ jpeg_idct_6x12( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	 */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 12; ctr++ )
-	{
+	for( ctr = 0; ctr < 12; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -4667,8 +4589,7 @@ jpeg_idct_6x12( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_5x10( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 				JCOEFPTR coef_block,
-				JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+				JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp10, tmp11, tmp12, tmp13, tmp14;
 	INT32 tmp20, tmp21, tmp22, tmp23, tmp24;
 	INT32 z1, z2, z3, z4, z5;
@@ -4688,8 +4609,7 @@ jpeg_idct_5x10( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 5; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 5; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		z3 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -4763,8 +4683,7 @@ jpeg_idct_5x10( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	 */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 10; ctr++ )
-	{
+	for( ctr = 0; ctr < 10; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -4823,8 +4742,7 @@ jpeg_idct_5x10( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_4x8( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 			   JCOEFPTR coef_block,
-			   JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+			   JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp0, tmp1, tmp2, tmp3;
 	INT32 tmp10, tmp11, tmp12, tmp13;
 	INT32 z1, z2, z3;
@@ -4846,8 +4764,7 @@ jpeg_idct_4x8( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 4; ctr > 0; ctr-- )
-	{
+	for( ctr = 4; ctr > 0; ctr-- ) {
 		/* Due to quantization, we will usually find that many of the input
 		 * coefficients are zero, especially the AC terms.  We can exploit this
 		 * by short-circuiting the IDCT calculation for any column in which all
@@ -4860,8 +4777,7 @@ jpeg_idct_4x8( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 		if( inptr[DCTSIZE * 1] == 0 && inptr[DCTSIZE * 2] == 0 &&
 				inptr[DCTSIZE * 3] == 0 && inptr[DCTSIZE * 4] == 0 &&
 				inptr[DCTSIZE * 5] == 0 && inptr[DCTSIZE * 6] == 0 &&
-				inptr[DCTSIZE * 7] == 0 )
-		{
+				inptr[DCTSIZE * 7] == 0 ) {
 			/* AC terms all zero */
 			int dcval = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] ) << PASS1_BITS;
 			
@@ -4958,8 +4874,7 @@ jpeg_idct_4x8( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	 */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 8; ctr++ )
-	{
+	for( ctr = 0; ctr < 8; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -5011,8 +4926,7 @@ jpeg_idct_4x8( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_3x6( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 			   JCOEFPTR coef_block,
-			   JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+			   JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp0, tmp1, tmp2, tmp10, tmp11, tmp12;
 	INT32 z1, z2, z3;
 	JCOEFPTR inptr;
@@ -5031,8 +4945,7 @@ jpeg_idct_3x6( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 3; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 3; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		tmp0 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -5073,8 +4986,7 @@ jpeg_idct_3x6( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	 */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 6; ctr++ )
-	{
+	for( ctr = 0; ctr < 6; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -5119,8 +5031,7 @@ jpeg_idct_3x6( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_2x4( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 			   JCOEFPTR coef_block,
-			   JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+			   JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp0, tmp2, tmp10, tmp12;
 	INT32 z1, z2, z3;
 	JCOEFPTR inptr;
@@ -5140,8 +5051,7 @@ jpeg_idct_2x4( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	inptr = coef_block;
 	quantptr = ( ISLOW_MULT_TYPE * ) compptr->dct_table;
 	wsptr = workspace;
-	for( ctr = 0; ctr < 2; ctr++, inptr++, quantptr++, wsptr++ )
-	{
+	for( ctr = 0; ctr < 2; ctr++, inptr++, quantptr++, wsptr++ ) {
 		/* Even part */
 		
 		tmp0 = DEQUANTIZE( inptr[DCTSIZE * 0], quantptr[DCTSIZE * 0] );
@@ -5171,8 +5081,7 @@ jpeg_idct_2x4( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 	/* Pass 2: process 4 rows from work array, store into output array. */
 	
 	wsptr = workspace;
-	for( ctr = 0; ctr < 4; ctr++ )
-	{
+	for( ctr = 0; ctr < 4; ctr++ ) {
 		outptr = output_buf[ctr] + output_col;
 		
 		/* Even part */
@@ -5206,8 +5115,7 @@ jpeg_idct_2x4( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 GLOBAL( void )
 jpeg_idct_1x2( j_decompress_ptr cinfo, jpeg_component_info *compptr,
 			   JCOEFPTR coef_block,
-			   JSAMPARRAY output_buf, JDIMENSION output_col )
-{
+			   JSAMPARRAY output_buf, JDIMENSION output_col ) {
 	INT32 tmp0, tmp1;
 	ISLOW_MULT_TYPE *quantptr;
 	JSAMPLE *range_limit = IDCT_range_limit( cinfo );

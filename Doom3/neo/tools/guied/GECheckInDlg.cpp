@@ -36,7 +36,7 @@ If you have questions concerning this license or the applicable additional terms
 typedef struct {
 	const char		*mFilename;
 	idStr			*mComment;
-
+	
 } GECHECKINDLG;
 
 /*

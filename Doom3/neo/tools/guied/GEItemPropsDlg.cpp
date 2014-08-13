@@ -42,7 +42,7 @@ enum {
 	RVITEMPROPS_IMAGE,
 	RVITEMPROPS_TEXT,
 	RVITEMPROPS_KEYS,
-
+	
 	RVITEMPROPS_MAX
 };
 
@@ -50,16 +50,16 @@ class rvGEItemPropsImagePage : public rvGEPropertyPage {
 public:
 
 	rvGEItemPropsImagePage( idDict *dictValues );
-
+	
 	virtual bool	Init( void );
 	virtual bool	SetActive( void );
 	virtual bool	KillActive( void );
 	virtual int		HandleMessage( UINT msg, WPARAM wParam, LPARAM lParam );
-
+	
 protected:
 
 	void			UpdateCheckedStates( void );
-
+	
 	idDict		*mDict;
 };
 
@@ -302,16 +302,16 @@ class rvGEItemPropsTextPage : public rvGEPropertyPage {
 public:
 
 	rvGEItemPropsTextPage( idDict *dictValues );
-
+	
 	virtual bool	Init( void );
 	virtual bool	SetActive( void );
 	virtual bool	KillActive( void );
 	virtual int		HandleMessage( UINT msg, WPARAM wParam, LPARAM lParam );
-
+	
 protected:
 
 	void			UpdateCheckedStates( void );
-
+	
 	idDict		*mDict;
 };
 
@@ -527,11 +527,11 @@ class rvGEItemPropsKeysPage : public rvGEPropertyPage {
 public:
 
 	rvGEItemPropsKeysPage( idDict *dictValues, rvGEWindowWrapper *wrapper );
-
+	
 	virtual bool	Init( void );
 	virtual bool	SetActive( void );
 	virtual int		HandleMessage( UINT msg, WPARAM wParam, LPARAM lParam );
-
+	
 protected:
 
 	idDict				*mDict;
@@ -775,16 +775,16 @@ class rvGEItemPropsGeneralPage : public rvGEPropertyPage {
 public:
 
 	rvGEItemPropsGeneralPage( idDict *dict, rvGEWindowWrapper::EWindowType type );
-
+	
 	virtual bool	SetActive( void );
 	virtual	bool	KillActive( void );
 	virtual bool	Init( void );
 	virtual int		HandleMessage( UINT msg, WPARAM wParam, LPARAM lParam );
-
+	
 protected:
 
 	void			UpdateCheckedStates( void );
-
+	
 	idDict	*mDict;
 	idStr	mType;
 };

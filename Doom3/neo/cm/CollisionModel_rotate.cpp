@@ -179,14 +179,14 @@ int idCollisionModelManagerLocal::RotateEdgeThroughEdge( cm_traceWork_t *tw, con
 	idVec3 ct, dt;
 	idPluecker pl2;
 	/*
-
+	
 	a = start of line being rotated
 	b = end of line being rotated
 	pl1 = pluecker coordinate for line (a - b)
 	pl2 = pluecker coordinate for edge we might collide with (c - d)
 	t = rotation angle around the z-axis
 	solve pluecker inner product for t of rotating line a-b and line l2
-
+	
 	// start point of rotated line during rotation
 	an[0] = a[0] * cos(t) + a[1] * sin(t)
 	an[1] = a[0] * -sin(t) + a[1] * cos(t)
@@ -195,83 +195,83 @@ int idCollisionModelManagerLocal::RotateEdgeThroughEdge( cm_traceWork_t *tw, con
 	bn[0] = b[0] * cos(t) + b[1] * sin(t)
 	bn[1] = b[0] * -sin(t) + b[1] * cos(t)
 	bn[2] = b[2];
-
+	
 	pl1[0] = a[0] * b[1] - b[0] * a[1];
 	pl1[1] = a[0] * b[2] - b[0] * a[2];
 	pl1[2] = a[0] - b[0];
 	pl1[3] = a[1] * b[2] - b[1] * a[2];
 	pl1[4] = a[2] - b[2];
 	pl1[5] = b[1] - a[1];
-
+	
 	v[0] = (a[0] * cos(t) + a[1] * sin(t)) * (b[0] * -sin(t) + b[1] * cos(t)) - (b[0] * cos(t) + b[1] * sin(t)) * (a[0] * -sin(t) + a[1] * cos(t));
 	v[1] = (a[0] * cos(t) + a[1] * sin(t)) * b[2] - (b[0] * cos(t) + b[1] * sin(t)) * a[2];
 	v[2] = (a[0] * cos(t) + a[1] * sin(t)) - (b[0] * cos(t) + b[1] * sin(t));
 	v[3] = (a[0] * -sin(t) + a[1] * cos(t)) * b[2] - (b[0] * -sin(t) + b[1] * cos(t)) * a[2];
 	v[4] = a[2] - b[2];
 	v[5] = (b[0] * -sin(t) + b[1] * cos(t)) - (a[0] * -sin(t) + a[1] * cos(t));
-
+	
 	pl2[0] * v[4] + pl2[1] * v[5] + pl2[2] * v[3] + pl2[4] * v[0] + pl2[5] * v[1] + pl2[3] * v[2] = 0;
-
+	
 	v[0] = (a[0] * cos(t) + a[1] * sin(t)) * (b[0] * -sin(t) + b[1] * cos(t)) - (b[0] * cos(t) + b[1] * sin(t)) * (a[0] * -sin(t) + a[1] * cos(t));
 	v[0] = (a[1] * b[1] - a[0] * b[0]) * cos(t) * sin(t) + (a[0] * b[1] + a[1] * b[0] * cos(t)^2) - (a[1] * b[0]) - ((b[1] * a[1] - b[0] * a[0]) * cos(t) * sin(t) + (b[0] * a[1] + b[1] * a[0]) * cos(t)^2 - (b[1] * a[0]))
 	v[0] = - (a[1] * b[0]) - ( - (b[1] * a[0]))
 	v[0] = (b[1] * a[0]) - (a[1] * b[0])
-
+	
 	v[0] = (a[0]*b[1]) - (a[1]*b[0]);
 	v[1] = (a[0]*b[2] - b[0]*a[2]) * cos(t) + (a[1]*b[2] - b[1]*a[2]) * sin(t);
 	v[2] = (a[0]-b[0]) * cos(t) + (a[1]-b[1]) * sin(t);
 	v[3] = (b[0]*a[2] - a[0]*b[2]) * sin(t) + (a[1]*b[2] - b[1]*a[2]) * cos(t);
 	v[4] = a[2] - b[2];
 	v[5] = (a[0]-b[0]) * sin(t) + (b[1]-a[1]) * cos(t);
-
+	
 	v[0] = (a[0]*b[1]) - (a[1]*b[0]);
 	v[1] = (a[0]*b[2] - b[0]*a[2]) * cos(t) + (a[1]*b[2] - b[1]*a[2]) * sin(t);
 	v[2] = (a[0]-b[0]) * cos(t) - (b[1]-a[1]) * sin(t);
 	v[3] = (a[0]*b[2] - b[0]*a[2]) * -sin(t) + (a[1]*b[2] - b[1]*a[2]) * cos(t);
 	v[4] = a[2] - b[2];
 	v[5] = (a[0]-b[0]) * sin(t) + (b[1]-a[1]) * cos(t);
-
+	
 	v[0] = pl1[0];
 	v[1] = pl1[1] * cos(t) + pl1[3] * sin(t);
 	v[2] = pl1[2] * cos(t) - pl1[5] * sin(t);
 	v[3] = pl1[3] * cos(t) - pl1[1] * sin(t);
 	v[4] = pl1[4];
 	v[5] = pl1[5] * cos(t) + pl1[2] * sin(t);
-
+	
 	pl2[0] * v[4] + pl2[1] * v[5] + pl2[2] * v[3] + pl2[4] * v[0] + pl2[5] * v[1] + pl2[3] * v[2] = 0;
-
+	
 	0 =	pl2[0] * pl1[4] +
 		pl2[1] * (pl1[5] * cos(t) + pl1[2] * sin(t)) +
 		pl2[2] * (pl1[3] * cos(t) - pl1[1] * sin(t)) +
 		pl2[4] * pl1[0] +
 		pl2[5] * (pl1[1] * cos(t) + pl1[3] * sin(t)) +
 		pl2[3] * (pl1[2] * cos(t) - pl1[5] * sin(t));
-
+	
 	v2 * cos(t) + v1 * sin(t) + v0 = 0;
-
+	
 	// rotation about the z-axis
 	v0 = pl2[0] * pl1[4] + pl2[4] * pl1[0];
 	v1 = pl2[1] * pl1[2] - pl2[2] * pl1[1] + pl2[5] * pl1[3] - pl2[3] * pl1[5];
 	v2 = pl2[1] * pl1[5] + pl2[2] * pl1[3] + pl2[5] * pl1[1] + pl2[3] * pl1[2];
-
+	
 	// rotation about the x-axis
 	//v0 = pl2[3] * pl1[2] + pl2[2] * pl1[3];
 	//v1 = -pl2[5] * pl1[0] + pl2[4] * pl1[1] - pl2[1] * pl1[4] + pl2[0] * pl1[5];
 	//v2 = pl2[4] * pl1[0] + pl2[5] * pl1[1] + pl2[0] * pl1[4] + pl2[1] * pl1[5];
-
+	
 	r = tan(t / 2);
 	sin(t) = 2*r/(1+r*r);
 	cos(t) = (1-r*r)/(1+r*r);
-
+	
 	v1 * 2 * r / (1 + r*r) + v2 * (1 - r*r) / (1 + r*r) + v0 = 0
 	(v1 * 2 * r + v2 * (1 - r*r)) / (1 + r*r) = -v0
 	(v1 * 2 * r + v2 - v2 * r*r) / (1 + r*r) = -v0
 	v1 * 2 * r + v2 - v2 * r*r = -v0 * (1 + r*r)
 	v1 * 2 * r + v2 - v2 * r*r = -v0 + -v0 * r*r
 	(v0 - v2) * r * r + (2 * v1) * r + (v0 + v2) = 0;
-
+	
 	MrE gives Pluecker a banana.. good monkey
-
+	
 	*/
 	tanHalfAngle = tw->maxTan;
 	// transform rotation axis to z-axis
@@ -337,26 +337,26 @@ int idCollisionModelManagerLocal::EdgeFurthestFromEdge( cm_traceWork_t *tw, cons
 	idVec3 ct, dt;
 	idPluecker pl2;
 	/*
-
+	
 	v2 * cos(t) + v1 * sin(t) + v0 = 0;
-
+	
 	// rotation about the z-axis
 	v0 = pl2[0] * pl1[4] + pl2[4] * pl1[0];
 	v1 = pl2[1] * pl1[2] - pl2[2] * pl1[1] + pl2[5] * pl1[3] - pl2[3] * pl1[5];
 	v2 = pl2[1] * pl1[5] + pl2[2] * pl1[3] + pl2[5] * pl1[1] + pl2[3] * pl1[2];
-
+	
 	derivative:
 	v1 * cos(t) - v2 * sin(t) = 0;
-
+	
 	r = tan(t / 2);
 	sin(t) = 2*r/(1+r*r);
 	cos(t) = (1-r*r)/(1+r*r);
-
+	
 	-v2 * 2 * r / (1 + r*r) + v1 * (1 - r*r)/(1+r*r);
 	-v2 * 2 * r + v1 * (1 - r*r) / (1 + r*r) = 0;
 	-v2 * 2 * r + v1 * (1 - r*r) = 0;
 	(-v1) * r * r + (-2 * v2) * r + (v1) = 0;
-
+	
 	*/
 	tanHalfAngle = 0.0f;
 	// transform rotation axis to z-axis
@@ -560,37 +560,37 @@ int idCollisionModelManagerLocal::RotatePointThroughPlane( const cm_traceWork_t 
 	double v0, v1, v2, a, b, c, d, sqrtd, q, frac1, frac2;
 	idVec3 p, normal;
 	/*
-
+	
 	p[0] = point[0] * cos(t) + point[1] * sin(t)
 	p[1] = point[0] * -sin(t) + point[1] * cos(t)
 	p[2] = point[2];
-
+	
 	normal[0] * (p[0] * cos(t) + p[1] * sin(t)) +
 		normal[1] * (p[0] * -sin(t) + p[1] * cos(t)) +
 			normal[2] * p[2] + dist = 0
-
+	
 	normal[0] * p[0] * cos(t) + normal[0] * p[1] * sin(t) +
 		-normal[1] * p[0] * sin(t) + normal[1] * p[1] * cos(t) +
 			normal[2] * p[2] + dist = 0
-
+	
 	v2 * cos(t) + v1 * sin(t) + v0
-
+	
 	// rotation about the z-axis
 	v0 = normal[2] * p[2] + dist
 	v1 = normal[0] * p[1] - normal[1] * p[0]
 	v2 = normal[0] * p[0] + normal[1] * p[1]
-
+	
 	r = tan(t / 2);
 	sin(t) = 2*r/(1+r*r);
 	cos(t) = (1-r*r)/(1+r*r);
-
+	
 	v1 * 2 * r / (1 + r*r) + v2 * (1 - r*r) / (1 + r*r) + v0 = 0
 	(v1 * 2 * r + v2 * (1 - r*r)) / (1 + r*r) = -v0
 	(v1 * 2 * r + v2 - v2 * r*r) / (1 + r*r) = -v0
 	v1 * 2 * r + v2 - v2 * r*r = -v0 * (1 + r*r)
 	v1 * 2 * r + v2 - v2 * r*r = -v0 + -v0 * r*r
 	(v0 - v2) * r * r + (2 * v1) * r + (v0 + v2) = 0;
-
+	
 	*/
 	tanHalfAngle = tw->maxTan;
 	// transform rotation axis to z-axis
@@ -654,26 +654,26 @@ int idCollisionModelManagerLocal::PointFurthestFromPlane( const cm_traceWork_t *
 	double v1, v2, a, b, c, d, sqrtd, q, frac1, frac2;
 	idVec3 p, normal;
 	/*
-
+	
 	v2 * cos(t) + v1 * sin(t) + v0 = 0;
-
+	
 	// rotation about the z-axis
 	v0 = normal[2] * p[2] + dist
 	v1 = normal[0] * p[1] - normal[1] * p[0]
 	v2 = normal[0] * p[0] + normal[1] * p[1]
-
+	
 	derivative:
 	v1 * cos(t) - v2 * sin(t) = 0;
-
+	
 	r = tan(t / 2);
 	sin(t) = 2*r/(1+r*r);
 	cos(t) = (1-r*r)/(1+r*r);
-
+	
 	-v2 * 2 * r / (1 + r*r) + v1 * (1 - r*r)/(1+r*r);
 	-v2 * 2 * r + v1 * (1 - r*r) / (1 + r*r) = 0;
 	-v2 * 2 * r + v1 * (1 - r*r) = 0;
 	(-v1) * r * r + (-2 * v2) * r + (v1) = 0;
-
+	
 	*/
 	tanHalfAngle = 0.0f;
 	// transform rotation axis to z-axis

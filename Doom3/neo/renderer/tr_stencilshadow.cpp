@@ -186,17 +186,17 @@ typedef struct {
 #define	MAX_CLIP_SIL_EDGES		2048
 	int			numClipSilEdges;
 	int			clipSilEdges[MAX_CLIP_SIL_EDGES][2];
-
+	
 	// facing will be 0 if forward facing, 1 if backwards facing
 	// grabbed with alloca
 	byte		*globalFacing;
-
+	
 	// faceCastsShadow will be 1 if the face is in the projection
 	// and facing the apropriate direction
 	byte		*faceCastsShadow;
-
+	
 	int			*remap;
-
+	
 #define	MAX_SHADOW_INDEXES		0x18000
 #define	MAX_SHADOW_VERTS		0x18000
 	int			numShadowIndexes;

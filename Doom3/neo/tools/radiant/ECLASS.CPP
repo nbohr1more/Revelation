@@ -205,7 +205,7 @@ eclass_t *EClass_InitFromDict( const idDict *d, const char *name ) {
 			str += "\n";
 			kv = d->MatchPrefix( "editor_var ", kv );
 		}
-
+	
 		e->comments = Mem_CopyString( str.c_str() );
 	*/
 	// concatenate all variable comments

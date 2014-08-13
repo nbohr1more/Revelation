@@ -44,7 +44,7 @@ class CZWnd : public CWnd {
 	// Construction
 public:
 	CZWnd();
-
+	
 	// Attributes
 public:
 
@@ -57,13 +57,13 @@ public:
 protected:
 	virtual BOOL PreCreateWindow( CREATESTRUCT &cs );
 	//}}AFX_VIRTUAL
-
+	
 	// Implementation
 public:
 	virtual ~CZWnd();
-
+	
 	CZClip *m_pZClip;
-
+	
 	// Generated message map functions
 protected:
 	HDC m_dcZ;

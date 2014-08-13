@@ -757,7 +757,7 @@ void TextureLockTransformation_BrushPrimit( face_t *f ) {
 				VectorRotate3Origin(Orig, vRotate, txl_vOrigin, rOrig);
 				VectorRotate3Origin(texS, vRotate, txl_vOrigin, rvecS);
 				VectorRotate3Origin(texT, vRotate, txl_vOrigin, rvecT);
-
+		
 				// compute normal of plane after rotation
 				VectorRotate3(f->plane.Normal(), vRotate, rNormal);
 		*/
@@ -1093,7 +1093,7 @@ void Face_SetAxialScale_BrushPrimit( face_t *face, bool y ) {
 	/*
 		common->Printf("Face x: %f  y: %f  xr: %f  yr: %f\n", x, y, xRatio, yRatio);
 		common->Printf("Texture x: %i  y: %i  \n",face->d_texture->GetEditorImage()->uploadWidth, face->d_texture->GetEditorImage()->uploadHeight);
-
+	
 		idVec3D texS, texT;
 		ComputeAxisBase(face->plane.normal, texS, texT);
 		float	Os = 0, Ot = 0;
@@ -1101,15 +1101,15 @@ void Face_SetAxialScale_BrushPrimit( face_t *face, bool y ) {
 			Os += DotProduct(face->face_winding->p[i], texS);
 			Ot += DotProduct(face->face_winding->p[i], texT);
 		}
-
+	
 		common->Printf("Face2 x: %f  y: %f  \n", Os, Ot);
 		Os /= face->face_winding->numpoints;
 		Ot /= face->face_winding->numpoints;
-
-
+	
+	
 		//Os /= face->face_winding->numpoints;
 		//Ot /= face->face_winding->numpoints;
-
+	
 	*/
 }
 

@@ -69,14 +69,14 @@ typedef struct {
 	int	bumpTransformT;	// bump TEX0 T transformation
 	int	colorTransformS;	// diffuse/specular texture matrix
 	int	colorTransformT;	// diffuse/specular texture matrix
-
+	
 	// vertex shader variants
 	int	texCoords;
 	int	vertexColors;
 	int	normals;
 	int	tangents;
 	int	biTangents;
-
+	
 } atiVertexShaderInfo_t;
 
 static atiVertexShaderInfo_t	vsi;
@@ -119,9 +119,9 @@ static void RB_R200_ARB_DrawInteraction( const drawInteraction_t *din ) {
 	const srfTriangles_t	*tri = din->surf->geo;
 	idDrawVert				*ac = ( idDrawVert * )vertexCache.Position( tri->ambientCache );
 	glVertexPointer( 3, GL_FLOAT, sizeof( idDrawVert ), ( void * )&ac->xyz );
-	static const float zero[4] = { 0, 0, 0, 0 };
-	static const float one[4] = { 1, 1, 1, 1 };
-	static const float negOne[4] = { -1, -1, -1, -1 };
+	static const float zero[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
+	static const float one[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	static const float negOne[4] = { -1.0f, -1.0f, -1.0f, -1.0f };
 	switch( din->vertexColor ) {
 	case SVC_IGNORE:
 		glProgramEnvParameter4fvARB( GL_VERTEX_PROGRAM_ARB, PP_COLOR_MODULATE, zero );
@@ -165,11 +165,11 @@ static void RB_R200_ARB_DrawInteraction( const drawInteraction_t *din ) {
 	glSetFragmentShaderConstantATI( GL_CON_0_ATI, din->diffuseColor.ToFloatPtr() );
 	glSetFragmentShaderConstantATI( GL_CON_1_ATI, din->specularColor.ToFloatPtr() );
 	if( din->vertexColor != SVC_IGNORE ) {
-		glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ( void * )&ac->color );
+		glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ( const GLvoid * )&ac->color );
 		glEnableClientState( GL_COLOR_ARRAY );
 		RB_DrawElementsWithCounters( tri );
 		glDisableClientState( GL_COLOR_ARRAY );
-		glColor4f( 1, 1, 1, 1 );
+		GL_Color( 1.0f, 1.0f, 1.0f, 1.0f );
 	} else {
 		RB_DrawElementsWithCounters( tri );
 	}
@@ -203,7 +203,7 @@ static void RB_R200_ARB_CreateDrawInteractions( const drawSurf_t *surf ) {
 #else
 	glEnable( GL_FRAGMENT_SHADER_ATI );
 #endif
-	glColor4f( 1, 1, 1, 1 );
+	GL_Color( 1.0f, 1.0f, 1.0f, 1.0f );
 	GL_SelectTexture( 1 );
 	glEnableClientState( GL_TEXTURE_COORD_ARRAY );
 	GL_SelectTexture( 2 );

@@ -40,24 +40,24 @@ If you have questions concerning this license or the applicable additional terms
 class idTestModel : public idAnimatedEntity {
 public:
 	CLASS_PROTOTYPE( idTestModel );
-
+	
 	idTestModel();
 	~idTestModel();
-
+	
 	void					Save( idSaveGame *savefile );
 	void					Restore( idRestoreGame *savefile );
-
+	
 	void					Spawn( void );
-
+	
 	virtual bool			ShouldConstructScriptObjectAtSpawn( void ) const;
-
+	
 	void					NextAnim( const idCmdArgs &args );
 	void					PrevAnim( const idCmdArgs &args );
 	void					NextFrame( const idCmdArgs &args );
 	void					PrevFrame( const idCmdArgs &args );
 	void					TestAnim( const idCmdArgs &args );
 	void					BlendAnim( const idCmdArgs &args );
-
+	
 	static void 			KeepTestModel_f( const idCmdArgs &args );
 	static void 			TestModel_f( const idCmdArgs &args );
 	static void				ArgCompletion_TestModel( const idCmdArgs &args, void( *callback )( const char *s ) );
@@ -71,7 +71,7 @@ public:
 	static void 			TestModelPrevAnim_f( const idCmdArgs &args );
 	static void 			TestModelNextFrame_f( const idCmdArgs &args );
 	static void 			TestModelPrevFrame_f( const idCmdArgs &args );
-
+	
 private:
 	idEntityPtr<idEntity>	head;
 	idAnimator				*headAnimator;
@@ -84,11 +84,11 @@ private:
 	int						frame;
 	int						starttime;
 	int						animtime;
-
+	
 	idList<copyJoints_t>	copyJoints;
-
+	
 	virtual void			Think( void );
-
+	
 	void					Event_Footstep( void );
 };
 

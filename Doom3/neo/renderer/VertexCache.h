@@ -42,7 +42,7 @@ typedef struct vertCache_s {
 	GLenum				usage;
 	void				*virtMem;         // only one of vbo / virtMem will be set
 	bool				indexBuffer;      // holds indexes instead of vertexes
-
+	
 	int					offset;
 	int					size;          // may be larger than the amount asked for, due
 	// to round up and minimum fragment sizes
@@ -56,92 +56,92 @@ class idVertexCache {
 public:
 	void			Init();
 	void			Shutdown();
-
+	
 	// just for gfxinfo printing
 	bool			IsFast();
-
+	
 	// called when vertex programs are enabled or disabled, because
 	// the cached data is no longer valid
 	void			PurgeAll();
-
+	
 	// Tries to allocate space for the given data in fast vertex
 	// memory, and copies it over.
 	// Alloc does NOT do a touch, which allows purging of things
 	// created at level load time even if a frame hasn't passed yet.
 	// These allocations can be purged, which will zero the pointer.
 	void			Alloc( void *data, int bytes, vertCache_t **buffer, bool indexBuffer = false );
-
+	
 	// This will be a real pointer with virtual memory,
 	// but it will be an int offset cast to a pointer of ARB_vertex_buffer_object
 	void			*Position( vertCache_t *buffer );
-
+	
 	// initialize the element array buffers
 	void			BindIndex( GLenum target, GLuint vbo );
-
+	
 	// if you need to draw something without an indexCache,
 	// this must be called to reset GL_ELEMENT_ARRAY_BUFFER_ARB
 	void			UnbindIndex( GLenum target );
-
+	
 	// MH's MapBufferRange.
 	vertCache_t		*MapBufferRange( vertCache_t *buffer, void *data, int size );
-
+	
 	// Revelator's MapBuffer for cards that dont cope to well with the above.
 	vertCache_t		*MapBuffer( vertCache_t *buffer, void *data, int size );
-
+	
 	// automatically freed at the end of the next frame
 	// used for specular texture coordinates and gui drawing, which
 	// will change every frame.
 	// will return NULL if the vertex cache is completely full
 	// As with Position(), this may not actually be a pointer you can access.
 	vertCache_t    *AllocFrameTemp( void *data, int bytes );
-
+	
 	// notes that a buffer is used this frame, so it can't be purged
 	// out from under the GPU
 	void			Touch( vertCache_t *buffer );
-
+	
 	// this block won't have to zero a buffer pointer when it is purged,
 	// but it must still wait for the frames to pass, in case the GPU
 	// is still referencing it
 	void			Free( vertCache_t *buffer );
-
+	
 	// updates the counter for determining which temp space to use
 	// and which blocks can be purged
 	// Also prints debugging info when enabled
 	void			EndFrame();
-
+	
 	// listVBOMem calls this
 	void			List();
-
+	
 	// showVBOMem calls this
 	void			Show();
-
+	
 private:
 	void			ActuallyFree( vertCache_t *block );
-
+	
 	static idCVar   r_showVertexCache;
 	static idCVar   r_useArbBufferRange;
 	static idCVar   r_reuseVertexCacheSooner;
-
+	
 	int				staticCountTotal;
 	int				staticAllocTotal;		// for end of frame purging
-
+	
 	int				staticAllocThisFrame;   // debug counter
 	int				staticCountThisFrame;
 	int				dynamicAllocThisFrame;
 	int				dynamicCountThisFrame;
-
+	
 	int				currentFrame;			// for purgable block tracking
 	int				listNum;				// currentFrame % NUM_VERTEX_FRAMES, determines which tempBuffers to use
-
+	
 	bool			virtualMemory;			// not fast stuff
-
+	
 	bool			allocatingTempBuffer;   // force GL_STREAM_DRAW_ARB
-
+	
 	vertCache_t     *tempBuffers[NUM_VERTEX_FRAMES];    // allocated at startup
 	bool			tempOverflow;						// had to alloc a temp in static memory
-
+	
 	idBlockAlloc<vertCache_t, 1024> headerAllocator;
-
+	
 	vertCache_t     freeStaticHeaders;      // head of doubly linked list
 	vertCache_t     freeDynamicHeaders;     // head of doubly linked list
 	vertCache_t     dynamicHeaders;         // head of doubly linked list

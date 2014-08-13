@@ -41,21 +41,21 @@ class CNewProjDlg : public CDialog {
 	// Construction
 public:
 	CNewProjDlg( CWnd *pParent = NULL ); // standard constructor
-
+	
 	// Dialog Data
 	//{{AFX_DATA(CNewProjDlg)
 	enum { IDD = IDD_DLG_NEWPROJECT };
 	CString	m_strName;
 	//}}AFX_DATA
-
-
+	
+	
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CNewProjDlg)
 protected:
 	virtual void DoDataExchange( CDataExchange *pDX );  // DDX/DDV support
 	//}}AFX_VIRTUAL
-
+	
 	// Implementation
 protected:
 

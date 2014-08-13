@@ -45,24 +45,24 @@ class idAudioBufferWIN32 : public idAudioBuffer {
 public:
 	idAudioBufferWIN32( LPDIRECTSOUNDBUFFER apDSBuffer, dword dwDSBufferSize, idWaveFile *pWaveFile = NULL );
 	~idAudioBufferWIN32();
-
+	
 	int FillBufferWithSound( LPDIRECTSOUNDBUFFER pDSB, bool bRepeatWavIfBufferLarger );
-
+	
 	bool Lock( void **pDSLockedBuffer, ulong *dwDSLockedBufferSize );
 	bool Unlock( void *pDSLockedBuffer, dword dwDSLockedBufferSize );
 	bool GetCurrentPosition( ulong *pdwCurrentWriteCursor );
-
+	
 	int Play( dword dwPriority = 0, dword dwFlags = 0 );
 	int Stop( void );
 	int Reset( void );
 	bool    IsSoundPlaying( void );
 	void SetVolume( float x );
-
+	
 	idWaveFile			*m_pWaveFile;
 private:
 	LPDIRECTSOUNDBUFFER		m_apDSBuffer;
 	dword					m_dwDSBufferSize;
-
+	
 	int RestoreBuffer( LPDIRECTSOUNDBUFFER pDSB, bool *pbWasRestored );
 };
 
@@ -71,27 +71,27 @@ class idAudioHardwareWIN32 : public idAudioHardware {
 public:
 	idAudioHardwareWIN32();
 	~idAudioHardwareWIN32();
-
+	
 	bool Initialize( );
 	bool InitializeSpeakers( byte *buffer, int bufferSize, dword dwPrimaryFreq, dword dwPrimaryBitRate, dword dwSpeakers );
-
+	
 	void SetPrimaryBufferFormat( dword dwPrimaryFreq, dword dwPrimaryBitRate, dword dwSpeakers );
-
+	
 	int Create( idWaveFile *pWaveFile, idAudioBuffer **ppiab );
 	int Create( idAudioBuffer **ppSound, const char *strWaveFileName, dword dwCreationFlags = 0 );
 	int CreateFromMemory( idAudioBufferWIN32 **ppSound, byte *pbData, ulong ulDataSize, waveformatextensible_t *pwfx, dword dwCreationFlags = 0 );
-
+	
 	bool Lock( void **pDSLockedBuffer, ulong *dwDSLockedBufferSize );
 	bool Unlock( void *pDSLockedBuffer, dword dwDSLockedBufferSize );
 	bool GetCurrentPosition( ulong *pdwCurrentWriteCursor );
-
+	
 	int	GetNumberOfSpeakers() {
 		return numSpeakers;
 	}
 	int	GetMixBufferSize() {
 		return MIXBUFFER_SAMPLES * blockAlign;
 	}
-
+	
 	// WIN32 driver doesn't support write API
 	bool Flush( void ) {
 		return true;
@@ -100,12 +100,12 @@ public:
 	short *GetMixBuffer( void ) {
 		return NULL;
 	}
-
+	
 private:
 	LPDIRECTSOUND			m_pDS;
 	LPDIRECTSOUNDBUFFER		pDSBPrimary;
 	idAudioBufferWIN32		*speakers;
-
+	
 	int						numSpeakers;
 	int						bitsPerSample;
 	int						bufferSize;		// allocate buffer handed over to DirectSound

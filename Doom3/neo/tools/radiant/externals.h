@@ -67,9 +67,9 @@ extern void		VectorRotate3Origin( const idVec3 &vIn, const idVec3 &vRotation, co
 // editorbrush
 extern void		DrawBrushEntityName( brush_t *b );
 extern void		Brush_Resize( brush_t *b, idVec3 vMin, idVec3 vMax );
-extern void		Brush_Rotate( brush_t * b, idMat3 matrix, idVec3 origin, bool bBuild );
-extern void		Brush_Rotate( brush_t * b, idVec3 rot, idVec3 origin, bool bBuild );
-extern void		Brush_CopyList( brush_t * pFrom, brush_t * pTo );
+extern void		Brush_Rotate( brush_t *b, idMat3 matrix, idVec3 origin, bool bBuild );
+extern void		Brush_Rotate( brush_t *b, idVec3 rot, idVec3 origin, bool bBuild );
+extern void		Brush_CopyList( brush_t *pFrom, brush_t *pTo );
 extern void		Brush_Resize( brush_t *b, idVec3 vMin, idVec3 vMax );
 extern void		Brush_Rotate( brush_t *b, idMat3 matrix, idVec3 origin, bool bBuild );
 extern void		MemFile_fprintf( CMemFile *pMemFile, const char *pText, ... );

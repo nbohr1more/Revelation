@@ -36,13 +36,13 @@ class rvGEKeyValueModifier : public rvGEModifier {
 public:
 
 	rvGEKeyValueModifier( const char *name, idWindow *window, const char *key, const char *value );
-
+	
 	virtual bool		Apply( void );
 	virtual bool		Undo( void );
-
+	
 	virtual bool		CanMerge( rvGEModifier *merge );
 	virtual bool		Merge( rvGEModifier *merge );
-
+	
 protected:
 
 	idStr		mKey;

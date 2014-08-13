@@ -112,8 +112,7 @@ Sorry, this code only copes with 8x8 DCTs. /* deliberate syntax err */
  */
 
 GLOBAL( void )
-jpeg_fdct_ifast( DCTELEM *data, JSAMPARRAY sample_data, JDIMENSION start_col )
-{
+jpeg_fdct_ifast( DCTELEM *data, JSAMPARRAY sample_data, JDIMENSION start_col ) {
 	DCTELEM tmp0, tmp1, tmp2, tmp3, tmp4, tmp5, tmp6, tmp7;
 	DCTELEM tmp10, tmp11, tmp12, tmp13;
 	DCTELEM z1, z2, z3, z4, z5, z11, z13;
@@ -125,8 +124,7 @@ jpeg_fdct_ifast( DCTELEM *data, JSAMPARRAY sample_data, JDIMENSION start_col )
 	/* Pass 1: process rows. */
 	
 	dataptr = data;
-	for( ctr = 0; ctr < DCTSIZE; ctr++ )
-	{
+	for( ctr = 0; ctr < DCTSIZE; ctr++ ) {
 		elemptr = sample_data[ctr] + start_col;
 		
 		/* Load data into workspace */
@@ -180,8 +178,7 @@ jpeg_fdct_ifast( DCTELEM *data, JSAMPARRAY sample_data, JDIMENSION start_col )
 	/* Pass 2: process columns. */
 	
 	dataptr = data;
-	for( ctr = DCTSIZE - 1; ctr >= 0; ctr-- )
-	{
+	for( ctr = DCTSIZE - 1; ctr >= 0; ctr-- ) {
 		tmp0 = dataptr[DCTSIZE * 0] + dataptr[DCTSIZE * 7];
 		tmp7 = dataptr[DCTSIZE * 0] - dataptr[DCTSIZE * 7];
 		tmp1 = dataptr[DCTSIZE * 1] + dataptr[DCTSIZE * 6];

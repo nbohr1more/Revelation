@@ -808,7 +808,7 @@ class idUDPLag {
 public:
 	idUDPLag( void );
 	~idUDPLag( void );
-
+	
 	udpMsg_t 			*sendFirst;
 	udpMsg_t 			*sendLast;
 	udpMsg_t 			*recieveFirst;

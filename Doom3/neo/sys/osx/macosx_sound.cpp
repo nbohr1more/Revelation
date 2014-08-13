@@ -38,9 +38,9 @@ class idAudioHardwareOSX : public idAudioHardware {
 public:
 	idAudioHardwareOSX();
 	~idAudioHardwareOSX();
-
+	
 	bool	Initialize( );
-
+	
 	// OSX driver doesn't support memory map API
 	bool	Lock( void **pDSLockedBuffer, ulong *dwDSLockedBufferSize ) {
 		return false;
@@ -54,9 +54,9 @@ public:
 	int		GetMixBufferSize( void )  {
 		return 0;
 	}
-
+	
 	int		GetNumberOfSpeakers( void );
-
+	
 	// OSX driver doesn't support write API
 	bool	Flush( void ) {
 		return false;
@@ -65,23 +65,23 @@ public:
 	short	*GetMixBuffer( void ) {
 		return NULL;
 	}
-
+	
 private:
 	AudioDeviceID		selectedDevice;
 	bool				activeIOProc;
-
+	
 	void				Reset( void );
 	void				InitFailed( void );
 	const char			*ExtractStatus( OSStatus status );
 	void				GetAvailableNominalSampleRates( void );
-
+	
 	// AudioDevicePropertyListenerProc
 	static OSStatus		DeviceListener(	AudioDeviceID			inDevice,
 										UInt32					inChannel,
 										Boolean					isInput,
 										AudioDevicePropertyID	inPropertyID,
 										void					*inClientData );
-
+										
 	// AudioDeviceIOProc
 	static OSStatus		DeviceIOProc( AudioDeviceID				inDevice,
 									  const AudioTimeStamp		*inNow,

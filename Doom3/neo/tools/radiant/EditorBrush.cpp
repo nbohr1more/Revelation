@@ -152,27 +152,27 @@ idVec3	baseaxis[18] = {
 	idVec3( 0, 0, 1 ),
 	idVec3( 1, 0, 0 ),
 	idVec3( 0, -1, 0 ),
-
+	
 	// floor
 	idVec3( 0, 0, -1 ),
 	idVec3( 1, 0, 0 ),
 	idVec3( 0, -1, 0 ),
-
+	
 	// ceiling
 	idVec3( 1, 0, 0 ),
 	idVec3( 0, 1, 0 ),
 	idVec3( 0, 0, -1 ),
-
+	
 	// west wall
 	idVec3( -1, 0, 0 ),
 	idVec3( 0, 1, 0 ),
 	idVec3( 0, 0, -1 ),
-
+	
 	// east wall
 	idVec3( 0, 1, 0 ),
 	idVec3( 1, 0, 0 ),
 	idVec3( 0, 0, -1 ),
-
+	
 	// south wall
 	idVec3( 0, -1, 0 ),
 	idVec3( 1, 0, 0 ),
@@ -3452,16 +3452,6 @@ void Brush_DrawModel( brush_t *b, bool camera, bool bSelected ) {
 		DrawRenderModel( model, b->owner->origin, axis, camera );
 		glColor4fv( colorSave.ToFloatPtr() );
 		if( bSelected && camera ) {
-			//draw selection tints
-			/*
-			if ( camera && g_PrefsDlg.m_nEntityShowState != ENTITY_WIREFRAME ) {
-			    glPolygonMode ( GL_FRONT_AND_BACK , GL_FILL );
-			    glColor3fv ( g_qeglobals.d_savedinfo.colors[COLOR_SELBRUSHES].ToFloatPtr () );
-			    glEnable ( GL_BLEND );
-			    glBlendFunc ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-			    DrawRenderModel( model, b->owner->origin, axis, camera );
-			}
-			*/
 			//draw white triangle outlines
 			globalImages->BindNull();
 			glPolygonMode( GL_FRONT_AND_BACK, GL_LINE );

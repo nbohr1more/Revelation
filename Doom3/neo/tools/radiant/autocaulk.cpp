@@ -115,8 +115,8 @@ void Select_AutoCaulk() {
 				int i;
 				for( i = 0 ; i < 3 ; i++ ) {
 					if( pSelectedBrush->mins[i] > pScannedBrush->maxs[i] ||
-						pSelectedBrush->maxs[i] < pScannedBrush->mins[i] ) {
-							break;
+							pSelectedBrush->maxs[i] < pScannedBrush->mins[i] ) {
+						break;
 					}
 				}
 				if( i != 3 ) {
@@ -192,7 +192,7 @@ void Select_AutoCaulk() {
 							for( iPoint = 0; iPoint < pSelectedWinding->GetNumPoints(); iPoint++ ) {
 								for( int iXYZ = 0; iXYZ < 3; iXYZ++ ) {
 									float f = floor( ( *pSelectedWinding )[iPoint][iXYZ] + 0.5 );
-									if( ! (	f >= v3ScannedBoundsMins[iXYZ] && f <= v3ScannedBoundsMaxs[iXYZ] ) ) {
+									if( !(	f >= v3ScannedBoundsMins[iXYZ] && f <= v3ScannedBoundsMaxs[iXYZ] ) ) {
 										bWithin = false;
 									}
 								}

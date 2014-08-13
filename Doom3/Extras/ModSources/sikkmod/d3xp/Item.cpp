@@ -674,7 +674,7 @@ void idItemTeam::Spawn( void ) {
 	/*
 	idDict args;
 	idVec3 lightOffset( 0.0f, 20.0f, 0.0f );
-
+	
 	// Set up the flag's dynamic light
 	memset( &itemGlow, 0, sizeof( itemGlow ) );
 	itemGlow.axis = mat3_identity;
@@ -686,7 +686,7 @@ void idItemTeam::Spawn( void ) {
 	itemGlow.shaderParms[ SHADERPARM_GREEN ] = 0.0f;
 	itemGlow.shaderParms[ SHADERPARM_BLUE ] = 0.0f;
 	itemGlow.shaderParms[ SHADERPARM_ALPHA ] = 0.0f;
-
+	
 	// Select a shader based on the team
 	if ( team == 0 )
 		itemGlow.shader = declManager->FindMaterial( "lights/redflag" );
@@ -882,7 +882,7 @@ void idItemTeam::PrivateReturn( void ) {
 	itemGlow.shaderParms[ SHADERPARM_GREEN ] = 0.0f;
 	itemGlow.shaderParms[ SHADERPARM_BLUE ] = 0.0f;
 	itemGlow.shaderParms[ SHADERPARM_ALPHA ] = 0.0f;
-
+	
 	if ( itemGlowHandle != -1 )
 		gameRenderWorld->UpdateLightDef( itemGlowHandle, &itemGlow );*/
 	GetPhysics()->SetLinearVelocity( idVec3( 0, 0, 0 ) );
@@ -920,7 +920,7 @@ void idItemTeam::Event_TakeFlag( idPlayer *player ) {
 	itemGlow.shaderParms[ SHADERPARM_GREEN ] = 1.0f;
 	itemGlow.shaderParms[ SHADERPARM_BLUE ] = 1.0f;
 	itemGlow.shaderParms[ SHADERPARM_ALPHA ] = 1.0f;
-
+	
 	if ( itemGlowHandle != -1 )
 		gameRenderWorld->UpdateLightDef( itemGlowHandle, &itemGlow );*/
 	if( scriptTaken ) {

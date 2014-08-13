@@ -40,11 +40,11 @@ If you have questions concerning this license or the applicable additional terms
 class idCompressor_None : public idCompressor {
 public:
 	idCompressor_None( void );
-
+	
 	void			Init( idFile *f, bool compress, int wordLength );
 	void			FinishCompress( void );
 	float			GetCompressionRatio( void ) const;
-
+	
 	const char 	*GetName( void );
 	const char 	*GetFullPath( void );
 	int				Read( void *outData, int outLength );
@@ -55,7 +55,7 @@ public:
 	void			ForceFlush( void );
 	void			Flush( void );
 	int				Seek( long offset, fsOrigin_t origin );
-
+	
 protected:
 	idFile 		*file;
 	bool			compress;
@@ -233,30 +233,30 @@ int idCompressor_None::Seek( long offset, fsOrigin_t origin ) {
 class idCompressor_BitStream : public idCompressor_None {
 public:
 	idCompressor_BitStream( void ) {}
-
+	
 	void			Init( idFile *f, bool compress, int wordLength );
 	void			FinishCompress( void );
 	float			GetCompressionRatio( void ) const;
-
+	
 	int				Write( const void *inData, int inLength );
 	int				Read( void *outData, int outLength );
-
+	
 protected:
 	byte			buffer[65536];
 	int				wordLength;
-
+	
 	int				readTotalBytes;
 	int				readLength;
 	int				readByte;
 	int				readBit;
 	const byte 	*readData;
-
+	
 	int				writeTotalBytes;
 	int				writeLength;
 	int				writeByte;
 	int				writeBit;
 	byte 			*writeData;
-
+	
 protected:
 	void			InitCompress( const void *inData, const int inLength );
 	void			InitDecompress( void *outData, int outLength );
@@ -580,12 +580,12 @@ float idCompressor_BitStream::GetCompressionRatio( void ) const {
 class idCompressor_RunLength : public idCompressor_BitStream {
 public:
 	idCompressor_RunLength( void ) {}
-
+	
 	void			Init( idFile *f, bool compress, int wordLength );
-
+	
 	int				Write( const void *inData, int inLength );
 	int				Read( void *outData, int outLength );
-
+	
 private:
 	int				runLengthCode;
 };
@@ -685,10 +685,10 @@ int idCompressor_RunLength::Read( void *outData, int outLength ) {
 class idCompressor_RunLength_ZeroBased : public idCompressor_BitStream {
 public:
 	idCompressor_RunLength_ZeroBased( void ) {}
-
+	
 	int				Write( const void *inData, int inLength );
 	int				Read( void *outData, int outLength );
-
+	
 private:
 };
 
@@ -772,14 +772,14 @@ typedef struct nodetype {
 class idCompressor_Huffman : public idCompressor_None {
 public:
 	idCompressor_Huffman( void ) {}
-
+	
 	void			Init( idFile *f, bool compress, int wordLength );
 	void			FinishCompress( void );
 	float			GetCompressionRatio( void ) const;
-
+	
 	int				Write( const void *inData, int inLength );
 	int				Read( void *outData, int outLength );
-
+	
 private:
 	byte			seq[65536];
 	int				bloc;
@@ -787,26 +787,26 @@ private:
 	int				blocIn;
 	int				blocNode;
 	int				blocPtrs;
-
+	
 	int				compressedSize;
 	int				unCompressedSize;
-
+	
 	huffmanNode_t 	*tree;
 	huffmanNode_t 	*lhead;
 	huffmanNode_t 	*ltail;
 	huffmanNode_t 	*loc[HMAX + 1];
 	huffmanNode_t **freelist;
-
+	
 	huffmanNode_t	nodeList[768];
 	huffmanNode_t 	*nodePtrs[768];
-
+	
 private:
 	void			AddRef( byte ch );
 	int				Receive( huffmanNode_t *node, int *ch );
 	void			Transmit( int ch, byte *fout );
 	void			PutBit( int bit, byte *fout, int *offset );
 	int				GetBit( byte *fout, int *offset );
-
+	
 	void			Add_bit( char bit, byte *fout );
 	int				Get_bit();
 	huffmanNode_t **Get_ppnode();
@@ -1301,51 +1301,51 @@ const int AC_LOW_INIT		= 0x0000;
 class idCompressor_Arithmetic : public idCompressor_BitStream {
 public:
 	idCompressor_Arithmetic( void ) {}
-
+	
 	void			Init( idFile *f, bool compress, int wordLength );
 	void			FinishCompress( void );
-
+	
 	int				Write( const void *inData, int inLength );
 	int				Read( void *outData, int outLength );
-
+	
 private:
 	typedef struct acProbs_s {
 		unsigned int	low;
 		unsigned int	high;
 	} acProbs_t;
-
+	
 	typedef struct acSymbol_s {
 		unsigned int	low;
 		unsigned int	high;
 		int				position;
 	} acSymbol_t;
-
+	
 	acProbs_t		probabilities[1 << AC_WORD_LENGTH];
-
+	
 	int				symbolBuffer;
 	int				symbolBit;
-
+	
 	unsigned short	low;
 	unsigned short	high;
 	unsigned short	code;
 	unsigned int	underflowBits;
 	unsigned int	scale;
-
+	
 private:
 	void			InitProbabilities( void );
 	void			UpdateProbabilities( acSymbol_t *symbol );
 	int				ProbabilityForCount( unsigned int count );
-
+	
 	void			CharToSymbol( byte c, acSymbol_t *symbol );
 	void			EncodeSymbol( acSymbol_t *symbol );
-
+	
 	int				SymbolFromCount( unsigned int count, acSymbol_t *symbol );
 	int				GetCurrentCount( void );
 	void			RemoveSymbolFromStream( acSymbol_t *symbol );
-
+	
 	void			PutBit( int bit );
 	int				GetBit( void );
-
+	
 	void			WriteOverflowBits( void );
 };
 
@@ -1684,25 +1684,25 @@ const int LZSS_LENGTH_BITS		= 5;
 class idCompressor_LZSS : public idCompressor_BitStream {
 public:
 	idCompressor_LZSS( void ) {}
-
+	
 	void			Init( idFile *f, bool compress, int wordLength );
 	void			FinishCompress( void );
-
+	
 	int				Write( const void *inData, int inLength );
 	int				Read( void *outData, int outLength );
-
+	
 protected:
 	int				offsetBits;
 	int				lengthBits;
 	int				minMatchWords;
-
+	
 	byte			block[LZSS_BLOCK_SIZE];
 	int				blockSize;
 	int				blockIndex;
-
+	
 	int				hashTable[LZSS_HASH_SIZE];
 	int				hashNext[LZSS_BLOCK_SIZE * 8];
-
+	
 protected:
 	bool			FindMatch( int startWord, int startValue, int &wordOffset, int &numWords );
 	void			AddToHash( int index, int hash );
@@ -1939,7 +1939,7 @@ int idCompressor_LZSS::Read( void *outData, int outLength ) {
 class idCompressor_LZSS_WordAligned : public idCompressor_LZSS {
 public:
 	idCompressor_LZSS_WordAligned( void ) {}
-
+	
 	void			Init( idFile *f, bool compress, int wordLength );
 private:
 	virtual void	CompressBlock( void );
@@ -2069,46 +2069,46 @@ void idCompressor_LZSS_WordAligned::DecompressBlock( void ) {
 class idCompressor_LZW : public idCompressor_BitStream {
 public:
 	idCompressor_LZW( void ) {}
-
+	
 	void			Init( idFile *f, bool compress, int wordLength );
 	void			FinishCompress( void );
-
+	
 	int				Write( const void *inData, int inLength );
 	int				Read( void *outData, int outLength );
-
+	
 protected:
 	int				AddToDict( int w, int k );
 	int				Lookup( int w, int k );
-
+	
 	bool			BumpBits();
-
+	
 	int				WriteChain( int code );
 	void			DecompressBlock();
-
+	
 	static const int LZW_BLOCK_SIZE = 32767;
 	static const int LZW_START_BITS = 9;
 	static const int LZW_FIRST_CODE = ( 1 << ( LZW_START_BITS - 1 ) );
 	static const int LZW_DICT_BITS = 12;
 	static const int LZW_DICT_SIZE = 1 << LZW_DICT_BITS;
-
+	
 	// Dictionary data
 	struct {
 		int k;
 		int w;
 	}				dictionary[LZW_DICT_SIZE];
 	idHashIndex		index;
-
+	
 	int				nextCode;
 	int				codeBits;
-
+	
 	// Block data
 	byte			block[LZW_BLOCK_SIZE];
 	int				blockSize;
 	int				blockIndex;
-
+	
 	// Used by the compressor
 	int				w;
-
+	
 	// Used by the decompressor
 	int				oldCode;
 };

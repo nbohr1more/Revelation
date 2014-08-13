@@ -45,21 +45,21 @@ public:
 	void SetText( const char *msg, bool append = false );
 	void AllowCancel( bool enable );
 	bool CancelPressed( void );
-
+	
 	// Dialog Data
 	//{{AFX_DATA(CWaitDlg)
 	enum { IDD = IDD_DLG_WAIT };
 	CString	waitStr;
 	//}}AFX_DATA
-
-
+	
+	
 	// Overrides
 	// ClassWizard generated virtual function overrides
 	//{{AFX_VIRTUAL(CWaitDlg)
 protected:
 	virtual void DoDataExchange( CDataExchange *pDX );  // DDX/DDV support
 	//}}AFX_VIRTUAL
-
+	
 	// Implementation
 protected:
 
@@ -69,7 +69,7 @@ protected:
 	virtual void OnCancel();
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
-
+	
 private:
 	idStr	text;
 	bool	cancelPressed;

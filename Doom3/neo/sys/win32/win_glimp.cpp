@@ -816,7 +816,7 @@ void GLimp_SwapBuffers( void ) {
 	//
 	if( r_swapInterval.IsModified() ) {
 		r_swapInterval.ClearModified();
-		if( glewIsSupported("WGL_EXT_swap_control") ) {
+		if( glewIsSupported( "WGL_EXT_swap_control" ) ) {
 			wglSwapIntervalEXT( r_swapInterval.GetInteger() );
 		}
 	}

@@ -62,7 +62,7 @@ void R_WriteTGA( const char *filename, const byte *data, int width, int height, 
 	}
 	// swap rgb to bgr
 	for( i = imgStart ; i < bufferSize ; i += 4 ) {
-		buffer[i] = data[i - imgStart + 2];		// blue
+		buffer[i] = data[i - imgStart + 2];			// blue
 		buffer[i + 1] = data[i - imgStart + 1];		// green
 		buffer[i + 2] = data[i - imgStart + 0];		// red
 		buffer[i + 3] = data[i - imgStart + 3];		// alpha
@@ -382,11 +382,11 @@ static void LoadPCX( const char *filename, byte **pic, byte **palette, int *widt
 	xmax = LittleShort( pcx->xmax );
 	ymax = LittleShort( pcx->ymax );
 	if( pcx->manufacturer != 0x0a ||
-			pcx->version != 5 ||
-			pcx->encoding != 1 ||
-			pcx->bits_per_pixel != 8 ||
-			xmax >= 1024 ||
-			ymax >= 1024 ) {
+		pcx->version != 5 ||
+		pcx->encoding != 1 ||
+		pcx->bits_per_pixel != 8 ||
+		xmax >= 1024 ||
+		ymax >= 1024 ) {
 		common->Printf( "Bad pcx file %s (%i x %i) (%i x %i)\n", filename, xmax + 1, ymax + 1, pcx->xmax, pcx->ymax );
 		return;
 	}

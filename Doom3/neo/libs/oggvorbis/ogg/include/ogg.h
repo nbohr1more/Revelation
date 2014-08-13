@@ -24,14 +24,12 @@ extern "C" {
 #include <stddef.h>
 #include "os_types.h"
 
-typedef struct
-{
+typedef struct {
 	void *iov_base;
 	size_t iov_len;
 } ogg_iovec_t;
 
-typedef struct
-{
+typedef struct {
 	long endbyte;
 	int  endbit;
 	
@@ -42,8 +40,7 @@ typedef struct
 
 /* ogg_page is used to encapsulate the data in one Ogg bitstream page *****/
 
-typedef struct
-{
+typedef struct {
 	unsigned char *header;
 	long header_len;
 	unsigned char *body;
@@ -53,8 +50,7 @@ typedef struct
 /* ogg_stream_state contains the current encode/decode state of a logical
    Ogg bitstream **********************************************************/
 
-typedef struct
-{
+typedef struct {
 	unsigned char   *body_data;    /* bytes from packet bodies */
 	long    body_storage;          /* storage elements allocated */
 	long    body_fill;             /* elements stored; fill mark */
@@ -91,8 +87,7 @@ typedef struct
 /* ogg_packet is used to encapsulate the data and metadata belonging
    to a single raw Ogg/Vorbis packet *************************************/
 
-typedef struct
-{
+typedef struct {
 	unsigned char *packet;
 	long  bytes;
 	long  b_o_s;
@@ -107,8 +102,7 @@ typedef struct
                                 layer) also knows about the gap */
 } ogg_packet;
 
-typedef struct
-{
+typedef struct {
 	unsigned char *data;
 	int storage;
 	int fill;

@@ -37,21 +37,21 @@ public:
 
 	rvGEModifierStack( );
 	~rvGEModifierStack( );
-
+	
 	void			BlockNextMerge( void );
-
+	
 	bool			Append( rvGEModifier *modifier );
 	bool			Undo( void );
 	bool			Redo( void );
-
+	
 	void			Reset( void );
-
+	
 	bool			CanUndo( void );
 	bool			CanRedo( void );
-
+	
 	rvGEModifier	*GetUndoModifier( void );
 	rvGEModifier	*GetRedoModifier( void );
-
+	
 protected:
 
 	idList<rvGEModifier *>	mModifiers;

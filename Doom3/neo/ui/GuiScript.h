@@ -45,11 +45,11 @@ class idGuiScriptList;
 class idGuiScript {
 	friend class idGuiScriptList;
 	friend class idWindow;
-
+	
 public:
 	idGuiScript();
 	~idGuiScript();
-
+	
 	bool Parse( idParser *src );
 	void Execute( idWindow *win ) {
 		if( handler ) {
@@ -64,17 +64,17 @@ public:
 		}
 		return sz;
 	}
-
+	
 	void WriteToSaveGame( idFile *savefile );
 	void ReadFromSaveGame( idFile *savefile );
-
+	
 protected:
 	int conditionReg;
 	idGuiScriptList *ifList;
 	idGuiScriptList *elseList;
 	idList<idGSWinVar> parms;
 	void ( *handler )( idWindow *window, idList<idGSWinVar> *src );
-
+	
 };
 
 
@@ -101,7 +101,7 @@ public:
 	void FixupParms( idWindow *win );
 	void ReadFromDemoFile( class idDemoFile *f ) {};
 	void WriteToDemoFile( class idDemoFile *f ) {};
-
+	
 	void WriteToSaveGame( idFile *savefile );
 	void ReadFromSaveGame( idFile *savefile );
 };

@@ -41,7 +41,7 @@ If you have questions concerning this license or the applicable additional terms
 template <class T, int N>
 struct MyArray {
 	MyArray() : s( 0 ) {}
-
+	
 	MyArray( const MyArray<T, N> &cpy ) : s( cpy.s ) {
 		for( int i = 0; i < s; i++ ) {
 			v[i] = cpy.v[i];
@@ -136,7 +136,7 @@ struct polyhedron {
 	MyArrayVec4 v;
 	MyArrayPoly  p;
 	MyArrayEdge  e;
-
+	
 	void add_quad( int va, int vb, int vc, int vd ) {
 		poly pg;
 		pg.vi = four_ints( va, vb, vc, vd );
@@ -144,7 +144,7 @@ struct polyhedron {
 		pg.plane = compute_homogeneous_plane( v[va], v[vb], v[vc] );
 		p.push_back( pg );
 	}
-
+	
 	void discard_neighbor_info() {
 		for( unsigned int i = 0; i < p.size(); i++ ) {
 			MyArrayInt &ni = p[i].ni;
@@ -153,7 +153,7 @@ struct polyhedron {
 			}
 		}
 	}
-
+	
 	void compute_neighbors() {
 		e.empty();
 		discard_neighbor_info();
@@ -203,21 +203,21 @@ struct polyhedron {
 			}
 		}
 	}
-
+	
 	void recompute_planes() {
 		// for each polygon
 		for( unsigned int i = 0; i < p.size(); i++ ) {
 			p[i].plane = compute_homogeneous_plane( v[p[i].vi[0]], v[p[i].vi[1]], v[p[i].vi[2]] );
 		}
 	}
-
+	
 	void transform( const idMat4 &m ) {
 		for( unsigned int i = 0; i < v.size(); i++ ) {
 			v[i] = m * v[i];
 		}
 		recompute_planes();
 	}
-
+	
 };
 
 // make a unit cube

@@ -274,10 +274,10 @@ void idGuiModel::AdvanceSurf() {
 		s.color[3] = surf->color[3];
 		s.material = surf->material;
 	} else {
-		s.color[0] = 1;
-		s.color[1] = 1;
-		s.color[2] = 1;
-		s.color[3] = 1;
+		s.color[0] =
+			s.color[1] =
+				s.color[2] =
+					s.color[3] = 1.0f;
 		s.material = tr.defaultMaterial;
 	}
 	s.numIndexes = 0;

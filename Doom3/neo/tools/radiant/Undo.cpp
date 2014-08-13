@@ -82,7 +82,7 @@ int Undo_MemorySize( void ) {
 	undo_t *undo;
 	brush_t *pBrush;
 	entity_t *pEntity;
-
+	
 	size = 0;
 	for (undo = g_undolist; undo; undo = undo->next)
 	{

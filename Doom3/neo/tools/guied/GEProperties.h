@@ -40,22 +40,22 @@ class rvGEProperties {
 public:
 
 	rvGEProperties( );
-
+	
 	bool	Create( HWND parent, bool visible );
 	void	Show( bool visibile );
-
+	
 	void	SetWorkspace( rvGEWorkspace *workspace );
-
+	
 	void	Update( void );
-
+	
 	HWND	GetWindow( void );
-
+	
 protected:
 
 	bool	AddModifier( const char *name, const char *value );
-
+	
 	static LRESULT CALLBACK WndProc( HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam );
-
+	
 	HWND				mWnd;
 	rvPropertyGrid		mGrid;
 	rvGEWindowWrapper	*mWrapper;

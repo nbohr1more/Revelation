@@ -39,15 +39,15 @@ typedef struct {
 class idGuiModel {
 public:
 	idGuiModel();
-
+	
 	void	Clear();
-
+	
 	void	WriteToDemo( idDemoFile *demo );
 	void	ReadFromDemo( idDemoFile *demo );
-
+	
 	void	EmitToCurrentView( float modelMatrix[16], bool depthHack );
 	void	EmitFullScreen();
-
+	
 	// these calls are forwarded from the renderer
 	void	SetColor( float r, float g, float b, float a );
 	void	DrawStretchPic( const idDrawVert *verts, const glIndex_t *indexes, int vertCount, int indexCount, const idMaterial *hShader,
@@ -55,14 +55,14 @@ public:
 	void	DrawStretchPic( float x, float y, float w, float h,
 							float s1, float t1, float s2, float t2, const idMaterial *hShader );
 	void	DrawStretchTri( idVec2 p1, idVec2 p2, idVec2 p3, idVec2 t1, idVec2 t2, idVec2 t3, const idMaterial *material );
-
+	
 	//---------------------------
 private:
 	void	AdvanceSurf();
 	void	EmitSurface( guiModelSurface_t *surf, float modelMatrix[16], float modelViewMatrix[16], bool depthHack );
-
+	
 	guiModelSurface_t		*surf;
-
+	
 	idList<guiModelSurface_t>	surfaces;
 	idList<glIndex_t>		indexes;
 	idList<idDrawVert>	verts;

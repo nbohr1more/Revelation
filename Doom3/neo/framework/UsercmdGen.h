@@ -111,7 +111,7 @@ public:
 	signed char impulse;						// impulse command
 	byte		flags;							// additional flags
 	int			sequence;						// just for debugging
-
+	
 public:
 	void		ByteSwap();						// on big endian systems, byte swap the shorts and ints
 	bool		operator==( const usercmd_t &rhs ) const;
@@ -127,50 +127,50 @@ const int MAX_BUFFERED_USERCMD = 64;
 class idUsercmdGen {
 public:
 	virtual				~idUsercmdGen( void ) {}
-
+	
 	// Sets up all the cvars and console commands.
 	virtual	void		Init( void ) = 0;
-
+	
 	// Prepares for a new map.
 	virtual void		InitForNewMap( void ) = 0;
-
+	
 	// Shut down.
 	virtual void		Shutdown( void ) = 0;
-
+	
 	// Clears all key states and face straight.
 	virtual	void		Clear( void ) = 0;
-
+	
 	// Clears view angles.
 	virtual void		ClearAngles( void ) = 0;
-
+	
 	// When the console is down or the menu is up, only emit default usercmd, so the player isn't moving around.
 	// Each subsystem (session and game) may want an inhibit will OR the requests.
 	virtual void		InhibitUsercmd( inhibit_t subsystem, bool inhibit ) = 0;
-
+	
 	// Returns a buffered command for the given game tic.
 	virtual usercmd_t	TicCmd( int ticNumber ) = 0;
-
+	
 	// Called async at regular intervals.
 	virtual	void		UsercmdInterrupt( void ) = 0;
-
+	
 	// Set a value that can safely be referenced by UsercmdInterrupt() for each key binding.
 	virtual	int			CommandStringUsercmdData( const char *cmdString ) = 0;
-
+	
 	// Returns the number of user commands.
 	virtual int			GetNumUserCommands( void ) = 0;
-
+	
 	// Returns the name of a user command via index.
 	virtual const char *GetUserCommandName( int index ) = 0;
-
+	
 	// Continuously modified, never reset. For full screen guis.
 	virtual void		MouseState( int *x, int *y, int *button, bool *down ) = 0;
-
+	
 	// Directly sample a button.
 	virtual int			ButtonState( int key ) = 0;
-
+	
 	// Directly sample a keystate.
 	virtual int			KeyState( int key ) = 0;
-
+	
 	// Directly sample a usercmd.
 	virtual usercmd_t	GetDirectUsercmd( void ) = 0;
 };

@@ -78,7 +78,7 @@ public:
 	virtual int				VPrintf( const char *fmt, va_list arg );
 	// Write a string with high precision floating point numbers to the file.
 	virtual int				WriteFloatString( const char *fmt, ... ) id_attribute( ( format( printf, 2, 3 ) ) );
-
+	
 	// Endian portable alternatives to Read(...)
 	virtual int				ReadInt( int &value );
 	virtual int				ReadUnsignedInt( unsigned int &value );
@@ -94,7 +94,7 @@ public:
 	virtual int				ReadVec4( idVec4 &vec );
 	virtual int				ReadVec6( idVec6 &vec );
 	virtual int				ReadMat3( idMat3 &mat );
-
+	
 	// Endian portable alternatives to Write(...)
 	virtual int				WriteInt( const int value );
 	virtual int				WriteUnsignedInt( const unsigned int value );
@@ -115,14 +115,14 @@ public:
 
 class idFile_Memory : public idFile {
 	friend class			idFileSystemLocal;
-
+	
 public:
 	idFile_Memory( void );	// file for writing without name
 	idFile_Memory( const char *name );	// file for writing
 	idFile_Memory( const char *name, char *data, int length );	// file for writing
 	idFile_Memory( const char *name, const char *data, int length );	// file for reading
 	virtual					~idFile_Memory( void );
-
+	
 	virtual const char 	*GetName( void ) {
 		return name.c_str();
 	}
@@ -137,7 +137,7 @@ public:
 	virtual void			ForceFlush( void );
 	virtual void			Flush( void );
 	virtual int				Seek( long offset, fsOrigin_t origin );
-
+	
 	// changes memory file to read only
 	virtual void			MakeReadOnly( void );
 	// clear the file
@@ -153,7 +153,7 @@ public:
 		assert( g > 0 );
 		granularity = g;
 	}
-
+	
 private:
 	idStr					name;			// name of the file
 	int						mode;			// open mode
@@ -168,12 +168,12 @@ private:
 
 class idFile_BitMsg : public idFile {
 	friend class			idFileSystemLocal;
-
+	
 public:
 	idFile_BitMsg( idBitMsg &msg );
 	idFile_BitMsg( const idBitMsg &msg );
 	virtual					~idFile_BitMsg( void );
-
+	
 	virtual const char 	*GetName( void ) {
 		return name.c_str();
 	}
@@ -188,7 +188,7 @@ public:
 	virtual void			ForceFlush( void );
 	virtual void			Flush( void );
 	virtual int				Seek( long offset, fsOrigin_t origin );
-
+	
 private:
 	idStr					name;			// name of the file
 	int						mode;			// open mode
@@ -198,11 +198,11 @@ private:
 
 class idFile_Permanent : public idFile {
 	friend class			idFileSystemLocal;
-
+	
 public:
 	idFile_Permanent( void );
 	virtual					~idFile_Permanent( void );
-
+	
 	virtual const char 	*GetName( void ) {
 		return name.c_str();
 	}
@@ -217,12 +217,12 @@ public:
 	virtual void			ForceFlush( void );
 	virtual void			Flush( void );
 	virtual int				Seek( long offset, fsOrigin_t origin );
-
+	
 	// returns file pointer
 	FILE 					*GetFilePtr( void ) {
 		return o;
 	}
-
+	
 private:
 	idStr					name;			// relative path of the file - relative path
 	idStr					fullPath;		// full file path - OS path
@@ -235,11 +235,11 @@ private:
 
 class idFile_InZip : public idFile {
 	friend class			idFileSystemLocal;
-
+	
 public:
 	idFile_InZip( void );
 	virtual					~idFile_InZip( void );
-
+	
 	virtual const char 	*GetName( void ) {
 		return name.c_str();
 	}
@@ -254,7 +254,7 @@ public:
 	virtual void			ForceFlush( void );
 	virtual void			Flush( void );
 	virtual int				Seek( long offset, fsOrigin_t origin );
-
+	
 private:
 	idStr					name;			// name of the file in the pak
 	idStr					fullPath;		// full file path including pak file name

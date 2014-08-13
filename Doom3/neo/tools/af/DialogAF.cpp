@@ -319,18 +319,18 @@ void AFEditorRun( void ) {
 	MSG *msg = &m_msgCur;
 #endif
 	BOOL bDoingBackgroundProcessing = TRUE;
-	while (bDoingBackgroundProcessing) { 
+	while( bDoingBackgroundProcessing ) {
 		while( ::PeekMessage( msg, NULL, NULL, NULL, PM_NOREMOVE ) ) {
 			// pump message
 			if( !AfxGetApp()->PumpMessage() ) {
-				bDoingBackgroundProcessing = FALSE; 
-				::PostQuitMessage(0); 
-				break; 
+				bDoingBackgroundProcessing = FALSE;
+				::PostQuitMessage( 0 );
+				break;
 			}
 		}
 		// let MFC do its idle processing
 		LONG lIdle = 0;
-		while (AfxGetApp()->OnIdle(lIdle++));
+		while( AfxGetApp()->OnIdle( lIdle++ ) );
 	}
 }
 

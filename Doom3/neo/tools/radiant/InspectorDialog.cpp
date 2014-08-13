@@ -133,7 +133,7 @@ void CInspectorDialog::OnSize( UINT nType, int cx, int cy ) {
 	rect.bottom -= 5 + tabRect.Height();
 	m_Tabs.SetWindowPos( NULL, tabRect.left, tabRect.top, tabRect.Width(), tabRect.Height(), 0 );
 	for( pos = m_Windows.GetStartPosition(); pos != NULL ; ) {
-		m_Windows.GetNextAssoc( pos, wID, ( void *& )info );
+		m_Windows.GetNextAssoc( pos, wID, ( void  *& )info );
 		if( ( info->m_State == DockedWindowInfo::DOCKED ) ) {
 			info->m_Window->SetWindowPos( NULL, rect.left, rect.top, rect.Width(), rect.Height(), 0 );
 		}

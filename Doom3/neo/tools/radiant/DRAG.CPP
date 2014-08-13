@@ -350,14 +350,14 @@ void Drag_Begin( int x, int y, int buttons,
 								idMaterial	*pTex = declManager->FindMaterial(g_qeglobals.d_texturewin.texdef.name);
 								if (pTex) {
 									idVec3	vColor = pTex->getColor();
-
+			
 									float	fLargest = 0.0f;
 									for (int i = 0; i < 3; i++) {
 										if (vColor[i] > fLargest) {
 											fLargest = vColor[i];
 										}
 									}
-
+			
 									if (fLargest == 0.0f) {
 										vColor[0] = vColor[1] = vColor[2] = 1.0f;
 									}
@@ -367,7 +367,7 @@ void Drag_Begin( int x, int y, int buttons,
 											vColor[i] *= fScale;
 										}
 									}
-
+			
 									strBuff.Format("%f %f %f", pTex->getColor().x, pTex->getColor().y, pTex->getColor().z);
 									SetKeyValue(t.brush->owner, "_color", strBuff.GetBuffer(0));
 									Sys_UpdateWindows(W_ALL);
@@ -377,7 +377,7 @@ void Drag_Begin( int x, int y, int buttons,
 								Sys_Status("Can't select an entity brush face\n");
 							}
 						}
-
+			
 						else {
 			*/
 			// strcpy(t.face->texdef.name,g_qeglobals.d_texturewin.texdef.name);

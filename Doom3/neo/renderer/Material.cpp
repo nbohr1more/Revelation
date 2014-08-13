@@ -63,7 +63,7 @@ typedef struct mtrParsingData_s {
 	float			shaderRegisters[MAX_EXPRESSION_REGISTERS];
 	expOp_t			shaderOps[MAX_EXPRESSION_OPS];
 	shaderStage_t	parseStages[MAX_SHADER_STAGES];
-
+	
 	bool			registersAreConstant;
 	bool			forceOverlays;
 } mtrParsingData_t;
@@ -237,24 +237,24 @@ static infoParm_t	infoParms[] = {
 	{"flashlight_trigger",	0,	0,	CONTENTS_FLASHLIGHT_TRIGGER }, // used for triggers that are activated by the flashlight
 	{"nonsolid",	1,	0,	0 },					// clears the solid flag
 	{"nullNormal",	0,	SURF_NULLNORMAL, 0 },		// renderbump will draw as 0x80 0x80 0x80
-
+	
 	// utility relevant attributes
 	{"areaportal",	1,	0,	CONTENTS_AREAPORTAL },	// divides areas
 	{"qer_nocarve",	1,	0,	CONTENTS_NOCSG},		// don't cut brushes in editor
-
+	
 	{"discrete",	1,	SURF_DISCRETE,	0 },		// surfaces should not be automatically merged together or
 	// clipped to the world,
 	// because they represent discrete objects like gui shaders
 	// mirrors, or autosprites
 	{"noFragment",	0,	SURF_NOFRAGMENT,	0 },
-
+	
 	{"slick",		0,	SURF_SLICK,		0 },
 	{"collision",	0,	SURF_COLLISION,	0 },
 	{"noimpact",	0,	SURF_NOIMPACT,	0 },		// don't make impact explosions or marks
 	{"nodamage",	0,	SURF_NODAMAGE,	0 },		// no falling damage when hitting
 	{"ladder",		0,	SURF_LADDER,	0 },		// climbable
 	{"nosteps",		0,	SURF_NOSTEPS,	0 },		// no footsteps
-
+	
 	// material types for particle, sound, footstep feedback
 	{"metal",		0,  SURFTYPE_METAL,		0 },	// metal
 	{"stone",		0,  SURFTYPE_STONE,		0 },	// stone
@@ -265,7 +265,7 @@ static infoParm_t	infoParms[] = {
 	{"glass",		0,	SURFTYPE_GLASS,		0 },	// glass
 	{"plastic",		0,	SURFTYPE_PLASTIC,	0 },	// plastic
 	{"ricochet",	0,	SURFTYPE_RICOCHET,	0 },	// behaves like metal but causes a ricochet sound
-
+	
 	// unassigned surface types
 	{"surftype10",	0,	SURFTYPE_10,	0 },
 	{"surftype11",	0,	SURFTYPE_11,	0 },
@@ -702,9 +702,9 @@ void idMaterial::ClearStage( shaderStage_t *ss ) {
 	ss->drawStateBits = 0;
 	ss->conditionRegister = GetExpressionConstant( 1 );
 	ss->color.registers[0] =
-		ss->color.registers[1] =
-			ss->color.registers[2] =
-				ss->color.registers[3] = GetExpressionConstant( 1 );
+	ss->color.registers[1] =
+	ss->color.registers[2] =
+	ss->color.registers[3] = GetExpressionConstant( 1 );
 }
 
 /*
@@ -840,8 +840,8 @@ void idMaterial::ParseVertexParm( idLexer &src, newShaderStage_t *newStage ) {
 	src.ReadTokenOnLine( &token );
 	if( !token[0] || token.Icmp( "," ) ) {
 		newStage->vertexParms[parm][1] =
-			newStage->vertexParms[parm][2] =
-				newStage->vertexParms[parm][3] = newStage->vertexParms[parm][0];
+		newStage->vertexParms[parm][2] =
+		newStage->vertexParms[parm][3] = newStage->vertexParms[parm][0];
 		return;
 	}
 	newStage->vertexParms[parm][1] = ParseExpression( src );

@@ -327,11 +327,11 @@ class idDEntry : public idStrList {
 public:
 	idDEntry() {}
 	virtual				~idDEntry() {}
-
+	
 	bool				Matches( const char *directory, const char *extension ) const;
 	void				Init( const char *directory, const char *extension, const idStrList &list );
 	void				Clear( void );
-
+	
 private:
 	idStr				directory;
 	idStr				extension;
@@ -340,7 +340,7 @@ private:
 class idFileSystemLocal : public idFileSystem {
 public:
 	idFileSystemLocal( void );
-
+	
 	virtual void			Init( void );
 	virtual void			StartBackgroundDownloadThread( void );
 	virtual void			Restart( void );
@@ -399,26 +399,26 @@ public:
 	virtual const idDict 	*GetMapDecl( int i );
 	virtual void			FindMapScreenshot( const char *path, char *buf, int len );
 	virtual bool			FilenameCompare( const char *s1, const char *s2 ) const;
-
+	
 	static void				Dir_f( const idCmdArgs &args );
 	static void				DirTree_f( const idCmdArgs &args );
 	static void				Path_f( const idCmdArgs &args );
 	static void				TouchFile_f( const idCmdArgs &args );
 	static void				TouchFileList_f( const idCmdArgs &args );
-
+	
 private:
 	friend dword 			BackgroundDownloadThread( void *parms );
-
+	
 	searchpath_t 			*searchPaths;
 	int						readCount;			// total bytes read
 	int						loadCount;			// total files read
 	int						loadStack;			// total files in memory
 	idStr					gameFolder;			// this will be a single name without separators
-
+	
 	searchpath_t			*addonPaks;			// not loaded up, but we saw them
-
+	
 	idDict					mapDict;			// for GetMapDecl
-
+	
 	static idCVar			fs_debug;
 	static idCVar			fs_restrict;
 	static idCVar			fs_copyfiles;
@@ -430,11 +430,11 @@ private:
 	static idCVar			fs_game_base;
 	static idCVar			fs_caseSensitiveOS;
 	static idCVar			fs_searchAddons;
-
+	
 	backgroundDownload_t 	*backgroundDownloads;
 	backgroundDownload_t	defaultBackgroundDownload;
 	xthreadInfo				backgroundThread;
-
+	
 	idList<pack_t *>		serverPaks;
 	bool					loadedFileFromDir;		// set to true once a file was loaded from a directory - can't switch to pure anymore
 	idList<int>				restartChecksums;		// used during a restart to set things in right order
@@ -442,15 +442,15 @@ private:
 	int						restartGamePakChecksum;
 	int						gameDLLChecksum;		// the checksum of the last loaded game DLL
 	int						gamePakChecksum;		// the checksum of the pak holding the loaded game DLL
-
+	
 	int						gamePakForOS[ MAX_GAME_OS ];
-
+	
 	idDEntry				dir_cache[ MAX_CACHED_DIRS ]; // fifo
 	int						dir_cache_index;
 	int						dir_cache_count;
-
+	
 	int						d3xp;	// 0: didn't check, -1: not installed, 1: installed
-
+	
 private:
 	void					ReplaceSeparators( idStr &path, char sep = PATHSEPERATOR_CHAR );
 	long					HashFileName( const char *fname ) const;
@@ -462,7 +462,7 @@ private:
 	int						AddUnique( const char *name, idStrList &list, idHashIndex &hashIndex ) const;
 	void					GetExtensionList( const char *extension, idStrList &extensionList ) const;
 	int						GetFileList( const char *relativePath, const idStrList &extensions, idStrList &list, idHashIndex &hashIndex, bool fullRelativePath, const char *gamedir = NULL );
-
+	
 	int						GetFileListTree( const char *relativePath, const idStrList &extensions, idStrList &list, idHashIndex &hashIndex, const char *gamedir = NULL );
 	pack_t 				*LoadZipFile( const char *zipfile );
 	void					AddGameDirectory( const char *path, const char *dir );
@@ -480,7 +480,7 @@ private:
 	pureStatus_t			GetPackStatus( pack_t *pak );
 	addonInfo_t 			*ParseAddonDef( const char *buf, const int len );
 	void					FollowAddonDependencies( pack_t *pak );
-
+	
 	static size_t			CurlWriteFunction( void *ptr, size_t size, size_t nmemb, void *stream );
 	// curl_progress_callback in curl.h
 	static int				CurlProgressFunction( void *clientp, double dltotal, double dlnow, double ultotal, double ulnow );
