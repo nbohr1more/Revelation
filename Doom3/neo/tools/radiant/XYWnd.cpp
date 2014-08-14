@@ -2029,23 +2029,14 @@ void CXYWnd::XY_ToGridPoint( int x, int y, idVec3 &point ) {
 	if( m_nViewType == XY ) {
 		point[0] = m_vOrigin[0] + ( x - m_nWidth / 2 ) / m_fScale;
 		point[1] = m_vOrigin[1] + ( y - m_nHeight / 2 ) / m_fScale;
-		// point[2] = 0;
 		point[0] = floor( point[0] / g_qeglobals.d_gridsize + 0.5 ) * g_qeglobals.d_gridsize;
 		point[1] = floor( point[1] / g_qeglobals.d_gridsize + 0.5 ) * g_qeglobals.d_gridsize;
 	} else if( m_nViewType == YZ ) {
-		//
-		// point[0] = 0; point[1] = m_vOrigin[0] + (x - m_nWidth / 2) / m_fScale; point[2]
-		// = m_vOrigin[1] + (y - m_nHeight / 2) / m_fScale;
-		//
 		point[1] = m_vOrigin[1] + ( x - m_nWidth / 2 ) / m_fScale;
 		point[2] = m_vOrigin[2] + ( y - m_nHeight / 2 ) / m_fScale;
 		point[1] = floor( point[1] / g_qeglobals.d_gridsize + 0.5 ) * g_qeglobals.d_gridsize;
 		point[2] = floor( point[2] / g_qeglobals.d_gridsize + 0.5 ) * g_qeglobals.d_gridsize;
 	} else {
-		//
-		// point[1] = 0; point[0] = m_vOrigin[0] + (x - m_nWidth / 2) / m_fScale; point[2]
-		// = m_vOrigin[1] + (y - m_nHeight / 2) / m_fScale;
-		//
 		point[0] = m_vOrigin[0] + ( x - m_nWidth / 2 ) / m_fScale;
 		point[2] = m_vOrigin[2] + ( y - m_nHeight / 2 ) / m_fScale;
 		point[0] = floor( point[0] / g_qeglobals.d_gridsize + 0.5 ) * g_qeglobals.d_gridsize;
@@ -2075,33 +2066,33 @@ void CXYWnd::XY_MouseDown( int x, int y, int buttons ) {
 	dir.Zero();
 	if( m_nViewType == XY ) {
 		origin[2] = HUGE_DISTANCE;
-		dir[2] = -1;
-		right[0] = 1 / m_fScale;
-		right[1] = 0;
-		right[2] = 0;
-		up[0] = 0;
-		up[1] = 1 / m_fScale;
-		up[2] = 0;
+		dir[2] = -1.0f;
+		right[0] = 1.0f / m_fScale;
+		right[1] = 0.0f;
+		right[2] = 0.0f;
+		up[0] = 0.0f;
+		up[1] = 1.0f / m_fScale;
+		up[2] = 0.0f;
 		point[2] = g_pParentWnd->GetCamera()->Camera().origin[2];
 	} else if( m_nViewType == YZ ) {
 		origin[0] = HUGE_DISTANCE;
-		dir[0] = -1;
-		right[1] = 1 / m_fScale;
-		right[2] = 0;
-		right[0] = 0;
-		up[0] = 0;
-		up[2] = 1 / m_fScale;
-		up[1] = 0;
+		dir[0] = -1.0f;
+		right[1] = 1.0f / m_fScale;
+		right[2] = 0.0f;
+		right[0] = 0.0f;
+		up[0] = 0.0f;
+		up[2] = 1.0f / m_fScale;
+		up[1] = 0.0f;
 		point[0] = g_pParentWnd->GetCamera()->Camera().origin[0];
 	} else {
 		origin[1] = HUGE_DISTANCE;
-		dir[1] = -1;
-		right[0] = 1 / m_fScale;
-		right[2] = 0;
-		right[1] = 0;
-		up[0] = 0;
-		up[2] = 1 / m_fScale;
-		up[1] = 0;
+		dir[1] = -1.0f;
+		right[0] = 1.0f / m_fScale;
+		right[2] = 0.0f;
+		right[1] = 0.0f;
+		up[0] = 0.0f;
+		up[2] = 1.0f / m_fScale;
+		up[1] = 0.0f;
 		point[1] = g_pParentWnd->GetCamera()->Camera().origin[1];
 	}
 	dragOrigin = m_vOrigin;

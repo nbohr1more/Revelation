@@ -1746,8 +1746,8 @@ void Select_SetDefaultTexture( const idMaterial *mat, bool fitScale, bool setTex
 		brushprimit_tex.coords[0][0] = 1.0f;
 		brushprimit_tex.coords[1][1] = 1.0f;
 	} else {
-		tex.scale[0] = ( g_PrefsDlg.m_bHiColorTextures ) ? 0.5 : 1;
-		tex.scale[1] = ( g_PrefsDlg.m_bHiColorTextures ) ? 0.5 : 1;
+		tex.scale[0] = ( g_PrefsDlg.m_bHiColorTextures ) ? 0.5f : 1.0f;
+		tex.scale[1] = ( g_PrefsDlg.m_bHiColorTextures ) ? 0.5f : 1.0f;
 	}
 	tex.SetName( mat->GetName() );
 	Texture_SetTexture( &tex, &brushprimit_tex, fitScale, setTexture );

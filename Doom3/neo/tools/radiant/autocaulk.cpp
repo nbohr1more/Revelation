@@ -222,8 +222,8 @@ void Select_AutoCaulk() {
 			//
 			texdef_t tex;
 			memset( &tex, 0, sizeof( tex ) );
-			tex.scale[0] = 1;
-			tex.scale[1] = 1;
+			tex.scale[0] = 1.0f;
+			tex.scale[1] = 1.0f;
 			tex.SetName( pCaulk->GetName() );
 			for( int iListEntry = 0; iListEntry < FacesToCaulk.Num(); iListEntry++ ) {
 				PairBrushFace_t &PairBrushFace = FacesToCaulk[iListEntry];

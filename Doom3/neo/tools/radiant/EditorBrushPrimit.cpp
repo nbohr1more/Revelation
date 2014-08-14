@@ -158,9 +158,9 @@ void EmitBrushPrimitTextureCoordinates( face_t *f, idWinding *w, patchMesh_t *pa
 	// scale[0]==0 && scale[1]==0 in old code
 	//
 	if(	f->brushprimit_texdef.coords[0][0] == 0 &&
-			f->brushprimit_texdef.coords[1][0] == 0 &&
-			f->brushprimit_texdef.coords[0][1] == 0 &&
-			f->brushprimit_texdef.coords[1][1] == 0 ) {
+		f->brushprimit_texdef.coords[1][0] == 0 &&
+		f->brushprimit_texdef.coords[0][1] == 0 &&
+		f->brushprimit_texdef.coords[1][1] == 0 ) {
 		f->brushprimit_texdef.coords[0][0] = 1.0f;
 		f->brushprimit_texdef.coords[1][1] = 1.0f;
 		ConvertTexMatWithQTexture( &f->brushprimit_texdef, NULL, &f->brushprimit_texdef, f->d_texture );
@@ -554,13 +554,8 @@ void Face_FitTexture_BrushPrimit( face_t *f, idVec3 mins, idVec3 maxs, float hei
 	int						i, j;
 	double					val;
 	idVec3D					M[3], D[2];
-	// idVec3D N[2],Mf[2];
 	brushprimit_texdef_t	N;
 	idVec3D					Mf[2];
-	//memset(f->brushprimit_texdef.coords, 0, sizeof(f->brushprimit_texdef.coords));
-	//f->brushprimit_texdef.coords[0][0] = 1.0f;
-	//f->brushprimit_texdef.coords[1][1] = 1.0f;
-	//ConvertTexMatWithQTexture(&f->brushprimit_texdef, NULL, &f->brushprimit_texdef, f->d_texture);
 	//
 	// we'll be working on a standardized texture size ConvertTexMatWithQTexture(
 	// &f->brushprimit_texdef, f->d_texture, &f->brushprimit_texdef, NULL ); compute
@@ -605,21 +600,6 @@ void Face_FitTexture_BrushPrimit( face_t *f, idVec3 mins, idVec3 maxs, float hei
 	D[1][1] = 0.0f;
 	D[1][2] = height;
 	MatrixForPoints( M, D, &N );
-#if 0
-	//
-	// FIT operation gives coordinates of three points of the bounding box in (S',T'),
-	// our target axis base A(S',T')=(0,0) B(S',T')=(nWidth,0) C(S',T')=(0,nHeight)
-	// and we have them in (S,T) axis base: A(S,T)=(BBoxSTMin[0],BBoxSTMin[1])
-	// B(S,T)=(BBoxSTMax[0],BBoxSTMin[1]) C(S,T)=(BBoxSTMin[0],BBoxSTMax[1]) we
-	// compute the N transformation so that: A(S',T') = N * A(S,T)
-	//
-	N[0][0] = ( BBoxSTMax[0] - BBoxSTMin[0] ) / width;
-	N[0][1] = 0.0f;
-	N[0][2] = BBoxSTMin[0];
-	N[1][0] = 0.0f;
-	N[1][1] = ( BBoxSTMax[1] - BBoxSTMin[1] ) / height;
-	N[1][2] = BBoxSTMin[1];
-#endif
 	// the final matrix is the product (Mf stands for Mfit)
 	Mf[0][0] = N.coords[0][0] *
 			   f->brushprimit_texdef.coords[0][0] +
@@ -650,10 +630,6 @@ void Face_FitTexture_BrushPrimit( face_t *f, idVec3 mins, idVec3 maxs, float hei
 	// copy back
 	VectorCopy( Mf[0], f->brushprimit_texdef.coords[0] );
 	VectorCopy( Mf[1], f->brushprimit_texdef.coords[1] );
-	//
-	// handle the texture size ConvertTexMatWithQTexture( &f->brushprimit_texdef,
-	// NULL, &f->brushprimit_texdef, f->d_texture );
-	//
 }
 
 /*
@@ -747,21 +723,7 @@ void TextureLockTransformation_BrushPrimit( face_t *f ) {
 	// ) <-> (0,0,0) texS texT ( expressed world axis base ) input: Orig, texS, texT
 	// (and the global locking params) ouput: rOrig, rvecS, rvecT, rNormal
 	//
-	if( txlock_bRotation ) {
-		/*
-				// rotation vector
-				vRotate.x = vec3_origin.x;
-				vRotate.y = vec3_origin.y;
-				vRotate.z = vec3_origin.z;
-				vRotate[txl_nAxis] = txl_fDeg;
-				VectorRotate3Origin(Orig, vRotate, txl_vOrigin, rOrig);
-				VectorRotate3Origin(texS, vRotate, txl_vOrigin, rvecS);
-				VectorRotate3Origin(texT, vRotate, txl_vOrigin, rvecT);
-		
-				// compute normal of plane after rotation
-				VectorRotate3(f->plane.Normal(), vRotate, rNormal);
-		*/
-	} else {
+	if( !txlock_bRotation ) {
 		VectorSubtract( Orig, txl_origin, temp );
 		for( j = 0; j < 3; j++ ) {
 			rOrig[j] = DotProduct( temp, txl_matrix[j] ) + txl_origin[j];
@@ -907,8 +869,8 @@ void Face_GetScale_BrushPrimit( face_t *face, float *s, float *t, float *rot ) {
 	float					aux[2][3];
 	float					m[2][3];
 	memset( &m, 0, sizeof( float ) * 6 );
-	m[0][0] = 1;
-	m[1][1] = 1;
+	m[0][0] = 1.0f;
+	m[1][1] = 1.0f;
 	m[0][2] = -Os;
 	m[1][2] = -Ot;
 	BPMatMul( m, pBP->coords, aux );

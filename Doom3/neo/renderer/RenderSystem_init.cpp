@@ -346,6 +346,22 @@ static void R_CheckPortableExtensions( void ) {
 		common->Printf( "GL_NV_register_combiners: not availiable!\n" );
 		glConfig.registerCombinersAvailable = false;
 	}
+	// GL2_seperate_stencil
+	if ( glConfig.glVersion >= 2.0f ) {
+		common->Printf( "...initializing GL2_separate_stencil\n" );
+		glConfig.gl2TwoSidedStencilAvailable = true;
+	} else {
+		common->Printf( "GL2_separate_stencil: not availiable!\n" );
+		glConfig.gl2TwoSidedStencilAvailable = false;
+	}
+	// GL_ATI_seperate_stencil
+	if( glewIsSupported( "GL_ATI_separate_stencil" ) ) {
+		common->Printf( "...initializing GL_ATI_separate_stencil\n" );
+		glConfig.atiTwoSidedStencilAvailable = true;
+	} else {
+		common->Printf( "GL_ATI_separate_stencil: not availiable!\n" );
+		glConfig.atiTwoSidedStencilAvailable = false;
+	}
 	// GL_EXT_stencil_two_side
 	if( glewIsSupported( "GL_EXT_stencil_two_side" ) ) {
 		common->Printf( "...initializing GL_EXT_stencil_two_side\n" );
@@ -365,14 +381,6 @@ static void R_CheckPortableExtensions( void ) {
 	} else {
 		common->Printf( "GL_ATI_fragment_shader: not availiable!\n" );
 		glConfig.atiFragmentShaderAvailable = false;
-	}
-	// GL_ATI_seperate_stencil
-	if( glewIsSupported( "GL_ATI_separate_stencil" ) ) {
-		common->Printf( "...initializing GL_ATI_separate_stencil\n" );
-		glConfig.atiTwoSidedStencilAvailable = true;
-	} else {
-		common->Printf( "GL_ATI_separate_stencil: not availiable!\n" );
-		glConfig.atiTwoSidedStencilAvailable = false;
 	}
 	// GL_ARB_shading_language_100
 	if( glewIsSupported( "GL_ARB_shading_language_100" ) ) {

@@ -37,7 +37,6 @@ If you have questions concerning this license or the applicable additional terms
 
 */
 
-
 /*
 =================
 RB_DrawElementsImmediate
@@ -164,13 +163,16 @@ RB_EnterWeaponDepthHack
 ===============
 */
 void RB_EnterWeaponDepthHack() {
-	glDepthRange( 0.0f, 0.5f );
-	float		matrix[16];
-	const float depth = 0.25f;
+	GLfloat			matrix[16];
+	const GLfloat	depth = 0.25f;
+	glDepthRange( 0.0f, depth * 2.0f );
 	memcpy( matrix, backEnd.viewDef->projectionMatrix, sizeof( matrix ) );
+	matrix[2] *= depth;
+	matrix[6] *= depth;
+	matrix[10] *= depth;
 	matrix[14] *= depth;
 	glMatrixMode( GL_PROJECTION );
-	glLoadMatrixf( matrix );
+	glLoadMatrixf( (const GLfloat *)matrix );
 	glMatrixMode( GL_MODELVIEW );
 }
 
@@ -180,12 +182,15 @@ RB_EnterModelDepthHack
 ===============
 */
 void RB_EnterModelDepthHack( float depth ) {
+	GLfloat	matrix[16];
 	glDepthRange( 0.0f, 1.0f );
-	float	matrix[16];
 	memcpy( matrix, backEnd.viewDef->projectionMatrix, sizeof( matrix ) );
+	matrix[2] -= depth;
+	matrix[6] -= depth;
+	matrix[10] -= depth;
 	matrix[14] -= depth;
 	glMatrixMode( GL_PROJECTION );
-	glLoadMatrixf( matrix );
+	glLoadMatrixf( (const GLfloat *)matrix );
 	glMatrixMode( GL_MODELVIEW );
 }
 
@@ -651,9 +656,9 @@ static void RB_SubmitInteraction( drawInteraction_t *din, void ( *DrawInteractio
 	if( ( ( din->diffuseColor[0] > 0.0f ||
 			din->diffuseColor[1] > 0.0f ||
 			din->diffuseColor[2] > 0.0f ) && din->diffuseImage != globalImages->blackImage ) ||
-			( ( din->specularColor[0] > 0.0f ||
-				din->specularColor[1] > 0.0f ||
-				din->specularColor[2] > 0.0f ) && din->specularImage != globalImages->blackImage ) ) {
+		( ( din->specularColor[0] > 0.0f ||
+			din->specularColor[1] > 0.0f ||
+			din->specularColor[2] > 0.0f ) && din->specularImage != globalImages->blackImage ) ) {
 		DrawInteraction( din );
 	}
 }

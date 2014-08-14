@@ -935,24 +935,24 @@ idRenderModelStatic::ConvertLWOToModelSurfaces
 =================
 */
 bool idRenderModelStatic::ConvertLWOToModelSurfaces( const struct st_lwObject *lwo ) {
-	const idMaterial *im1, *im2;
-	srfTriangles_t	*tri;
-	lwSurface 		*lwoSurf;
-	int				numTVertexes;
-	int				i, j, k;
-	int				v, tv;
-	idVec3 		*vList;
-	int 			*vRemap;
-	idVec2 		*tvList;
-	int 			*tvRemap;
-	matchVert_t 	*mvTable;	// all of the match verts
-	matchVert_t 	**mvHash;		// points inside mvTable for each xyz index
-	matchVert_t 	*lastmv;
-	matchVert_t 	*mv;
-	idVec3			normal;
-	int 			*mergeTo;
-	byte			color[4];
-	modelSurface_t	surf, *modelSurf;
+	const idMaterial	*im1, *im2;
+	srfTriangles_t		*tri;
+	lwSurface 			*lwoSurf;
+	int					numTVertexes;
+	int					i, j, k;
+	int					v, tv;
+	idVec3 				*vList;
+	int 				*vRemap;
+	idVec2 				*tvList;
+	int 				*tvRemap;
+	matchVert_t 		*mvTable;	// all of the match verts
+	matchVert_t 		**mvHash;		// points inside mvTable for each xyz index
+	matchVert_t 		*lastmv;
+	matchVert_t 		*mv;
+	idVec3				normal;
+	int 				*mergeTo;
+	byte				color[4];
+	modelSurface_t		surf, *modelSurf;
 	if( !lwo ) {
 		return false;
 	}
@@ -1241,8 +1241,8 @@ idRenderModelStatic::ConvertLWOToASE
 =================
 */
 struct aseModel_s *idRenderModelStatic::ConvertLWOToASE( const struct st_lwObject *obj, const char *fileName ) {
-	int j, k;
-	aseModel_t *ase;
+	int			j, k;
+	aseModel_t	*ase;
 	if( !obj ) {
 		return NULL;
 	}
@@ -1375,27 +1375,27 @@ idRenderModelStatic::ConvertMAToModelSurfaces
 =================
 */
 bool idRenderModelStatic::ConvertMAToModelSurfaces( const struct maModel_s *ma ) {
-	maObject_t 	*object;
-	maMesh_t 		*mesh;
-	maMaterial_t 	*material;
-	const idMaterial *im1, *im2;
-	srfTriangles_t *tri;
-	int				objectNum;
-	int				i, j, k;
-	int				v, tv;
-	int 			*vRemap;
-	int 			*tvRemap;
-	matchVert_t 	*mvTable;	// all of the match verts
-	matchVert_t 	**mvHash;		// points inside mvTable for each xyz index
-	matchVert_t 	*lastmv;
-	matchVert_t 	*mv;
-	idVec3			normal;
-	float			uOffset, vOffset, textureSin, textureCos;
-	float			uTiling, vTiling;
-	int 			*mergeTo;
-	byte 			*color;
-	static byte	identityColor[4] = { 255, 255, 255, 255 };
-	modelSurface_t	surf, *modelSurf;
+	maObject_t 			*object;
+	maMesh_t 			*mesh;
+	maMaterial_t 		*material;
+	const idMaterial	*im1, *im2;
+	srfTriangles_t		*tri;
+	int					objectNum;
+	int					i, j, k;
+	int					v, tv;
+	int 				*vRemap;
+	int 				*tvRemap;
+	matchVert_t 		*mvTable;	// all of the match verts
+	matchVert_t 		**mvHash;		// points inside mvTable for each xyz index
+	matchVert_t 		*lastmv;
+	matchVert_t 		*mv;
+	idVec3				normal;
+	float				uOffset, vOffset, textureSin, textureCos;
+	float				uTiling, vTiling;
+	int 				*mergeTo;
+	byte 				*color;
+	static byte			identityColor[4] = { 255, 255, 255, 255 };
+	modelSurface_t		surf, *modelSurf;
 	if( !ma ) {
 		return false;
 	}
@@ -1740,15 +1740,14 @@ bool idRenderModelStatic::LoadFLT( const char *fileName ) {
 			max = data[i];
 		}
 	}
-#if 1
 	// write out a gray scale height map
 	byte	*image = ( byte * )R_StaticAlloc( len );
 	byte	*image_p = image;
 	for( int i = 0 ; i < len / 4 ; i++ ) {
 		float v = ( data[i] - min ) / ( max - min );
 		image_p[0] =
-			image_p[1] =
-				image_p[2] = v * 255;
+		image_p[1] =
+		image_p[2] = v * 255;
 		image_p[3] = 255;
 		image_p += 4;
 	}
@@ -1757,8 +1756,6 @@ bool idRenderModelStatic::LoadFLT( const char *fileName ) {
 	tgaName += ".tga";
 	R_WriteTGA( tgaName.c_str(), image, size, size, false );
 	R_StaticFree( image );
-	//return false;
-#endif
 	// find the island above sea level
 	int	minX, maxX, minY, maxY;
 	{
@@ -1828,21 +1825,12 @@ bool idRenderModelStatic::LoadFLT( const char *fileName ) {
 	for( int i = 0 ; i < height - 1 ; i++ ) {
 		for( int j = 0; j < width - 1 ; j++ ) {
 			int	v = ( i * ( width - 1 ) + j ) * 6;
-#if 0
-			tri->indexes[ v + 0 ] = i * width + j;
-			tri->indexes[ v + 1 ] = ( i + 1 ) * width + j;
-			tri->indexes[ v + 2 ] = ( i + 1 ) * width + j + 1;
-			tri->indexes[ v + 3 ] = i * width + j;
-			tri->indexes[ v + 4 ] = ( i + 1 ) * width + j + 1;
-			tri->indexes[ v + 5 ] = i * width + j + 1;
-#else
 			tri->indexes[ v + 0 ] = i * width + j;
 			tri->indexes[ v + 1 ] = i * width + j + 1;
 			tri->indexes[ v + 2 ] = ( i + 1 ) * width + j + 1;
 			tri->indexes[ v + 3 ] = i * width + j;
 			tri->indexes[ v + 4 ] = ( i + 1 ) * width + j + 1;
 			tri->indexes[ v + 5 ] = ( i + 1 ) * width + j;
-#endif
 		}
 	}
 	fileSystem->FreeFile( data );
@@ -1863,7 +1851,7 @@ idRenderModelStatic::PurgeModel
 ================
 */
 void idRenderModelStatic::PurgeModel() {
-	int		i;
+	int				i;
 	modelSurface_t	*surf;
 	for( i = 0 ; i < surfaces.Num() ; i++ ) {
 		surf = &surfaces[i];

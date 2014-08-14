@@ -46,13 +46,13 @@ in the portal areas that can be seen from the current viewpoint.
 const int MAX_PORTAL_PLANES	= 20;
 
 typedef struct portalStack_s {
-	portal_t	*p;
-	const struct portalStack_s *next;
+	portal_t					*p;
+	const struct portalStack_s	*next;
 	
-	idScreenRect	rect;
+	idScreenRect				rect;
 	
-	int			numPortalPlanes;
-	idPlane		portalPlanes[MAX_PORTAL_PLANES + 1];
+	int							numPortalPlanes;
+	idPlane						portalPlanes[MAX_PORTAL_PLANES + 1];
 	// positive side is outside the visible frustum
 } portalStack_t;
 
@@ -75,8 +75,8 @@ idScreenRect idRenderWorldLocal::ScreenRectFromWinding( const idWinding *w, cons
 		idVec3 ndc;
 		R_LocalPointToGlobal( space->modelMatrix, ( *w )[i].ToVec3(), v );
 		R_GlobalToNormalizedDeviceCoordinates( v, ndc );
-		float windowX = ( ndc[0] * 0.5f + 0.5f ) * viewWidth;
-		float windowY = ( ndc[1] * 0.5f + 0.5f ) * viewHeight;
+		float windowX = 0.5f * (1.0f + ndc[0]) * viewWidth;
+		float windowY = 0.5f * (1.0f + ndc[1]) * viewHeight;
 		r.AddPoint( windowX, windowY );
 	}
 	r.Expand();
@@ -132,17 +132,16 @@ bool idRenderWorldLocal::PortalIsFoggedOut( const portal_t *p ) {
 FloodViewThroughArea_r
 ===================
 */
-void idRenderWorldLocal::FloodViewThroughArea_r( const idVec3 origin, int areaNum,
-		const struct portalStack_s *ps ) {
-	portal_t		*p;
-	float			d;
-	portalArea_t 	*area;
+void idRenderWorldLocal::FloodViewThroughArea_r( const idVec3 origin, int areaNum, const struct portalStack_s *ps ) {
+	portal_t			*p;
+	float				d;
+	portalArea_t 		*area;
 	const portalStack_t	*check;
-	portalStack_t	newStack;
-	int				i, j;
-	idVec3			v1, v2;
-	int				addPlanes;
-	idFixedWinding	w;		// we won't overflow because MAX_PORTAL_PLANES = 20
+	portalStack_t		newStack;
+	int					i, j;
+	idVec3				v1, v2;
+	int					addPlanes;
+	idFixedWinding		w;		// we won't overflow because MAX_PORTAL_PLANES = 20
 	area = &portalAreas[ areaNum ];
 	// cull models and lights to the current collection of planes
 	AddAreaRefs( areaNum, ps );
@@ -278,17 +277,16 @@ void idRenderWorldLocal::FlowViewThroughPortals( const idVec3 origin, int numPla
 FloodLightThroughArea_r
 ===================
 */
-void idRenderWorldLocal::FloodLightThroughArea_r( idRenderLightLocal *light, int areaNum,
-		const struct portalStack_s *ps ) {
-	portal_t		*p;
-	float			d;
-	portalArea_t 	*area;
+void idRenderWorldLocal::FloodLightThroughArea_r( idRenderLightLocal *light, int areaNum, const struct portalStack_s *ps ) {
+	portal_t			*p;
+	float				d;
+	portalArea_t 		*area;
 	const portalStack_t	*check, *firstPortalStack;
-	portalStack_t	newStack;
-	int				i, j;
-	idVec3			v1, v2;
-	int				addPlanes;
-	idFixedWinding	w;		// we won't overflow because MAX_PORTAL_PLANES = 20
+	portalStack_t		newStack;
+	int					i, j;
+	idVec3				v1, v2;
+	int					addPlanes;
+	idFixedWinding		w;		// we won't overflow because MAX_PORTAL_PLANES = 20
 	area = &portalAreas[ areaNum ];
 	// add an areaRef
 	AddLightRefToArea( light, area );
@@ -368,7 +366,6 @@ void idRenderWorldLocal::FloodLightThroughArea_r( idRenderLightLocal *light, int
 		FloodLightThroughArea_r( light, p->intoArea, &newStack );
 	}
 }
-
 
 /*
 =======================

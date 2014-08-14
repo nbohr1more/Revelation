@@ -111,17 +111,17 @@ static void R_AutospriteDeform( drawSurf_t *surf ) {
 		left = leftDir * radius;
 		up = upDir * radius;
 		ac[i + 0].xyz = mid + left + up;
-		ac[i + 0].st[0] = 0;
-		ac[i + 0].st[1] = 0;
+		ac[i + 0].st[0] = 0.0f;
+		ac[i + 0].st[1] = 0.0f;
 		ac[i + 1].xyz = mid - left + up;
-		ac[i + 1].st[0] = 1;
-		ac[i + 1].st[1] = 0;
+		ac[i + 1].st[0] = 1.0f;
+		ac[i + 1].st[1] = 0.0f;
 		ac[i + 2].xyz = mid - left - up;
-		ac[i + 2].st[0] = 1;
-		ac[i + 2].st[1] = 1;
+		ac[i + 2].st[0] = 1.0f;
+		ac[i + 2].st[1] = 1.0f;
 		ac[i + 3].xyz = mid + left - up;
-		ac[i + 3].st[0] = 0;
-		ac[i + 3].st[1] = 1;
+		ac[i + 3].st[0] = 0.0f;
+		ac[i + 3].st[1] = 1.0f;
 		newTri->indexes[6 * ( i >> 2 ) + 0] = i;
 		newTri->indexes[6 * ( i >> 2 ) + 1] = i + 1;
 		newTri->indexes[6 * ( i >> 2 ) + 2] = i + 2;
@@ -210,9 +210,9 @@ static void R_TubeDeform( drawSurf_t *surf ) {
 		for( j = 0 ; j < 2 ; j++ ) {
 			v1 = &tri->verts[tri->indexes[i + edgeVerts[nums[j]][0]]];
 			v2 = &tri->verts[tri->indexes[i + edgeVerts[nums[j]][1]]];
-			mid[j][0] = 0.5 * ( v1->xyz[0] + v2->xyz[0] );
-			mid[j][1] = 0.5 * ( v1->xyz[1] + v2->xyz[1] );
-			mid[j][2] = 0.5 * ( v1->xyz[2] + v2->xyz[2] );
+			mid[j][0] = 0.5f * ( v1->xyz[0] + v2->xyz[0] );
+			mid[j][1] = 0.5f * ( v1->xyz[1] + v2->xyz[1] );
+			mid[j][2] = 0.5f * ( v1->xyz[2] + v2->xyz[2] );
 		}
 		// find the vector of the major axis
 		major = mid[1] - mid[0];
@@ -370,9 +370,9 @@ static void R_FlareDeform( drawSurf_t *surf ) {
 		color = 255;
 	}
 	for( j = 0 ; j < newTri->numVerts ; j++ ) {
-		ac[j].color[0] =
-			ac[j].color[1] =
-				ac[j].color[2] = color;
+		ac[j].color[0] = color;
+		ac[j].color[1] = color;
+		ac[j].color[2] = color;
 		ac[j].color[3] = 255;
 	}
 	float		spread = surf->shaderRegisters[ surf->material->GetDeformRegister( 0 ) ] * r_flareSize.GetFloat();

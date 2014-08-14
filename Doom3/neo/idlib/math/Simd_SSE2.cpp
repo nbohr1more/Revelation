@@ -544,34 +544,34 @@ void VPCALL idSIMD_SSE2::MatX_LowerTriangularSolveTranspose( const idMatX &L, fl
 	if( n < 8 ) {
 		switch( n ) {
 		case 0:
-				return;
+			return;
 		case 1:
-				x[0] = b[0];
+			x[0] = b[0];
 			return;
 		case 2:
-				x[1] = b[1];
+			x[1] = b[1];
 			x[0] = b[0] - lptr[1 * nc + 0] * x[1];
 			return;
 		case 3:
-				x[2] = b[2];
+			x[2] = b[2];
 			x[1] = b[1] - lptr[2 * nc + 1] * x[2];
 			x[0] = b[0] - lptr[2 * nc + 0] * x[2] - lptr[1 * nc + 0] * x[1];
 			return;
 		case 4:
-				x[3] = b[3];
+			x[3] = b[3];
 			x[2] = b[2] - lptr[3 * nc + 2] * x[3];
 			x[1] = b[1] - lptr[3 * nc + 1] * x[3] - lptr[2 * nc + 1] * x[2];
 			x[0] = b[0] - lptr[3 * nc + 0] * x[3] - lptr[2 * nc + 0] * x[2] - lptr[1 * nc + 0] * x[1];
 			return;
 		case 5:
-				x[4] = b[4];
+			x[4] = b[4];
 			x[3] = b[3] - lptr[4 * nc + 3] * x[4];
 			x[2] = b[2] - lptr[4 * nc + 2] * x[4] - lptr[3 * nc + 2] * x[3];
 			x[1] = b[1] - lptr[4 * nc + 1] * x[4] - lptr[3 * nc + 1] * x[3] - lptr[2 * nc + 1] * x[2];
 			x[0] = b[0] - lptr[4 * nc + 0] * x[4] - lptr[3 * nc + 0] * x[3] - lptr[2 * nc + 0] * x[2] - lptr[1 * nc + 0] * x[1];
 			return;
 		case 6:
-				x[5] = b[5];
+			x[5] = b[5];
 			x[4] = b[4] - lptr[5 * nc + 4] * x[5];
 			x[3] = b[3] - lptr[5 * nc + 3] * x[5] - lptr[4 * nc + 3] * x[4];
 			x[2] = b[2] - lptr[5 * nc + 2] * x[5] - lptr[4 * nc + 2] * x[4] - lptr[3 * nc + 2] * x[3];
@@ -579,7 +579,7 @@ void VPCALL idSIMD_SSE2::MatX_LowerTriangularSolveTranspose( const idMatX &L, fl
 			x[0] = b[0] - lptr[5 * nc + 0] * x[5] - lptr[4 * nc + 0] * x[4] - lptr[3 * nc + 0] * x[3] - lptr[2 * nc + 0] * x[2] - lptr[1 * nc + 0] * x[1];
 			return;
 		case 7:
-				x[6] = b[6];
+			x[6] = b[6];
 			x[5] = b[5] - lptr[6 * nc + 5] * x[6];
 			x[4] = b[4] - lptr[6 * nc + 4] * x[6] - lptr[5 * nc + 4] * x[5];
 			x[3] = b[3] - lptr[6 * nc + 3] * x[6] - lptr[5 * nc + 3] * x[5] - lptr[4 * nc + 3] * x[4];

@@ -551,10 +551,10 @@ void idRenderWorldLocal::AddWorldModelEntities() {
 		R_AxisToModelMatrix( def->parms.axis, def->parms.origin, def->modelMatrix );
 		// in case an explicit shader is used on the world, we don't
 		// want it to have a 0 alpha or color
-		def->parms.shaderParms[0] =
-			def->parms.shaderParms[1] =
-				def->parms.shaderParms[2] =
-					def->parms.shaderParms[3] = 1;
+		def->parms.shaderParms[0] = 1.0f;
+		def->parms.shaderParms[1] = 1.0f;
+		def->parms.shaderParms[2] = 1.0f;
+		def->parms.shaderParms[3] = 1.0f;
 		AddEntityRefToArea( def, &portalAreas[i] );
 	}
 }

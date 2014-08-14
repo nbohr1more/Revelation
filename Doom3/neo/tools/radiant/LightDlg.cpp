@@ -41,7 +41,6 @@ If you have questions concerning this license or the applicable additional terms
 #define DEBUG_NEW new
 #endif
 
-
 void CLightInfo::Defaults() {
 	pointLight = true;
 	fallOff = 1;
@@ -64,10 +63,10 @@ void CLightInfo::Defaults() {
 	strobe = false;
 	rotateSpeed = 0;
 	strobeSpeed = 0;
-	color[0] = color[1] = color[2] = 255;
-	fogDensity[0] = fogDensity[1] = fogDensity[2] = 0;
+	color[0] = color[1] = color[2] = 255.0f;
+	fogDensity[0] = fogDensity[1] = fogDensity[2] = 0.0f;
 	fog = false;
-	lightRadius[0] = lightRadius[1] = lightRadius[2] = 300;
+	lightRadius[0] = lightRadius[1] = lightRadius[2] = 300.0f;
 }
 
 
@@ -83,9 +82,9 @@ void CLightInfo::DefaultProjected() {
 	Defaults();
 	color = oldColor;
 	pointLight = false;
-	lightTarget[2] = -256;
-	lightUp[1] = -128;
-	lightRight[0] = -128;
+	lightTarget[2] = -256.0f;
+	lightUp[1] = -128.0f;
+	lightRight[0] = -128.0f;
 }
 
 void CLightInfo::FromDict( const idDict *e ) {
@@ -103,12 +102,12 @@ void CLightInfo::FromDict( const idDict *e ) {
 	strTexture = e->GetString( "texture" );
 	isParallel = e->GetBool( "parallel" );
 	if( !e->GetVector( "_color", "", color ) ) {
-		color[0] = color[1] = color[2] = 1;
+		color[0] = color[1] = color[2] = 1.0f;
 	}
 	// windows needs 0-255 scale
-	color[0] *= 255;
-	color[1] *= 255;
-	color[2] *= 255;
+	color[0] *= 255.0f;
+	color[1] *= 255.0f;
+	color[2] *= 255.0f;
 	if( e->GetVec4( "fog", "", fogDensity ) ) {
 		fog = true;
 	} else {

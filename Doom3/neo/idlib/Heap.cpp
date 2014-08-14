@@ -1004,10 +1004,11 @@ void *Mem_Alloc16( const int size ) {
 		return NULL;
 	}
 	if( !mem_heap ) {
+		const int paddedSize = (size + 15) & ~15;
 #ifdef CRASH_ON_STATIC_ALLOCATION
 		*( ( int * )0x0 ) = 1;
 #endif
-		return malloc( size );
+		return _aligned_malloc( paddedSize, 16 );
 	}
 	void *mem = mem_heap->Allocate16( size );
 	// make sure the memory is 16 byte aligned
@@ -1028,7 +1029,7 @@ void Mem_Free16( void *ptr ) {
 #ifdef CRASH_ON_STATIC_ALLOCATION
 		*( ( int * )0x0 ) = 1;
 #endif
-		free( ptr );
+		_aligned_free( ptr );
 		return;
 	}
 	// make sure the memory is 16 byte aligned

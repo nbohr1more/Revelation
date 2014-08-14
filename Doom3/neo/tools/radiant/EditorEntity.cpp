@@ -84,7 +84,7 @@ void TrackMD3Angles( entity_t *e, const char *key, const char *value ) {
 		float	b = atof( value );
 		if( a != b ) {
 			idVec3	vAngle;
-			vAngle[0] = vAngle[1] = 0;
+			vAngle[0] = vAngle[1] = 0.0f;
 			vAngle[2] = -a;
 			Brush_Rotate( e->brushes.onext, vAngle, e->origin, true );
 			vAngle[2] = b;
@@ -194,7 +194,7 @@ bool GetVectorForKey( entity_t *ent, const char *key, idVec3 &vec ) {
 		sscanf( k, "%f %f %f", &vec[0], &vec[1], &vec[2] );
 		return true;
 	} else {
-		vec[0] = vec[1] = vec[2] = 0;
+		vec[0] = vec[1] = vec[2] = 0.0f;
 	}
 	return false;
 }
@@ -663,8 +663,8 @@ entity_t *Entity_PostParse( entity_t *ent, brush_t *pList ) {
 			idVec3	mins, maxs, mid;
 			int		i;
 			char	text[32];
-			mins[0] = mins[1] = mins[2] = 999999;
-			maxs[0] = maxs[1] = maxs[2] = -999999;
+			mins[0] = mins[1] = mins[2] = 999999.0f;
+			maxs[0] = maxs[1] = maxs[2] = -999999.0f;
 			// add in the origin
 			for( b = ent->brushes.onext; b != &ent->brushes; b = b->onext ) {
 				Brush_Build( b, true, false, false );

@@ -225,12 +225,12 @@ idCollisionModelManagerLocal::TranslateTrmEdgeThroughPolygon
 ================
 */
 void idCollisionModelManagerLocal::TranslateTrmEdgeThroughPolygon( cm_traceWork_t *tw, cm_polygon_t *poly, cm_trmEdge_t *trmEdge ) {
-	int i, edgeNum;
-	float f1, f2, dist, d1, d2;
-	idVec3 start, end, normal;
-	cm_edge_t *edge;
+	int			i, edgeNum;
+	float		f1, f2, dist, d1, d2;
+	idVec3		start, end, normal;
+	cm_edge_t	*edge;
 	cm_vertex_t *v1, *v2;
-	idPluecker *pl, epsPl;
+	idPluecker	*pl, epsPl;
 	// check edges for a collision
 	for( i = 0; i < poly->numEdges; i++ ) {
 		edgeNum = poly->edges[i];
@@ -323,30 +323,6 @@ void idCollisionModelManagerLocal::TranslateTrmEdgeThroughPolygon( cm_traceWork_
 CM_TranslationPlaneFraction
 ================
 */
-
-#if 0
-
-float CM_TranslationPlaneFraction( idPlane &plane, idVec3 &start, idVec3 &end ) {
-	float d1, d2;
-	d2 = plane.Distance( end );
-	// if the end point is closer to the plane than an epsilon we still take it for a collision
-	if( d2 >= CM_CLIP_EPSILON ) {
-		return 1.0f;
-	}
-	d1 = plane.Distance( start );
-	// if completely behind the polygon
-	if( d1 <= 0.0f ) {
-		return 1.0f;
-	}
-	// leaves polygon
-	if( d1 <= d2 ) {
-		return 1.0f;
-	}
-	return ( d1 - CM_CLIP_EPSILON ) / ( d1 - d2 );
-}
-
-#else
-
 float CM_TranslationPlaneFraction( idPlane &plane, idVec3 &start, idVec3 &end ) {
 	float d1, d2, d2eps;
 	d2 = plane.Distance( end );
@@ -371,17 +347,15 @@ float CM_TranslationPlaneFraction( idPlane &plane, idVec3 &start, idVec3 &end ) 
 	return ( d1 - CM_CLIP_EPSILON ) / d2;
 }
 
-#endif
-
 /*
 ================
 idCollisionModelManagerLocal::TranslateTrmVertexThroughPolygon
 ================
 */
 void idCollisionModelManagerLocal::TranslateTrmVertexThroughPolygon( cm_traceWork_t *tw, cm_polygon_t *poly, cm_trmVertex_t *v, int bitNum ) {
-	int i, edgeNum;
-	float f;
-	cm_edge_t *edge;
+	int			i, edgeNum;
+	float		f;
+	cm_edge_t	*edge;
 	f = CM_TranslationPlaneFraction( poly->plane, v->p, v->endp );
 	if( f < tw->trace.fraction ) {
 		for( i = 0; i < poly->numEdges; i++ ) {
@@ -420,10 +394,10 @@ idCollisionModelManagerLocal::TranslatePointThroughPolygon
 ================
 */
 void idCollisionModelManagerLocal::TranslatePointThroughPolygon( cm_traceWork_t *tw, cm_polygon_t *poly, cm_trmVertex_t *v ) {
-	int i, edgeNum;
-	float f;
-	cm_edge_t *edge;
-	idPluecker pl;
+	int			i, edgeNum;
+	float		f;
+	cm_edge_t	*edge;
+	idPluecker	pl;
 	f = CM_TranslationPlaneFraction( poly->plane, v->p, v->endp );
 	if( f < tw->trace.fraction ) {
 		for( i = 0; i < poly->numEdges; i++ ) {
@@ -471,9 +445,9 @@ idCollisionModelManagerLocal::TranslateVertexThroughTrmPolygon
 ================
 */
 void idCollisionModelManagerLocal::TranslateVertexThroughTrmPolygon( cm_traceWork_t *tw, cm_trmPolygon_t *trmpoly, cm_polygon_t *poly, cm_vertex_t *v, idVec3 &endp, idPluecker &pl ) {
-	int i, edgeNum;
-	float f;
-	cm_trmEdge_t *edge;
+	int				i, edgeNum;
+	float			f;
+	cm_trmEdge_t	*edge;
 	f = CM_TranslationPlaneFraction( trmpoly->plane, v->p, endp );
 	if( f < tw->trace.fraction ) {
 		for( i = 0; i < trmpoly->numEdges; i++ ) {
@@ -512,15 +486,15 @@ idCollisionModelManagerLocal::TranslateTrmThroughPolygon
 ================
 */
 bool idCollisionModelManagerLocal::TranslateTrmThroughPolygon( cm_traceWork_t *tw, cm_polygon_t *p ) {
-	int i, j, k, edgeNum;
-	float fraction, d;
-	idVec3 endp;
-	idPluecker *pl;
-	cm_trmVertex_t *bv;
-	cm_trmEdge_t *be;
+	int				i, j, k, edgeNum;
+	float			fraction, d;
+	idVec3			endp;
+	idPluecker		*pl;
+	cm_trmVertex_t	*bv;
+	cm_trmEdge_t	*be;
 	cm_trmPolygon_t *bp;
-	cm_vertex_t *v;
-	cm_edge_t *e;
+	cm_vertex_t		*v;
+	cm_edge_t		*e;
 	// if already checked this polygon
 	if( p->checkcount == idCollisionModelManagerLocal::checkCount ) {
 		return false;
@@ -718,16 +692,16 @@ static int entered = 0;
 #endif
 
 void idCollisionModelManagerLocal::Translation( trace_t *results, const idVec3 &start, const idVec3 &end,
-		const idTraceModel *trm, const idMat3 &trmAxis, int contentMask,
-		cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis ) {
-	int i, j;
-	float dist;
-	bool model_rotated, trm_rotated;
-	idVec3 dir1, dir2, dir;
-	idMat3 invModelAxis, tmpAxis;
+												const idTraceModel *trm, const idMat3 &trmAxis, int contentMask,
+												cmHandle_t model, const idVec3 &modelOrigin, const idMat3 &modelAxis ) {
+	int				i, j;
+	float			dist;
+	bool			model_rotated, trm_rotated;
+	idVec3			dir1, dir2, dir;
+	idMat3			invModelAxis, tmpAxis;
 	cm_trmPolygon_t *poly;
-	cm_trmEdge_t *edge;
-	cm_trmVertex_t *vert;
+	cm_trmEdge_t	*edge;
+	cm_trmVertex_t	*vert;
 	ALIGN16( static cm_traceWork_t tw );
 	assert( ( ( byte * )&start ) < ( ( byte * )results ) || ( ( byte * )&start ) >= ( ( ( byte * )results ) + sizeof( trace_t ) ) );
 	assert( ( ( byte * )&end ) < ( ( byte * )results ) || ( ( byte * )&end ) >= ( ( ( byte * )results ) + sizeof( trace_t ) ) );

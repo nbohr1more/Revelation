@@ -124,10 +124,10 @@ static silEdge_t 	*silEdges;
 static idHashIndex	silEdgeHash( SILEDGE_HASH_SIZE, MAX_SIL_EDGES );
 static int			numPlanes;
 
-static idBlockAlloc < srfTriangles_t, 1 << 8 >				srfTrianglesAllocator;
+static idBlockAlloc < srfTriangles_t, 1 << 8 >					srfTrianglesAllocator;
 
 #ifdef USE_TRI_DATA_ALLOCATOR
-static idDynamicBlockAlloc < idDrawVert, 1 << 20, 1 << 10 >	triVertexAllocator;
+static idDynamicBlockAlloc < idDrawVert, 1 << 20, 1 << 10 >		triVertexAllocator;
 static idDynamicBlockAlloc < glIndex_t, 1 << 18, 1 << 10 >		triIndexAllocator;
 static idDynamicBlockAlloc < shadowCache_t, 1 << 18, 1 << 10 >	triShadowVertexAllocator;
 static idDynamicBlockAlloc < idPlane, 1 << 17, 1 << 10 >		triPlaneAllocator;
@@ -140,14 +140,13 @@ static idDynamicBlockAlloc < int, 1 << 16, 1 << 10 >			triDupVertAllocator;
 static idDynamicAlloc < idDrawVert, 1 << 20, 1 << 10 >			triVertexAllocator;
 static idDynamicAlloc < glIndex_t, 1 << 18, 1 << 10 >			triIndexAllocator;
 static idDynamicAlloc < shadowCache_t, 1 << 18, 1 << 10 >		triShadowVertexAllocator;
-static idDynamicAlloc < idPlane, 1 << 17, 1 << 10 >			triPlaneAllocator;
+static idDynamicAlloc < idPlane, 1 << 17, 1 << 10 >				triPlaneAllocator;
 static idDynamicAlloc < glIndex_t, 1 << 17, 1 << 10 >			triSilIndexAllocator;
 static idDynamicAlloc < silEdge_t, 1 << 17, 1 << 10 >			triSilEdgeAllocator;
 static idDynamicAlloc < dominantTri_t, 1 << 16, 1 << 10 >		triDominantTrisAllocator;
-static idDynamicAlloc < int, 1 << 16, 1 << 10 >				triMirroredVertAllocator;
-static idDynamicAlloc < int, 1 << 16, 1 << 10 >				triDupVertAllocator;
+static idDynamicAlloc < int, 1 << 16, 1 << 10 >					triMirroredVertAllocator;
+static idDynamicAlloc < int, 1 << 16, 1 << 10 >					triDupVertAllocator;
 #endif
-
 
 /*
 ===============
@@ -691,9 +690,7 @@ static int *R_CreateSilRemap( const srfTriangles_t *tri ) {
 		hashKey = hash.GenerateKey( v1->xyz );
 		for( j = hash.First( hashKey ); j >= 0; j = hash.Next( j ) ) {
 			v2 = &tri->verts[j];
-			if( v2->xyz[0] == v1->xyz[0]
-					&& v2->xyz[1] == v1->xyz[1]
-					&& v2->xyz[2] == v1->xyz[2] ) {
+			if( v2->xyz[0] == v1->xyz[0] && v2->xyz[1] == v1->xyz[1] && v2->xyz[2] == v1->xyz[2] ) {
 				c_removed++;
 				remap[i] = j;
 				break;
@@ -1173,8 +1170,7 @@ static void	R_DuplicateMirroredVertexes( srfTriangles_t *tri ) {
 	tri->numVerts = totalVerts;
 	// change the indexes
 	for( i = 0 ; i < tri->numIndexes ; i++ ) {
-		if( tverts[tri->indexes[i]].negativeRemap &&
-				R_FaceNegativePolarity( tri, 3 * ( i / 3 ) ) ) {
+		if( tverts[tri->indexes[i]].negativeRemap && R_FaceNegativePolarity( tri, 3 * ( i / 3 ) ) ) {
 			tri->indexes[i] = tverts[tri->indexes[i]].negativeRemap;
 		}
 	}
@@ -1251,14 +1247,6 @@ void R_DeriveTangentsWithoutNormals( srfTriangles_t *tri ) {
 		}
 	}
 	tri->tangentsCalculated = true;
-}
-
-static ID_FORCE_INLINE void VectorNormalizeFast2( const idVec3 &v, idVec3 &out ) {
-	float	ilength;
-	ilength = idMath::RSqrt( v[0] * v[0] + v[1] * v[1] + v[2] * v[2] );
-	out[0] = v[0] * ilength;
-	out[1] = v[1] * ilength;
-	out[2] = v[2] * ilength;
 }
 
 /*

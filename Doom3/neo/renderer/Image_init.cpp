@@ -135,9 +135,9 @@ static void R_RampImage( idImage *image ) {
 	int		x;
 	byte	data[256][4];
 	for( x = 0 ; x < 256 ; x++ ) {
-		data[x][0] =
-		data[x][1] =
-		data[x][2] =
+		data[x][0] = x;
+		data[x][1] = x;
+		data[x][2] = x;
 		data[x][3] = x;
 	}
 	image->GenerateImage( ( byte * )data, 256, 1, TF_NEAREST, false, TR_CLAMP, TD_HIGH_QUALITY );
@@ -163,9 +163,9 @@ static void R_SpecularTableImage( idImage *image ) {
 		}
 		f = f * f;
 		int		b = ( int )( f * 255 );
-		data[x][0] =
-		data[x][1] =
-		data[x][2] =
+		data[x][0] = b;
+		data[x][1] = b;
+		data[x][2] = b;
 		data[x][3] = b;
 	}
 	image->GenerateImage( ( byte * )data, 256, 1, TF_LINEAR, false, TR_CLAMP, TD_HIGH_QUALITY );
@@ -191,9 +191,9 @@ static void R_Specular2DTableImage( idImage *image ) {
 				// we early out to avoid pow() underflows
 				break;
 			}
-			data[y][x][0] =
-			data[y][x][1] =
-			data[y][x][2] =
+			data[y][x][0] = b;
+			data[y][x][1] = b;
+			data[y][x][2] = b;
 			data[y][x][3] = b;
 		}
 	}
@@ -211,8 +211,8 @@ static void R_AlphaRampImage( idImage *image ) {
 	int		x;
 	byte	data[256][4];
 	for( x = 0 ; x < 256 ; x++ ) {
-		data[x][0] =
-		data[x][1] =
+		data[x][0] = 255;
+		data[x][1] = 255;
 		data[x][2] = 255;
 		data[x][3] = x;
 	}
@@ -243,21 +243,21 @@ void idImage::MakeDefault() {
 		}
 		// white border
 		for( x = 0 ; x < DEFAULT_SIZE ; x++ ) {
-			data[0][x][0] =
-			data[0][x][1] =
-			data[0][x][2] =
+			data[0][x][0] = 255;
+			data[0][x][1] = 255;
+			data[0][x][2] = 255;
 			data[0][x][3] = 255;
-			data[x][0][0] =
-			data[x][0][1] =
-			data[x][0][2] =
+			data[x][0][0] = 255;
+			data[x][0][1] = 255;
+			data[x][0][2] = 255;
 			data[x][0][3] = 255;
-			data[DEFAULT_SIZE - 1][x][0] =
-			data[DEFAULT_SIZE - 1][x][1] =
-			data[DEFAULT_SIZE - 1][x][2] =
+			data[DEFAULT_SIZE - 1][x][0] = 255;
+			data[DEFAULT_SIZE - 1][x][1] = 255;
+			data[DEFAULT_SIZE - 1][x][2] = 255;
 			data[DEFAULT_SIZE - 1][x][3] = 255;
-			data[x][DEFAULT_SIZE - 1][0] =
-			data[x][DEFAULT_SIZE - 1][1] =
-			data[x][DEFAULT_SIZE - 1][2] =
+			data[x][DEFAULT_SIZE - 1][0] = 255;
+			data[x][DEFAULT_SIZE - 1][1] = 255;
+			data[x][DEFAULT_SIZE - 1][2] = 255;
 			data[x][DEFAULT_SIZE - 1][3] = 255;
 		}
 	} else {
@@ -299,21 +299,21 @@ static void R_BorderClampImage( idImage *image ) {
 	// solid white texture with a single pixel black border
 	memset( data, 255, sizeof( data ) );
 	for( int i = 0 ; i < BORDER_CLAMP_SIZE ; i++ ) {
-		data[i][0][0] =
-		data[i][0][1] =
-		data[i][0][2] =
-		data[i][0][3] =
-		data[i][BORDER_CLAMP_SIZE - 1][0] =
-		data[i][BORDER_CLAMP_SIZE - 1][1] =
-		data[i][BORDER_CLAMP_SIZE - 1][2] =
-		data[i][BORDER_CLAMP_SIZE - 1][3] =
-		data[0][i][0] =
-		data[0][i][1] =
-		data[0][i][2] =
-		data[0][i][3] =
-		data[BORDER_CLAMP_SIZE - 1][i][0] =
-		data[BORDER_CLAMP_SIZE - 1][i][1] =
-		data[BORDER_CLAMP_SIZE - 1][i][2] =
+		data[i][0][0] = 0;
+		data[i][0][1] = 0;
+		data[i][0][2] = 0;
+		data[i][0][3] = 0;
+		data[i][BORDER_CLAMP_SIZE - 1][0] = 0;
+		data[i][BORDER_CLAMP_SIZE - 1][1] = 0;
+		data[i][BORDER_CLAMP_SIZE - 1][2] = 0;
+		data[i][BORDER_CLAMP_SIZE - 1][3] = 0;
+		data[0][i][0] = 0;
+		data[0][i][1] = 0;
+		data[0][i][2] = 0;
+		data[0][i][3] = 0;
+		data[BORDER_CLAMP_SIZE - 1][i][0] = 0;
+		data[BORDER_CLAMP_SIZE - 1][i][1] = 0;
+		data[BORDER_CLAMP_SIZE - 1][i][2] = 0;
 		data[BORDER_CLAMP_SIZE - 1][i][3] = 0;
 	}
 	image->GenerateImage( ( byte * )data, BORDER_CLAMP_SIZE, BORDER_CLAMP_SIZE, TF_LINEAR, false, TR_CLAMP_TO_BORDER, TD_DEFAULT );
@@ -471,8 +471,8 @@ void CreatePitFogImage( void ) {
 			a = 255;
 		}
 		for( j = 0 ; j < 16 ; j++ ) {
-			data[j][i][0] =
-			data[j][i][1] =
+			data[j][i][0] = 255;
+			data[j][i][1] = 255;
 			data[j][i][2] = 255;
 			data[j][i][3] = a;
 		}
@@ -496,8 +496,8 @@ void CreatealphaSquareImage( void ) {
 			} else {
 				a = 255;
 			}
-			data[j][i][0] =
-			data[j][i][1] =
+			data[j][i][0] = 255;
+			data[j][i][1] = 255;
 			data[j][i][2] = 255;
 			data[j][i][3] = a;
 		}

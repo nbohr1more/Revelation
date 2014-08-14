@@ -53,14 +53,6 @@ If you have questions concerning this license or the applicable additional terms
 	id_attribute( ( packed ) ) struct __type__
 #endif
 
-// DG: make sure __declspec(intrin_type) is only used on MSVC (it's not available on GCC etc
-#if defined(__GNUC__)	// also applies for clang
-#define DECLSPEC_INTRINTYPE				id_attribute ( (__may_alias__) )
-#elif defined(_MSC_VER) // also for MSVC, just to be sure
-#define DECLSPEC_INTRINTYPE				__declspec( intrin_type )
-#endif
-// DG end
-
 // DG: _CRT_ALIGN seems to be MSVC specific, so provide implementation..
 #ifndef _CRT_ALIGN
 #if defined(__GNUC__)	// also applies for clang
@@ -79,8 +71,16 @@ If you have questions concerning this license or the applicable additional terms
 #define CPU_EASYARGS					1
 
 #define ALIGN16( x )					_CRT_ALIGN(16) x
+#define ALIGN32( x )					_CRT_ALIGN(32) x
+#define ALIGN64( x )					_CRT_ALIGN(64) x
+#define ALIGN128( x )					_CRT_ALIGN(128) x
 
-#define _alloca16( x )					((void *)((((int)_alloca( (x)+15 )) + 15) & ~15))
+#define ALIGNPTR( x, a )				( ( ( x ) + ((a)-1) ) & ~((a)-1) )
+
+#define _alloca16( x )					((void *)ALIGNPTR( (int)_alloca( ALIGNPTR( x, 16 ) + 16 ), 16 ) )
+#define _alloca32( x )					((void *)ALIGNPTR( (int)_alloca( ALIGNPTR( x, 32 ) + 32 ), 32 ) )
+#define _alloca64( x )					((void *)ALIGNPTR( (int)_alloca( ALIGNPTR( x, 64 ) + 64 ), 64 ) )
+#define _alloca128( x )					((void *)ALIGNPTR( (int)_alloca( ALIGNPTR( x, 128 ) + 128 ), 128 ) )
 
 #define PATHSEPERATOR_STR				"\\"
 #define PATHSEPERATOR_CHAR				'\\'
@@ -106,14 +106,22 @@ If you have questions concerning this license or the applicable additional terms
 #define CPU_EASYARGS					1
 #endif
 
-#define ALIGN16( x )					x _CRT_ALIGN(16)
+#define ALIGN16( x )					_CRT_ALIGN(16) x
+#define ALIGN32( x )					_CRT_ALIGN(32) x
+#define ALIGN64( x )					_CRT_ALIGN(64) x
+#define ALIGN128( x )					_CRT_ALIGN(128) x
+
+#define ALIGNPTR( x, a )				( ( ( x ) + ((a)-1) ) & ~((a)-1) )
 
 #ifdef __MWERKS__
 #include <alloca.h>
 #endif
 
 #define _alloca							alloca
-#define _alloca16( x )					((void *)((((int)alloca( (x)+15 )) + 15) & ~15))
+#define _alloca16( x )					((void *)ALIGNPTR( (int)_alloca( ALIGNPTR( x, 16 ) + 16 ), 16 ) )
+#define _alloca32( x )					((void *)ALIGNPTR( (int)_alloca( ALIGNPTR( x, 32 ) + 32 ), 32 ) )
+#define _alloca64( x )					((void *)ALIGNPTR( (int)_alloca( ALIGNPTR( x, 64 ) + 64 ), 64 ) )
+#define _alloca128( x )					((void *)ALIGNPTR( (int)_alloca( ALIGNPTR( x, 128 ) + 128 ), 128 ) )
 
 #define PATHSEPERATOR_STR				"/"
 #define PATHSEPERATOR_CHAR				'/'
@@ -143,10 +151,18 @@ If you have questions concerning this license or the applicable additional terms
 #define CPU_EASYARGS					0
 #endif
 
-#define _alloca							alloca
-#define _alloca16( x )					((void *)((((int)alloca( (x)+15 )) + 15) & ~15))
+#define ALIGN16( x )					_CRT_ALIGN(16) x
+#define ALIGN32( x )					_CRT_ALIGN(32) x
+#define ALIGN64( x )					_CRT_ALIGN(64) x
+#define ALIGN128( x )					_CRT_ALIGN(128) x
 
-#define ALIGN16( x )					x _CRT_ALIGN(16)
+#define ALIGNPTR( x, a )				( ( ( x ) + ((a)-1) ) & ~((a)-1) )
+
+#define _alloca							alloca
+#define _alloca16( x )					((void *)ALIGNPTR( (int)_alloca( ALIGNPTR( x, 16 ) + 16 ), 16 ) )
+#define _alloca32( x )					((void *)ALIGNPTR( (int)_alloca( ALIGNPTR( x, 32 ) + 32 ), 32 ) )
+#define _alloca64( x )					((void *)ALIGNPTR( (int)_alloca( ALIGNPTR( x, 64 ) + 64 ), 64 ) )
+#define _alloca128( x )					((void *)ALIGNPTR( (int)_alloca( ALIGNPTR( x, 128 ) + 128 ), 128 ) )
 
 #define PATHSEPERATOR_STR				"/"
 #define PATHSEPERATOR_CHAR				'/'

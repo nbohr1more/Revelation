@@ -108,7 +108,6 @@ idGLWidget::idGLWidget() {
 idGLWidget::~idGLWidget() {
 }
 
-
 BEGIN_MESSAGE_MAP( idGLWidget, CWnd )
 	//{{AFX_MSG_MAP(idGLWidget)
 	ON_WM_PAINT()
@@ -233,7 +232,6 @@ void idGLDrawable::mouseMove( float x, float y ) {
 				yOffset -= ( y - pressY );
 				pressY = y;
 			}
-			//::SetCursorPos(pressX, pressY);
 		}
 	}
 }
@@ -264,9 +262,7 @@ void idGLDrawable::draw( int x, int y, int w, int h ) {
 static int viewAngle = -98;
 void idGLDrawableMaterial::buttonDown( int button, float x, float y ) {
 	idGLDrawable::buttonDown( button, x, y );
-	//viewAngle += (button == MK_LBUTTON) ? 15 : -15;
 }
-
 
 void idGLDrawableMaterial::mouseMove( float x, float y ) {
 	if( handleMove ) {
@@ -479,7 +475,6 @@ void idGLDrawableModel::SetSkin( const char *skin ) {
 	skinStr = skin;
 }
 
-
 void idGLDrawableModel::buttonDown( int _button, float x, float y ) {
 	pressX = x;
 	pressY = y;
@@ -556,7 +551,6 @@ void idGLDrawableModel::mouseMove( float x, float y ) {
 					}
 					pressY = y;
 				}
-				//::SetCursorPos(pressX, pressY);
 			}
 		}
 	}
@@ -566,9 +560,6 @@ void idGLDrawableModel::mouseMove( float x, float y ) {
 void idGLDrawableModel::draw( int x, int y, int w, int h ) {
 	if( !worldModel ) {
 		return;
-	}
-	if( worldModel->IsDynamicModel() != DM_STATIC ) {
-		//return;
 	}
 	rect.Set( x, y, w, h );
 	glViewport( x, y, w, h );
@@ -601,10 +592,10 @@ void idGLDrawableModel::draw( int x, int y, int w, int h ) {
 		gameEdit->ParseSpawnArgsToRenderEntity( &spawnArgs, &worldEntity );
 		worldEntity.hModel = worldModel;
 		worldEntity.axis = rotation.ToMat3();
-		worldEntity.shaderParms[0] = 1;
-		worldEntity.shaderParms[1] = 1;
-		worldEntity.shaderParms[2] = 1;
-		worldEntity.shaderParms[3] = 1;
+		worldEntity.shaderParms[0] = 1.0f;
+		worldEntity.shaderParms[1] = 1.0f;
+		worldEntity.shaderParms[2] = 1.0f;
+		worldEntity.shaderParms[3] = 1.0f;
 		modelDef = world->AddEntityDef( &worldEntity );
 		worldDirty = false;
 	}
@@ -613,11 +604,11 @@ void idGLDrawableModel::draw( int x, int y, int w, int h ) {
 	renderSystem->BeginFrame( w, h );
 	memset( &refdef, 0, sizeof( refdef ) );
 	refdef.vieworg.Set( zOffset, xOffset, -yOffset );
-	refdef.viewaxis = idAngles( 0, 0, 0 ).ToMat3();
-	refdef.shaderParms[0] = 1;
-	refdef.shaderParms[1] = 1;
-	refdef.shaderParms[2] = 1;
-	refdef.shaderParms[3] = 1;
+	refdef.viewaxis = idAngles( 0.0f, 0.0f, 0.0f ).ToMat3();
+	refdef.shaderParms[0] = 1.0f;
+	refdef.shaderParms[1] = 1.0f;
+	refdef.shaderParms[2] = 1.0f;
+	refdef.shaderParms[3] = 1.0f;
 	refdef.width = SCREEN_WIDTH;
 	refdef.height = SCREEN_HEIGHT;
 	refdef.fov_x = 90;
@@ -629,8 +620,6 @@ void idGLDrawableModel::draw( int x, int y, int w, int h ) {
 	glMatrixMode( GL_MODELVIEW );
 	glLoadIdentity();
 }
-
-
 
 void idGLWidget::OnLButtonDown( UINT nFlags, CPoint point ) {
 	SetCapture();

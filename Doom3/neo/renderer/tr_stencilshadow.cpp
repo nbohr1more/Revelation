@@ -72,9 +72,7 @@ If you have questions concerning this license or the applicable additional terms
   added.
   If a triangle has no points outside the frustum, it does not
   need to be clipped.
-
-
-
+  
   USING THE STENCIL BUFFER FOR SHADOWING
 
   basic triangle property

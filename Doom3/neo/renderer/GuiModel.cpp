@@ -188,8 +188,7 @@ EmitToCurrentView
 */
 void idGuiModel::EmitToCurrentView( float modelMatrix[16], bool depthHack ) {
 	float	modelViewMatrix[16];
-	R_MatrixMultiply( modelMatrix, tr.viewDef->worldSpace.modelViewMatrix,
-					  modelViewMatrix );
+	R_MatrixMultiply( modelMatrix, tr.viewDef->worldSpace.modelViewMatrix, modelViewMatrix );
 	for( int i = 0 ; i < surfaces.Num() ; i++ ) {
 		EmitSurface( &surfaces[i], modelMatrix, modelViewMatrix, depthHack );
 	}
@@ -274,10 +273,10 @@ void idGuiModel::AdvanceSurf() {
 		s.color[3] = surf->color[3];
 		s.material = surf->material;
 	} else {
-		s.color[0] =
-			s.color[1] =
-				s.color[2] =
-					s.color[3] = 1.0f;
+		s.color[0] = 1.0f;
+		s.color[1] = 1.0f;
+		s.color[2] = 1.0f;
+		s.color[3] = 1.0f;
 		s.material = tr.defaultMaterial;
 	}
 	s.numIndexes = 0;
@@ -344,8 +343,7 @@ void idGuiModel::DrawStretchPic( const idDrawVert *dverts, const glIndex_t *dind
 			w.AddPoint( idVec5( dverts[dindexes[i + 1]].xyz.x, dverts[dindexes[i + 1]].xyz.y, dverts[dindexes[i + 1]].xyz.z, dverts[dindexes[i + 1]].st.x, dverts[dindexes[i + 1]].st.y ) );
 			w.AddPoint( idVec5( dverts[dindexes[i + 2]].xyz.x, dverts[dindexes[i + 2]].xyz.y, dverts[dindexes[i + 2]].xyz.z, dverts[dindexes[i + 2]].st.x, dverts[dindexes[i + 2]].st.y ) );
 			for( j = 0; j < 3; j++ ) {
-				if( w[j].x < min_x || w[j].x > max_x ||
-						w[j].y < min_y || w[j].y > max_y ) {
+				if( w[j].x < min_x || w[j].x > max_x ||	w[j].y < min_y || w[j].y > max_y ) {
 					break;
 				}
 			}
@@ -450,60 +448,60 @@ void idGuiModel::DrawStretchPic( float x, float y, float w, float h, float s1, f
 	indexes[5] = 1;
 	verts[0].xyz[0] = x;
 	verts[0].xyz[1] = y;
-	verts[0].xyz[2] = 0;
+	verts[0].xyz[2] = 0.0f;
 	verts[0].st[0] = s1;
 	verts[0].st[1] = t1;
-	verts[0].normal[0] = 0;
-	verts[0].normal[1] = 0;
-	verts[0].normal[2] = 1;
-	verts[0].tangents[0][0] = 1;
-	verts[0].tangents[0][1] = 0;
-	verts[0].tangents[0][2] = 0;
-	verts[0].tangents[1][0] = 0;
-	verts[0].tangents[1][1] = 1;
-	verts[0].tangents[1][2] = 0;
+	verts[0].normal[0] = 0.0f;
+	verts[0].normal[1] = 0.0f;
+	verts[0].normal[2] = 1.0f;
+	verts[0].tangents[0][0] = 1.0f;
+	verts[0].tangents[0][1] = 0.0f;
+	verts[0].tangents[0][2] = 0.0f;
+	verts[0].tangents[1][0] = 0.0f;
+	verts[0].tangents[1][1] = 1.0f;
+	verts[0].tangents[1][2] = 0.0f;
 	verts[1].xyz[0] = x + w;
 	verts[1].xyz[1] = y;
-	verts[1].xyz[2] = 0;
+	verts[1].xyz[2] = 0.0f;
 	verts[1].st[0] = s2;
 	verts[1].st[1] = t1;
-	verts[1].normal[0] = 0;
-	verts[1].normal[1] = 0;
-	verts[1].normal[2] = 1;
-	verts[1].tangents[0][0] = 1;
-	verts[1].tangents[0][1] = 0;
-	verts[1].tangents[0][2] = 0;
-	verts[1].tangents[1][0] = 0;
-	verts[1].tangents[1][1] = 1;
-	verts[1].tangents[1][2] = 0;
+	verts[1].normal[0] = 0.0f;
+	verts[1].normal[1] = 0.0f;
+	verts[1].normal[2] = 1.0f;
+	verts[1].tangents[0][0] = 1.0f;
+	verts[1].tangents[0][1] = 0.0f;
+	verts[1].tangents[0][2] = 0.0f;
+	verts[1].tangents[1][0] = 0.0f;
+	verts[1].tangents[1][1] = 1.0f;
+	verts[1].tangents[1][2] = 0.0f;
 	verts[2].xyz[0] = x + w;
 	verts[2].xyz[1] = y + h;
-	verts[2].xyz[2] = 0;
+	verts[2].xyz[2] = 0.0f;
 	verts[2].st[0] = s2;
 	verts[2].st[1] = t2;
-	verts[2].normal[0] = 0;
-	verts[2].normal[1] = 0;
-	verts[2].normal[2] = 1;
-	verts[2].tangents[0][0] = 1;
-	verts[2].tangents[0][1] = 0;
-	verts[2].tangents[0][2] = 0;
-	verts[2].tangents[1][0] = 0;
-	verts[2].tangents[1][1] = 1;
-	verts[2].tangents[1][2] = 0;
+	verts[2].normal[0] = 0.0f;
+	verts[2].normal[1] = 0.0f;
+	verts[2].normal[2] = 1.0f;
+	verts[2].tangents[0][0] = 1.0f;
+	verts[2].tangents[0][1] = 0.0f;
+	verts[2].tangents[0][2] = 0.0f;
+	verts[2].tangents[1][0] = 0.0f;
+	verts[2].tangents[1][1] = 1.0f;
+	verts[2].tangents[1][2] = 0.0f;
 	verts[3].xyz[0] = x;
 	verts[3].xyz[1] = y + h;
-	verts[3].xyz[2] = 0;
+	verts[3].xyz[2] = 0.0f;
 	verts[3].st[0] = s1;
 	verts[3].st[1] = t2;
-	verts[3].normal[0] = 0;
-	verts[3].normal[1] = 0;
-	verts[3].normal[2] = 1;
-	verts[3].tangents[0][0] = 1;
-	verts[3].tangents[0][1] = 0;
-	verts[3].tangents[0][2] = 0;
-	verts[3].tangents[1][0] = 0;
-	verts[3].tangents[1][1] = 1;
-	verts[3].tangents[1][2] = 0;
+	verts[3].normal[0] = 0.0f;
+	verts[3].normal[1] = 0.0f;
+	verts[3].normal[2] = 1.0f;
+	verts[3].tangents[0][0] = 1.0f;
+	verts[3].tangents[0][1] = 0.0f;
+	verts[3].tangents[0][2] = 0.0f;
+	verts[3].tangents[1][0] = 0.0f;
+	verts[3].tangents[1][1] = 1.0f;
+	verts[3].tangents[1][2] = 0.0f;
 	DrawStretchPic( &verts[0], &indexes[0], 4, 6, hShader, false, 0.0f, 0.0f, 640.0f, 480.0f );
 }
 
@@ -530,46 +528,46 @@ void idGuiModel::DrawStretchTri( idVec2 p1, idVec2 p2, idVec2 p3, idVec2 t1, idV
 	tempIndexes[2] = 2;
 	tempVerts[0].xyz[0] = p1.x;
 	tempVerts[0].xyz[1] = p1.y;
-	tempVerts[0].xyz[2] = 0;
+	tempVerts[0].xyz[2] = 0.0f;
 	tempVerts[0].st[0] = t1.x;
 	tempVerts[0].st[1] = t1.y;
-	tempVerts[0].normal[0] = 0;
-	tempVerts[0].normal[1] = 0;
-	tempVerts[0].normal[2] = 1;
-	tempVerts[0].tangents[0][0] = 1;
-	tempVerts[0].tangents[0][1] = 0;
-	tempVerts[0].tangents[0][2] = 0;
-	tempVerts[0].tangents[1][0] = 0;
-	tempVerts[0].tangents[1][1] = 1;
-	tempVerts[0].tangents[1][2] = 0;
+	tempVerts[0].normal[0] = 0.0f;
+	tempVerts[0].normal[1] = 0.0f;
+	tempVerts[0].normal[2] = 1.0f;
+	tempVerts[0].tangents[0][0] = 1.0f;
+	tempVerts[0].tangents[0][1] = 0.0f;
+	tempVerts[0].tangents[0][2] = 0.0f;
+	tempVerts[0].tangents[1][0] = 0.0f;
+	tempVerts[0].tangents[1][1] = 1.0f;
+	tempVerts[0].tangents[1][2] = 0.0f;
 	tempVerts[1].xyz[0] = p2.x;
 	tempVerts[1].xyz[1] = p2.y;
-	tempVerts[1].xyz[2] = 0;
+	tempVerts[1].xyz[2] = 0.0f;
 	tempVerts[1].st[0] = t2.x;
 	tempVerts[1].st[1] = t2.y;
-	tempVerts[1].normal[0] = 0;
-	tempVerts[1].normal[1] = 0;
-	tempVerts[1].normal[2] = 1;
-	tempVerts[1].tangents[0][0] = 1;
-	tempVerts[1].tangents[0][1] = 0;
-	tempVerts[1].tangents[0][2] = 0;
-	tempVerts[1].tangents[1][0] = 0;
-	tempVerts[1].tangents[1][1] = 1;
-	tempVerts[1].tangents[1][2] = 0;
+	tempVerts[1].normal[0] = 0.0f;
+	tempVerts[1].normal[1] = 0.0f;
+	tempVerts[1].normal[2] = 1.0f;
+	tempVerts[1].tangents[0][0] = 1.0f;
+	tempVerts[1].tangents[0][1] = 0.0f;
+	tempVerts[1].tangents[0][2] = 0.0f;
+	tempVerts[1].tangents[1][0] = 0.0f;
+	tempVerts[1].tangents[1][1] = 1.0f;
+	tempVerts[1].tangents[1][2] = 0.0f;
 	tempVerts[2].xyz[0] = p3.x;
 	tempVerts[2].xyz[1] = p3.y;
-	tempVerts[2].xyz[2] = 0;
+	tempVerts[2].xyz[2] = 0.0f;
 	tempVerts[2].st[0] = t3.x;
 	tempVerts[2].st[1] = t3.y;
-	tempVerts[2].normal[0] = 0;
-	tempVerts[2].normal[1] = 0;
-	tempVerts[2].normal[2] = 1;
-	tempVerts[2].tangents[0][0] = 1;
-	tempVerts[2].tangents[0][1] = 0;
-	tempVerts[2].tangents[0][2] = 0;
-	tempVerts[2].tangents[1][0] = 0;
-	tempVerts[2].tangents[1][1] = 1;
-	tempVerts[2].tangents[1][2] = 0;
+	tempVerts[2].normal[0] = 0.0f;
+	tempVerts[2].normal[1] = 0.0f;
+	tempVerts[2].normal[2] = 1.0f;
+	tempVerts[2].tangents[0][0] = 1.0f;
+	tempVerts[2].tangents[0][1] = 0.0f;
+	tempVerts[2].tangents[0][2] = 0.0f;
+	tempVerts[2].tangents[1][0] = 0.0f;
+	tempVerts[2].tangents[1][1] = 1.0f;
+	tempVerts[2].tangents[1][2] = 0.0f;
 	// break the current surface if we are changing to a new material
 	if( material != surf->material ) {
 		if( surf->numVerts ) {

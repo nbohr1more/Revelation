@@ -535,12 +535,12 @@ static float TriTextureArea( const float a[2], const float b[2], const float c[2
 	float	area;
 	d1[0] = b[0] - a[0];
 	d1[1] = b[1] - a[1];
-	d1[2] = 0;
+	d1[2] = 0.0f;
 	d2[0] = c[0] - a[0];
 	d2[1] = c[1] - a[1];
-	d2[2] = 0;
+	d2[2] = 0.0f;
 	cross = d1.Cross( d2 );
-	area = 0.5 * cross.Length();
+	area = 0.5f * cross.Length();
 	if( cross[2] < 0 ) {
 		return -area;
 	} else {
@@ -683,18 +683,10 @@ static void RasterizeTriangle( const srfTriangles_t *lowMesh, const idVec3 *lowM
 				tangents[0] += bary[k] * lowMesh->verts[ index ].tangents[0];
 				tangents[1] += bary[k] * lowMesh->verts[ index ].tangents[1];
 			}
-#if 0
-			// this doesn't seem to make much difference
-			// an argument can be made that these should not be normalized, because the interpolation
-			// of the light position at rasterization time will be linear, not spherical
-			normal.Normalize();
-			tangents[0].Normalize();
-			tangents[1].Normalize();
-#endif
 			// find the best triangle in the high poly model for this
 			// sampledNormal will  normalized
 			if( !SampleHighMesh( rb, point, traceNormal, sampledNormal, sampledColor ) ) {
-#if 0
+#if _DEBUG
 				// put bright red where all traces missed for debugging.
 				// for production use, it is better to leave it blank so
 				// the outlining fills it in

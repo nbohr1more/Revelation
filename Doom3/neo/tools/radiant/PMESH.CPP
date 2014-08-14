@@ -711,8 +711,8 @@ Patch_CalcBounds
 ==================
 */
 void Patch_CalcBounds( patchMesh_t *p, idVec3 &vMin, idVec3 &vMax ) {
-	vMin[0] = vMin[1] = vMin[2] = 999999;
-	vMax[0] = vMax[1] = vMax[2] = -999999;
+	vMin[0] = vMin[1] = vMin[2] = 999999.0f;
+	vMax[0] = vMax[1] = vMax[2] = -999999.0f;
 	Patch_MakeDirty( p );
 	for( int w = 0; w < p->width; w++ ) {
 		for( int h = 0; h < p->height; h++ ) {
@@ -1121,8 +1121,8 @@ brush_t *Cap( patchMesh_t *pParent, bool bByColumn, bool bFirst ) {
 	}
 	p = b->pPatch;
 	p->type |= PATCH_CAP;
-	vMin[0] = vMin[1] = vMin[2] = 99999;
-	vMax[0] = vMax[1] = vMax[2] = -99999;
+	vMin[0] = vMin[1] = vMin[2] = 99999.0f;
+	vMax[0] = vMax[1] = vMax[2] = -99999.0f;
 	// we seam the column edge, FIXME: this might need to be able to seem either edge
 	//
 	int	nSize	= ( bByColumn ) ? pParent->width : pParent->height;
@@ -1195,8 +1195,8 @@ brush_t *CapSpecial( patchMesh_t *pParent, int nType, bool bFirst ) {
 	}
 	p = b->pPatch;
 	p->type |= PATCH_CAP;
-	vMin[0] = vMin[1] = vMin[2] = 99999;
-	vMax[0] = vMax[1] = vMax[2] = -99999;
+	vMin[0] = vMin[1] = vMin[2] = 99999.0f;
+	vMax[0] = vMax[1] = vMax[2] = -99999.0f;
 	int	nSize	= pParent->width;
 	int	nIndex	= ( bFirst ) ? 0 : pParent->height - 1;
 	// parent bounds are used for some things
@@ -1370,8 +1370,8 @@ void GenerateEndCaps( brush_t *brushParent, bool bBevel, bool bEndcap, bool bInv
 		b = Patch_GenericMesh( 3, 3, 2, false, false, pParent );
 	}
 	p = b->pPatch;
-	vMin[0] = vMin[1] = vMin[2] = 99999;
-	vMax[0] = vMax[1] = vMax[2] = -99999;
+	vMin[0] = vMin[1] = vMin[2] = 99999.0f;
+	vMax[0] = vMax[1] = vMax[2] = -99999.0f;
 	for( i = 0; i < pParent->width; i++ ) {
 		VectorCopy( pParent->ctrl( i, 0 ).xyz, p->ctrl( Index3By[i][0], Index3By[i][1] ).xyz );
 		for( j = 0; j < 3; j++ ) {
@@ -2722,7 +2722,6 @@ void Patch_RemoveColumn( patchMesh_t *p, bool bFirst ) {
 	UpdatePatchInspector();
 }
 
-
 void Patch_DisperseRows() {
 	idVec3	vTemp, vTemp2;
 	int		i, w, h;
@@ -2735,11 +2734,6 @@ void Patch_DisperseRows() {
 				// of points across the old bounds
 				// calc total distance to interpolate
 				VectorSubtract( p->ctrl( w, p->height - 1 ).xyz, p->ctrl( w, 0 ).xyz, vTemp );
-				//vTemp[0] = vTemp[1] = vTemp[2] = 0;
-				//for (h = 0; h < p->height - nRows; h ++)
-				//{
-				//  VectorAdd(vTemp, p->ctrl(w,h], vTemp);
-				//}
 				// amount per cycle
 				for( i = 0; i < 3; i ++ ) {
 					vTemp2[i] = vTemp[i] / ( p->height - 1 );

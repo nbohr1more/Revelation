@@ -59,9 +59,9 @@ void Z_MouseDown( int x, int y, int buttons ) {
 	idVec3	org, dir, vup, vright;
 	brush_t *b;
 	Sys_GetCursorPos( &cursorx, &cursory );
-	vup[0] = 0;
-	vup[1] = 0;
-	vup[2] = 1 / z.scale;
+	vup[0] = 0.0f;
+	vup[1] = 0.0f;
+	vup[2] = 1.0f / z.scale;
 	VectorCopy( z.origin, org );
 	org[2] += ( y - ( z.height / 2 ) ) / z.scale;
 	org[1] = MIN_WORLD_COORD;
@@ -69,12 +69,12 @@ void Z_MouseDown( int x, int y, int buttons ) {
 	if( b != &selected_brushes ) {
 		org[0] = ( b->mins[0] + b->maxs[0] ) / 2;
 	}
-	dir[0] = 0;
-	dir[1] = 1;
-	dir[2] = 0;
-	vright[0] = 0;
-	vright[1] = 0;
-	vright[2] = 0;
+	dir[0] = 0.0f;
+	dir[1] = 1.0f;
+	dir[2] = 0.0f;
+	vright[0] = 0.0f;
+	vright[1] = 0.0f;
+	vright[2] = 0.0f;
 	// new mouse code for ZClip, I'll do this stuff before falling through into the standard ZWindow mouse code...
 	//
 	if( g_pParentWnd->GetZWnd()->m_pZClip ) {	// should always be the case I think, but this is safer
@@ -333,24 +333,21 @@ void Z_Draw( void ) {
 	glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
 	globalImages->BindNull();
 	// draw filled interiors and edges
-	dir_up[0] = 0;
-	dir_up[1] = 0;
-	dir_up[2] = 1;
-	dir_down[0] = 0;
-	dir_down[1] = 0;
-	dir_down[2] = -1;
+	dir_up[0] = 0.0f;
+	dir_up[1] = 0.0f;
+	dir_up[2] = 1.0f;
+	dir_down[0] = 0.0f;
+	dir_down[1] = 0.0f;
+	dir_down[2] = -1.0f;
 	VectorCopy( z.origin, org_top );
-	org_top[2] = 4096;
+	org_top[2] = 4096.0f;
 	VectorCopy( z.origin, org_bottom );
 	org_bottom[2] = -4096;
 	for( brush = active_brushes.next; brush != &active_brushes; brush = brush->next ) {
-		if
-		(
-			brush->mins[0] >= z.origin[0] ||
+		if(	brush->mins[0] >= z.origin[0] ||
 			brush->maxs[0] <= z.origin[0] ||
 			brush->mins[1] >= z.origin[1] ||
-			brush->maxs[1] <= z.origin[1]
-		) {
+			brush->maxs[1] <= z.origin[1] ) {
 			continue;
 		}
 		if( !Brush_Ray( org_top, dir_down, brush, &top ) ) {

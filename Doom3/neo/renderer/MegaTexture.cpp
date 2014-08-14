@@ -42,13 +42,6 @@ allow sparse population of the upper detail tiles
 
 */
 
-int RoundDownToPowerOfTwo( int num ) {
-	int		pot;
-	for( pot = 1 ; ( pot * 2 ) <= num ; pot <<= 1 ) {
-	}
-	return pot;
-}
-
 static union {
 	int		intVal;
 	byte	color[4];
@@ -65,6 +58,11 @@ static byte	colors[8][4] = {
 	{ 255, 255, 255, 255 }
 };
 
+/*
+====================
+R_EmptyLevelImage
+====================
+*/
 static void R_EmptyLevelImage( idImage *image ) {
 	int	c = MAX_LEVEL_WIDTH * MAX_LEVEL_WIDTH;
 	byte	*data = ( byte * )_alloca( c * 4 );
@@ -72,8 +70,7 @@ static void R_EmptyLevelImage( idImage *image ) {
 		( ( int * )data )[i] = fillColor.intVal;
 	}
 	// FIXME: this won't live past vid mode changes
-	image->GenerateImage( data, MAX_LEVEL_WIDTH, MAX_LEVEL_WIDTH,
-						  TF_DEFAULT, false, TR_REPEAT, TD_HIGH_QUALITY );
+	image->GenerateImage( data, MAX_LEVEL_WIDTH, MAX_LEVEL_WIDTH, TF_DEFAULT, false, TR_REPEAT, TD_HIGH_QUALITY );
 }
 
 
@@ -154,12 +151,12 @@ void idMegaTexture::SetMappingForSurface( const srfTriangles_t *tri ) {
 		return;
 	}
 	idDrawVert	origin, axis[2];
-	origin.st[0] = 1.0;
-	origin.st[1] = 1.0;
-	axis[0].st[0] = 0;
-	axis[0].st[1] = 1;
-	axis[1].st[0] = 1;
-	axis[1].st[1] = 0;
+	origin.st[0] = 1.0f;
+	origin.st[1] = 1.0f;
+	axis[0].st[0] = 0.0f;
+	axis[0].st[1] = 1.0f;
+	axis[1].st[0] = 1.0f;
+	axis[1].st[1] = 0.0f;
 	for( int i = 0 ; i < tri->numVerts ; i++ ) {
 		idDrawVert	*v = &tri->verts[i];
 		if( v->st[0] <= origin.st[0] && v->st[1] <= origin.st[1] ) {
@@ -401,13 +398,12 @@ void idTextureLevel::Invalidate() {
 	for( int x = 0 ; x < TILE_PER_LEVEL ; x++ ) {
 		for( int y = 0 ; y < TILE_PER_LEVEL ; y++ ) {
 			tileMap[x][y].x =
-				tileMap[x][y].y = -99999;
+			tileMap[x][y].y = -99999;
 		}
 	}
 }
 
 //===================================================================================================
-
 
 typedef struct _TargaHeader {
 	unsigned char 	id_length, colormap_type, image_type;
@@ -416,7 +412,6 @@ typedef struct _TargaHeader {
 	unsigned short	x_origin, y_origin, width, height;
 	unsigned char	pixel_size, attributes;
 } TargaHeader;
-
 
 static byte ReadByte( idFile *f ) {
 	byte	b;
@@ -429,7 +424,6 @@ static short ReadShort( idFile *f ) {
 	f->Read( &b, 2 );
 	return b[0] + ( b[1] << 8 );
 }
-
 
 /*
 ====================
@@ -548,8 +542,7 @@ void	idMegaTexture::GenerateMegaPreview( const char *fileName ) {
 			fileHandle->Seek( tileNum * tileBytes, FS_SEEK_SET );
 			fileHandle->Read( oldBlock, tileBytes );
 			for( int yy = 0 ; yy < tileSize ; yy++ ) {
-				memcpy( pic + ( ( y * tileSize + yy ) * width * tileSize + x * tileSize ) * 4,
-						oldBlock + yy * tileSize * 4, tileSize * 4 );
+				memcpy( pic + ( ( y * tileSize + yy ) * width * tileSize + x * tileSize ) * 4, oldBlock + yy * tileSize * 4, tileSize * 4 );
 			}
 		}
 	}
@@ -567,9 +560,9 @@ Incrementally load a giant tga file and process into the mega texture block form
 ====================
 */
 void idMegaTexture::MakeMegaTexture_f( const idCmdArgs &args ) {
-	int		columns, rows, fileSize, numBytes;
-	byte	*pixbuf;
-	int		row, column;
+	int			columns, rows, fileSize, numBytes;
+	byte		*pixbuf;
+	int			row, column;
 	TargaHeader	targa_header;
 	if( args.Argc() != 2 ) {
 		common->Printf( "USAGE: makeMegaTexture <filebase>\n" );
@@ -625,13 +618,14 @@ void idMegaTexture::MakeMegaTexture_f( const idCmdArgs &args ) {
 	}
 	megaTextureHeader_t		mtHeader;
 	mtHeader.tileSize = TILE_SIZE;
-	mtHeader.tilesWide = RoundDownToPowerOfTwo( targa_header.width ) / TILE_SIZE;
-	mtHeader.tilesHigh = RoundDownToPowerOfTwo( targa_header.height ) / TILE_SIZE;
+	IMAGE_ROUND_POWER2( targa_header.width, mtHeader.tilesWide );
+	IMAGE_ROUND_POWER2( targa_header.height, mtHeader.tilesHigh );
+	mtHeader.tilesWide /= TILE_SIZE;
+	mtHeader.tilesHigh /= TILE_SIZE;
 	idStr	outName = name;
 	outName.StripFileExtension();
 	outName += ".mega";
-	common->Printf( "Writing %i x %i size %i tiles to %s.\n",
-					mtHeader.tilesWide, mtHeader.tilesHigh, mtHeader.tileSize, outName.c_str() );
+	common->Printf( "Writing %i x %i size %i tiles to %s.\n", mtHeader.tilesWide, mtHeader.tilesHigh, mtHeader.tileSize, outName.c_str() );
 	// open the output megatexture file
 	idFile	*out = fileSystem->OpenFileWrite( outName.c_str() );
 	out->Write( &mtHeader, sizeof( mtHeader ) );
@@ -787,11 +781,6 @@ breakOut:
 	delete out;
 	delete file;
 	GenerateMegaPreview( outName.c_str() );
-#if 0
-	if( ( targa_header.attributes & ( 1 << 5 ) ) ) {			// image flp bit
-		R_VerticalFlip( *pic, *width, *height );
-	}
-#endif
 }
 
 

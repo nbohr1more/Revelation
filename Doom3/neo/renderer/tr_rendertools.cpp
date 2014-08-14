@@ -392,7 +392,6 @@ void RB_ShowIntensity( void ) {
 	R_StaticFree( colorReadback );
 }
 
-
 /*
 ===================
 RB_ShowDepthBuffer
@@ -835,8 +834,8 @@ Shade materials that are using unsmoothed tangents
 =====================
 */
 static void RB_ShowUnsmoothedTangents( drawSurf_t **drawSurfs, int numDrawSurfs ) {
-	int		i, j;
-	drawSurf_t	*drawSurf;
+	int						i, j;
+	drawSurf_t				*drawSurf;
 	const srfTriangles_t	*tri;
 	if( !r_showUnsmoothedTangents.GetBool() ) {
 		return;
@@ -880,8 +879,8 @@ Shade a triangle by the RGB colors of its tangent space
 =====================
 */
 static void RB_ShowTangentSpace( drawSurf_t **drawSurfs, int numDrawSurfs ) {
-	int		i, j;
-	drawSurf_t	*drawSurf;
+	int						i, j;
+	drawSurf_t				*drawSurf;
 	const srfTriangles_t	*tri;
 	if( !r_showTangentSpace.GetInteger() ) {
 		return;
@@ -926,8 +925,8 @@ Draw each triangle with the solid vertex colors
 =====================
 */
 static void RB_ShowVertexColor( drawSurf_t **drawSurfs, int numDrawSurfs ) {
-	int		i, j;
-	drawSurf_t	*drawSurf;
+	int						i, j;
+	drawSurf_t				*drawSurf;
 	const srfTriangles_t	*tri;
 	if( !r_showVertexColor.GetBool() ) {
 		return;
@@ -964,13 +963,13 @@ Debugging tool
 =====================
 */
 static void RB_ShowNormals( drawSurf_t **drawSurfs, int numDrawSurfs ) {
-	int			i, j;
-	drawSurf_t	*drawSurf;
-	idVec3		end;
+	int						i, j;
+	drawSurf_t				*drawSurf;
+	idVec3					end;
 	const srfTriangles_t	*tri;
-	float		size;
-	bool		showNumbers;
-	idVec3		pos;
+	float					size;
+	bool					showNumbers;
+	idVec3					pos;
 	if( r_showNormals.GetFloat() == 0.0f ) {
 		return;
 	}
@@ -1044,9 +1043,9 @@ Debugging tool
 =====================
 */
 static void RB_AltShowNormals( drawSurf_t **drawSurfs, int numDrawSurfs ) {
-	int			i, j, k;
-	drawSurf_t	*drawSurf;
-	idVec3		end;
+	int						i, j, k;
+	drawSurf_t				*drawSurf;
+	idVec3					end;
 	const srfTriangles_t	*tri;
 	if( r_showNormals.GetFloat() == 0.0f ) {
 		return;
@@ -1106,8 +1105,8 @@ Draw texture vectors in the center of each triangle
 =====================
 */
 static void RB_ShowTextureVectors( drawSurf_t **drawSurfs, int numDrawSurfs ) {
-	int			i, j;
-	drawSurf_t	*drawSurf;
+	int						i, j;
+	drawSurf_t				*drawSurf;
 	const srfTriangles_t	*tri;
 	if( r_showTextureVectors.GetFloat() == 0.0f ) {
 		return;
@@ -1184,8 +1183,8 @@ Draw lines from each vertex to the dominant triangle center
 =====================
 */
 static void RB_ShowDominantTris( drawSurf_t **drawSurfs, int numDrawSurfs ) {
-	int			i, j;
-	drawSurf_t	*drawSurf;
+	int						i, j;
+	drawSurf_t				*drawSurf;
 	const srfTriangles_t	*tri;
 	if( !r_showDominantTri.GetBool() ) {
 		return;
@@ -1231,11 +1230,11 @@ Debugging tool
 =====================
 */
 static void RB_ShowEdges( drawSurf_t **drawSurfs, int numDrawSurfs ) {
-	int			i, j, k, m, n, o;
-	drawSurf_t	*drawSurf;
+	int						i, j, k, m, n, o;
+	drawSurf_t				*drawSurf;
 	const srfTriangles_t	*tri;
 	const silEdge_t			*edge;
-	int			danglePlane;
+	int						danglePlane;
 	if( !r_showEdges.GetBool() ) {
 		return;
 	}
@@ -1314,9 +1313,9 @@ r_showLights 3	: also draw edges of each volume
 */
 void RB_ShowLights( void ) {
 	const idRenderLightLocal	*light;
-	int					count;
-	srfTriangles_t		*tri;
-	viewLight_t			*vLight;
+	int							count;
+	srfTriangles_t				*tri;
+	viewLight_t					*vLight;
 	if( !r_showLights.GetInteger() ) {
 		return;
 	}
@@ -1952,14 +1951,14 @@ void RB_TestImage( void ) {
 	glOrtho( 0, 1, 0, 1, -1, 1 );
 	tr.testImage->Bind();
 	glBegin( GL_QUADS );
-	glTexCoord2f( 0, 1 );
-	glVertex2f( 0.5 - w, 0 );
-	glTexCoord2f( 0, 0 );
-	glVertex2f( 0.5 - w, h * 2 );
-	glTexCoord2f( 1, 0 );
-	glVertex2f( 0.5 + w, h * 2 );
-	glTexCoord2f( 1, 1 );
-	glVertex2f( 0.5 + w, 0 );
+	glTexCoord2f( 0.0f, 1.0f );
+	glVertex2f( 0.5f - w, 0.0f );
+	glTexCoord2f( 0.0f, 0.0f );
+	glVertex2f( 0.5f - w, h * 2.0f );
+	glTexCoord2f( 1.0f, 0.0f );
+	glVertex2f( 0.5f + w, h * 2.0f );
+	glTexCoord2f( 1.0f, 1.0f );
+	glVertex2f( 0.5f + w, 0.0f );
 	glEnd();
 	glPopMatrix();
 	glMatrixMode( GL_MODELVIEW );

@@ -376,7 +376,7 @@ void R_DeriveLightData( idRenderLightLocal *light ) {
 		dir = light->parms.lightCenter;
 		if( !dir.Normalize() ) {
 			// make point straight up if not specified
-			dir[2] = 1;
+			dir[2] = 1.0f;
 		}
 		light->globalLightOrigin = light->parms.origin + dir * 100000;
 	} else {

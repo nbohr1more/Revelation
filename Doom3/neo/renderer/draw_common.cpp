@@ -891,7 +891,7 @@ static void RB_T_Shadow( const drawSurf_t *surf ) {
 		return;
 	}
 	// patent-free work arounds
-	if( glConfig.glVersion >= 2.0f && r_useTwoSidedStencil.GetBool() ) {
+	if( glConfig.gl2TwoSidedStencilAvailable && r_useTwoSidedStencil.GetBool() ) {
 		// GL 2.0+ two-sided stencil
 		GL_Cull( CT_TWO_SIDED );
 		if( !external )	{
@@ -948,8 +948,6 @@ static void RB_T_Shadow( const drawSurf_t *surf ) {
 		GL_Cull( CT_BACK_SIDED );
 		RB_DrawShadowElementsWithCounters( tri, numIndexes );
 	}
-	// restore cull the same as the original GPL code
-	// revelator dont it breaks rendering.
 	GL_Cull( CT_FRONT_SIDED );
 	// Moved depthbounds test here
 	if( r_useDepthBoundsTest.GetBool() ) {
@@ -1019,8 +1017,7 @@ static void RB_T_BlendLight( const drawSurf_t *surf ) {
 	tri = surf->geo;
 	if( backEnd.currentSpace != surf->space ) {
 		idPlane	lightProject[4];
-		int		i;
-		for( i = 0 ; i < 4 ; i++ ) {
+		for( int i = 0 ; i < 4 ; i++ ) {
 			R_GlobalPlaneToLocal( surf->space->modelMatrix, backEnd.vLight->lightProject[i], lightProject[i] );
 		}
 		GL_SelectTexture( 0 );
@@ -1032,7 +1029,7 @@ static void RB_T_BlendLight( const drawSurf_t *surf ) {
 	}
 	// this gets used for both blend lights and shadow draws
 	if( tri->ambientCache ) {
-		idDrawVert	*ac = ( idDrawVert * )vertexCache.Position( tri->ambientCache );
+		idDrawVert		*ac = ( idDrawVert * )vertexCache.Position( tri->ambientCache );
 		glVertexPointer( 3, GL_FLOAT, sizeof( idDrawVert ), ac->xyz.ToFloatPtr() );
 	} else if( tri->shadowCache ) {
 		shadowCache_t	*sc = ( shadowCache_t * )vertexCache.Position( tri->shadowCache );
@@ -1054,7 +1051,6 @@ static void RB_BlendLight( const drawSurf_t *drawSurfs,  const drawSurf_t *drawS
 	const idMaterial	*lightShader;
 	const shaderStage_t	*stage;
 	const float			*regs;
-	int					i;
 	if( !drawSurfs ) {
 		return;
 	}
@@ -1067,7 +1063,7 @@ static void RB_BlendLight( const drawSurf_t *drawSurfs,  const drawSurf_t *drawS
 	GL_SelectTexture( 1 );
 	glDisableClientState( GL_TEXTURE_COORD_ARRAY );
 	glEnable( GL_TEXTURE_GEN_S );
-	glTexCoord2f( 0, 0.5 );
+	glTexCoord2f( 0.0f, 0.5f );
 	backEnd.vLight->falloffImage->Bind();
 	// texture 0 will get the projected texture
 	GL_SelectTexture( 0 );
@@ -1075,7 +1071,7 @@ static void RB_BlendLight( const drawSurf_t *drawSurfs,  const drawSurf_t *drawS
 	glEnable( GL_TEXTURE_GEN_S );
 	glEnable( GL_TEXTURE_GEN_T );
 	glEnable( GL_TEXTURE_GEN_Q );
-	for( i = 0 ; i < lightShader->GetNumStages() ; i++ ) {
+	for( int i = 0 ; i < lightShader->GetNumStages() ; i++ ) {
 		stage = lightShader->GetStage( i );
 		if( !regs[ stage->conditionRegister ] ) {
 			continue;
@@ -1128,8 +1124,8 @@ static void RB_T_BasicFog( const drawSurf_t *surf ) {
 		R_GlobalPlaneToLocal( surf->space->modelMatrix, fogPlanes[0], local );
 		local[3] += 0.5;
 		glTexGenfv( GL_S, GL_OBJECT_PLANE, local.ToFloatPtr() );
-		local[0] =
-		local[1] =
+		local[0] = 0;
+		local[1] = 0;
 		local[2] = 0;
 		local[3] = 0.5;
 		glTexGenfv( GL_T, GL_OBJECT_PLANE, local.ToFloatPtr() );

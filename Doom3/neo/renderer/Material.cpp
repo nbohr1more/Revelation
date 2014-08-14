@@ -105,22 +105,22 @@ void idMaterial::CommonInit() {
 	unsmoothedTangents = false;
 	gui = NULL;
 	memset( deformRegisters, 0, sizeof( deformRegisters ) );
-	editorAlpha = 1.0;
+	editorAlpha = 1.0f;
 	spectrum = 0;
-	polygonOffset = 0;
+	polygonOffset = 0.0f;
 	suppressInSubview = false;
 	refCount = 0;
 	portalSky = false;
 	decalInfo.stayTime = 10000;
 	decalInfo.fadeTime = 4000;
-	decalInfo.start[0] = 1;
-	decalInfo.start[1] = 1;
-	decalInfo.start[2] = 1;
-	decalInfo.start[3] = 1;
-	decalInfo.end[0] = 0;
-	decalInfo.end[1] = 0;
-	decalInfo.end[2] = 0;
-	decalInfo.end[3] = 0;
+	decalInfo.start[0] = 1.0f;
+	decalInfo.start[1] = 1.0f;
+	decalInfo.start[2] = 1.0f;
+	decalInfo.start[3] = 1.0f;
+	decalInfo.end[0] = 0.0f;
+	decalInfo.end[1] = 0.0f;
+	decalInfo.end[2] = 0.0f;
+	decalInfo.end[3] = 0.0f;
 }
 
 /*
@@ -214,7 +214,6 @@ idImage *idMaterial::GetEditorImage( void ) const {
 	}
 	return editorImage;
 }
-
 
 // info parms
 typedef struct {
@@ -700,10 +699,10 @@ idMaterial::ClearStage
 */
 void idMaterial::ClearStage( shaderStage_t *ss ) {
 	ss->drawStateBits = 0;
-	ss->conditionRegister = GetExpressionConstant( 1 );
-	ss->color.registers[0] =
-	ss->color.registers[1] =
-	ss->color.registers[2] =
+	ss->conditionRegister  = GetExpressionConstant( 1 );
+	ss->color.registers[0] = GetExpressionConstant( 1 );
+	ss->color.registers[1] = GetExpressionConstant( 1 );
+	ss->color.registers[2] = GetExpressionConstant( 1 );
 	ss->color.registers[3] = GetExpressionConstant( 1 );
 }
 
@@ -860,7 +859,6 @@ void idMaterial::ParseVertexParm( idLexer &src, newShaderStage_t *newStage ) {
 	newStage->vertexParms[parm][3] = ParseExpression( src );
 }
 
-
 /*
 ================
 idMaterial::ParseFragmentMap
@@ -967,25 +965,25 @@ void idMaterial::MultiplyTextureMatrix( textureStage_t *ts, int registers[2][3] 
 	memcpy( old, ts->matrix, sizeof( old ) );
 	// multiply the two maticies
 	ts->matrix[0][0] = EmitOp(
-						   EmitOp( old[0][0], registers[0][0], OP_TYPE_MULTIPLY ),
-						   EmitOp( old[0][1], registers[1][0], OP_TYPE_MULTIPLY ), OP_TYPE_ADD );
+					   EmitOp( old[0][0], registers[0][0], OP_TYPE_MULTIPLY ),
+					   EmitOp( old[0][1], registers[1][0], OP_TYPE_MULTIPLY ), OP_TYPE_ADD );
 	ts->matrix[0][1] = EmitOp(
-						   EmitOp( old[0][0], registers[0][1], OP_TYPE_MULTIPLY ),
-						   EmitOp( old[0][1], registers[1][1], OP_TYPE_MULTIPLY ), OP_TYPE_ADD );
+					   EmitOp( old[0][0], registers[0][1], OP_TYPE_MULTIPLY ),
+					   EmitOp( old[0][1], registers[1][1], OP_TYPE_MULTIPLY ), OP_TYPE_ADD );
 	ts->matrix[0][2] = EmitOp(
-						   EmitOp(
-							   EmitOp( old[0][0], registers[0][2], OP_TYPE_MULTIPLY ),
-							   EmitOp( old[0][1], registers[1][2], OP_TYPE_MULTIPLY ), OP_TYPE_ADD ), old[0][2], OP_TYPE_ADD );
+					   EmitOp(
+					   EmitOp( old[0][0], registers[0][2], OP_TYPE_MULTIPLY ),
+					   EmitOp( old[0][1], registers[1][2], OP_TYPE_MULTIPLY ), OP_TYPE_ADD ), old[0][2], OP_TYPE_ADD );
 	ts->matrix[1][0] = EmitOp(
-						   EmitOp( old[1][0], registers[0][0], OP_TYPE_MULTIPLY ),
-						   EmitOp( old[1][1], registers[1][0], OP_TYPE_MULTIPLY ), OP_TYPE_ADD );
+					   EmitOp( old[1][0], registers[0][0], OP_TYPE_MULTIPLY ),
+					   EmitOp( old[1][1], registers[1][0], OP_TYPE_MULTIPLY ), OP_TYPE_ADD );
 	ts->matrix[1][1] = EmitOp(
-						   EmitOp( old[1][0], registers[0][1], OP_TYPE_MULTIPLY ),
-						   EmitOp( old[1][1], registers[1][1], OP_TYPE_MULTIPLY ), OP_TYPE_ADD );
+					   EmitOp( old[1][0], registers[0][1], OP_TYPE_MULTIPLY ),
+					   EmitOp( old[1][1], registers[1][1], OP_TYPE_MULTIPLY ), OP_TYPE_ADD );
 	ts->matrix[1][2] = EmitOp(
-						   EmitOp(
-							   EmitOp( old[1][0], registers[0][2], OP_TYPE_MULTIPLY ),
-							   EmitOp( old[1][1], registers[1][2], OP_TYPE_MULTIPLY ), OP_TYPE_ADD ), old[1][2], OP_TYPE_ADD );
+					   EmitOp(
+					   EmitOp( old[1][0], registers[0][2], OP_TYPE_MULTIPLY ),
+					   EmitOp( old[1][1], registers[1][2], OP_TYPE_MULTIPLY ), OP_TYPE_ADD ), old[1][2], OP_TYPE_ADD );
 }
 
 /*

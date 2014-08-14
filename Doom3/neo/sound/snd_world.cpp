@@ -1336,10 +1336,10 @@ void idSoundWorldLocal::CalcEars( int numSpeakers, idVec3 spatializedOrigin, idV
 		if( ears[1] < idSoundSystemLocal::s_minVolume2.GetFloat() ) {
 			ears[1] = idSoundSystemLocal::s_minVolume2.GetFloat();
 		}
-		ears[2] =
-			ears[3] =
-				ears[4] =
-					ears[5] = 0.0f;
+		ears[2] = 0.0f;
+		ears[3] = 0.0f;
+		ears[4] = 0.0f;
+		ears[5] = 0.0f;
 	}
 }
 

@@ -98,8 +98,8 @@ class texturewin_t {
 public:
 	texturewin_t() {
 		memset( &brushprimit_texdef.coords, 0, sizeof( brushprimit_texdef.coords ) );
-		brushprimit_texdef.coords[0][0] = 1.0;
-		brushprimit_texdef.coords[1][1] = 1.0;
+		brushprimit_texdef.coords[0][0] = 1.0f;
+		brushprimit_texdef.coords[1][1] = 1.0f;
 	}
 	
 	~texturewin_t() {

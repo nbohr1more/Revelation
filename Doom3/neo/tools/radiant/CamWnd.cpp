@@ -438,7 +438,7 @@ void CCamWnd::Cam_ChangeFloor( bool up ) {
 	start[0] = m_Camera.origin[0];
 	start[1] = m_Camera.origin[1];
 	start[2] = HUGE_DISTANCE;
-	dir[0] = dir[1] = 0;
+	dir[0] = dir[1] = 0.0f;
 	dir[2] = -1;
 	current = HUGE_DISTANCE - ( m_Camera.origin[2] - 72 );
 	if( up ) {

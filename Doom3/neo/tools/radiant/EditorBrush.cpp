@@ -4420,41 +4420,6 @@ void Face_FitTexture( face_t *face, float nHeight, float nWidth ) {
 		idVec3	mins, maxs;
 		mins[0] = maxs[0] = 0;
 		Face_FitTexture_BrushPrimit( face, mins, maxs, nHeight, nWidth );
-	} else {
-		/*
-		 * winding_t *w; idBounds bounds; int i; float width, height, temp; float rot_width,
-		 * rot_height; float cosv,sinv,ang; float min_t, min_s, max_t, max_s; float s,t;
-		 * idVec3 vecs[2]; idVec3 coords[4]; texdef_t *td; if (nHeight < 1) { nHeight = 1;
-		 * } if (nWidth < 1) { nWidth = 1; } bounds.Clear(); td = &face->texdef; w =
-		 * face->face_winding; if (!w) { return; } for (i=0 ; i<w->numpoints ; i++) {
-		 * bounds.AddPoint( w->p[i] ); } // // get the current angle // ang = td->rotate /
-		 * 180 * Q_PI; sinv = sin(ang); cosv = cos(ang); // get natural texture axis
-		 * TextureAxisFromPlane(&face->plane, vecs[0], vecs[1]); min_s = DotProduct(
-		 * bounds.b[0], vecs[0] ); min_t = DotProduct( bounds.b[0], vecs[1] ); max_s =
-		 * DotProduct( bounds.b[1], vecs[0] ); max_t = DotProduct( bounds.b[1], vecs[1] );
-		 * width = max_s - min_s; height = max_t - min_t; coords[0][0] = min_s;
-		 * coords[0][1] = min_t; coords[1][0] = max_s; coords[1][1] = min_t; coords[2][0]
-		 * = min_s; coords[2][1] = max_t; coords[3][0] = max_s; coords[3][1] = max_t;
-		 * min_s = min_t = 999999; max_s = max_t = -999999; for (i=0; i<4; i++) { s = cosv
-		 * * coords[i][0] - sinv * coords[i][1]; t = sinv * coords[i][0] + cosv *
-		 * coords[i][1]; if (i&1) { if (s > max_s) { max_s = s; } } else { if (s < min_s)
-		 * { min_s = s; } if (i<2) { if (t < min_t) { min_t = t; } } else { if (t > max_t)
-		 * { max_t = t; } } } } rot_width = (max_s - min_s); rot_height = (max_t - min_t);
-		 * td->scale[0] =
-		 * -(rot_width/((float)(face->d_texture->GetEditorImage()->uploadWidth*nWidth)));
-		 * td->scale[1] =
-		 * -(rot_height/((float)(face->d_texture->GetEditorImage()->uploadHeight*nHeight)));
-		 * td->shift[0] = min_s/td->scale[0]; temp = (int)(td->shift[0] /
-		 * (face->d_texture->GetEditorImage()->uploadWidth*nWidth)); temp =
-		 * (temp+1)*face->d_texture->GetEditorImage()->uploadWidth*nWidth; td->shift[0] =
-		 * (int)(temp -
-		 * td->shift[0])%(face->d_texture->GetEditorImage()->uploadWidth*nWidth);
-		 * td->shift[1] = min_t/td->scale[1]; temp = (int)(td->shift[1] /
-		 * (face->d_texture->GetEditorImage()->uploadHeight*nHeight)); temp =
-		 * (temp+1)*(face->d_texture->GetEditorImage()->uploadHeight*nHeight);
-		 * td->shift[1] = (int)(temp -
-		 * td->shift[1])%(face->d_texture->GetEditorImage()->uploadHeight*nHeight);
-		 */
 	}
 }
 

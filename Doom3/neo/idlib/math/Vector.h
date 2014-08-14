@@ -700,14 +700,14 @@ ID_FORCE_INLINE void idVec3::NormalVectors( idVec3 &left, idVec3 &down ) const {
 	float d;
 	d = x * x + y * y;
 	if( !d ) {
-		left[0] = 1;
-		left[1] = 0;
-		left[2] = 0;
+		left[0] = 1.0f;
+		left[1] = 0.0f;
+		left[2] = 0.0f;
 	} else {
 		d = idMath::InvSqrt( d );
 		left[0] = -y * d;
 		left[1] = x * d;
-		left[2] = 0;
+		left[2] = 0.0f;
 	}
 	down = left.Cross( *this );
 }
@@ -728,7 +728,7 @@ ID_FORCE_INLINE void idVec3::OrthogonalBasis( idVec3 &left, idVec3 &up ) const {
 		s = idMath::InvSqrt( l );
 		left[0] = -y * s;
 		left[1] = x * s;
-		left[2] = 0;
+		left[2] = 0.0f;
 		up[0] = -z * left[1];
 		up[1] = z * left[0];
 		up[2] = l * s;

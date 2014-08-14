@@ -31,12 +31,10 @@ If you have questions concerning this license or the applicable additional terms
 
 #include "tr_local.h"
 
-
 typedef struct {
 	idVec3		origin;
 	idMat3		axis;
 } orientation_t;
-
 
 /*
 =================
