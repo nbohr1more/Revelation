@@ -665,7 +665,7 @@ static void RB_ShowTris( drawSurf_t **drawSurfs, int numDrawSurfs ) {
 	RB_RenderDrawSurfListWithFunction( drawSurfs, numDrawSurfs, RB_T_RenderTriangleSurface );
 	glEnable( GL_DEPTH_TEST );
 	glDisable( GL_POLYGON_OFFSET_LINE );
-	glDepthRange( 0, 1 );
+	glDepthRange( 0.0f, 1.0f );
 	GL_State( GLS_DEFAULT );
 	GL_Cull( CT_FRONT_SIDED );
 }
@@ -708,7 +708,7 @@ static void RB_ShowSurfaceInfo( drawSurf_t **drawSurfs, int numDrawSurfs ) {
 							   0.35f, colorBlue, tr.primaryView->renderView.viewaxis );
 	glEnable( GL_DEPTH_TEST );
 	glDisable( GL_POLYGON_OFFSET_LINE );
-	glDepthRange( 0, 1 );
+	glDepthRange( 0.0f, 1.0f );
 	GL_State( GLS_DEFAULT );
 	GL_Cull( CT_FRONT_SIDED );
 }
@@ -762,7 +762,7 @@ static void RB_ShowViewEntitys( viewEntity_t *vModels ) {
 	}
 	glEnable( GL_DEPTH_TEST );
 	glDisable( GL_POLYGON_OFFSET_LINE );
-	glDepthRange( 0, 1 );
+	glDepthRange( 0.0f, 1.0f );
 	GL_State( GLS_DEFAULT );
 	GL_Cull( CT_FRONT_SIDED );
 }
@@ -1357,7 +1357,7 @@ void RB_ShowLights( void ) {
 	}
 	glEnable( GL_DEPTH_TEST );
 	glDisable( GL_POLYGON_OFFSET_LINE );
-	glDepthRange( 0, 1 );
+	glDepthRange( 0.0f, 1.0f );
 	GL_State( GLS_DEFAULT );
 	GL_Cull( CT_FRONT_SIDED );
 	common->Printf( " = %i total\n", count );
@@ -1774,7 +1774,7 @@ void RB_ShowDebugPolygons( void ) {
 	} else {
 		glDisable( GL_POLYGON_OFFSET_LINE );
 	}
-	glDepthRange( 0, 1 );
+	glDepthRange( 0.0f, 1.0f );
 	GL_State( GLS_DEFAULT );
 }
 

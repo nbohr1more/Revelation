@@ -164,13 +164,13 @@ RB_EnterWeaponDepthHack
 */
 void RB_EnterWeaponDepthHack() {
 	GLfloat			matrix[16];
-	const GLfloat	depth = 0.25f;
-	glDepthRange( 0.0f, depth * 2.0f );
+	const GLfloat	depthRange = 0.25f;
+	glDepthRange( 0.0f, depthRange * 2.0f );
 	memcpy( matrix, backEnd.viewDef->projectionMatrix, sizeof( matrix ) );
-	matrix[2] *= depth;
-	matrix[6] *= depth;
-	matrix[10] *= depth;
-	matrix[14] *= depth;
+	matrix[2]  *= idMath::ClampFloat( 0.0f, 1.0f, depthRange );
+	matrix[6]  *= idMath::ClampFloat( 0.0f, 1.0f, depthRange );
+	matrix[10] *= idMath::ClampFloat( 0.0f, 1.0f, depthRange );
+	matrix[14] *= idMath::ClampFloat( 0.0f, 1.0f, depthRange );
 	glMatrixMode( GL_PROJECTION );
 	glLoadMatrixf( (const GLfloat *)matrix );
 	glMatrixMode( GL_MODELVIEW );
@@ -185,10 +185,7 @@ void RB_EnterModelDepthHack( float depth ) {
 	GLfloat	matrix[16];
 	glDepthRange( 0.0f, 1.0f );
 	memcpy( matrix, backEnd.viewDef->projectionMatrix, sizeof( matrix ) );
-	matrix[2] -= depth;
-	matrix[6] -= depth;
-	matrix[10] -= depth;
-	matrix[14] -= depth;
+	matrix[14] -= idMath::ClampFloat( 0.0f, 1.0f, depth );
 	glMatrixMode( GL_PROJECTION );
 	glLoadMatrixf( (const GLfloat *)matrix );
 	glMatrixMode( GL_MODELVIEW );
