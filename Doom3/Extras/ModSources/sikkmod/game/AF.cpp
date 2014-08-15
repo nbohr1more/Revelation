@@ -742,37 +742,37 @@ bool idAF::Load( idEntity *ent, const char *fileName ) {
 	self = ent;
 	physicsObj.SetSelf( self );
 	if( animator == NULL ) {
-		gameLocal.Warning( "Couldn't load af '%s' for entity '%s' at (%s): NULL animator\n", name.c_str(), ent->name.c_str(), ent->GetPhysics()->GetOrigin().ToString( 0 ) );
+		gameLocal.DWarning( "Couldn't load af '%s' for entity '%s' at (%s): NULL animator\n", name.c_str(), ent->name.c_str(), ent->GetPhysics()->GetOrigin().ToString( 0 ) );
 		return false;
 	}
 	name = fileName;
 	name.StripFileExtension();
 	file = static_cast<const idDeclAF *>( declManager->FindType( DECL_AF, name ) );
 	if( !file ) {
-		gameLocal.Warning( "Couldn't load af '%s' for entity '%s' at (%s)\n", name.c_str(), ent->name.c_str(), ent->GetPhysics()->GetOrigin().ToString( 0 ) );
+		gameLocal.DWarning( "Couldn't load af '%s' for entity '%s' at (%s)\n", name.c_str(), ent->name.c_str(), ent->GetPhysics()->GetOrigin().ToString( 0 ) );
 		return false;
 	}
 	if( file->bodies.Num() == 0 || file->bodies[0]->jointName != "origin" ) {
-		gameLocal.Warning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) has no body which modifies the origin joint.",
+		gameLocal.DWarning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) has no body which modifies the origin joint.",
 						   name.c_str(), ent->name.c_str(), ent->GetPhysics()->GetOrigin().ToString( 0 ) );
 		return false;
 	}
 	modelDef = animator->ModelDef();
 	if( modelDef == NULL || modelDef->GetState() == DS_DEFAULTED ) {
-		gameLocal.Warning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) has no or defaulted modelDef '%s'",
+		gameLocal.DWarning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) has no or defaulted modelDef '%s'",
 						   name.c_str(), ent->name.c_str(), ent->GetPhysics()->GetOrigin().ToString( 0 ), modelDef ? modelDef->GetName() : "" );
 		return false;
 	}
 	model = animator->ModelHandle();
 	if( model == NULL || model->IsDefaultModel() ) {
-		gameLocal.Warning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) has no or defaulted model '%s'",
+		gameLocal.DWarning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) has no or defaulted model '%s'",
 						   name.c_str(), ent->name.c_str(), ent->GetPhysics()->GetOrigin().ToString( 0 ), model ? model->Name() : "" );
 		return false;
 	}
 	// get the modified animation
 	modifiedAnim = animator->GetAnim( ARTICULATED_FIGURE_ANIM );
 	if( !modifiedAnim ) {
-		gameLocal.Warning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) has no modified animation '%s'",
+		gameLocal.DWarning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) has no modified animation '%s'",
 						   name.c_str(), ent->name.c_str(), ent->GetPhysics()->GetOrigin().ToString( 0 ), ARTICULATED_FIGURE_ANIM );
 		return false;
 	}
@@ -836,7 +836,7 @@ bool idAF::Load( idEntity *ent, const char *fileName ) {
 	// check if each joint is contained by a body
 	for( i = 0; i < animator->NumJoints(); i++ ) {
 		if( jointBody[i] == -1 ) {
-			gameLocal.Warning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) joint '%s' is not contained by a body",
+			gameLocal.DWarning( "idAF::Load: articulated figure '%s' for entity '%s' at (%s) joint '%s' is not contained by a body",
 							   name.c_str(), self->name.c_str(), self->GetPhysics()->GetOrigin().ToString( 0 ), animator->GetJointName( ( jointHandle_t )i ) );
 		}
 	}

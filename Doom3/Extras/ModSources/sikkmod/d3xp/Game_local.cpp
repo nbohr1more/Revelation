@@ -1,30 +1,5 @@
-/*
-===========================================================================
-
-Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
-
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
-
-Doom 3 Source Code is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Doom 3 Source Code is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Doom 3 Source Code.  If not, see <http://www.gnu.org/licenses/>.
-
-In addition, the Doom 3 Source Code is also subject to certain additional terms. You should have received a copy of these additional terms immediately following the terms and conditions of the GNU General Public License which accompanied the Doom 3 Source Code.  If not, please request a copy in writing from id Software at the address below.
-
-If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
-
-===========================================================================
-*/
+// Copyright (C) 2004 Id Software, Inc.
+//
 
 #include "../idlib/precompiled.h"
 #pragma hdrstop
@@ -71,7 +46,7 @@ const char *idGameLocal::sufaceTypeNames[ MAX_SURFACE_TYPES ] = {
 
 #ifdef _D3XP
 // List of all defs used by the player that will stay on the fast timeline
-static const char *fastEntityList[] = {
+static char *fastEntityList[] = {
 	"player_doommarine",
 	"weapon_chainsaw",
 	"weapon_fists",
@@ -240,8 +215,8 @@ void idGameLocal::Clear( void ) {
 	lastAIAlertTime = 0;
 	spawnArgs.Clear();
 	gravity.Set( 0, 0, -1 );
-	playerPVS.h = ( unsigned int ) - 1;
-	playerConnectedAreas.h = ( unsigned int ) - 1;
+	playerPVS.h = -1;
+	playerConnectedAreas.h = -1;
 	gamestate = GAMESTATE_UNINITIALIZED;
 	skipCinematic = false;
 	influenceActive = false;
@@ -269,6 +244,13 @@ void idGameLocal::Clear( void ) {
 	portalSkyActive			= false;
 	ResetSlowTimeVars();
 #endif
+	currentLights.Clear();	// sikk - Soft Shadows PostProcess
+	// sikk---> Random Encounters System
+	randomEnemyListNum	= 0;
+	randomEnemyTime		= 0;
+	randomEnemyTally	= 0;
+	randomEnemyList.Clear();
+	// <---sikk
 }
 
 /*
@@ -543,6 +525,13 @@ void idGameLocal::SaveGame( idFile *f ) {
 	// gamestate
 	savegame.WriteBool( influenceActive );
 	savegame.WriteInt( nextGibTime );
+	// sikk---> Random Encounters System
+	savegame.WriteInt( randomEnemyTally );
+	savegame.WriteInt( randomEnemyList.Num() );
+	for( i = 0; i < randomEnemyList.Num(); i++ ) {
+		savegame.WriteInt( randomEnemyList[ i ] );
+	}
+	// <---sikk
 	// spawnSpots
 	// initialSpots
 	// currentInitialSpot
@@ -862,6 +851,13 @@ void idGameLocal::LoadMap( const char *mapName, int randseed ) {
 	pvs.Init();
 	playerPVS.i = -1;
 	playerConnectedAreas.i = -1;
+	currentLights.Clear();	// sikk - Soft Shadows PostProcess
+	// sikk---> Random Encounters System
+	randomEnemyListNum	= 0;
+	randomEnemyTime		= 0;
+	randomEnemyTally	= 0;
+	//randomEnemyList.Clear();
+	// <---sikk
 	// load navigation system for all the different monster sizes
 	for( i = 0; i < aasNames.Num(); i++ ) {
 		aasList[ i ]->Init( idStr( mapFileName ).SetFileExtension( aasNames[ i ] ).c_str(), mapFile->GetGeometryCRC() );
@@ -1284,6 +1280,16 @@ bool idGameLocal::InitFromSaveGame( const char *mapName, idRenderWorld *renderWo
 	// gamestate is restored after restoring everything else
 	savegame.ReadBool( influenceActive );
 	savegame.ReadInt( nextGibTime );
+	// sikk---> Random Encounters System
+	savegame.ReadInt( randomEnemyTally );
+	savegame.ReadInt( randomEnemyListNum );
+	randomEnemyList.Clear();
+	for( i = 0; i < randomEnemyListNum; i++ ) {
+		int j;
+		savegame.ReadInt( j );
+		randomEnemyList.Append( j );
+	}
+	// <---sikk
 	// spawnSpots
 	// initialSpots
 	// currentInitialSpot
@@ -2245,6 +2251,7 @@ void idGameLocal::CalcFov( float base_fov, float &fov_x, float &fov_y ) const {
 	float	ratio_x;
 	float	ratio_y;
 	if( !sys->FPU_StackIsEmpty() ) {
+		Printf( sys->FPU_GetState() );
 		Error( "idGameLocal::CalcFov: FPU stack not empty" );
 	}
 	// first, calculate the vertical fov based on a 640x480 view
@@ -2254,15 +2261,11 @@ void idGameLocal::CalcFov( float base_fov, float &fov_x, float &fov_y ) const {
 	// FIXME: somehow, this is happening occasionally
 	assert( fov_y > 0 );
 	if( fov_y <= 0 ) {
+		Printf( sys->FPU_GetState() );
 		Error( "idGameLocal::CalcFov: bad result" );
 	}
 	switch( r_aspectRatio.GetInteger() ) {
 	default :
-	case -1 :
-		// auto mode => use aspect ratio from resolution, assuming screen's pixels are squares
-		ratio_x = renderSystem->GetScreenWidth();
-		ratio_y = renderSystem->GetScreenHeight();
-		break;
 	case 0 :
 		// 4:3
 		fov_x = base_fov;
@@ -2289,6 +2292,7 @@ void idGameLocal::CalcFov( float base_fov, float &fov_x, float &fov_y ) const {
 	// FIXME: somehow, this is happening occasionally
 	assert( ( fov_x > 0 ) && ( fov_y > 0 ) );
 	if( ( fov_y <= 0 ) || ( fov_x <= 0 ) ) {
+		Printf( sys->FPU_GetState() );
 		Error( "idGameLocal::CalcFov: bad result" );
 	}
 }
@@ -2932,8 +2936,20 @@ bool idGameLocal::InhibitEntitySpawn( idDict &spawnArgs ) {
 		name = spawnArgs.GetString( "classname" );
 		// _D3XP :: remove moveable medkit packs also
 		if( idStr::Icmp( name, "item_medkit" ) == 0 || idStr::Icmp( name, "item_medkit_small" ) == 0 ||
-				idStr::Icmp( name, "moveable_item_medkit" ) == 0 || idStr::Icmp( name, "moveable_item_medkit_small" ) == 0 ) {
+			idStr::Icmp( name, "moveable_item_medkit" ) == 0 || idStr::Icmp( name, "moveable_item_medkit_small" ) == 0 ) {
 			result = true;
+			// sikk---> Health Management System (Health Regen)
+			// if medkit has a target, replace it with an adrenaline - This should be done in Nightmare difficulty as well
+			if( idStr::Icmp( spawnArgs.GetString( "target" ), "" ) ) {
+				idEntity *ent;
+				idDict args;
+				args.Set( "classname", "moveable_powerup_adrenaline" );
+				args.Set( "target", spawnArgs.GetString( "target" ) );
+				args.Set( "origin", spawnArgs.GetString( "origin" ) );
+				args.Set( "rotation", spawnArgs.GetString( "rotation" ) );
+				gameLocal.SpawnEntityDef( args, &ent );
+			}
+			// <---sikk
 		}
 	}
 #endif
@@ -3245,8 +3261,8 @@ void idGameLocal::KillBox( idEntity *ent, bool catch_teleport ) {
 			hit->Damage( ent, ent, vec3_origin, "damage_telefrag", 1.0f, INVALID_JOINT );
 		}
 		if( !gameLocal.isMultiplayer ) {
-			// let the mapper know about it
-			Warning( "'%s' telefragged '%s'", ent->name.c_str(), hit->name.c_str() );
+			// let 'only' the mapper know about it
+			DWarning( "'%s' telefragged '%s'", ent->name.c_str(), hit->name.c_str() );
 		}
 	}
 }
@@ -3332,6 +3348,12 @@ void idGameLocal::RadiusDamage( const idVec3 &origin, idEntity *inflictor, idEnt
 	if( radius < 1 ) {
 		radius = 1;
 	}
+	// sikk---> Explosion FX PostProcess
+	explosionOrigin = origin;
+	explosionRadius = radius;
+	explosionDamage = damage;
+	explosionTime = time + g_explosionFXTime.GetInteger() * 1000;
+	// <---sikk
 	bounds = idBounds( origin ).Expand( radius );
 	// get all entities touching the bounds
 	numListedEntities = clip.EntitiesTouchingBounds( bounds, -1, entityList, MAX_GENTITIES );
@@ -4137,6 +4159,7 @@ idGameLocal::SelectTimeGroup
 ============
 */
 void idGameLocal::SelectTimeGroup( int timeGroup ) {
+	int i = 0;
 	if( timeGroup ) {
 		fast.Get( time, previousTime, msec, framenum, realClientTime );
 	} else {
@@ -4331,3 +4354,382 @@ idGameLocal::GetMapLoadingGUI
 */
 void idGameLocal::GetMapLoadingGUI( char gui[ MAX_STRING_CHARS ] ) { }
 
+
+// sikk---> Random Encounters System
+/*
+===============
+idGameLocal::SpawnRandomEnemy
+===============
+*/
+bool idGameLocal::SpawnRandomEnemy() {
+	if( !g_useRandomEncounters.GetBool() ) {
+		return false;
+	}
+	if( !randomEnemyList.Num() ) {
+		return false;
+	}
+	if( randomEnemyTally >= g_randomEncountersMaxSpawns.GetInteger() ) {
+		return false;
+	}
+	const char *map = GetLevelMap()->GetName();
+	// we don't want random spawns in first or last level
+	//if ( map == "map_hellhole::main" || mapscript == "map_marscity1::main" )
+	//	return false;
+	idAAS *pAAS48 = gameLocal.GetAAS( "aas48" );
+	idAAS *pAAS96 = gameLocal.GetAAS( "aas96" );
+	idAAS *pAASMan = gameLocal.GetAAS( "aas_mancubus" );
+	if( pAAS48 ) {
+		idEntity *ent;
+		idDict args;
+		idVec3 origin;
+		idVec3 playerPos, enemyPos;
+		int /*playerAreaNum,*/ enemyAreaNum;
+		aasPath_t aaspath;
+		float randFloat = gameLocal.random.RandomFloat();
+		int randNum = gameLocal.random.RandomInt( randomEnemyList.Num() );
+		idStr defName = GetEnemyNameFromNum( randomEnemyList[ randNum ] );
+		if( !idStr::Icmp( defName, "monster_zombie_maint" ) ) {
+			defName += ( 0.5f < randFloat ) ? "" : "2";
+		}
+		int num = GetEnemyNumFromName( defName );
+		if( !num || defName == "" ) {
+			return false;
+		}
+		// we only want demons or monster_zombie_boney in Hell
+		if( !idStr::Icmp( map, "maps/game/hell" ) && ( num > 1 && num < 31 ) ) {
+			return false;
+		}
+		if( num >= 40 && pAAS96 ) {
+			if( num == 43 && pAASMan ) {
+				enemyAreaNum = randFloat * pAASMan->GetNumAreas( 3 );
+				origin = pAASMan->AreaCenter( enemyAreaNum ) + idVec3( 0.0f, 0.0f, 1.0f );
+			} else {
+				enemyAreaNum = randFloat * pAAS96->GetNumAreas( 1 );
+				origin = pAAS96->AreaCenter( enemyAreaNum ) + idVec3( 0.0f, 0.0f, 1.0f );
+			}
+		} else if( num < 40 && pAAS48 ) {
+			enemyAreaNum = randFloat * pAAS48->GetNumAreas( 0 );
+			origin = pAAS48->AreaCenter( enemyAreaNum ) + idVec3( 0.0f, 0.0f, 1.0f );
+			if( num < 31 ) {
+				trace_t trace;
+				idVec3 start = GetLocalPlayer()->GetEyePosition();
+				idVec3 end = origin + idVec3( 0.0f, 0.0f, 64.0f );
+				clip.TracePoint( trace, start, end, MASK_OPAQUE, NULL );
+				idVec3 viewVector = GetLocalPlayer()->viewAngles.ToForward();
+				idVec3 dir = end - start;
+				dir.Normalize();
+				float cos = viewVector * dir;
+				float fov = idMath::Cos( g_fov.GetFloat() * 0.5f );
+				// for enemies that don't teleport, if we can "see" it spawn, don't spawn
+				if( trace.fraction >= 1.0f && cos >= fov ) {
+					return false;
+				}
+			}
+		} else {
+			return false;
+		}
+		trace_t t;
+		idBounds b = idBounds( idVec3( -32.0f, -32.0f, 0.0f ), idVec3( 32.0f, 32.0f, 63.0f ) );
+		if( clip.TraceBounds( t, origin, origin, b, MASK_ALL, NULL ) ) {
+			return false;
+		}
+		args.Set( "classname", defName );
+		args.SetInt( "isRandom", 1 );
+		args.SetVector( "origin", origin );
+		args.SetInt( "angle", gameLocal.random.RandomInt( 359 ) );
+		// teleport in if it's a demon
+		if( num >= 31 ) {
+			args.Set( "teleport", "1" );
+		}
+		// use Hell skin if we're in Hell
+		if( !idStr::Icmp( map, "maps/game/hell" ) && ( num == 1 || num == 31 || num == 41 ) ) {
+			args.Set( "skin", GetHellSkin( num ) );
+		}
+		SpawnEntityDef( args, &ent );
+		ent->Signal( SIG_TRIGGER );
+		ent->ProcessEvent( &EV_Activate, GetLocalPlayer() );
+		program.ReturnEntity( ent );
+		args.Clear();
+		return true;
+	}
+	return false;
+}
+
+/*
+===============
+idGameLocal::GetEnemyNumFromName
+===============
+*/
+int idGameLocal::GetEnemyNumFromName( idStr name ) {
+	int num = 0;
+	// Zombies
+	if( name == "monster_zombie_boney" ) {
+		num = 1;
+	} else if( name == "monster_zombie_bernie" ) {
+		num = 2;
+	} else if( name == "monster_zombie_fat" ) {
+		num = 3;
+	} else if( name == "monster_zombie_fat2" ) {
+		num = 4;
+	} else if( name == "monster_zombie_fat_wrench" ) {
+		num = 5;
+	} else if( name == "monster_zombie_jumpsuit" ) {
+		num = 6;
+	} else if( name == "monster_zombie_labcoat_limb" ) {
+		num = 7;
+	} else if( name == "monster_zombie_labcoat_neckstump" )	{
+		num = 8;
+	} else if( name == "monster_zombie_labcoat_pipe" ) {
+		num = 9;
+	} else if( name == "monster_zombie_labcoat_skinny" ) {
+		num = 10;
+	} else if( name == "monster_zombie_maint" ) {
+		num = 11;
+	} else if( name == "monster_zombie_maint2" ) {
+		num = 12;
+	} else if( name == "monster_zombie_maint_bald" ) {
+		num = 13;
+	} else if( name == "monster_zombie_maint_fast" ) {
+		num = 14;
+	} else if( name == "monster_zombie_maint_flashlight" )	{
+		num = 15;
+	} else if( name == "monster_zombie_maint_no_jaw" ) {
+		num = 16;
+	} else if( name == "monster_zombie_maint_nojaw" ) {
+		num = 17;
+	} else if( name == "monster_zombie_maint_skinny" ) {
+		num = 18;
+	} else if( name == "monster_zombie_maint_wrench" ) {
+		num = 19;
+	} else if( name == "monster_zombie_morgue" ) {
+		num = 20;
+	} else if( name == "monster_zombie_suit_bloodymouth" )	{
+		num = 21;
+	} else if( name == "monster_zombie_suit_neckstump" ) {
+		num = 22;
+	} else if( name == "monster_zombie_suit_skinny" ) {
+		num = 23;
+	} else if( name == "monster_zombie_tshirt_bald" ) {
+		num = 24;
+	} else if( name == "monster_zombie_tshirt_blown" ) {
+		num = 25;
+	} else if( name == "monster_zombie_sawyer" ) {
+		num = 26;
+	}
+	// ZSecs
+	else if( name == "monster_zsec_pistol" ) {
+		num = 27;
+	} else if( name == "monster_zsec_machinegun" ) {
+		num = 28;
+	} else if( name == "monster_zsec_shotgun" ) {
+		num = 29;
+	} else if( name == "monster_zsec_shield" ) {
+		num = 30;
+	}
+	// Demons (aas48)
+	else if( name == "monster_demon_imp" ) {
+		num = 31;
+	} else if( name == "monster_demon_maggot" ) {
+		num = 32;
+	} else if( name == "monster_demon_wraith" ) {
+		num = 33;
+	} else if( name == "monster_demon_cherub" ) {
+		num = 34;
+	} else if( name == "monster_demon_revenant" ) {
+		num = 35;
+	} else if( name == "monster_zombie_commando" ) {
+		num = 36;
+	} else if( name == "monster_zombie_commando_cgun" ) {
+		num = 37;
+	} else if( name == "monster_demon_archvile" ) {
+		num = 38;
+	} else if( name == "monster_demon_vulgar" ) {
+		num = 39;
+	}
+	// Demons (aas96)
+	else if( name == "monster_demon_pinky" ) {
+		num = 40;
+	} else if( name == "monster_demon_hellknight" ) {
+		num = 41;
+	} else if( name == "monster_demon_d3xp_bruiser" ) {
+		num = 42;
+	}
+	// Demons (aas_mancubus)
+	else if( name == "monster_demon_mancubus" ) {
+		num = 43;
+	}
+	return num;
+}
+
+/*
+===============
+idGameLocal::GetEnemyNameFromNum
+===============
+*/
+idStr idGameLocal::GetEnemyNameFromNum( int num ) {
+	idStr name = "";
+	switch( num ) {
+		// Zombies
+	case 1:
+		name = "monster_zombie_boney";
+		break;
+	case 2:
+		name = "monster_zombie_bernie";
+		break;
+	case 3:
+		name = "monster_zombie_fat";
+		break;
+	case 4:
+		name = "monster_zombie_fat2";
+		break;
+	case 5:
+		name = "monster_zombie_fat_wrench";
+		break;
+	case 6:
+		name = "monster_zombie_jumpsuit";
+		break;
+	case 7:
+		name = "monster_zombie_labcoat_limb";
+		break;
+	case 8:
+		name = "monster_zombie_labcoat_neckstump";
+		break;
+	case 9:
+		name = "monster_zombie_labcoat_pipe";
+		break;
+	case 10:
+		name = "monster_zombie_labcoat_skinny";
+		break;
+	case 11:
+		name = "monster_zombie_maint";
+		break;
+	case 12:
+		name = "monster_zombie_maint2";
+		break;
+	case 13:
+		name = "monster_zombie_maint_bald";
+		break;
+	case 14:
+		name = "monster_zombie_maint_fast";
+		break;
+	case 15:
+		name = "monster_zombie_maint_flashlight";
+		break;
+	case 16:
+		name = "monster_zombie_maint_no_jaw";
+		break;
+	case 17:
+		name = "monster_zombie_maint_nojaw";
+		break;
+	case 18:
+		name = "monster_zombie_maint_skinny";
+		break;
+	case 19:
+		name = "monster_zombie_maint_wrench";
+		break;
+	case 20:
+		name = "monster_zombie_morgue";
+		break;
+	case 21:
+		name = "monster_zombie_suit_bloodymouth";
+		break;
+	case 22:
+		name = "monster_zombie_suit_neckstump";
+		break;
+	case 23:
+		name = "monster_zombie_suit_skinny";
+		break;
+	case 24:
+		name = "monster_zombie_tshirt_bald";
+		break;
+	case 25:
+		name = "monster_zombie_tshirt_blown";
+		break;
+	case 26:
+		name = "monster_zombie_sawyer";
+		break;
+		// ZSecs
+	case 27:
+		name = "monster_zsec_pistol";
+		break;
+	case 28:
+		name = "monster_zsec_machinegun";
+		break;
+	case 29:
+		name = "monster_zsec_shotgun";
+		break;
+	case 30:
+		name = "monster_zsec_shield";
+		break;
+		// Demons (aas48)
+	case 31:
+		name = "monster_demon_imp";
+		break;
+	case 32:
+		name = "monster_demon_maggot";
+		break;
+	case 33:
+		name = "monster_demon_wraith";
+		break;
+	case 34:
+		name = "monster_demon_cherub";
+		break;
+	case 35:
+		name = "monster_demon_revenant";
+		break;
+	case 36:
+		name = "monster_zombie_commando";
+		break;
+	case 37:
+		name = "monster_zombie_commando_cgun";
+		break;
+	case 38:
+		name = "monster_demon_archvile";
+		break;
+	case 39:
+		name = "monster_demon_vulgar";
+		break;
+		// Demons (aas96)
+	case 40:
+		name = "monster_demon_pinky";
+		break;
+	case 41:
+		name = "monster_demon_hellknight";
+		break;
+	case 42:
+		name = "monster_demon_d3xp_bruiser";
+		break;
+		// Demons (aas_mancubus)
+	case 43:
+		name = "monster_demon_mancubus";
+		break;
+	default:
+		name = "";
+		break;
+	}
+	return name;
+}
+/*
+===============
+idGameLocal::GetHellSkin
+===============
+*/
+idStr idGameLocal::GetHellSkin( int num ) {
+	idStr name = "";
+	switch( num ) {
+	case 1:
+		name = "skins/monsters/zombies/adrianboney01";
+		break;
+	case 31:
+		name = "skins/models/monsters/a_hellimp";
+		break;
+	case 41:
+		name = "skins/models/monsters/a_hk_branded";
+		break;
+	default:
+		name = "";
+		break;
+	}
+	return name;
+}
+// <---sikk

@@ -40,22 +40,22 @@ If you have questions concerning this license or the applicable additional terms
 class idSound : public idEntity {
 public:
 	CLASS_PROTOTYPE( idSound );
-	
+
 	idSound( void );
-	
+
 	void			Save( idSaveGame *savefile ) const;
 	void			Restore( idRestoreGame *savefile );
-	
+
 	virtual void	UpdateChangeableSpawnArgs( const idDict *source );
-	
+
 	void			Spawn( void );
-	
+
 	void			ToggleOnOff( idEntity *other, idEntity *activator );
 	void			Think( void );
 	void			SetSound( const char *sound, int channel = SND_CHANNEL_ANY );
-	
+
 	virtual void	ShowEditingDialog( void );
-	
+
 private:
 	float			lastSoundVol;
 	float			soundVol;
@@ -65,7 +65,7 @@ private:
 	idVec3			shakeTranslate;
 	idAngles		shakeRotate;
 	int				playingUntilTime;
-	
+
 	void			Event_Trigger( idEntity *activator );
 	void			Event_Timer( void );
 	void			Event_On( void );

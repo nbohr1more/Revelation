@@ -51,42 +51,42 @@ void lwFreeClip( lwClip *clip ) {
 		lwListFree( clip->ifilter, ( void ( __cdecl * )( void * ) )lwFreePlugin );
 		lwListFree( clip->pfilter, ( void ( __cdecl * )( void * ) )lwFreePlugin );
 		switch( clip->type ) {
-		case ID_STIL: {
-			if( clip->source.still.name ) {
-				Mem_Free( clip->source.still.name );
+			case ID_STIL: {
+				if( clip->source.still.name ) {
+					Mem_Free( clip->source.still.name );
+				}
+				break;
 			}
-			break;
-		}
-		case ID_ISEQ: {
-			if( clip->source.seq.suffix ) {
-				Mem_Free( clip->source.seq.suffix );
+			case ID_ISEQ: {
+				if( clip->source.seq.suffix ) {
+					Mem_Free( clip->source.seq.suffix );
+				}
+				if( clip->source.seq.prefix ) {
+					Mem_Free( clip->source.seq.prefix );
+				}
+				break;
 			}
-			if( clip->source.seq.prefix ) {
-				Mem_Free( clip->source.seq.prefix );
+			case ID_ANIM: {
+				if( clip->source.anim.server ) {
+					Mem_Free( clip->source.anim.server );
+				}
+				if( clip->source.anim.name ) {
+					Mem_Free( clip->source.anim.name );
+				}
+				break;
 			}
-			break;
-		}
-		case ID_ANIM: {
-			if( clip->source.anim.server ) {
-				Mem_Free( clip->source.anim.server );
+			case ID_XREF: {
+				if( clip->source.xref.string ) {
+					Mem_Free( clip->source.xref.string );
+				}
+				break;
 			}
-			if( clip->source.anim.name ) {
-				Mem_Free( clip->source.anim.name );
+			case ID_STCC: {
+				if( clip->source.cycle.name ) {
+					Mem_Free( clip->source.cycle.name );
+				}
+				break;
 			}
-			break;
-		}
-		case ID_XREF: {
-			if( clip->source.xref.string ) {
-				Mem_Free( clip->source.xref.string );
-			}
-			break;
-		}
-		case ID_STCC: {
-			if( clip->source.cycle.name ) {
-				Mem_Free( clip->source.cycle.name );
-			}
-			break;
-		}
 		}
 		Mem_Free( clip );
 	}
@@ -308,7 +308,6 @@ void lwFreeEnvelope( lwEnvelope *env ) {
 		Mem_Free( env );
 	}
 }
-
 
 static int compare_keys( lwKey *k1, lwKey *k2 ) {
 	return k1->time > k2->time ? 1 : k1->time < k2->time ? -1 : 0;
@@ -541,8 +540,7 @@ endpoints of a BEZ2 curve represent the control points, and these have
 parameter for this curve type.
 ====================================================================== */
 
-static float bez2_time( float x0, float x1, float x2, float x3, float time,
-						float *t0, float *t1 ) {
+static float bez2_time( float x0, float x1, float x2, float x3, float time,	float *t0, float *t1 ) {
 	float v, t;
 	t = *t0 + ( *t1 - *t0 ) * 0.5f;
 	v = bezier( x0, x1, x2, x3, t );
@@ -942,7 +940,6 @@ void *getbytes( idFile *fp, int size ) {
 	return data;
 }
 
-
 void skipbytes( idFile *fp, int n ) {
 	if( flen == FLEN_ERROR ) {
 		return;
@@ -953,7 +950,6 @@ void skipbytes( idFile *fp, int n ) {
 		flen += n;
 	}
 }
-
 
 int getI1( idFile *fp ) {
 	int i, c;
@@ -973,7 +969,6 @@ int getI1( idFile *fp ) {
 	return c;
 }
 
-
 short getI2( idFile *fp ) {
 	short i;
 	if( flen == FLEN_ERROR ) {
@@ -988,7 +983,6 @@ short getI2( idFile *fp ) {
 	return i;
 }
 
-
 int getI4( idFile *fp ) {
 	int i;
 	if( flen == FLEN_ERROR ) {
@@ -1002,7 +996,6 @@ int getI4( idFile *fp ) {
 	flen += 4;
 	return i;
 }
-
 
 unsigned char getU1( idFile *fp ) {
 	int i, c;
@@ -1019,7 +1012,6 @@ unsigned char getU1( idFile *fp ) {
 	return c;
 }
 
-
 unsigned short getU2( idFile *fp ) {
 	unsigned short i;
 	if( flen == FLEN_ERROR ) {
@@ -1034,7 +1026,6 @@ unsigned short getU2( idFile *fp ) {
 	return i;
 }
 
-
 unsigned int getU4( idFile *fp ) {
 	unsigned int i;
 	if( flen == FLEN_ERROR ) {
@@ -1048,7 +1039,6 @@ unsigned int getU4( idFile *fp ) {
 	flen += 4;
 	return i;
 }
-
 
 int getVX( idFile *fp ) {
 	byte c;
@@ -1089,7 +1079,6 @@ int getVX( idFile *fp ) {
 	return i;
 }
 
-
 float getF4( idFile *fp ) {
 	float f;
 	if( flen == FLEN_ERROR ) {
@@ -1106,7 +1095,6 @@ float getF4( idFile *fp ) {
 	}
 	return f;
 }
-
 
 char *getS0( idFile *fp ) {
 	char *s;
@@ -1151,7 +1139,6 @@ char *getS0( idFile *fp ) {
 	return s;
 }
 
-
 int sgetI1( unsigned char **bp ) {
 	int i;
 	if( flen == FLEN_ERROR ) {
@@ -1166,7 +1153,6 @@ int sgetI1( unsigned char **bp ) {
 	return i;
 }
 
-
 short sgetI2( unsigned char **bp ) {
 	short i;
 	if( flen == FLEN_ERROR ) {
@@ -1178,7 +1164,6 @@ short sgetI2( unsigned char **bp ) {
 	*bp += 2;
 	return i;
 }
-
 
 int sgetI4( unsigned char **bp ) {
 	int i;
@@ -1192,7 +1177,6 @@ int sgetI4( unsigned char **bp ) {
 	return i;
 }
 
-
 unsigned char sgetU1( unsigned char **bp ) {
 	unsigned char c;
 	if( flen == FLEN_ERROR ) {
@@ -1203,7 +1187,6 @@ unsigned char sgetU1( unsigned char **bp ) {
 	( *bp )++; // V532
 	return c;
 }
-
 
 unsigned short sgetU2( unsigned char **bp ) {
 	unsigned char *buf = *bp;
@@ -1217,7 +1200,6 @@ unsigned short sgetU2( unsigned char **bp ) {
 	return i;
 }
 
-
 unsigned int sgetU4( unsigned char **bp ) {
 	unsigned int i;
 	if( flen == FLEN_ERROR ) {
@@ -1229,7 +1211,6 @@ unsigned int sgetU4( unsigned char **bp ) {
 	*bp += 4;
 	return i;
 }
-
 
 int sgetVX( unsigned char **bp ) {
 	unsigned char *buf = *bp;
@@ -1249,7 +1230,6 @@ int sgetVX( unsigned char **bp ) {
 	return i;
 }
 
-
 float sgetF4( unsigned char **bp ) {
 	float f;
 	if( flen == FLEN_ERROR ) {
@@ -1264,7 +1244,6 @@ float sgetF4( unsigned char **bp ) {
 	}
 	return f;
 }
-
 
 char *sgetS0( unsigned char **bp ) {
 	char *s;
@@ -1328,7 +1307,6 @@ void lwFreeObject( lwObject *object ) {
 		Mem_Free( object );
 	}
 }
-
 
 /*
 ======================================================================

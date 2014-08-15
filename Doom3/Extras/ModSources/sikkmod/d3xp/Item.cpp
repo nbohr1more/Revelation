@@ -1,30 +1,5 @@
-/*
-===========================================================================
-
-Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
-
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
-
-Doom 3 Source Code is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Doom 3 Source Code is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Doom 3 Source Code.  If not, see <http://www.gnu.org/licenses/>.
-
-In addition, the Doom 3 Source Code is also subject to certain additional terms. You should have received a copy of these additional terms immediately following the terms and conditions of the GNU General Public License which accompanied the Doom 3 Source Code.  If not, please request a copy in writing from id Software at the address below.
-
-If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
-
-===========================================================================
-*/
+// Copyright (C) 2004 Id Software, Inc.
+//
 
 #include "../idlib/precompiled.h"
 #pragma hdrstop
@@ -72,6 +47,8 @@ idItem::idItem() {
 	orgOrigin.Zero();
 	canPickUp = true;
 	fl.networkSync = true;
+	removeable = true;	// sikk - Item Management: Random Item Removal
+	noPickup = false;	// sikk - Item Management: Manual Item Pickup
 }
 
 /*
@@ -101,6 +78,7 @@ void idItem::Save( idSaveGame *savefile ) const {
 	savefile->WriteInt( inViewTime );
 	savefile->WriteInt( lastCycle );
 	savefile->WriteInt( lastRenderViewTime );
+	savefile->WriteBool( removeable );	// sikk - Item Management: Random Item Removal
 }
 
 /*
@@ -118,6 +96,7 @@ void idItem::Restore( idRestoreGame *savefile ) {
 	savefile->ReadInt( inViewTime );
 	savefile->ReadInt( lastCycle );
 	savefile->ReadInt( lastRenderViewTime );
+	savefile->ReadBool( removeable );	// sikk - Item Management: Random Item Removal
 	itemShellHandle = -1;
 }
 
@@ -237,6 +216,19 @@ void idItem::Present( void ) {
 	}
 }
 
+// sikk---> Item Management: Random Item Value
+/*
+================
+idItem::GetRandomValue
+================
+*/
+int idItem::GetRandomValue( const char *invName ) {
+	int n = spawnArgs.GetInt( invName ) * ( 1.0f - g_itemValueFactor.GetFloat() * gameLocal.random.RandomFloat() );
+	n = ( n < 1 ) ? 1 : n;
+	return n;
+}
+// <---sikk
+
 /*
 ================
 idItem::Spawn
@@ -288,6 +280,60 @@ void idItem::Spawn( void ) {
 	lastCycle = -1;
 	itemShellHandle = -1;
 	shellMaterial = declManager->FindMaterial( "itemHighlightShell" );
+	// sikk---> Item Management: Random Item Value
+	if( g_itemValueFactor.GetFloat() ) {
+		// random ammo values
+		if( spawnArgs.GetInt( "inv_ammo_shells" ) ) {
+			spawnArgs.SetInt( "inv_ammo_shells", GetRandomValue( "inv_ammo_shells" ) );
+		}
+		if( spawnArgs.GetInt( "inv_ammo_bullets" ) ) {
+			spawnArgs.SetInt( "inv_ammo_bullets", GetRandomValue( "inv_ammo_bullets" ) );
+		}
+		if( spawnArgs.GetInt( "inv_ammo_rockets" ) ) {
+			spawnArgs.SetInt( "inv_ammo_rockets", GetRandomValue( "inv_ammo_rockets" ) );
+		}
+		if( spawnArgs.GetInt( "inv_ammo_cells" ) ) {
+			spawnArgs.SetInt( "inv_ammo_cells", GetRandomValue( "inv_ammo_cells" ) );
+		}
+		if( spawnArgs.GetInt( "inv_ammo_grenades" ) ) {
+			spawnArgs.SetInt( "inv_ammo_grenades", GetRandomValue( "inv_ammo_grenades" ) );
+		}
+		if( spawnArgs.GetInt( "inv_ammo_bfg" ) ) {
+			spawnArgs.SetInt( "inv_ammo_bfg", GetRandomValue( "inv_ammo_bfg" ) );
+		}
+		if( spawnArgs.GetInt( "inv_ammo_clip" ) ) {
+			spawnArgs.SetInt( "inv_ammo_clip", GetRandomValue( "inv_ammo_clip" ) );
+		}
+		if( spawnArgs.GetInt( "inv_ammo_belt" ) ) {
+			spawnArgs.SetInt( "inv_ammo_belt", GetRandomValue( "inv_ammo_belt" ) );
+		}
+		// random health values
+		if( spawnArgs.GetInt( "inv_health" ) ) {
+			spawnArgs.SetInt( "inv_health", GetRandomValue( "inv_health" ) );
+		}
+		// random armor values
+		if( spawnArgs.GetInt( "inv_armor" ) ) {
+			spawnArgs.SetInt( "inv_armor", GetRandomValue( "inv_armor" ) );
+		}
+		// random air values
+		if( spawnArgs.GetInt( "inv_air" ) ) {
+			spawnArgs.SetInt( "inv_air", GetRandomValue( "inv_air" ) );
+		}
+		// random envirosuit air values
+		if( spawnArgs.GetInt( "inv_enviroTime" ) ) {
+			spawnArgs.SetInt( "inv_enviroTime", GetRandomValue( "inv_enviroTime" ) );
+		}
+	}
+	// <---sikk
+	// sikk---> Item Management: Random Item Removal
+	if( g_itemRemovalFactor.GetFloat() && ( spawnArgs.GetBool( "removeable", "0" ) && removeable ) ) {
+		if( ( gameLocal.random.RandomFloat() <= g_itemRemovalFactor.GetFloat() ) && idStr::Icmp( spawnArgs.GetString( "target" ), "" ) ) {
+			PostEventMS( &EV_Remove, 0 );
+		} else {
+			removeable = false;
+		}
+	}
+	// <---sikk
 }
 
 /*
@@ -315,6 +361,11 @@ bool idItem::GiveToPlayer( idPlayer *player ) {
 	if( player == NULL ) {
 		return false;
 	}
+	// sikk---> Item Management: Manual Item Pickup
+	if( noPickup ) {
+		return false;
+	}
+	// <---sikk
 	if( spawnArgs.GetBool( "inv_carry" ) ) {
 		return player->GiveInventoryItem( &spawnArgs );
 	}
@@ -365,6 +416,7 @@ bool idItem::Pickup( idPlayer *player ) {
 			PostEventMS( &EV_Remove, 5000 );
 		}
 	}
+	noPickup = true;	// sikk - Item Management: Manual Item Pickup
 	BecomeInactive( TH_THINK );
 	return true;
 }
@@ -432,10 +484,10 @@ bool idItem::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
 		return true;
 	}
 	default: {
-		break;
+		return idEntity::ClientReceiveEvent( event, time, msg );
 	}
 	}
-	return idEntity::ClientReceiveEvent( event, time, msg );
+	return false;
 }
 
 /*
@@ -465,7 +517,11 @@ void idItem::Event_Touch( idEntity *other, trace_t *trace ) {
 	if( !canPickUp ) {
 		return;
 	}
-	Pickup( static_cast<idPlayer *>( other ) );
+	// sikk---> Manual Item Pickup
+	if( !g_itemPickupType.GetBool() || spawnArgs.GetBool( "autopickup" ) ) {
+		Pickup( static_cast<idPlayer *>( other ) );
+	}
+	// <---sikk
 }
 
 /*
@@ -583,8 +639,11 @@ bool idItemPowerup::GiveToPlayer( idPlayer *player ) {
 	if( player->spectating ) {
 		return false;
 	}
-	player->GivePowerUp( type, time * 1000 );
-	return true;
+	// sikk---> Adrenaline Pack System
+	//	player->GivePowerUp( type, time * 1000 );
+	//	return true;
+	return player->GivePowerUp( type, time * 1000 );
+	// <---sikk
 }
 
 #ifdef CTF
@@ -674,7 +733,7 @@ void idItemTeam::Spawn( void ) {
 	/*
 	idDict args;
 	idVec3 lightOffset( 0.0f, 20.0f, 0.0f );
-	
+
 	// Set up the flag's dynamic light
 	memset( &itemGlow, 0, sizeof( itemGlow ) );
 	itemGlow.axis = mat3_identity;
@@ -686,7 +745,7 @@ void idItemTeam::Spawn( void ) {
 	itemGlow.shaderParms[ SHADERPARM_GREEN ] = 0.0f;
 	itemGlow.shaderParms[ SHADERPARM_BLUE ] = 0.0f;
 	itemGlow.shaderParms[ SHADERPARM_ALPHA ] = 0.0f;
-	
+
 	// Select a shader based on the team
 	if ( team == 0 )
 		itemGlow.shader = declManager->FindMaterial( "lights/redflag" );
@@ -705,7 +764,7 @@ void idItemTeam::Spawn( void ) {
 idItemTeam::LoadScript
 ===============
 */
-function_t *idItemTeam::LoadScript( const char *script ) {
+function_t *idItemTeam::LoadScript( char *script ) {
 	function_t *function = NULL;
 	idStr funcname = spawnArgs.GetString( script, "" );
 	if( funcname.Length() ) {
@@ -882,7 +941,7 @@ void idItemTeam::PrivateReturn( void ) {
 	itemGlow.shaderParms[ SHADERPARM_GREEN ] = 0.0f;
 	itemGlow.shaderParms[ SHADERPARM_BLUE ] = 0.0f;
 	itemGlow.shaderParms[ SHADERPARM_ALPHA ] = 0.0f;
-	
+
 	if ( itemGlowHandle != -1 )
 		gameRenderWorld->UpdateLightDef( itemGlowHandle, &itemGlow );*/
 	GetPhysics()->SetLinearVelocity( idVec3( 0, 0, 0 ) );
@@ -920,7 +979,7 @@ void idItemTeam::Event_TakeFlag( idPlayer *player ) {
 	itemGlow.shaderParms[ SHADERPARM_GREEN ] = 1.0f;
 	itemGlow.shaderParms[ SHADERPARM_BLUE ] = 1.0f;
 	itemGlow.shaderParms[ SHADERPARM_ALPHA ] = 1.0f;
-	
+
 	if ( itemGlowHandle != -1 )
 		gameRenderWorld->UpdateLightDef( itemGlowHandle, &itemGlow );*/
 	if( scriptTaken ) {
@@ -1538,8 +1597,12 @@ void idMoveableItem::Spawn( void ) {
 	physicsObj.SetBouncyness( bouncyness );
 	physicsObj.SetFriction( 0.6f, 0.6f, friction );
 	physicsObj.SetGravity( gameLocal.GetGravity() );
-	physicsObj.SetContents( CONTENTS_RENDERMODEL );
-	physicsObj.SetClipMask( MASK_SOLID | CONTENTS_MOVEABLECLIP );
+	// sikk---> We want moveable items to clip with other items and we also want ragdolls to clip with items
+	//physicsObj.SetContents( CONTENTS_RENDERMODEL );
+	//physicsObj.SetClipMask( MASK_SOLID | CONTENTS_MOVEABLECLIP );
+	physicsObj.SetContents( CONTENTS_RENDERMODEL | CONTENTS_CORPSE );
+	physicsObj.SetClipMask( MASK_SOLID | CONTENTS_CORPSE | CONTENTS_MOVEABLECLIP | CONTENTS_RENDERMODEL );
+	// <---sikk
 	SetPhysics( &physicsObj );
 	smoke = NULL;
 	smokeTime = 0;
@@ -1555,6 +1618,38 @@ void idMoveableItem::Spawn( void ) {
 #ifdef CTF
 	repeatSmoke = spawnArgs.GetBool( "repeatSmoke", "0" );
 #endif
+	// sikk---> Item Management: Helmet factor (replaces security armor)
+	bool bRemoved = false;
+	idStr defName = GetEntityDefName();
+	if( !idStr::Icmp( defName, "moveable_item_armor_security" ) && ( g_itemHelmetFactor.GetFloat() && gameLocal.random.RandomFloat() <= g_itemHelmetFactor.GetFloat() ) ) {
+		idEntity *ent;
+		idDict args;
+		args.Set( "classname", "item_armor_helmet" );
+		args.Set( "name", GetName() );
+		//		args.Copy( spawnArgs );
+		args.Set( "target", spawnArgs.GetString( "target" ) );
+		args.Set( "origin", spawnArgs.GetString( "origin" ) );
+		args.Set( "rotation", spawnArgs.GetString( "rotation" ) );
+		args.Set( "no_touch", spawnArgs.GetString( "no_touch" ) );
+		args.Set( "bind", spawnArgs.GetString( "bind" ) );
+		args.Set( "triggerFirst", spawnArgs.GetString( "triggerFirst" ) );
+		args.Set( "triggersize", spawnArgs.GetString( "triggersize" ) );
+		//		PostEventMS( &EV_Remove, 0 );
+		delete this;
+		gameLocal.SpawnEntityDef( args, &ent );
+		ent->SetOrigin( spawnArgs.GetVector( "origin" ) + idVec3( 0.0f, 0.0f, 8.0f ) );
+		bRemoved = true;
+	}
+	// <---sikk
+	// sikk---> Item Management: Random Item Removal
+	if( g_itemRemovalFactor.GetFloat() && ( spawnArgs.GetBool( "removeable", "0" ) && removeable ) && !bRemoved ) {
+		if( ( gameLocal.random.RandomFloat() < g_itemRemovalFactor.GetFloat() ) && idStr::Icmp( spawnArgs.GetString( "target" ), "" ) ) {
+			PostEventMS( &EV_Remove, 0 );
+		} else {
+			removeable = false;
+		}
+	}
+	// <---sikk
 }
 
 /*
@@ -1650,7 +1745,7 @@ idEntity *idMoveableItem::DropItem( const char *classname, const idVec3 &origin,
 			removeDelay = 5 * 60 * 1000;
 		}
 		// always remove a dropped item after 5 minutes in case it dropped to an unreachable location
-		item->PostEventMS( &EV_Remove, removeDelay );
+		//		item->PostEventMS( &EV_Remove, removeDelay );	// sikk - Dropped moveable items no longer are removed
 	}
 	return item;
 }
@@ -1802,6 +1897,115 @@ bool idMoveablePDAItem::GiveToPlayer( idPlayer *player ) {
 	}
 	return true;
 }
+
+// sikk---> Moveable Video CD
+/*
+===============================================================================
+
+  idMoveableVideoCDItem
+
+===============================================================================
+*/
+
+CLASS_DECLARATION( idMoveableItem, idMoveableVideoCDItem )
+END_CLASS
+
+/*
+================
+idMoveableVideoCDItem::Spawn
+================
+*/
+void idMoveableVideoCDItem::Spawn( void ) {
+}
+
+/*
+================
+idMoveableVideoCDItem::GiveToPlayer
+================
+*/
+bool idMoveableVideoCDItem::GiveToPlayer( idPlayer *player ) {
+	idStr str = spawnArgs.GetString( "video" );
+	if( player && str.Length() ) {
+		player->GiveVideo( str, &spawnArgs );
+	}
+	return true;
+}
+// <---sikk
+
+// sikk---> Moveable Powerup
+/*
+===============================================================================
+
+  idMoveableItemPowerup
+
+===============================================================================
+*/
+
+/*
+===============
+idMoveableItemPowerup
+===============
+*/
+
+CLASS_DECLARATION( idMoveableItem, idMoveableItemPowerup )
+END_CLASS
+
+/*
+================
+idMoveableItemPowerup::idMoveableItemPowerup
+================
+*/
+idMoveableItemPowerup::idMoveableItemPowerup() {
+	time = 0;
+	type = 0;
+}
+
+/*
+================
+idMoveableItemPowerup::Save
+================
+*/
+void idMoveableItemPowerup::Save( idSaveGame *savefile ) const {
+	savefile->WriteInt( time );
+	savefile->WriteInt( type );
+}
+
+/*
+================
+idMoveableItemPowerup::Restore
+================
+*/
+void idMoveableItemPowerup::Restore( idRestoreGame *savefile ) {
+	savefile->ReadInt( time );
+	savefile->ReadInt( type );
+}
+
+/*
+================
+idMoveableItemPowerup::Spawn
+================
+*/
+void idMoveableItemPowerup::Spawn( void ) {
+	time = spawnArgs.GetInt( "time", "30" );
+	type = spawnArgs.GetInt( "type", "0" );
+}
+
+/*
+================
+idMoveableItemPowerup::GiveToPlayer
+================
+*/
+bool idMoveableItemPowerup::GiveToPlayer( idPlayer *player ) {
+	if( player->spectating ) {
+		return false;
+	}
+	// sikk---> Adrenaline Pack System
+	//	player->GivePowerUp( type, time * 1000 );
+	//	return true;
+	return player->GivePowerUp( type, time * 1000 );
+	// <---sikk
+}
+// <---sikk
 
 /*
 ===============================================================================

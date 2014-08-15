@@ -2750,7 +2750,6 @@ bool idGameLocal::InhibitEntitySpawn( idDict &spawnArgs ) {
 				idEntity *ent;
 				idDict args;
 				args.Set( "classname", "powerup_adrenaline" );
-				//				args.Set( "name", spawnArgs.GetString( "name" ) );
 				args.Set( "target", spawnArgs.GetString( "target" ) );
 				args.Set( "origin", spawnArgs.GetString( "origin" ) );
 				args.Set( "rotation", spawnArgs.GetString( "rotation" ) );
@@ -3073,8 +3072,8 @@ void idGameLocal::KillBox( idEntity *ent, bool catch_teleport ) {
 			hit->Damage( ent, ent, vec3_origin, "damage_telefrag", 1.0f, INVALID_JOINT );
 		}
 		if( !gameLocal.isMultiplayer ) {
-			// let the mapper know about it
-			Warning( "'%s' telefragged '%s'", ent->name.c_str(), hit->name.c_str() );
+			// let 'only' the mapper know about it
+			DWarning( "'%s' telefragged '%s'", ent->name.c_str(), hit->name.c_str() );
 		}
 	}
 }

@@ -2088,7 +2088,7 @@ void idDeclModelDef::GetJointList( const char *jointnames, idList<jointHandle_t>
 		}
 		joint = FindJoint( jointname );
 		if( !joint ) {
-			gameLocal.Warning( "Unknown joint '%s' in '%s' for model '%s'", jointname.c_str(), jointnames, GetName() );
+			gameLocal.DWarning( "Unknown joint '%s' in '%s' for model '%s'", jointname.c_str(), jointnames, GetName() );
 			continue;
 		}
 		if( !subtract ) {

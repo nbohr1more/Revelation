@@ -77,14 +77,14 @@ class idPhysics : public idClass {
 
 public:
 	ABSTRACT_PROTOTYPE( idPhysics );
-	
+
 	virtual						~idPhysics( void );
 	static int					SnapTimeToPhysicsFrame( int t );
-	
+
 	// Must not be virtual
 	void						Save( idSaveGame *savefile ) const;
 	void						Restore( idRestoreGame *savefile );
-	
+
 public:	// common physics interface
 	// set pointer to entity using physics
 	virtual void				SetSelf( idEntity *e ) = 0;

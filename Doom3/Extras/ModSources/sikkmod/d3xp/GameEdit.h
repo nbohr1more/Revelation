@@ -41,14 +41,14 @@ If you have questions concerning this license or the applicable additional terms
 class idCursor3D : public idEntity {
 public:
 	CLASS_PROTOTYPE( idCursor3D );
-	
+
 	idCursor3D( void );
 	~idCursor3D( void );
-	
+
 	void					Spawn( void );
 	void					Present( void );
 	void					Think( void );
-	
+
 	idForce_Drag			drag;
 	idVec3					draggedPosition;
 };
@@ -66,7 +66,7 @@ class idDragEntity {
 public:
 	idDragEntity( void );
 	~idDragEntity( void );
-	
+
 	void					Clear();
 	void					Update( idPlayer *player );
 	void					SetSelected( idEntity *ent );
@@ -76,7 +76,7 @@ public:
 	void					DeleteSelected( void );
 	void					BindSelected( void );
 	void					UnbindSelected( void );
-	
+
 private:
 	idEntityPtr<idEntity>	dragEnt;			// entity being dragged
 	jointHandle_t			joint;				// joint being dragged
@@ -86,7 +86,7 @@ private:
 	idStr					bodyName;			// name of the body being dragged
 	idCursor3D 			*cursor;				// cursor entity
 	idEntityPtr<idEntity>	selected;			// last dragged entity
-	
+
 	void					StopDrag( void );
 };
 

@@ -245,6 +245,7 @@
       <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Dedicated Release|Win32'">
       </ForcedIncludeFiles>
     </ClCompile>
+    <ClCompile Include="d3xp\Grab.cpp" />
     <ClCompile Include="d3xp\physics\Clip.cpp" />
     <ClCompile Include="d3xp\physics\Force.cpp" />
     <ClCompile Include="d3xp\physics\Force_Constant.cpp" />
@@ -311,6 +312,7 @@
     <ClInclude Include="d3xp\gamesys\SaveGame.h" />
     <ClInclude Include="d3xp\gamesys\SysCmds.h" />
     <ClInclude Include="d3xp\gamesys\SysCvar.h" />
+    <ClInclude Include="d3xp\Grab.h" />
     <ClInclude Include="d3xp\physics\Clip.h" />
     <ClInclude Include="d3xp\physics\Force.h" />
     <ClInclude Include="d3xp\physics\Force_Constant.h" />

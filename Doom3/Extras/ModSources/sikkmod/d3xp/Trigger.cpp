@@ -1243,7 +1243,7 @@ void idTrigger_Flag::Event_Touch( idEntity *other, trace_t *trace ) {
 		}
 		/*
 				ServerSendEvent( eventFlag->GetEventNum(), NULL, true, false );
-		
+
 				idThread *thread;
 				if ( scriptFlag ) {
 					thread = new idThread();

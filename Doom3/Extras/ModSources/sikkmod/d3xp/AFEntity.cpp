@@ -1,30 +1,5 @@
-/*
-===========================================================================
-
-Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
-
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
-
-Doom 3 Source Code is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Doom 3 Source Code is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Doom 3 Source Code.  If not, see <http://www.gnu.org/licenses/>.
-
-In addition, the Doom 3 Source Code is also subject to certain additional terms. You should have received a copy of these additional terms immediately following the terms and conditions of the GNU General Public License which accompanied the Doom 3 Source Code.  If not, please request a copy in writing from id Software at the address below.
-
-If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
-
-===========================================================================
-*/
+// Copyright (C) 2004 Id Software, Inc.
+//
 
 #include "../idlib/precompiled.h"
 #pragma hdrstop
@@ -919,6 +894,7 @@ idAFEntity_Gibbable::idAFEntity_Gibbable( void ) {
 #ifdef _D3XP
 	wasThrown = false;
 #endif
+	searchable = false;	// sikk - Searchable Corpses
 }
 
 /*
@@ -944,6 +920,7 @@ void idAFEntity_Gibbable::Save( idSaveGame *savefile ) const {
 #ifdef _D3XP
 	savefile->WriteBool( wasThrown );
 #endif
+	savefile->WriteBool( searchable );	// sikk - Searchable Corpses
 }
 
 /*
@@ -958,6 +935,7 @@ void idAFEntity_Gibbable::Restore( idRestoreGame *savefile ) {
 #ifdef _D3XP
 	savefile->ReadBool( wasThrown );
 #endif
+	savefile->ReadBool( searchable );	// sikk - Searchable Corpses
 	InitSkeletonModel();
 	if( hasCombatModel ) {
 		SetCombatModel();
@@ -976,6 +954,7 @@ void idAFEntity_Gibbable::Spawn( void ) {
 #ifdef _D3XP
 	wasThrown = false;
 #endif
+	spawnArgs.GetBool( "searchable", "0", searchable );	// sikk - Searchable Corpses
 }
 
 /*
@@ -1169,14 +1148,19 @@ void idAFEntity_Gibbable::Gib( const idVec3 &dir, const char *damageDefName ) {
 	}
 	UnlinkCombat();
 	if( g_bloodEffects.GetBool() ) {
-		if( gameLocal.time > gameLocal.GetGibTime() ) {
-			gameLocal.SetGibTime( gameLocal.time + GIB_DELAY );
-			SpawnGibs( dir, damageDefName );
-			renderEntity.noShadow = true;
-			renderEntity.shaderParms[ SHADERPARM_TIME_OF_DEATH ] = gameLocal.time * 0.001f;
-			StartSound( "snd_gibbed", SND_CHANNEL_ANY, 0, false, NULL );
-			gibbed = true;
-		}
+		// sikk - Since "nextGibTime" is a member of idGameLocal and not idAFEntity||idAFEntity_Gibbable
+		// the folloing if statement is only true once per damage event instead of per entity being damaged.
+		// This is why only one entity will get gibbed while the rest just disappear after a few seconds.
+		// I commented this out instead of moving the variable to the proper class because it's easier and
+		// the delay is only 200ms so the difference should be unnoticable.
+		//		if ( gameLocal.time > gameLocal.GetGibTime() ) {
+		gameLocal.SetGibTime( gameLocal.time + GIB_DELAY );
+		SpawnGibs( dir, damageDefName );
+		renderEntity.noShadow = true;
+		renderEntity.shaderParms[ SHADERPARM_TIME_OF_DEATH ] = gameLocal.time * 0.001f;
+		StartSound( "snd_gibbed", SND_CHANNEL_ANY, 0, false, NULL );
+		gibbed = true;
+		//		}
 	} else {
 		gibbed = true;
 	}

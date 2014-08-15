@@ -58,14 +58,14 @@ public:
 	static void						InitTypeVariables( const void *typePtr, const char *typeName, int value );
 	static void						WriteGameState( const char *fileName );
 	static void						CompareGameState( const char *fileName );
-	
+
 private:
 	static idFile 					*fp;
 	static int						initValue;
 	static WriteVariableType_t		Write;
 	static idLexer 				*src;
 	static bool						typeError;
-	
+
 	static const char 				*OutputString( const char *string );
 	static bool						ParseTemplateArguments( idLexer &src, idStr &arguments );
 	static void						PrintVariable( const char *varName, const char *varType, const char *scope, const char *prefix, const char *postfix, const char *value, const void *varPtr, int varSize );

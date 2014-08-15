@@ -1,30 +1,5 @@
-/*
-===========================================================================
-
-Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
-
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
-
-Doom 3 Source Code is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Doom 3 Source Code is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Doom 3 Source Code.  If not, see <http://www.gnu.org/licenses/>.
-
-In addition, the Doom 3 Source Code is also subject to certain additional terms. You should have received a copy of these additional terms immediately following the terms and conditions of the GNU General Public License which accompanied the Doom 3 Source Code.  If not, please request a copy in writing from id Software at the address below.
-
-If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
-
-===========================================================================
-*/
+// Copyright (C) 2004 Id Software, Inc.
+//
 
 #include "../idlib/precompiled.h"
 #pragma hdrstop
@@ -804,17 +779,19 @@ bool idEntity::DoDormantTests( void ) {
 			return false;
 		}
 		return true;
-	}
-	// the monster area is topologically connected to a player, but if
-	// the monster hasn't been woken up before, do the more precise PVS check
-	if( !fl.hasAwakened ) {
-		if( !gameLocal.InPlayerPVS( this ) ) {
-			return true;		// stay dormant
+	} else {
+		// the monster area is topologically connected to a player, but if
+		// the monster hasn't been woken up before, do the more precise PVS check
+		if( !fl.hasAwakened ) {
+			if( !gameLocal.InPlayerPVS( this ) ) {
+				return true;		// stay dormant
+			}
 		}
+		// wake up
+		dormantStart = 0;
+		fl.hasAwakened = true;		// only go dormant when area closed off now, not just out of PVS
+		return false;
 	}
-	// wake up
-	dormantStart = 0;
-	fl.hasAwakened = true;		// only go dormant when area closed off now, not just out of PVS
 	return false;
 }
 
@@ -2747,7 +2724,14 @@ void idEntity::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 	if( !damageDef ) {
 		gameLocal.Error( "Unknown damageDef '%s'\n", damageDefName );
 	}
-	int	damage = damageDef->GetInt( "damage" );
+	// sikk---> Ammo Management: Custom Ammo Damage
+	int	damage;
+	if( g_ammoDamageType.GetBool() && damageDef->GetInt( "custom_damage" ) ) {
+		damage = damageDef->GetInt( "custom_damage" );
+	} else {
+		damage = damageDef->GetInt( "damage" );
+	}
+	// <---sikk
 	// inform the attacker that they hit someone
 	attacker->DamageFeedback( this, inflictor, damage );
 	if( damage ) {
@@ -3066,7 +3050,7 @@ bool idEntity::HandleGuiCommands( idEntity *entityGui, const char *cmds ) {
 		idLexer src;
 		idToken token, token2, token3, token4;
 		src.LoadMemory( cmds, strlen( cmds ), "guiCommands" );
-		while( true ) {
+		while( 1 ) {
 			if( !src.ReadToken( &token ) ) {
 				return ret;
 			}
@@ -4980,10 +4964,10 @@ bool idAnimatedEntity::ClientReceiveEvent( int event, int time, const idBitMsg &
 		return true;
 	}
 	default: {
-		break;
+		return idEntity::ClientReceiveEvent( event, time, msg );
 	}
 	}
-	return idEntity::ClientReceiveEvent( event, time, msg );
+	return false;
 }
 
 /*

@@ -67,7 +67,6 @@ If you have questions concerning this license or the applicable additional terms
 const char *StringFromVec4( idVec4 &vec );
 bool		IsExpression( const char *s );
 
-
 class rvGEViewer;
 
 class rvGEApp {
@@ -76,33 +75,32 @@ public:
 	rvGEApp( );
 	~rvGEApp( );
 	
-	bool				Initialize( void );
-	void				RunFrame( void );
-	//	bool				Uninitialize			( void );
+	bool					Initialize( void );
+	void					RunFrame( void );
 	
-	bool				TranslateAccelerator( LPMSG msg );
+	bool					TranslateAccelerator( LPMSG msg );
 	
-	rvGEWorkspace		*GetActiveWorkspace( HWND *retwnd = NULL );
-	rvGENavigator		&GetNavigator( void );
-	rvGEProperties		&GetProperties( void );
-	rvGETransformer	&GetTransformer( void );
-	rvGEOptions		&GetOptions( void );
-	HINSTANCE			GetInstance( void );
-	HWND				GetMDIFrame( void );
-	HWND				GetMDIClient( void );
-	rvGEStatusBar		&GetStatusBar( void );
+	rvGEWorkspace			*GetActiveWorkspace( HWND *retwnd = NULL );
+	rvGENavigator			&GetNavigator( void );
+	rvGEProperties			&GetProperties( void );
+	rvGETransformer			&GetTransformer( void );
+	rvGEOptions				&GetOptions( void );
+	HINSTANCE				GetInstance( void );
+	HWND					GetMDIFrame( void );
+	HWND					GetMDIClient( void );
+	rvGEStatusBar			&GetStatusBar( void );
 	
-	bool				OpenFile( const char *filename );
-	bool				SaveFile( const char *filename );
-	bool				NewFile( void );
+	bool					OpenFile( const char *filename );
+	bool					SaveFile( const char *filename );
+	bool					NewFile( void );
 	
-	bool				IsActive( void );
+	bool					IsActive( void );
 	
-	void				CloseViewer( void );
+	void					CloseViewer( void );
 	
-	int					ToolWindowActivate( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam );
+	int						ToolWindowActivate( HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam );
 	
-	int					MessageBox( const char *text, int flags );
+	int						MessageBox( const char *text, int flags );
 	
 protected:
 
@@ -174,7 +172,6 @@ ID_INLINE HWND rvGEApp::GetMDIFrame( void ) {
 ID_INLINE HWND rvGEApp::GetMDIClient( void ) {
 	return mMDIClient;
 }
-
 
 extern rvGEApp gApp;
 

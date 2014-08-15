@@ -58,7 +58,7 @@ class idEventArg {
 public:
 	int			type;
 	int			value;
-	
+
 	idEventArg()								{
 		type = D_EVENT_INTEGER;
 		value = 0;
@@ -198,7 +198,7 @@ class idRestoreGame;
 class idClass {
 public:
 	ABSTRACT_PROTOTYPE( idClass );
-	
+
 #ifdef ID_REDIRECT_NEWDELETE
 #undef new
 #endif
@@ -209,21 +209,21 @@ public:
 #ifdef ID_REDIRECT_NEWDELETE
 #define new ID_DEBUG_NEW
 #endif
-	
+
 	virtual						~idClass();
-	
+
 	void						Spawn( void );
 	void						CallSpawn( void );
 	bool						IsType( const idTypeInfo &c ) const;
 	const char 				*GetClassname( void ) const;
 	const char 				*GetSuperclass( void ) const;
 	void						FindUninitializedMemory( void );
-	
+
 	void						Save( idSaveGame *savefile ) const {};
 	void						Restore( idRestoreGame *savefile ) {};
-	
+
 	bool						RespondsTo( const idEventDef &ev ) const;
-	
+
 	bool						PostEventMS( const idEventDef *ev, int time );
 	bool						PostEventMS( const idEventDef *ev, int time, idEventArg arg1 );
 	bool						PostEventMS( const idEventDef *ev, int time, idEventArg arg1, idEventArg arg2 );
@@ -233,7 +233,7 @@ public:
 	bool						PostEventMS( const idEventDef *ev, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 );
 	bool						PostEventMS( const idEventDef *ev, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 );
 	bool						PostEventMS( const idEventDef *ev, int time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 );
-	
+
 	bool						PostEventSec( const idEventDef *ev, float time );
 	bool						PostEventSec( const idEventDef *ev, float time, idEventArg arg1 );
 	bool						PostEventSec( const idEventDef *ev, float time, idEventArg arg1, idEventArg arg2 );
@@ -243,7 +243,7 @@ public:
 	bool						PostEventSec( const idEventDef *ev, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 );
 	bool						PostEventSec( const idEventDef *ev, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 );
 	bool						PostEventSec( const idEventDef *ev, float time, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 );
-	
+
 	bool						ProcessEvent( const idEventDef *ev );
 	bool						ProcessEvent( const idEventDef *ev, idEventArg arg1 );
 	bool						ProcessEvent( const idEventDef *ev, idEventArg arg1, idEventArg arg2 );
@@ -253,12 +253,12 @@ public:
 	bool						ProcessEvent( const idEventDef *ev, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6 );
 	bool						ProcessEvent( const idEventDef *ev, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7 );
 	bool						ProcessEvent( const idEventDef *ev, idEventArg arg1, idEventArg arg2, idEventArg arg3, idEventArg arg4, idEventArg arg5, idEventArg arg6, idEventArg arg7, idEventArg arg8 );
-	
+
 	bool						ProcessEventArgPtr( const idEventDef *ev, int *data );
 	void						CancelEvents( const idEventDef *ev );
-	
+
 	void						Event_Remove( void );
-	
+
 	// Static functions
 	static void					Init( void );
 	static void					Shutdown( void );
@@ -273,15 +273,15 @@ public:
 		return typeNumBits;
 	}
 	static idTypeInfo 			*GetType( int num );
-	
+
 private:
 	classSpawnFunc_t			CallSpawnFunc( idTypeInfo *cls );
-	
+
 	bool						PostEventArgs( const idEventDef *ev, int time, int numargs, ... );
 	bool						ProcessEventArgs( const idEventDef *ev, int numargs, ... );
-	
+
 	void						Event_SafeRemove( void );
-	
+
 	static bool					initialized;
 	static idList<idTypeInfo *>	types;
 	static idList<idTypeInfo *>	typenums;
@@ -304,7 +304,7 @@ public:
 	void	( idClass::*Spawn )( void );
 	void	( idClass::*Save )( idSaveGame *savefile ) const;
 	void	( idClass::*Restore )( idRestoreGame *savefile );
-	
+
 	idEventFunc<idClass> 		*eventCallbacks;
 	eventCallback_t 			*eventMap;
 	idTypeInfo 				*super;
@@ -312,17 +312,17 @@ public:
 	bool						freeEventMap;
 	int							typeNum;
 	int							lastChild;
-	
+
 	idHierarchy<idTypeInfo>		node;
-	
+
 	idTypeInfo( const char *classname, const char *superclass,
 				idEventFunc<idClass> *eventCallbacks, idClass * ( *CreateInstance )( void ), void ( idClass::*Spawn )( void ),
 				void ( idClass::*Save )( idSaveGame *savefile ) const, void	( idClass::*Restore )( idRestoreGame *savefile ) );
 	~idTypeInfo();
-	
+
 	void						Init( void );
 	void						Shutdown( void );
-	
+
 	bool						IsType( const idTypeInfo &superclass ) const;
 	bool						RespondsTo( const idEventDef &ev ) const;
 };

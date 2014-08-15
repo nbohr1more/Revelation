@@ -43,31 +43,31 @@ extern const idEventDef EV_IsAtRest;
 class idMoveable : public idEntity {
 public:
 	CLASS_PROTOTYPE( idMoveable );
-	
+
 	idMoveable( void );
 	~idMoveable( void );
-	
+
 	void					Spawn( void );
-	
+
 	void					Save( idSaveGame *savefile ) const;
 	void					Restore( idRestoreGame *savefile );
-	
+
 	virtual void			Think( void );
-	
+
 	virtual void			Hide( void );
 	virtual void			Show( void );
-	
+
 	bool					AllowStep( void ) const;
 	void					EnableDamage( bool enable, float duration );
 	virtual bool			Collide( const trace_t &collision, const idVec3 &velocity );
 	virtual void			Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location );
 	virtual void			WriteToSnapshot( idBitMsgDelta &msg ) const;
 	virtual void			ReadFromSnapshot( const idBitMsgDelta &msg );
-	
+
 #ifdef _D3XP
 	void					SetAttacker( idEntity *ent );
 #endif
-	
+
 protected:
 	idPhysics_RigidBody		physicsObj;				// physics object
 	idStr					brokenModel;			// model set when health drops down to or below zero
@@ -88,12 +88,12 @@ protected:
 	bool					canDamage;				// only apply damage when this is set
 	int						nextDamageTime;			// next time the movable can hurt the player
 	int						nextSoundTime;			// next time the moveable can make a sound
-	
+
 	const idMaterial 		*GetRenderModelMaterial( void ) const;
 	void					BecomeNonSolid( void );
 	void					InitInitialSpline( int startTime );
 	bool					FollowInitialSplinePath( void );
-	
+
 	void					Event_Activate( idEntity *activator );
 	void					Event_BecomeNonSolid( void );
 	void					Event_SetOwnerFromSpawnArgs( void );
@@ -116,17 +116,17 @@ class idBarrel : public idMoveable {
 public:
 	CLASS_PROTOTYPE( idBarrel );
 	idBarrel();
-	
+
 	void					Spawn( void );
-	
+
 	void					Save( idSaveGame *savefile ) const;
 	void					Restore( idRestoreGame *savefile );
-	
+
 	void					BarrelThink( void );
 	virtual void			Think( void );
 	virtual bool			GetPhysicsToVisualTransform( idVec3 &origin, idMat3 &axis );
 	virtual void			ClientPredictionThink( void );
-	
+
 private:
 	float					radius;					// radius of barrel
 	int						barrelAxis;				// one of the coordinate axes the barrel cylinder is parallel to
@@ -150,36 +150,36 @@ private:
 class idExplodingBarrel : public idBarrel {
 public:
 	CLASS_PROTOTYPE( idExplodingBarrel );
-	
+
 	idExplodingBarrel();
 	~idExplodingBarrel();
-	
+
 	void					Spawn( void );
-	
+
 	void					Save( idSaveGame *savefile ) const;
 	void					Restore( idRestoreGame *savefile );
-	
+
 #ifdef _D3XP
 	bool					IsStable( void );
 	void					SetStability( bool stability );
 	void					StartBurning( void );
 	void					StopBurning( void );
 #endif
-	
+
 	virtual void			Think( void );
 	virtual void			Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &dir,
 									const char *damageDefName, const float damageScale, const int location );
 	virtual void			Killed( idEntity *inflictor, idEntity *attacker, int damage, const idVec3 &dir, int location );
-	
+
 	virtual void			WriteToSnapshot( idBitMsgDelta &msg ) const;
 	virtual void			ReadFromSnapshot( const idBitMsgDelta &msg );
 	virtual bool			ClientReceiveEvent( int event, int time, const idBitMsg &msg );
-	
+
 	enum {
 		EVENT_EXPLODE = idEntity::EVENT_MAXEVENTS,
 		EVENT_MAXEVENTS
 	};
-	
+
 private:
 	typedef enum {
 		NORMAL = 0,
@@ -188,7 +188,7 @@ private:
 		EXPLODING
 	} explode_state_t;
 	explode_state_t			state;
-	
+
 	idVec3					spawnOrigin;
 	idMat3					spawnAxis;
 	qhandle_t				particleModelDefHandle;
@@ -201,11 +201,11 @@ private:
 #ifdef _D3XP
 	bool					isStable;
 #endif
-	
+
 	void					AddParticles( const char *name, bool burn );
 	void					AddLight( const char *name , bool burn );
 	void					ExplodingEffects( void );
-	
+
 	void					Event_Activate( idEntity *activator );
 	void					Event_Respawn();
 	void					Event_Explode();

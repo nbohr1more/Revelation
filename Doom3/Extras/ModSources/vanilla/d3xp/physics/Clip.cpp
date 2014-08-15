@@ -228,6 +228,7 @@ void idClipModel::LoadModel( const idTraceModel &trm ) {
 	renderModelHandle = -1;
 	if( traceModelIndex != -1 ) {
 		FreeTraceModel( traceModelIndex );
+		traceModelIndex = -1;
 	}
 	traceModelIndex = AllocTraceModel( trm );
 	bounds = trm.bounds;
@@ -352,6 +353,7 @@ idClipModel::~idClipModel( void ) {
 	Unlink();
 	if( traceModelIndex != -1 ) {
 		FreeTraceModel( traceModelIndex );
+		traceModelIndex = -1;
 	}
 }
 

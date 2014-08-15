@@ -89,12 +89,12 @@ void idIK::Restore( idRestoreGame *savefile ) {
 	if( self ) {
 		animator = self->GetAnimator();
 		if( animator == NULL || animator->ModelDef() == NULL ) {
-			gameLocal.Warning( "idIK::Restore: IK for entity '%s' at (%s) has no model set.",
+			gameLocal.DWarning( "idIK::Restore: IK for entity '%s' at (%s) has no model set.",
 							   self->name.c_str(), self->GetPhysics()->GetOrigin().ToString( 0 ) );
 		}
 		modifiedAnim = animator->GetAnim( anim );
 		if( modifiedAnim == 0 ) {
-			gameLocal.Warning( "idIK::Restore: IK for entity '%s' at (%s) has no modified animation.",
+			gameLocal.DWarning( "idIK::Restore: IK for entity '%s' at (%s) has no modified animation.",
 							   self->name.c_str(), self->GetPhysics()->GetOrigin().ToString( 0 ) );
 		}
 	} else {
@@ -125,24 +125,24 @@ bool idIK::Init( idEntity *self, const char *anim, const idVec3 &modelOffset ) {
 	this->self = self;
 	animator = self->GetAnimator();
 	if( animator == NULL || animator->ModelDef() == NULL ) {
-		gameLocal.Warning( "idIK::Init: IK for entity '%s' at (%s) has no model set.",
+		gameLocal.DWarning( "idIK::Init: IK for entity '%s' at (%s) has no model set.",
 						   self->name.c_str(), self->GetPhysics()->GetOrigin().ToString( 0 ) );
 		return false;
 	}
 	if( animator->ModelDef()->ModelHandle() == NULL ) {
-		gameLocal.Warning( "idIK::Init: IK for entity '%s' at (%s) uses default model.",
+		gameLocal.DWarning( "idIK::Init: IK for entity '%s' at (%s) uses default model.",
 						   self->name.c_str(), self->GetPhysics()->GetOrigin().ToString( 0 ) );
 		return false;
 	}
 	model = animator->ModelHandle();
 	if( model == NULL ) {
-		gameLocal.Warning( "idIK::Init: IK for entity '%s' at (%s) has no model set.",
+		gameLocal.DWarning( "idIK::Init: IK for entity '%s' at (%s) has no model set.",
 						   self->name.c_str(), self->GetPhysics()->GetOrigin().ToString( 0 ) );
 		return false;
 	}
 	modifiedAnim = animator->GetAnim( anim );
 	if( modifiedAnim == 0 ) {
-		gameLocal.Warning( "idIK::Init: IK for entity '%s' at (%s) has no modified animation.",
+		gameLocal.DWarning( "idIK::Init: IK for entity '%s' at (%s) has no modified animation.",
 						   self->name.c_str(), self->GetPhysics()->GetOrigin().ToString( 0 ) );
 		return false;
 	}

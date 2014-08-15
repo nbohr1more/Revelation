@@ -1,30 +1,5 @@
-/*
-===========================================================================
-
-Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
-
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
-
-Doom 3 Source Code is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Doom 3 Source Code is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Doom 3 Source Code.  If not, see <http://www.gnu.org/licenses/>.
-
-In addition, the Doom 3 Source Code is also subject to certain additional terms. You should have received a copy of these additional terms immediately following the terms and conditions of the GNU General Public License which accompanied the Doom 3 Source Code.  If not, please request a copy in writing from id Software at the address below.
-
-If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
-
-===========================================================================
-*/
+// Copyright (C) 2004 Id Software, Inc.
+//
 
 #ifndef __GAME_LIGHT_H__
 #define __GAME_LIGHT_H__
@@ -44,21 +19,21 @@ extern const idEventDef EV_Light_SetLightParms;
 class idLight : public idEntity {
 public:
 	CLASS_PROTOTYPE( idLight );
-	
+
 	idLight();
 	~idLight();
-	
+
 	void			Spawn( void );
-	
+
 	void			Save( idSaveGame *savefile ) const;					// archives object for save game file
 	void			Restore( idRestoreGame *savefile );					// unarchives object from save game file
-	
+
 	virtual void	UpdateChangeableSpawnArgs( const idDict *source );
 	virtual void	Think( void );
 	virtual void	FreeLightDef( void );
 	virtual bool	GetPhysicsToSoundTransform( idVec3 &origin, idMat3 &axis );
 	void			Present( void );
-	
+
 	void			SaveState( idDict *args );
 	virtual void	SetColor( float red, float green, float blue );
 	virtual void	SetColor( const idVec4 &color );
@@ -86,19 +61,26 @@ public:
 		lightParent = lparent;
 	}
 	void			SetLightLevel( void );
-	
+
 	virtual void	ShowEditingDialog( void );
-	
+
 	enum {
 		EVENT_BECOMEBROKEN = idEntity::EVENT_MAXEVENTS,
 		EVENT_MAXEVENTS
 	};
-	
+
 	virtual void	ClientPredictionThink( void );
 	virtual void	WriteToSnapshot( idBitMsgDelta &msg ) const;
 	virtual void	ReadFromSnapshot( const idBitMsgDelta &msg );
 	virtual bool	ClientReceiveEvent( int event, int time, const idBitMsg &msg );
-	
+
+	// sikk---> Soft Shadows PostProcess
+	renderLight_t	*GetRenderLight( void ) {
+		return &renderLight;
+	};
+	void			UpdateShadowState( void );
+	// <---sikk
+
 private:
 	renderLight_t	renderLight;				// light presented to the renderer
 	idVec3			localLightOrigin;			// light origin relative to the physics origin
@@ -117,11 +99,11 @@ private:
 	int				fadeStart;
 	int				fadeEnd;
 	bool			soundWasPlaying;
-	
+
 private:
 	void			PresentLightDefChange( void );
 	void			PresentModelDefChange( void );
-	
+
 	void			Event_SetShader( const char *shadername );
 	void			Event_GetLightParm( int parmnum );
 	void			Event_SetLightParm( int parmnum, float value );

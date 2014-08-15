@@ -42,7 +42,6 @@ If you have questions concerning this license or the applicable additional terms
 ======================================================================
 */
 
-
 #define VERBOSE( x ) { if ( ase.verbose ) { common->Printf x ; } }
 
 // working variables used during parsing
@@ -177,6 +176,7 @@ static void ASE_KeyMAP_DIFFUSE( const char *token ) {
 		ASE_GetToken( false );
 		material->angle = atof( ase.token );
 	} else {
+		return;
 	}
 }
 
@@ -184,6 +184,7 @@ static void ASE_KeyMATERIAL( const char *token ) {
 	if( !strcmp( token, "*MAP_DIFFUSE" ) ) {
 		ASE_ParseBracedBlock( ASE_KeyMAP_DIFFUSE );
 	} else {
+		return;
 	}
 }
 
@@ -199,6 +200,8 @@ static void ASE_KeyMATERIAL_LIST( const char *token ) {
 		ase.currentMaterial->vTiling = 1;
 		ase.model->materials.Append( ase.currentMaterial );
 		ASE_ParseBracedBlock( ASE_KeyMATERIAL );
+	} else {
+		return;
 	}
 }
 
@@ -224,6 +227,8 @@ static void ASE_KeyNODE_TM( const char *token ) {
 			ASE_GetToken( false );
 			ase.currentObject->mesh.transform[3][i] = atof( ase.token );
 		}
+	} else {
+		return;
 	}
 }
 

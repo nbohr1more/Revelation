@@ -1,30 +1,5 @@
-/*
-===========================================================================
-
-Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
-
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
-
-Doom 3 Source Code is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Doom 3 Source Code is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Doom 3 Source Code.  If not, see <http://www.gnu.org/licenses/>.
-
-In addition, the Doom 3 Source Code is also subject to certain additional terms. You should have received a copy of these additional terms immediately following the terms and conditions of the GNU General Public License which accompanied the Doom 3 Source Code.  If not, please request a copy in writing from id Software at the address below.
-
-If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
-
-===========================================================================
-*/
+// Copyright (C) 2004 Id Software, Inc.
+//
 
 #include "../../idlib/precompiled.h"
 #pragma hdrstop
@@ -358,6 +333,10 @@ idAI::idAI() {
 	eyeFocusRate		= 0.0f;
 	headFocusRate		= 0.0f;
 	focusAlignTime		= 0;
+	// sikk---> Random Encounters System
+	dormantTime			= 0;
+	isRandom			= false;
+	// <---sikk
 }
 
 /*
@@ -500,6 +479,7 @@ void idAI::Save( idSaveGame *savefile ) const {
 	}
 	harvestEnt.Save( savefile );
 #endif
+	savefile->WriteBool( isRandom );	// sikk - Random Encounters System
 }
 
 /*
@@ -668,6 +648,7 @@ void idAI::Restore( idRestoreGame *savefile ) {
 	//	harvestEnt.GetEntity()->SetParent(this);
 	//}
 #endif
+	savefile->ReadBool( isRandom );	// sikk - Random Encounters System
 }
 
 /*
@@ -687,6 +668,7 @@ void idAI::Spawn( void ) {
 		PostEventMS( &EV_Remove, 0 );
 		return;
 	}
+	spawnArgs.GetBool( "isRandom", "0", isRandom );	// sikk - Random Encounters System
 	spawnArgs.GetInt(	"team",					"1",		team );
 	spawnArgs.GetInt(	"rank",					"0",		rank );
 	spawnArgs.GetInt(	"fly_offset",			"0",		fly_offset );
@@ -851,6 +833,18 @@ void idAI::Spawn( void ) {
 		// play a looping ambient sound if we have one
 		StartSound( "snd_ambient", SND_CHANNEL_AMBIENT, 0, false, NULL );
 	}
+	// sikk - Monster Burn Away Delay (this doesn't effect zombies or other non-burning monsters)
+	if( g_burnAwayDelay.GetFloat() > 0.0 && spawnArgs.GetFloat( "burnaway" ) > 0.0 ) {
+		spawnArgs.SetFloat( "burnaway", g_burnAwayDelay.GetFloat() );
+	}
+	// <---sikk
+	// sikk---> Enemy Health Management (also modifies friendlies but it doesn't make any difference)
+	health *= g_enemyHealthScale.GetFloat();
+	if( g_enemyHealthType.GetBool() ) {
+		health = ( health * 0.5f ) + ( health * gameLocal.random.RandomFloat() );
+	}
+	health = ( health <= 0 ) ? 1 : health;
+	// <---sikk
 	if( health <= 0 ) {
 		gameLocal.Warning( "entity '%s' doesn't have health set", name.c_str() );
 		health = 1;
@@ -954,6 +948,11 @@ void idAI::DormantBegin( void ) {
 		// remove ourselves from the enemy's enemylist
 		enemyNode.Remove();
 	}
+	// sikk---> Random Encounters System
+	if( isRandom ) {
+		dormantTime = gameLocal.time;
+	}
+	// <---sikk
 	idActor::DormantBegin();
 }
 
@@ -974,6 +973,11 @@ void idAI::DormantEnd( void ) {
 			particles[i].time = gameLocal.time;
 		}
 	}
+	// sikk---> Random Encounters System
+	if( spawnArgs.GetInt( "isRandom" ) ) {
+		dormantTime = 0;
+	}
+	// <---sikk
 	idActor::DormantEnd();
 }
 
@@ -1075,6 +1079,11 @@ void idAI::Think( void ) {
 	Present();
 	UpdateDamageEffects();
 	LinkCombat();
+	// sikk---> Random Encounters System
+	if( isRandom && ( AI_DEST_UNREACHABLE || ( dormantTime && gameLocal.time > ( dormantTime + g_randomEncountersDormantTime.GetInteger() * 1000 ) ) ) ) {
+		Damage( gameLocal.world, gameLocal.world, idVec3( 0, 0, 1 ), "damage_moverCrush", 999999, INVALID_JOINT );
+	}
+	// <---sikk
 #ifdef _D3XP
 	if( ai_showHealth.GetBool() ) {
 		idVec3 aboveHead( 0, 0, 20 );
@@ -2894,7 +2903,7 @@ int idAI::ReactionTo( const idEntity *ent ) {
 		return ATTACK_ON_SIGHT | ATTACK_ON_DAMAGE | ATTACK_ON_ACTIVATE;
 	}
 	// monsters will fight when attacked by lower ranked monsters.  rank 0 never fights back.
-	if( rank && ( actor->rank < rank ) ) {
+	if( rank && ( actor->rank < rank + g_interRankAggression.GetInteger() ) ) {	// sikk - Inter Rank Aggression
 		return ATTACK_ON_DAMAGE;
 	}
 	// don't fight back
@@ -3013,6 +3022,17 @@ void idAI::Killed( idEntity *inflictor, idEntity *attacker, int damage, const id
 		AI_DAMAGE = true;
 		return;
 	}
+	// sikk---> Random Encounters System
+	int i = gameLocal.GetEnemyNumFromName( spawnArgs.GetString( "classname" ) );
+	if( i ) {
+		if( isRandom ) {
+			gameLocal.randomEnemyTally--;
+			gameLocal.randomEnemyTally = ( gameLocal.randomEnemyTally < 0 ) ? 0 : gameLocal.randomEnemyTally;
+		} else {
+			gameLocal.randomEnemyList.Append( i );
+		}
+	}
+	// <---sikk
 	// stop all voice sounds
 	StopSound( SND_CHANNEL_VOICE, false );
 	if( head.GetEntity() ) {
@@ -4317,7 +4337,7 @@ idEntity *idAI::StartEmitter( const char *name, const char *joint, const char *p
 	tmp = axis[2];
 	axis[2] = axis[0];
 	axis[0] = -tmp;
-	
+
 	ent->GetPhysics()->SetAxis(axis);*/
 	axis = physicsObj.GetGravityAxis();
 	ent->GetPhysics()->SetAxis( axis );

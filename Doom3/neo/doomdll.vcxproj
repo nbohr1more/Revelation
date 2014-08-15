@@ -25,6 +25,10 @@
       <Configuration>Dedicated Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Intel_SSA|Win32">
+      <Configuration>Intel_SSA</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -84,6 +88,16 @@
     <UseIntelTBB>true</UseIntelTBB>
     <UseIntelMKL>Parallel</UseIntelMKL>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Intel_SSA|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <WholeProgramOptimization>false</WholeProgramOptimization>
+    <PlatformToolset>Intel C++ Compiler XE 14.0</PlatformToolset>
+    <UseIntelIPP>Parallel_Static</UseIntelIPP>
+    <UseIntelTBB>true</UseIntelTBB>
+    <UseIntelMKL>Parallel</UseIntelMKL>
+  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseOfMfc>false</UseOfMfc>
@@ -136,6 +150,12 @@
     <Import Project="_DoomDLL.props" />
     <Import Project="_Release.props" />
   </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Intel_SSA|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="_Common.props" />
+    <Import Project="_DoomDLL.props" />
+    <Import Project="_Release.props" />
+  </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="_Common.props" />
@@ -164,8 +184,11 @@
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Dedicated Release|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Dedicated Release|Win32'" />
     <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Intel_SSA|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
     <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Intel_SSA|Win32'" />
     <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Intel_SSA|Win32'" />
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug with inlines and memory log|Win32'">
     <Link>
@@ -181,6 +204,7 @@
     <Link>
       <AdditionalLibraryDirectories>openal\lib;sys\win32\dongle;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
+    <ClCompile />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Dedicated Debug with inlines|Win32'">
     <Link>
@@ -210,6 +234,16 @@
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
     </ClCompile>
   </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Intel_SSA|Win32'">
+    <Link />
+    <ClCompile />
+    <ClCompile />
+    <ClCompile />
+    <ClCompile />
+    <ClCompile>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
+    </ClCompile>
+  </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile />
     <ClCompile>
@@ -219,6 +253,22 @@
       <EnableMatrixMultiplyLibraryCall>Yes</EnableMatrixMultiplyLibraryCall>
       <Parallelization>true</Parallelization>
       <UseIntelOptimizedHeaders>true</UseIntelOptimizedHeaders>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Intel_SSA|Win32'">
+    <ClCompile />
+    <ClCompile>
+      <InterproceduralOptimization>MultiFile</InterproceduralOptimization>
+      <OptimizeForWindowsApplication>true</OptimizeForWindowsApplication>
+      <FlushDenormalResultsToZero>true</FlushDenormalResultsToZero>
+      <EnableMatrixMultiplyLibraryCall>Yes</EnableMatrixMultiplyLibraryCall>
+      <Parallelization>true</Parallelization>
+      <UseIntelOptimizedHeaders>true</UseIntelOptimizedHeaders>
+      <FloatingPointModel>Strict</FloatingPointModel>
+      <LevelOfStaticAnalysis>Verbose</LevelOfStaticAnalysis>
+      <AnalyzeIncludeFiles>true</AnalyzeIncludeFiles>
+      <ModeOfStaticAnalysis>Full</ModeOfStaticAnalysis>
+      <TreatEnumerationsAsKnownRanges>true</TreatEnumerationsAsKnownRanges>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -2178,6 +2228,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Intel_SSA|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
     <ResourceCompile Include="sys\win32\rc\Common.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug with inlines and memory log|Win32'">true</ExcludedFromBuild>
@@ -2187,6 +2238,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Intel_SSA|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
     <ResourceCompile Include="sys\win32\rc\Debugger.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug with inlines and memory log|Win32'">true</ExcludedFromBuild>
@@ -2196,6 +2248,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Intel_SSA|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
     <ResourceCompile Include="sys\win32\rc\DeclEditor.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug with inlines and memory log|Win32'">true</ExcludedFromBuild>
@@ -2205,6 +2258,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Intel_SSA|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
     <ResourceCompile Include="sys\win32\rc\doom.rc" />
     <ResourceCompile Include="sys\win32\rc\GuiEd.rc">
@@ -2215,6 +2269,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Intel_SSA|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
     <ResourceCompile Include="sys\win32\rc\MaterialEditor.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug with inlines and memory log|Win32'">true</ExcludedFromBuild>
@@ -2224,6 +2279,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Intel_SSA|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
     <ResourceCompile Include="sys\win32\rc\ParticleEditor.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug with inlines and memory log|Win32'">true</ExcludedFromBuild>
@@ -2233,6 +2289,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Intel_SSA|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
     <ResourceCompile Include="sys\win32\rc\PDAEditor.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug with inlines and memory log|Win32'">true</ExcludedFromBuild>
@@ -2242,6 +2299,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Intel_SSA|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
     <ResourceCompile Include="sys\win32\rc\PropTree.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug with inlines and memory log|Win32'">true</ExcludedFromBuild>
@@ -2251,6 +2309,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Intel_SSA|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
     <ResourceCompile Include="sys\win32\rc\Radiant.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug with inlines and memory log|Win32'">true</ExcludedFromBuild>
@@ -2260,6 +2319,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Intel_SSA|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
     <ResourceCompile Include="sys\win32\rc\ScriptEditor.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug with inlines and memory log|Win32'">true</ExcludedFromBuild>
@@ -2269,6 +2329,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Intel_SSA|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
     <ResourceCompile Include="sys\win32\rc\SoundEditor.rc">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug with inlines and memory log|Win32'">true</ExcludedFromBuild>
@@ -2278,6 +2339,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Dedicated Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Intel_SSA|Win32'">true</ExcludedFromBuild>
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>

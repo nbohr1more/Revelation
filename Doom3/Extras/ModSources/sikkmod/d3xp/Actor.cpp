@@ -1,30 +1,5 @@
-/*
-===========================================================================
-
-Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
-
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
-
-Doom 3 Source Code is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Doom 3 Source Code is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Doom 3 Source Code.  If not, see <http://www.gnu.org/licenses/>.
-
-In addition, the Doom 3 Source Code is also subject to certain additional terms. You should have received a copy of these additional terms immediately following the terms and conditions of the GNU General Public License which accompanied the Doom 3 Source Code.  If not, please request a copy in writing from id Software at the address below.
-
-If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
-
-===========================================================================
-*/
+// Copyright (C) 2004 Id Software, Inc.
+//
 
 #include "../idlib/precompiled.h"
 #pragma hdrstop
@@ -429,7 +404,7 @@ idActor::idActor( void ) {
 	allowPain			= false;
 	allowEyeFocus		= false;
 	waitState			= "";
-	blink_anim			= 0;
+	blink_anim			= NULL;
 	blink_time			= 0;
 	blink_min			= 0;
 	blink_max			= 0;
@@ -574,7 +549,7 @@ void idActor::Spawn( void ) {
 			gameLocal.Warning( "idAnimated '%s' at (%s): cannot find joint '%s' for sound playback", name.c_str(), GetPhysics()->GetOrigin().ToString( 0 ), jointName.c_str() );
 		}
 	}
-	finalBoss = spawnArgs.GetBool( "finalBoss" );
+	finalBoss = g_cyberdemonDamageType.GetBool() ? false : spawnArgs.GetBool( "finalBoss" );	// sikk - Cyberdemon Damage Type
 	FinishSetup();
 }
 
@@ -1994,7 +1969,14 @@ void idActor::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &dir
 	if( !damageDef ) {
 		gameLocal.Error( "Unknown damageDef '%s'", damageDefName );
 	}
-	int	damage = damageDef->GetInt( "damage" ) * damageScale;
+	// sikk---> Ammo Management: Custom Ammo Damage
+	int	damage;
+	if( g_ammoDamageType.GetBool() && damageDef->GetInt( "custom_damage" ) ) {
+		damage = damageDef->GetInt( "custom_damage" ) * damageScale;
+	} else {
+		damage = damageDef->GetInt( "damage" ) * damageScale;
+	}
+	// <---sikk
 	damage = GetDamageForLocation( damage, location );
 	// inform the attacker that they hit someone
 	attacker->DamageFeedback( this, inflictor, damage );
@@ -2819,7 +2801,7 @@ idActor::Event_HasAnim
 ================
 */
 void idActor::Event_HasAnim( int channel, const char *animname ) {
-	if( GetAnim( channel, animname ) ) {
+	if( GetAnim( channel, animname ) != NULL ) {
 		idThread::ReturnFloat( 1.0f );
 	} else {
 		idThread::ReturnFloat( 0.0f );

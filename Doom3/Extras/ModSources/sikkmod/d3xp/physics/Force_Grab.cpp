@@ -1,30 +1,3 @@
-/*
-===========================================================================
-
-Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
-
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
-
-Doom 3 Source Code is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Doom 3 Source Code is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Doom 3 Source Code.  If not, see <http://www.gnu.org/licenses/>.
-
-In addition, the Doom 3 Source Code is also subject to certain additional terms. You should have received a copy of these additional terms immediately following the terms and conditions of the GNU General Public License which accompanied the Doom 3 Source Code.  If not, please request a copy in writing from id Software at the address below.
-
-If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
-
-===========================================================================
-*/
 
 #include "../../idlib/precompiled.h"
 #pragma hdrstop
@@ -126,7 +99,7 @@ float idForce_Grab::GetDistanceToGoal( void ) {
 idForce_Grab::Evaluate
 ================
 */
-void idForce_Grab::Evaluate( int time ) {
+void idForce_Grab::Evaluate( int time, bool grabber ) {
 	if( !physics ) {
 		return;
 	}
@@ -134,7 +107,7 @@ void idForce_Grab::Evaluate( int time ) {
 	float			forceAmt;
 	float			mass = physics->GetMass( id );
 	objectCenter = physics->GetAbsBounds( id ).GetCenter();
-	if( g_grabberRandomMotion.GetBool() && !gameLocal.isMultiplayer ) {
+	if( grabber && g_grabberRandomMotion.GetBool() && !gameLocal.isMultiplayer ) {	// sikk - Use Function: Object Manipualtion - Added "grabber" arg
 		// Jitter the objectCenter around so it doesn't remain stationary
 		float SinOffset = idMath::Sin( ( float )( gameLocal.time ) / 66.f );
 		float randScale1 = gameLocal.random.RandomFloat();
@@ -154,16 +127,30 @@ void idForce_Grab::Evaluate( int time ) {
 		forceAmt = 120000.f * mass;
 	}
 	physics->AddForce( id, objectCenter, forceDir * forceAmt );
-	if( distanceToGoal < 196.f ) {
-		v = physics->GetLinearVelocity( id );
-		physics->SetLinearVelocity( v * damping, id );
-	}
-	if( distanceToGoal < 16.f ) {
-		v = physics->GetAngularVelocity( id );
-		if( v.LengthSqr() > Square( 8 ) ) {
-			physics->SetAngularVelocity( v * 0.99999f, id );
+	// sikk---> Use Function: Object Manipualtion
+	if( grabber ) {
+		if( distanceToGoal < 196.f ) {
+			v = physics->GetLinearVelocity( id );
+			physics->SetLinearVelocity( v * damping, id );
 		}
+		if( distanceToGoal < 16.f ) {
+			v = physics->GetAngularVelocity( id );
+			if( v.LengthSqr() > Square( 8 ) ) {
+				physics->SetAngularVelocity( v * 0.99999f, id );
+			}
+		}
+	} else {
+		if( distanceToGoal < 128.0f ) {
+			v = physics->GetLinearVelocity( id );
+			if( distanceToGoal <= 1.0f ) {
+				physics->SetLinearVelocity( vec3_origin, id );
+			} else {
+				physics->SetLinearVelocity( v * damping, id );
+			}
+		}
+		physics->SetAngularVelocity( vec3_origin, id );
 	}
+	// <---sikk
 }
 
 /*

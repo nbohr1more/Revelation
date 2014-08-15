@@ -1,30 +1,5 @@
-/*
-===========================================================================
-
-Doom 3 GPL Source Code
-Copyright (C) 1999-2011 id Software LLC, a ZeniMax Media company.
-
-This file is part of the Doom 3 GPL Source Code (?Doom 3 Source Code?).
-
-Doom 3 Source Code is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Doom 3 Source Code is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with Doom 3 Source Code.  If not, see <http://www.gnu.org/licenses/>.
-
-In addition, the Doom 3 Source Code is also subject to certain additional terms. You should have received a copy of these additional terms immediately following the terms and conditions of the GNU General Public License which accompanied the Doom 3 Source Code.  If not, please request a copy in writing from id Software at the address below.
-
-If you have questions concerning this license or the applicable additional terms, you may contact in writing id Software LLC, c/o ZeniMax Media Inc., Suite 120, Rockville, Maryland 20850 USA.
-
-===========================================================================
-*/
+// Copyright (C) 2004 Id Software, Inc.
+//
 
 #ifndef __AAS_LOCAL_H__
 #define __AAS_LOCAL_H__
@@ -35,13 +10,13 @@ If you have questions concerning this license or the applicable additional terms
 
 class idRoutingCache {
 	friend class idAASLocal;
-	
+
 public:
 	idRoutingCache( int size );
 	~idRoutingCache( void );
-	
+
 	int							Size( void ) const;
-	
+
 private:
 	int							type;					// portal or area cache
 	int							size;					// size of cache
@@ -60,7 +35,7 @@ private:
 
 class idRoutingUpdate {
 	friend class idAASLocal;
-	
+
 private:
 	int							cluster;				// cluster number of this update
 	int							areaNum;				// area number of this update
@@ -76,7 +51,7 @@ private:
 class idRoutingObstacle {
 	friend class idAASLocal;
 	idRoutingObstacle( void ) { }
-	
+
 private:
 	idBounds					bounds;					// obstacle bounds
 	idList<int>					areas;					// areas the bounds are in
@@ -118,13 +93,15 @@ public:
 	virtual void				ShowWalkPath( const idVec3 &origin, int goalAreaNum, const idVec3 &goalOrigin ) const;
 	virtual void				ShowFlyPath( const idVec3 &origin, int goalAreaNum, const idVec3 &goalOrigin ) const;
 	virtual bool				FindNearestGoal( aasGoal_t &goal, int areaNum, const idVec3 origin, const idVec3 &target, int travelFlags, aasObstacle_t *obstacles, int numObstacles, idAASCallback &callback ) const;
-	
+
+	virtual int					GetNumAreas( int aasNum ) const;	// sikk - Random Encounters System
+
 private:
 	idAASFile 					*file;
 	idStr						name;
-	
+
 private:	// routing data
-	idRoutingCache			    ** *areaCacheIndex;			// for each area in each cluster the travel times to all other areas in the cluster
+	idRoutingCache **			*areaCacheIndex;			// for each area in each cluster the travel times to all other areas in the cluster
 	int							areaCacheIndexSize;		// number of area cache entries
 	idRoutingCache 			**portalCacheIndex;		// for each area in the world the travel times from each portal
 	int							portalCacheIndexSize;	// number of portal cache entries
@@ -137,7 +114,7 @@ private:	// routing data
 	mutable idRoutingCache 	*cacheListEnd;			// end of list with cache sorted from oldest to newest
 	mutable int					totalCacheMemory;		// total cache memory used
 	idList<idRoutingObstacle *>	obstacleList;			// list with obstacles
-	
+
 private:	// routing
 	bool						SetupRouting( void );
 	void						ShutdownRouting( void );
@@ -164,13 +141,13 @@ private:	// routing
 	bool						SetAreaState_r( int nodeNum, const idBounds &bounds, const int areaContents, bool disabled );
 	void						GetBoundsAreas_r( int nodeNum, const idBounds &bounds, idList<int> &areas ) const;
 	void						SetObstacleState( const idRoutingObstacle *obstacle, bool enable );
-	
+
 private:	// pathing
 	bool						EdgeSplitPoint( idVec3 &split, int edgeNum, const idPlane &plane ) const;
 	bool						FloorEdgeSplitPoint( idVec3 &split, int areaNum, const idPlane &splitPlane, const idPlane &frontPlane, bool closest ) const;
 	idVec3						SubSampleWalkPath( int areaNum, const idVec3 &origin, const idVec3 &start, const idVec3 &end, int travelFlags, int &endAreaNum ) const;
 	idVec3						SubSampleFlyPath( int areaNum, const idVec3 &origin, const idVec3 &start, const idVec3 &end, int travelFlags, int &endAreaNum ) const;
-	
+
 private:	// debug
 	const idBounds 			&DefaultSearchBounds( void ) const;
 	void						DrawCone( const idVec3 &origin, const idVec3 &dir, float radius, const idVec4 &color ) const;

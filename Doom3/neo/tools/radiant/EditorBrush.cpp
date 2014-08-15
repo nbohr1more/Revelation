@@ -1305,7 +1305,7 @@ brush_t *Brush_Parse( idVec3 origin ) {
 		GetToken( false );
 		f->texdef.SetName( token );
 		if( token[0] == '(' ) {
-			int i = 32;
+			i = 32;
 		}
 		GetToken( false );
 		f->texdef.shift[0] = atoi( token );
@@ -1349,7 +1349,7 @@ void WINAPI QERApp_MapPrintf_FILE( char *text, ... ) {
 	va_start( argptr, text );
 	vsprintf( buf, text, argptr );
 	va_end( argptr );
-	fprintf( g_File, buf );
+	fprintf( g_File, "%s", buf );
 }
 
 /*

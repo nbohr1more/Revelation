@@ -56,10 +56,10 @@ class idAF {
 public:
 	idAF( void );
 	~idAF( void );
-	
+
 	void					Save( idSaveGame *savefile ) const;
 	void					Restore( idRestoreGame *savefile );
-	
+
 	void					SetAnimator( idAnimator *a ) {
 		animator = a;
 	}
@@ -81,7 +81,7 @@ public:
 		return isActive;
 	}
 	void					SetConstraintPosition( const char *name, const idVec3 &pos );
-	
+
 	idPhysics_AF 			*GetPhysics( void ) {
 		return &physicsObj;
 	}
@@ -90,19 +90,19 @@ public:
 	}
 	idBounds				GetBounds( void ) const;
 	bool					UpdateAnimation( void );
-	
+
 	void					GetPhysicsToVisualTransform( idVec3 &origin, idMat3 &axis ) const;
 	void					GetImpactInfo( idEntity *ent, int id, const idVec3 &point, impactInfo_t *info );
 	void					ApplyImpulse( idEntity *ent, int id, const idVec3 &point, const idVec3 &impulse );
 	void					AddForce( idEntity *ent, int id, const idVec3 &point, const idVec3 &force );
 	int						BodyForClipModelId( int id ) const;
-	
+
 	void					SaveState( idDict &args ) const;
 	void					LoadState( const idDict &args );
-	
+
 	void					AddBindConstraints( void );
 	void					RemoveBindConstraints( void );
-	
+
 protected:
 	idStr					name;				// name of the loaded .af file
 	idPhysics_AF			physicsObj;			// articulated figure physics
@@ -118,14 +118,14 @@ protected:
 	bool					isLoaded;			// true when the articulated figure is properly loaded
 	bool					isActive;			// true if the articulated figure physics is active
 	bool					hasBindConstraints;	// true if the bind constraints have been added
-	
+
 protected:
 	void					SetBase( idAFBody *body, const idJointMat *joints );
 	void					AddBody( idAFBody *body, const idJointMat *joints, const char *jointName, const AFJointModType_t mod );
-	
+
 	bool					LoadBody( const idDeclAF_Body *fb, const idJointMat *joints );
 	bool					LoadConstraint( const idDeclAF_Constraint *fc );
-	
+
 	bool					TestSolid( void ) const;
 };
 

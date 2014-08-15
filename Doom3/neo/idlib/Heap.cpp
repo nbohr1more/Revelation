@@ -1004,7 +1004,7 @@ void *Mem_Alloc16( const int size ) {
 		return NULL;
 	}
 	if( !mem_heap ) {
-		const int paddedSize = (size + 15) & ~15;
+		const int paddedSize = ( size + 15 ) & ~15;
 #ifdef CRASH_ON_STATIC_ALLOCATION
 		*( ( int * )0x0 ) = 1;
 #endif

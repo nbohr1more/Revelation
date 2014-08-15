@@ -47,9 +47,9 @@ idRenderModelLiquid::idRenderModelLiquid() {
 	scale_y		= 256.0f;
 	liquid_type = 0;
 	density		= 0.97f;
-	drop_height = 4;
+	drop_height = 4.0f;
 	drop_radius = 4;
-	drop_delay	= 1000;
+	drop_delay	= 1000.0f;
 	shader		= declManager->FindMaterial( NULL );
 	update_tics	= 33;  // ~30 hz
 	time		= 0;
