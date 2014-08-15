@@ -144,8 +144,8 @@ bool BoundBrush( uBrush_t *brush ) {
 	}
 	for( i = 0; i < 3; i++ ) {
 		if( brush->bounds[0][i] < MIN_WORLD_COORD ||
-				brush->bounds[1][i] > MAX_WORLD_COORD ||
-				brush->bounds[0][i] >= brush->bounds[1][i] ) {
+			brush->bounds[1][i] > MAX_WORLD_COORD ||
+			brush->bounds[0][i] >= brush->bounds[1][i] ) {
 			return false;
 		}
 	}

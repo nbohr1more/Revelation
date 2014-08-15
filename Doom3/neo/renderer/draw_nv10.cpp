@@ -89,7 +89,7 @@ static void RB_RenderInteraction( const drawSurf_t *surf ) {
 	glVertexPointer( 3, GL_FLOAT, sizeof( idDrawVert ), ac->xyz.ToFloatPtr() );
 	GL_SelectTexture( 0 );
 	glTexCoordPointer( 2, GL_FLOAT, sizeof( idDrawVert ), ac->st.ToFloatPtr() );
-	glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ( const GLvoid * )&ac->color );
+	glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), reinterpret_cast<const GLvoid *>( &ac->st ) );
 	// go through the individual stages
 	for( int i = 0 ; i < surfaceShader->GetNumStages() ; i++ ) {
 		const shaderStage_t	*surfaceStage = surfaceShader->GetStage( i );
@@ -266,8 +266,7 @@ static void RB_RenderInteraction( const drawSurf_t *surf ) {
 				common->Printf( "shader %s: specular stage without a preceeding bumpmap stage\n", surfaceShader->GetName() );
 				continue;
 			}
-			GL_State( GLS_SRCBLEND_DST_ALPHA | GLS_DSTBLEND_SRC_ALPHA | GLS_COLORMASK | GLS_DEPTHMASK
-					  | backEnd.depthFunc );
+			GL_State( GLS_SRCBLEND_DST_ALPHA | GLS_DSTBLEND_SRC_ALPHA | GLS_COLORMASK | GLS_DEPTHMASK | backEnd.depthFunc );
 			// texture 0 will be the per-surface bump map
 			GL_SelectTexture( 0 );
 			glEnableClientState( GL_TEXTURE_COORD_ARRAY );
@@ -477,8 +476,6 @@ static void RB_RenderViewLight( viewLight_t *vLight ) {
 		return;
 	}
 	backEnd.vLight = vLight;
-	// turn on depthbounds testing for shadows
-	GL_DepthBoundsTest( vLight->scissorRect.zmin, vLight->scissorRect.zmax );
 	// clear the stencil buffer if needed
 	if( vLight->globalShadows || vLight->localShadows ) {
 		backEnd.currentScissor = vLight->scissorRect;
@@ -503,8 +500,6 @@ static void RB_RenderViewLight( viewLight_t *vLight ) {
 	if( r_skipTranslucent.GetBool() ) {
 		return;
 	}
-	// turn off depthbounds testing for translucent surfaces
-	GL_DepthBoundsTest( 0.0f, 0.0f );
 	// disable stencil testing for translucent interactions, because
 	// the shadow isn't calculated at their point, and the shadow
 	// behind them may be depth fighting with a back side, so there

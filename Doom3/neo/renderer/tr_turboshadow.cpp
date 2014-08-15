@@ -64,8 +64,8 @@ srfTriangles_t *R_CreateVertexProgramTurboShadowVolume( const idRenderEntityLoca
 	} else {
 		// make all triangles that are outside the light frustum "facing", so they won't cast shadows
 		indexes = tri->indexes;
-		byte *modifyFacing = cullInfo.facing;
-		const byte *cullBits = cullInfo.cullBits;
+		byte		*modifyFacing = cullInfo.facing;
+		const byte	*cullBits = cullInfo.cullBits;
 		for( j = i = 0; i < tri->numIndexes; i += 3, j++ ) {
 			if( !modifyFacing[j] ) {
 				int	i1 = indexes[i + 0];
@@ -180,8 +180,8 @@ srfTriangles_t *R_CreateTurboShadowVolume( const idRenderEntityLocal *ent, const
 	} else {
 		// make all triangles that are outside the light frustum "facing", so they won't cast shadows
 		indexes = tri->indexes;
-		byte *modifyFacing = cullInfo.facing;
-		const byte *cullBits = cullInfo.cullBits;
+		byte		*modifyFacing = cullInfo.facing;
+		const byte	*cullBits = cullInfo.cullBits;
 		for( j = i = 0; i < tri->numIndexes; i += 3, j++ ) {
 			if( !modifyFacing[j] ) {
 				int	i1 = indexes[i + 0];

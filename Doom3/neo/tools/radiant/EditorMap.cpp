@@ -757,7 +757,6 @@ void AddRegionBrushes( void ) {
 	}
 	memset( &td, 0, sizeof( td ) );
 	td = g_qeglobals.d_texturewin.texdef;
-	// strcpy (td.name, "REGION");
 	td.SetName( "textures/REGION" );
 	const int REGION_WIDTH = 1024;
 	mins[0] = region_mins[0] - REGION_WIDTH;

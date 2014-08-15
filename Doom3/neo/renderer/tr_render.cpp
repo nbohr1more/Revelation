@@ -128,7 +128,6 @@ void RB_DrawShadowElementsWithCounters( const srfTriangles_t *tri, int numIndexe
 	}
 }
 
-
 /*
 ===============
 RB_RenderTriangleSurface
@@ -757,54 +756,54 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void ( *DrawIntera
 		for( int surfaceStageNum = 0 ; surfaceStageNum < surfaceShader->GetNumStages() ; surfaceStageNum++ ) {
 			const shaderStage_t	*surfaceStage = surfaceShader->GetStage( surfaceStageNum );
 			switch( surfaceStage->lighting ) {
-			case SL_AMBIENT: {
-				// ignore ambient stages while drawing interactions
-				break;
-			}
-			case SL_BUMP: {
-				// ignore stage that fails the condition
-				if( !surfaceRegs[ surfaceStage->conditionRegister ] ) {
+				case SL_AMBIENT: {
+					// ignore ambient stages while drawing interactions
 					break;
 				}
-				// draw any previous interaction
-				RB_SubmitInteraction( &inter, DrawInteraction );
-				inter.diffuseImage = NULL;
-				inter.specularImage = NULL;
-				R_SetDrawInteraction( surfaceStage, surfaceRegs, &inter.bumpImage, inter.bumpMatrix, NULL );
-				break;
-			}
-			case SL_DIFFUSE: {
-				// ignore stage that fails the condition
-				if( !surfaceRegs[ surfaceStage->conditionRegister ] ) {
-					break;
-				}
-				if( inter.diffuseImage ) {
+				case SL_BUMP: {
+					// ignore stage that fails the condition
+					if( !surfaceRegs[ surfaceStage->conditionRegister ] ) {
+						break;
+					}
+					// draw any previous interaction
 					RB_SubmitInteraction( &inter, DrawInteraction );
-				}
-				R_SetDrawInteraction( surfaceStage, surfaceRegs, &inter.diffuseImage, inter.diffuseMatrix, inter.diffuseColor.ToFloatPtr() );
-				inter.diffuseColor[0] *= lightColor[0];
-				inter.diffuseColor[1] *= lightColor[1];
-				inter.diffuseColor[2] *= lightColor[2];
-				inter.diffuseColor[3] *= lightColor[3];
-				inter.vertexColor = surfaceStage->vertexColor;
-				break;
-			}
-			case SL_SPECULAR: {
-				// ignore stage that fails the condition
-				if( !surfaceRegs[ surfaceStage->conditionRegister ] ) {
+					inter.diffuseImage = NULL;
+					inter.specularImage = NULL;
+					R_SetDrawInteraction( surfaceStage, surfaceRegs, &inter.bumpImage, inter.bumpMatrix, NULL );
 					break;
 				}
-				if( inter.specularImage ) {
-					RB_SubmitInteraction( &inter, DrawInteraction );
+				case SL_DIFFUSE: {
+					// ignore stage that fails the condition
+					if( !surfaceRegs[ surfaceStage->conditionRegister ] ) {
+						break;
+					}
+					if( inter.diffuseImage ) {
+						RB_SubmitInteraction( &inter, DrawInteraction );
+					}
+					R_SetDrawInteraction( surfaceStage, surfaceRegs, &inter.diffuseImage, inter.diffuseMatrix, inter.diffuseColor.ToFloatPtr() );
+					inter.diffuseColor[0] *= lightColor[0];
+					inter.diffuseColor[1] *= lightColor[1];
+					inter.diffuseColor[2] *= lightColor[2];
+					inter.diffuseColor[3] *= lightColor[3];
+					inter.vertexColor = surfaceStage->vertexColor;
+					break;
 				}
-				R_SetDrawInteraction( surfaceStage, surfaceRegs, &inter.specularImage, inter.specularMatrix, inter.specularColor.ToFloatPtr() );
-				inter.specularColor[0] *= lightColor[0];
-				inter.specularColor[1] *= lightColor[1];
-				inter.specularColor[2] *= lightColor[2];
-				inter.specularColor[3] *= lightColor[3];
-				inter.vertexColor = surfaceStage->vertexColor;
-				break;
-			}
+				case SL_SPECULAR: {
+					// ignore stage that fails the condition
+					if( !surfaceRegs[ surfaceStage->conditionRegister ] ) {
+						break;
+					}
+					if( inter.specularImage ) {
+						RB_SubmitInteraction( &inter, DrawInteraction );
+					}
+					R_SetDrawInteraction( surfaceStage, surfaceRegs, &inter.specularImage, inter.specularMatrix, inter.specularColor.ToFloatPtr() );
+					inter.specularColor[0] *= lightColor[0];
+					inter.specularColor[1] *= lightColor[1];
+					inter.specularColor[2] *= lightColor[2];
+					inter.specularColor[3] *= lightColor[3];
+					inter.vertexColor = surfaceStage->vertexColor;
+					break;
+				}
 			}
 		}
 		// draw the final interaction
@@ -817,6 +816,8 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void ( *DrawIntera
 	// Once again into the night
 	if( lightDepthBoundsDisabled ) {
 		GL_DepthBoundsTest( vLight->scissorRect.zmin, vLight->scissorRect.zmax );
+	} else {
+		GL_DepthBoundsTest( 0.0f, 0.0f );
 	}
 }
 

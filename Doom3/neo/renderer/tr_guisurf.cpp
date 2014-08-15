@@ -55,8 +55,8 @@ void R_SurfaceToTextureAxis( const srfTriangles_t *tri, idVec3 &origin, idVec3 a
 	int			i, j;
 	float		v;
 	// find the bounds of the texture
-	bounds[0][0] = bounds[0][1] = 999999;
-	bounds[1][0] = bounds[1][1] = -999999;
+	bounds[0][0] = bounds[0][1] = 999999.0f;
+	bounds[1][0] = bounds[1][1] = -999999.0f;
 	for( i = 0 ; i < tri->numVerts ; i++ ) {
 		for( j = 0 ; j < 2 ; j++ ) {
 			v = tri->verts[i].st[j];
@@ -71,8 +71,8 @@ void R_SurfaceToTextureAxis( const srfTriangles_t *tri, idVec3 &origin, idVec3 a
 	// use the floor of the midpoint as the origin of the
 	// surface, which will prevent a slight misalignment
 	// from throwing it an entire cycle off
-	boundsOrg[0] = floor( ( bounds[0][0] + bounds[1][0] ) * 0.5 );
-	boundsOrg[1] = floor( ( bounds[0][1] + bounds[1][1] ) * 0.5 );
+	boundsOrg[0] = floor( ( bounds[0][0] + bounds[1][0] ) * 0.5f );
+	boundsOrg[1] = floor( ( bounds[0][1] + bounds[1][1] ) * 0.5f );
 	// determine the world S and T vectors from the first drawSurf triangle
 	a = tri->verts + tri->indexes[0];
 	b = tri->verts + tri->indexes[1];
@@ -130,24 +130,23 @@ void R_RenderGuiSurf( idUserInterface *gui, drawSurf_t *drawSurf ) {
 	R_SurfaceToTextureAxis( drawSurf->geo, origin, axis );
 	float	guiModelMatrix[16];
 	float	modelMatrix[16];
-	guiModelMatrix[0] = axis[0][0] / 640.0;
-	guiModelMatrix[4] = axis[1][0] / 480.0;
+	guiModelMatrix[0] = axis[0][0] / 640.0f;
+	guiModelMatrix[4] = axis[1][0] / 480.0f;
 	guiModelMatrix[8] = axis[2][0];
 	guiModelMatrix[12] = origin[0];
-	guiModelMatrix[1] = axis[0][1] / 640.0;
-	guiModelMatrix[5] = axis[1][1] / 480.0;
+	guiModelMatrix[1] = axis[0][1] / 640.0f;
+	guiModelMatrix[5] = axis[1][1] / 480.0f;
 	guiModelMatrix[9] = axis[2][1];
 	guiModelMatrix[13] = origin[1];
-	guiModelMatrix[2] = axis[0][2] / 640.0;
-	guiModelMatrix[6] = axis[1][2] / 480.0;
+	guiModelMatrix[2] = axis[0][2] / 640.0f;
+	guiModelMatrix[6] = axis[1][2] / 480.0f;
 	guiModelMatrix[10] = axis[2][2];
 	guiModelMatrix[14] = origin[2];
-	guiModelMatrix[3] = 0;
-	guiModelMatrix[7] = 0;
-	guiModelMatrix[11] = 0;
-	guiModelMatrix[15] = 1;
-	R_MatrixMultiply( guiModelMatrix, drawSurf->space->modelMatrix,
-					  modelMatrix );
+	guiModelMatrix[3] = 0.0f;
+	guiModelMatrix[7] = 0.0f;
+	guiModelMatrix[11] = 0.0f;
+	guiModelMatrix[15] = 1.0f;
+	R_MatrixMultiply( guiModelMatrix, drawSurf->space->modelMatrix, modelMatrix );
 	tr.guiRecursionLevel++;
 	// call the gui, which will call the 2D drawing functions
 	tr.guiModel->Clear();

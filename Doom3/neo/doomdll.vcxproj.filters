@@ -264,9 +264,6 @@
     <ClInclude Include="renderer\VertexCache.h">
       <Filter>Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="renderer\wglext.h">
-      <Filter>Renderer</Filter>
-    </ClInclude>
     <ClInclude Include="sound\snd_local.h">
       <Filter>Sound</Filter>
     </ClInclude>

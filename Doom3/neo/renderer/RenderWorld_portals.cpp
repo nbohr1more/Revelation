@@ -271,7 +271,6 @@ void idRenderWorldLocal::FlowViewThroughPortals( const idVec3 origin, int numPla
 
 //==================================================================================================
 
-
 /*
 ===================
 FloodLightThroughArea_r
@@ -735,7 +734,7 @@ void idRenderWorldLocal::FindViewLightsAndEntities( void ) {
 		if( tr.viewDef->areaNum >= 0 ) {
 			portalStack_t	ps;
 			int				i;
-			static int lastPrintedAreaNum;
+			static int		lastPrintedAreaNum;
 			if( tr.viewDef->areaNum != lastPrintedAreaNum ) {
 				lastPrintedAreaNum = tr.viewDef->areaNum;
 				common->Printf( "entering portal area %i\n", tr.viewDef->areaNum );

@@ -51,7 +51,6 @@ If you have questions concerning this license or the applicable additional terms
 #define SMALL_ALIGN( bytes )	( ALIGN_SIZE( (bytes) + SMALL_HEADER_SIZE ) - SMALL_HEADER_SIZE )
 #define MEDIUM_SMALLEST_SIZE	( ALIGN_SIZE( 256 ) + ALIGN_SIZE( MEDIUM_HEADER_SIZE ) )
 
-
 class idHeap {
 
 public:
@@ -189,24 +188,28 @@ idHeap::~idHeap( void ) {
 		FreePage( smallCurPage );			// free small-heap current allocation page
 	}
 	p = smallFirstUsedPage;					// free small-heap allocated pages
+#pragma loop( hint_parallel(8) )
 	while( p ) {
 		idHeap::page_s *next = p->next;
 		FreePage( p );
 		p = next;
 	}
 	p = largeFirstUsedPage;					// free large-heap allocated pages
+#pragma loop( hint_parallel(8) )
 	while( p ) {
 		idHeap::page_s *next = p->next;
 		FreePage( p );
 		p = next;
 	}
 	p = mediumFirstFreePage;				// free medium-heap allocated pages
+#pragma loop( hint_parallel(8) )
 	while( p ) {
 		idHeap::page_s *next = p->next;
 		FreePage( p );
 		p = next;
 	}
 	p = mediumFirstUsedPage;				// free medium-heap allocated completely used pages
+#pragma loop( hint_parallel(8) )
 	while( p ) {
 		idHeap::page_s *next = p->next;
 		FreePage( p );
@@ -276,22 +279,22 @@ void idHeap::Free( void *p ) {
 	free( p );
 #else
 	switch( ( ( byte * )( p ) )[-1] ) {
-	case SMALL_ALLOC: {
-		SmallFree( p );
-		break;
-	}
-	case MEDIUM_ALLOC: {
-		MediumFree( p );
-		break;
-	}
-	case LARGE_ALLOC: {
-		LargeFree( p );
-		break;
-	}
-	default: {
-		idLib::common->FatalError( "idHeap::Free: invalid memory block (%s)", idLib::sys->GetCallStackCurStr( 4 ) );
-		break;
-	}
+		case SMALL_ALLOC: {
+			SmallFree( p );
+			break;
+		}
+		case MEDIUM_ALLOC: {
+			MediumFree( p );
+			break;
+		}
+		case LARGE_ALLOC: {
+			LargeFree( p );
+			break;
+		}
+		default: {
+			idLib::common->FatalError( "idHeap::Free: invalid memory block (%s)", idLib::sys->GetCallStackCurStr( 4 ) );
+			break;
+		}
 	}
 #endif
 }
@@ -355,19 +358,19 @@ dword idHeap::Msize( void *p ) {
 #endif
 #else
 	switch( ( ( byte * )( p ) )[-1] ) {
-	case SMALL_ALLOC: {
-		return SMALL_ALIGN( ( ( byte * )( p ) )[-SMALL_HEADER_SIZE] * ALIGN );
-	}
-	case MEDIUM_ALLOC: {
-		return ( ( mediumHeapEntry_s * )( ( ( byte * )( p ) ) - ALIGN_SIZE( MEDIUM_HEADER_SIZE ) ) )->size - ALIGN_SIZE( MEDIUM_HEADER_SIZE );
-	}
-	case LARGE_ALLOC: {
-		return ( ( idHeap::page_s * )( *( ( dword * )( ( ( byte * )p ) - ALIGN_SIZE( LARGE_HEADER_SIZE ) ) ) ) )->dataSize - ALIGN_SIZE( LARGE_HEADER_SIZE );
-	}
-	default: {
-		idLib::common->FatalError( "idHeap::Msize: invalid memory block (%s)", idLib::sys->GetCallStackCurStr( 4 ) );
-		return 0;
-	}
+		case SMALL_ALLOC: {
+			return SMALL_ALIGN( ( ( byte * )( p ) )[-SMALL_HEADER_SIZE] * ALIGN );
+		}
+		case MEDIUM_ALLOC: {
+			return ( ( mediumHeapEntry_s * )( ( ( byte * )( p ) ) - ALIGN_SIZE( MEDIUM_HEADER_SIZE ) ) )->size - ALIGN_SIZE( MEDIUM_HEADER_SIZE );
+		}
+		case LARGE_ALLOC: {
+			return ( ( idHeap::page_s * )( *( ( dword * )( ( ( byte * )p ) - ALIGN_SIZE( LARGE_HEADER_SIZE ) ) ) ) )->dataSize - ALIGN_SIZE( LARGE_HEADER_SIZE );
+		}
+		default: {
+			idLib::common->FatalError( "idHeap::Msize: invalid memory block (%s)", idLib::sys->GetCallStackCurStr( 4 ) );
+			return 0;
+		}
 	}
 #endif
 }
@@ -950,7 +953,6 @@ void Mem_UpdateFreeStats( int size ) {
 	mem_total_allocs.num--;
 	mem_total_allocs.totalSize -= size;
 }
-
 
 #ifndef ID_DEBUG_MEMORY
 

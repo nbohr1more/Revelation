@@ -84,7 +84,7 @@ static void RB_ARB_DrawInteraction( const drawInteraction_t *din ) {
 	idDrawVert *ac = ( idDrawVert * )vertexCache.Position( tri->ambientCache );
 	glVertexPointer( 3, GL_FLOAT, sizeof( idDrawVert ), ac->xyz.ToFloatPtr() );
 	GL_SelectTexture( 0 );
-	glTexCoordPointer( 2, GL_FLOAT, sizeof( idDrawVert ), ( void * )&ac->st );
+	glTexCoordPointer( 2, GL_FLOAT, sizeof( idDrawVert ), reinterpret_cast<const GLvoid *>( &ac->st ) );
 	//-----------------------------------------------------
 	//
 	// bump / falloff
@@ -382,7 +382,6 @@ static void RB_RenderViewLight( viewLight_t *vLight ) {
 		return;
 	}
 	backEnd.vLight = vLight;
-	GL_DepthBoundsTest( vLight->scissorRect.zmin, vLight->scissorRect.zmax );
 	// clear the stencil buffer if needed
 	if( vLight->globalShadows || vLight->localShadows ) {
 		backEnd.currentScissor = vLight->scissorRect;
@@ -407,8 +406,6 @@ static void RB_RenderViewLight( viewLight_t *vLight ) {
 	if( r_skipTranslucent.GetBool() ) {
 		return;
 	}
-	// turn off depthbounds testing for translucent surfaces
-	GL_DepthBoundsTest( 0.0f, 0.0f );
 	// disable stencil testing for translucent interactions, because
 	// the shadow isn't calculated at their point, and the shadow
 	// behind them may be depth fighting with a back side, so there

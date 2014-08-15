@@ -1020,25 +1020,25 @@ int	idParticleStage::ParticleVerts( particleGen_t *g, idVec3 origin, idDrawVert 
 		// oriented in entity space
 		left[0] = s;
 		left[1] = c;
-		left[2] = 0;
+		left[2] = 0.0f;
 		up[0] = c;
 		up[1] = -s;
-		up[2] = 0;
+		up[2] = 0.0f;
 	} else if( orientation == POR_X ) {
 		// oriented in entity space
-		left[0] = 0;
+		left[0] = 0.0f;
 		left[1] = c;
 		left[2] = s;
-		up[0] = 0;
+		up[0] = 0.0f;
 		up[1] = -s;
 		up[2] = c;
 	} else if( orientation == POR_Y ) {
 		// oriented in entity space
 		left[0] = c;
-		left[1] = 0;
+		left[1] = 0.0f;
 		left[2] = s;
 		up[0] = -s;
-		up[1] = 0;
+		up[1] = 0.0f;
 		up[2] = c;
 	} else {
 		// oriented in viewer space

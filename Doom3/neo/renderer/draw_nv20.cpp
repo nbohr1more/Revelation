@@ -271,8 +271,7 @@ static void RB_NV20_DI_DiffuseColorPass( const drawInteraction_t *din ) {
 	RB_NV20_DiffuseColorFragment();
 	// override one parameter for inverted vertex color
 	if( din->vertexColor == SVC_INVERSE_MODULATE ) {
-		glCombinerInputNV( GL_COMBINER0_NV, GL_RGB, GL_VARIABLE_B_NV,
-						   GL_PRIMARY_COLOR_NV, GL_UNSIGNED_INVERT_NV, GL_RGB );
+		glCombinerInputNV( GL_COMBINER0_NV, GL_RGB, GL_VARIABLE_B_NV, GL_PRIMARY_COLOR_NV, GL_UNSIGNED_INVERT_NV, GL_RGB );
 	}
 	// draw it
 	glBindProgramARB( GL_VERTEX_PROGRAM_ARB, VPROG_NV20_DIFFUSE_COLOR );
@@ -401,8 +400,7 @@ static void RB_NV20_DI_SpecularColorPass( const drawInteraction_t *din ) {
 	RB_NV20_SpecularColorFragment();
 	// override one parameter for inverted vertex color
 	if( din->vertexColor == SVC_INVERSE_MODULATE ) {
-		glCombinerInputNV( GL_COMBINER3_NV, GL_RGB, GL_VARIABLE_B_NV,
-						   GL_PRIMARY_COLOR_NV, GL_UNSIGNED_INVERT_NV, GL_RGB );
+		glCombinerInputNV( GL_COMBINER3_NV, GL_RGB, GL_VARIABLE_B_NV, GL_PRIMARY_COLOR_NV, GL_UNSIGNED_INVERT_NV, GL_RGB );
 	}
 	// draw it
 	glBindProgramARB( GL_VERTEX_PROGRAM_ARB, VPROG_NV20_SPECULAR_COLOR );
@@ -551,7 +549,7 @@ static void	RB_NV20_DrawInteraction( const drawInteraction_t *din ) {
 	// on NV20, we need to decide which single / dual / tripple pass set of programs to use
 	// ambient light could be done as a single pass if we want to optimize for it
 	// monochrome light is two passes
-	int		internalFormat = din->lightImage->internalFormat;
+	int	internalFormat = din->lightImage->internalFormat;
 	if( ( r_useNV20MonoLights.GetInteger() == 2 ) || ( din->lightImage->isMonochrome && r_useNV20MonoLights.GetInteger() ) ) {
 		// do a two-pass rendering
 		RB_NV20_DI_BumpAndLightPass( din, true );
@@ -669,8 +667,6 @@ void RB_NV20_DrawInteractions( void ) {
 			continue;
 		}
 		backEnd.vLight = vLight;
-		// turn on depthbounds testing for shadows
-		GL_DepthBoundsTest( vLight->scissorRect.zmin, vLight->scissorRect.zmax );
 		// clear the stencil buffer if needed
 		if( vLight->globalShadows || vLight->localShadows ) {
 			backEnd.currentScissor = vLight->scissorRect;
@@ -708,8 +704,6 @@ void RB_NV20_DrawInteractions( void ) {
 		if( r_skipTranslucent.GetBool() ) {
 			continue;
 		}
-		// turn off depthbounds testing for translucent surfaces
-		GL_DepthBoundsTest( 0.0f, 0.0f );
 		glStencilFunc( GL_ALWAYS, 128, 255 );
 		backEnd.depthFunc = GLS_DEPTHFUNC_LESS;
 		RB_NV20_CreateDrawInteractions( vLight->translucentInteractions );

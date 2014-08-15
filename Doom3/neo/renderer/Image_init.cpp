@@ -643,8 +643,8 @@ void R_FogImage( idImage *image ) {
 			if( x == 0 || x == FOG_SIZE - 1 || y == 0 || y == FOG_SIZE - 1 ) {
 				b = 255;		// avoid clamping issues
 			}
-			data[y][x][0] =
-			data[y][x][1] =
+			data[y][x][0] = 255;
+			data[y][x][1] = 255;
 			data[y][x][2] = 255;
 			data[y][x][3] = b;
 		}

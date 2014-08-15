@@ -90,7 +90,7 @@ RB_R200_ARB_DrawInteraction
 static void RB_R200_ARB_DrawInteraction( const drawInteraction_t *din ) {
 	// check for the case we can't handle in a single pass (we could calculate this at shader parse time to optimize)
 	if( din->diffuseImage != globalImages->blackImage && din->specularImage != globalImages->blackImage &&
-			memcmp( din->specularMatrix, din->diffuseMatrix, sizeof( din->diffuseMatrix ) ) ) {
+		memcmp( din->specularMatrix, din->diffuseMatrix, sizeof( din->diffuseMatrix ) ) ) {
 		// common->Printf( "Note: Shader %s drawn as two pass on R200\n", din->surf->shader->getName() );
 		// draw the specular as a separate pass with a black diffuse map
 		drawInteraction_t d;
@@ -152,20 +152,20 @@ static void RB_R200_ARB_DrawInteraction( const drawInteraction_t *din ) {
 	din->bumpImage->Bind();
 	GL_SelectTexture( 3 );
 	din->specularImage->Bind();
-	glTexCoordPointer( 3, GL_FLOAT, sizeof( idDrawVert ), ( void * )&ac->normal );
+	glTexCoordPointer( 3, GL_FLOAT, sizeof( idDrawVert ), reinterpret_cast<const GLvoid *>( &ac->normal ) );
 	GL_SelectTexture( 2 );
 	din->diffuseImage->Bind();
-	glTexCoordPointer( 3, GL_FLOAT, sizeof( idDrawVert ), ( void * )&ac->tangents[1][0] );
+	glTexCoordPointer( 3, GL_FLOAT, sizeof( idDrawVert ), reinterpret_cast<const GLvoid *>( &ac->tangents[1][0] ) );
 	GL_SelectTexture( 1 );
 	din->lightFalloffImage->Bind();
-	glTexCoordPointer( 3, GL_FLOAT, sizeof( idDrawVert ), ( void * )&ac->tangents[0][0] );
+	glTexCoordPointer( 3, GL_FLOAT, sizeof( idDrawVert ), reinterpret_cast<const GLvoid *>( &ac->tangents[0][0] ) );
 	GL_SelectTexture( 0 );
 	din->lightImage->Bind();
-	glTexCoordPointer( 2, GL_FLOAT, sizeof( idDrawVert ), ( void * )&ac->st[0] );
+	glTexCoordPointer( 2, GL_FLOAT, sizeof( idDrawVert ), reinterpret_cast<const GLvoid *>( &ac->st[0] ) );
 	glSetFragmentShaderConstantATI( GL_CON_0_ATI, din->diffuseColor.ToFloatPtr() );
 	glSetFragmentShaderConstantATI( GL_CON_1_ATI, din->specularColor.ToFloatPtr() );
 	if( din->vertexColor != SVC_IGNORE ) {
-		glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ( const GLvoid * )&ac->color );
+		glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), reinterpret_cast<const GLvoid *>( &ac->color ) );
 		glEnableClientState( GL_COLOR_ARRAY );
 		RB_DrawElementsWithCounters( tri );
 		glDisableClientState( GL_COLOR_ARRAY );
@@ -252,8 +252,6 @@ void RB_R200_DrawInteractions( void ) {
 			continue;
 		}
 		backEnd.vLight = vLight;
-		// turn on depthbounds testing for shadows
-		GL_DepthBoundsTest( vLight->scissorRect.zmin, vLight->scissorRect.zmax );
 		// clear the stencil buffer if needed
 		if( vLight->globalShadows || vLight->localShadows ) {
 			backEnd.currentScissor = vLight->scissorRect;
@@ -289,8 +287,6 @@ void RB_R200_DrawInteractions( void ) {
 		if( r_skipTranslucent.GetBool() ) {
 			continue;
 		}
-		// turn off depthbounds testing for translucent surfaces
-		GL_DepthBoundsTest( 0.0f, 0.0f );
 		// disable stencil testing for translucent interactions, because
 		// the shadow isn't calculated at their point, and the shadow
 		// behind them may be depth fighting with a back side, so there

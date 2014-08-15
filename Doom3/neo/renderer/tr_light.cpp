@@ -168,7 +168,7 @@ void R_WobbleskyTexGen( drawSurf_t *surf, const idVec3 &viewOrg ) {
 	axis[2][0] = c;
 	axis[2][1] = s;
 	axis[2][2] = z;
-	axis[1][0] = -sin( a * 2 ) * sin( wobbleDegrees );
+	axis[1][0] = -sin( a * 2.0f ) * sin( wobbleDegrees );
 	axis[1][2] = -s * sin( wobbleDegrees );
 	axis[1][1] = sqrt( 1.0f - ( axis[1][0] * axis[1][0] + axis[1][2] * axis[1][2] ) );
 	// make the second vector exactly perpendicular to the first
@@ -811,16 +811,16 @@ void R_AddLightSurfaces( void ) {
 R_SortViewEntities
 ==================
 */
-viewEntity_t *R_SortViewEntities( viewEntity_t *vEntities ) {
+viewEntity_t* R_SortViewEntities( viewEntity_t* vEntities ) {
 	// We want to avoid having a single AddModel for something complex be
 	// the last thing processed and hurt the parallel occupancy, so
 	// sort dynamic models first, _area models second, then everything else.
 	viewEntity_t	*dynamics = NULL;
 	viewEntity_t	*areas = NULL;
 	viewEntity_t	*others = NULL;
-	for( viewEntity_t *vEntity = vEntities; vEntity != NULL; ) {
-		viewEntity_t *next = vEntity->next;
-		const idRenderModel *model = vEntity->entityDef->parms.hModel;
+	for( viewEntity_t* vEntity = vEntities; vEntity != NULL; ) {
+		viewEntity_t		*next = vEntity->next;
+		const idRenderModel	*model = vEntity->entityDef->parms.hModel;
 		if( model->IsDynamicModel() != DM_STATIC ) {
 			vEntity->next = dynamics;
 			dynamics = vEntity;
@@ -834,15 +834,15 @@ viewEntity_t *R_SortViewEntities( viewEntity_t *vEntities ) {
 		vEntity = next;
 	}
 	// concatenate the lists
-	viewEntity_t *all = others;
-	for( viewEntity_t *vEntity = areas; vEntity != NULL; ) {
-		viewEntity_t *next = vEntity->next;
+	viewEntity_t* all = others;
+	for( viewEntity_t* vEntity = areas; vEntity != NULL; ) {
+		viewEntity_t* next = vEntity->next;
 		vEntity->next = all;
 		all = vEntity;
 		vEntity = next;
 	}
-	for( viewEntity_t *vEntity = dynamics; vEntity != NULL; ) {
-		viewEntity_t *next = vEntity->next;
+	for( viewEntity_t* vEntity = dynamics; vEntity != NULL; ) {
+		viewEntity_t* next = vEntity->next;
 		vEntity->next = all;
 		all = vEntity;
 		vEntity = next;
@@ -873,11 +873,11 @@ bool R_IssueEntityDefCallback( idRenderEntityLocal *def ) {
 	}
 	if( r_checkBounds.GetBool() ) {
 		if(	oldBounds[0][0] > def->referenceBounds[0][0] + CHECK_BOUNDS_EPSILON ||
-				oldBounds[0][1] > def->referenceBounds[0][1] + CHECK_BOUNDS_EPSILON ||
-				oldBounds[0][2] > def->referenceBounds[0][2] + CHECK_BOUNDS_EPSILON ||
-				oldBounds[1][0] < def->referenceBounds[1][0] - CHECK_BOUNDS_EPSILON ||
-				oldBounds[1][1] < def->referenceBounds[1][1] - CHECK_BOUNDS_EPSILON ||
-				oldBounds[1][2] < def->referenceBounds[1][2] - CHECK_BOUNDS_EPSILON ) {
+			oldBounds[0][1] > def->referenceBounds[0][1] + CHECK_BOUNDS_EPSILON ||
+			oldBounds[0][2] > def->referenceBounds[0][2] + CHECK_BOUNDS_EPSILON ||
+			oldBounds[1][0] < def->referenceBounds[1][0] - CHECK_BOUNDS_EPSILON ||
+			oldBounds[1][1] < def->referenceBounds[1][1] - CHECK_BOUNDS_EPSILON ||
+			oldBounds[1][2] < def->referenceBounds[1][2] - CHECK_BOUNDS_EPSILON ) {
 			common->Printf( "entity %i callback extended reference bounds\n", def->index );
 		}
 	}
@@ -929,11 +929,11 @@ idRenderModel *R_EntityDefDynamicModel( idRenderEntityLocal *def ) {
 			if( r_checkBounds.GetBool() ) {
 				idBounds b = def->cachedDynamicModel->Bounds();
 				if(	b[0][0] < def->referenceBounds[0][0] - CHECK_BOUNDS_EPSILON ||
-						b[0][1] < def->referenceBounds[0][1] - CHECK_BOUNDS_EPSILON ||
-						b[0][2] < def->referenceBounds[0][2] - CHECK_BOUNDS_EPSILON ||
-						b[1][0] > def->referenceBounds[1][0] + CHECK_BOUNDS_EPSILON ||
-						b[1][1] > def->referenceBounds[1][1] + CHECK_BOUNDS_EPSILON ||
-						b[1][2] > def->referenceBounds[1][2] + CHECK_BOUNDS_EPSILON ) {
+					b[0][1] < def->referenceBounds[0][1] - CHECK_BOUNDS_EPSILON ||
+					b[0][2] < def->referenceBounds[0][2] - CHECK_BOUNDS_EPSILON ||
+					b[1][0] > def->referenceBounds[1][0] + CHECK_BOUNDS_EPSILON ||
+					b[1][1] > def->referenceBounds[1][1] + CHECK_BOUNDS_EPSILON ||
+					b[1][2] > def->referenceBounds[1][2] + CHECK_BOUNDS_EPSILON ) {
 					common->Printf( "entity %i dynamic model exceeded reference bounds\n", def->index );
 				}
 			}
@@ -1207,11 +1207,11 @@ void R_AddModelSurfaces( void ) {
 	int					nInteractions = 0;
 	int					nCreateInteractions = 0;
 	int					i, j;
-	// sort the view entity models
-	tr.viewDef->viewEntitys = R_SortViewEntities( tr.viewDef->viewEntitys );
 	// clear the ambient surface list
 	tr.viewDef->numDrawSurfs = 0;
 	tr.viewDef->maxDrawSurfs = 0;	// will be set to INITIAL_DRAWSURFS on R_AddDrawSurf
+	// sort the entities (BFG) hopefully this is the right place.
+	tr.viewDef->viewEntitys = R_SortViewEntities( tr.viewDef->viewEntitys );
 	// go through each entity that is either visible to the view, or to
 	// any light that intersects the view (for shadows)
 	for( vEntity = tr.viewDef->viewEntitys; vEntity; vEntity = vEntity->next ) {
@@ -1299,6 +1299,7 @@ void R_AddModelSurfaces( void ) {
 	for( i = 0; i < nInteractions; i++ ) {
 		interactionPhase2[i] = interactions[i]->AddActiveInteraction( true, &shadowScissor[i], &interactionModelPtr[i] );
 	}
+#pragma loop( hint_parallel(8) )
 	for( i = 0; i < nInteractions; i++ ) {
 		if( interactionModelPtr[i] ) {
 			createInteractionId[nCreateInteractions] = i;
@@ -1312,6 +1313,7 @@ void R_AddModelSurfaces( void ) {
 	for( j = 0; j < nCreateInteractions; j++ ) {
 		interactions[createInteractionId[j]]->CreateInteraction( createInteractionModel[j] );
 	}
+#pragma loop( hint_parallel(8) )
 	for( i = 0; i < nInteractions; i++ ) {
 		if( interactionPhase2[i] ) {
 			interactions[i]->AddActiveInteraction( false, &shadowScissor[i], &interactionModelPtr[i] );

@@ -173,9 +173,7 @@ void R_CreateEntityRefs( idRenderEntityLocal *def ) {
 	if( def->referenceBounds.IsCleared() ) {
 		return;
 	}
-	if( r_showUpdates.GetBool() &&
-			( def->referenceBounds[1][0] - def->referenceBounds[0][0] > 1024 ||
-			  def->referenceBounds[1][1] - def->referenceBounds[0][1] > 1024 ) ) {
+	if( r_showUpdates.GetBool() && ( def->referenceBounds[1][0] - def->referenceBounds[0][0] > 1024 || def->referenceBounds[1][1] - def->referenceBounds[0][1] > 1024 ) ) {
 		common->Printf( "big entityRef: %f,%f\n", def->referenceBounds[1][0] - def->referenceBounds[0][0], def->referenceBounds[1][1] - def->referenceBounds[0][1] );
 	}
 	for( i = 0 ; i < 8 ; i++ ) {
@@ -359,11 +357,13 @@ void R_DeriveLightData( idRenderLightLocal *light ) {
 	R_SetLightFrustum( light->lightProject, light->frustum );
 	// rotate the light planes and projections by the axis
 	R_AxisToModelMatrix( light->parms.axis, light->parms.origin, light->modelMatrix );
+#pragma loop( hint_parallel(8) )
 	for( i = 0 ; i < 6 ; i++ ) {
 		idPlane		temp;
 		temp = light->frustum[i];
 		R_LocalPlaneToGlobal( light->modelMatrix, temp, light->frustum[i] );
 	}
+#pragma loop( hint_parallel(8) )
 	for( i = 0 ; i < 4 ; i++ ) {
 		idPlane		temp;
 		temp = light->lightProject[i];
@@ -408,8 +408,7 @@ void R_CreateLightRefs( idRenderLightLocal *light ) {
 	for( i = 0 ; i < tri->numVerts ; i++ ) {
 		points[i] = tri->verts[i].xyz;
 	}
-	if( r_showUpdates.GetBool() && ( tri->bounds[1][0] - tri->bounds[0][0] > 1024 ||
-									 tri->bounds[1][1] - tri->bounds[0][1] > 1024 ) ) {
+	if( r_showUpdates.GetBool() && ( tri->bounds[1][0] - tri->bounds[0][0] > 1024 || tri->bounds[1][1] - tri->bounds[0][1] > 1024 ) ) {
 		common->Printf( "big lightRef: %f,%f\n", tri->bounds[1][0] - tri->bounds[0][0], tri->bounds[1][1] - tri->bounds[0][1] );
 	}
 	// determine the areaNum for the light origin, which may let us

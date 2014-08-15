@@ -922,8 +922,8 @@ void R_MakeShadowFrustums( idRenderLightLocal *light ) {
 		// if the light center of projection is outside the light bounds,
 		// we will need to build the planes a little differently
 		if( fabs( light->parms.lightCenter[0] ) > light->parms.lightRadius[0] ||
-				fabs( light->parms.lightCenter[1] ) > light->parms.lightRadius[1] ||
-				fabs( light->parms.lightCenter[2] ) > light->parms.lightRadius[2] )	{
+			fabs( light->parms.lightCenter[1] ) > light->parms.lightRadius[1] ||
+			fabs( light->parms.lightCenter[2] ) > light->parms.lightRadius[2] )	{
 			centerOutside = true;
 		}
 		// make the corners

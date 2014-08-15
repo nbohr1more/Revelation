@@ -448,8 +448,8 @@ static void R_FlareDeform( drawSurf_t *surf ) {
 		if( newLen > 0 && newLen < len ) {
 			ac[i].xyz = localViewer + dir * newLen;
 		}
-		ac[i].st[0] = 0;
-		ac[i].st[1] = 0.5;
+		ac[i].st[0] = 0.0f;
+		ac[i].st[1] = 0.5f;
 	}
 	static const glIndex_t triIndexes[18 * 3] = {
 		0, 4, 5,  0, 5, 6, 0, 6, 7, 0, 7, 1, 1, 7, 8, 1, 8, 9,
@@ -716,8 +716,8 @@ static void R_EyeballDeform( drawSurf_t *surf ) {
 				newTri->indexes[newTri->numIndexes++] = index;
 				ac[index].xyz = tri->verts[index].xyz;
 				idVec3	local = tri->verts[index].xyz - origin;
-				ac[index].st[0] = 0.5 + local * texVec[0];
-				ac[index].st[1] = 0.5 + local * texVec[1];
+				ac[index].st[0] = 0.5f + local * texVec[0];
+				ac[index].st[1] = 0.5f + local * texVec[1];
 			}
 		}
 	}

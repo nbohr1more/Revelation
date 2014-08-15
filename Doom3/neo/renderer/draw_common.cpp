@@ -288,20 +288,20 @@ static void RB_T_FillDepthBuffer( const drawSurf_t *surf ) {
 	// subviews will just down-modulate the color buffer by overbright
 	if( shader->GetSort() == SS_SUBVIEW ) {
 		GL_State( GLS_SRCBLEND_DST_COLOR | GLS_DSTBLEND_ZERO | GLS_DEPTHFUNC_LESS );
-		color[0] =
-		color[1] =
+		color[0] = ( 1.0f / backEnd.overBright );
+		color[1] = ( 1.0f / backEnd.overBright );
 		color[2] = ( 1.0f / backEnd.overBright );
 		color[3] = 1.0f;
 	} else {
 		// others just draw black
-		color[0] =
-		color[1] =
+		color[0] = 0.0f;
+		color[1] = 0.0f;
 		color[2] = 0.0f;
 		color[3] = 1.0f;
 	}
 	idDrawVert *ac = ( idDrawVert * )vertexCache.Position( tri->ambientCache );
 	glVertexPointer( 3, GL_FLOAT, sizeof( idDrawVert ), ac->xyz.ToFloatPtr() );
-	glTexCoordPointer( 2, GL_FLOAT, sizeof( idDrawVert ), reinterpret_cast<void *>( &ac->st ) );
+	glTexCoordPointer( 2, GL_FLOAT, sizeof( idDrawVert ), reinterpret_cast<const GLvoid *>( &ac->st ) );
 	bool drawSolid = false;
 	if( shader->Coverage() == MC_OPAQUE ) {
 		drawSolid = true;
@@ -382,7 +382,7 @@ static void RB_STD_FillDepthBuffer( drawSurf_t **drawSurfs, int numDrawSurfs ) {
 		globalImages->alphaNotchImage->Bind();
 		glDisableClientState( GL_TEXTURE_COORD_ARRAY );
 		glEnable( GL_TEXTURE_GEN_S );
-		glTexCoord2f( 1, 0.5 );
+		glTexCoord2f( 1.0f, 0.5f );
 	}
 	// the first texture will be used for alpha tested surfaces
 	GL_SelectTexture( 0 );
@@ -700,7 +700,7 @@ static void RB_STD_T_RenderShaderPasses( const drawSurf_t *surf ) {
 	}
 	idDrawVert *ac = ( idDrawVert * )vertexCache.Position( tri->ambientCache );
 	glVertexPointer( 3, GL_FLOAT, sizeof( idDrawVert ), ac->xyz.ToFloatPtr() );
-	glTexCoordPointer( 2, GL_FLOAT, sizeof( idDrawVert ), reinterpret_cast<void *>( &ac->st ) );
+	glTexCoordPointer( 2, GL_FLOAT, sizeof( idDrawVert ), reinterpret_cast<const GLvoid *>( &ac->st ) );
 	for( stage = 0; stage < shader->GetNumStages() ; stage++ ) {
 		pStage = shader->GetStage( stage );
 		// check the enable condition
@@ -851,10 +851,6 @@ static void RB_T_Shadow( const drawSurf_t *surf ) {
 		// must draw everything
 		numIndexes = tri->numIndexes;
 	}
-	// Moved depthbounds test here
-	if( r_useDepthBoundsTest.GetBool() ) {
-		GL_DepthBoundsTest( surf->scissorRect.zmin, surf->scissorRect.zmax );
-	}
 	// debug visualization
 	if( r_showShadows.GetInteger() ) {
 		if( r_showShadows.GetInteger() == 3 ) {
@@ -889,6 +885,10 @@ static void RB_T_Shadow( const drawSurf_t *surf ) {
 		GL_Cull( CT_FRONT_SIDED );
 		glEnable( GL_STENCIL_TEST );
 		return;
+	}
+	// Moved depthbounds test here
+	if( r_useDepthBoundsTest.GetBool() ) {
+		GL_DepthBoundsTest( surf->scissorRect.zmin, surf->scissorRect.zmax );
 	}
 	// patent-free work arounds
 	if( glConfig.gl2TwoSidedStencilAvailable && r_useTwoSidedStencil.GetBool() ) {

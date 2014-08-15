@@ -195,8 +195,7 @@ const char *Sys_NetAdrToString( const netadr_t a ) {
 	if( a.type == NA_LOOPBACK ) {
 		idStr::snPrintf( s, sizeof( s ), "localhost" );
 	} else if( a.type == NA_IP ) {
-		idStr::snPrintf( s, sizeof( s ), "%i.%i.%i.%i:%i",
-						 a.ip[0], a.ip[1], a.ip[2], a.ip[3], BigShort( a.port ) );
+		idStr::snPrintf( s, sizeof( s ), "%i.%i.%i.%i:%i", a.ip[0], a.ip[1], a.ip[2], a.ip[3], BigShort( a.port ) );
 	}
 	return s;
 }

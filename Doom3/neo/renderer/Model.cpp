@@ -179,21 +179,21 @@ AddCubeFace
 */
 static void AddCubeFace( srfTriangles_t *tri, idVec3 v1, idVec3 v2, idVec3 v3, idVec3 v4 ) {
 	tri->verts[tri->numVerts + 0].Clear();
-	tri->verts[tri->numVerts + 0].xyz = v1 * 8;
-	tri->verts[tri->numVerts + 0].st[0] = 0;
-	tri->verts[tri->numVerts + 0].st[1] = 0;
+	tri->verts[tri->numVerts + 0].xyz = v1 * 8.0f;
+	tri->verts[tri->numVerts + 0].st[0] = 0.0f;
+	tri->verts[tri->numVerts + 0].st[1] = 0.0f;
 	tri->verts[tri->numVerts + 1].Clear();
-	tri->verts[tri->numVerts + 1].xyz = v2 * 8;
-	tri->verts[tri->numVerts + 1].st[0] = 1;
-	tri->verts[tri->numVerts + 1].st[1] = 0;
+	tri->verts[tri->numVerts + 1].xyz = v2 * 8.0f;
+	tri->verts[tri->numVerts + 1].st[0] = 1.0f;
+	tri->verts[tri->numVerts + 1].st[1] = 0.0f;
 	tri->verts[tri->numVerts + 2].Clear();
-	tri->verts[tri->numVerts + 2].xyz = v3 * 8;
-	tri->verts[tri->numVerts + 2].st[0] = 1;
-	tri->verts[tri->numVerts + 2].st[1] = 1;
+	tri->verts[tri->numVerts + 2].xyz = v3 * 8.0f;
+	tri->verts[tri->numVerts + 2].st[0] = 1.0f;
+	tri->verts[tri->numVerts + 2].st[1] = 1.0f;
 	tri->verts[tri->numVerts + 3].Clear();
-	tri->verts[tri->numVerts + 3].xyz = v4 * 8;
-	tri->verts[tri->numVerts + 3].st[0] = 0;
-	tri->verts[tri->numVerts + 3].st[1] = 1;
+	tri->verts[tri->numVerts + 3].xyz = v4 * 8.0f;
+	tri->verts[tri->numVerts + 3].st[0] = 0.0f;
+	tri->verts[tri->numVerts + 3].st[1] = 1.0f;
 	tri->indexes[tri->numIndexes + 0] = tri->numVerts + 0;
 	tri->indexes[tri->numIndexes + 1] = tri->numVerts + 1;
 	tri->indexes[tri->numIndexes + 2] = tri->numVerts + 2;
@@ -1745,8 +1745,8 @@ bool idRenderModelStatic::LoadFLT( const char *fileName ) {
 	byte	*image_p = image;
 	for( int i = 0 ; i < len / 4 ; i++ ) {
 		float v = ( data[i] - min ) / ( max - min );
-		image_p[0] =
-		image_p[1] =
+		image_p[0] = v * 255;
+		image_p[1] = v * 255;
 		image_p[2] = v * 255;
 		image_p[3] = 255;
 		image_p += 4;
