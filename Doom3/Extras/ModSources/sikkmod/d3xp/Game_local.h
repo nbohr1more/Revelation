@@ -423,7 +423,7 @@ public:
 	virtual bool			Draw( int clientNum );
 	virtual escReply_t		HandleESC( idUserInterface **gui );
 	virtual idUserInterface	*StartMenu( void );
-	virtual const char 	*HandleGuiCommands( const char *menuCommand );
+	virtual const char 		*HandleGuiCommands( const char *menuCommand );
 	virtual void			HandleMainMenuCommands( const char *menuCommand, idUserInterface *gui );
 	virtual allowReply_t	ServerAllowClient( int numClients, const char *IP, const char *guid, const char *password, char reason[MAX_STRING_CHARS] );
 	virtual void			ServerClientConnect( int clientNum, const char *guid );
@@ -443,7 +443,7 @@ public:
 
 	virtual bool			DownloadRequest( const char *IP, const char *guid, const char *paks, char urls[ MAX_STRING_CHARS ] );
 
-	virtual void				GetMapLoadingGUI( char gui[ MAX_STRING_CHARS ] );
+	virtual void			GetMapLoadingGUI( char gui[ MAX_STRING_CHARS ] );
 
 	// ---------------------- Public idGameLocal Interface -------------------
 
@@ -463,7 +463,7 @@ public:
 	static void				NextMap_f( const idCmdArgs &args );
 
 	idMapFile 				*GetLevelMap( void );
-	const char 			*GetMapName( void ) const;
+	const char 				*GetMapName( void ) const;
 
 	int						NumAAS( void ) const;
 	idAAS 					*GetAAS( int num ) const;
@@ -605,7 +605,7 @@ private:
 
 	entityState_t 			*clientEntityStates[MAX_CLIENTS][MAX_GENTITIES];
 	int						clientPVS[MAX_CLIENTS][ENTITY_PVS_SIZE];
-	snapshot_t 			*clientSnapshots[MAX_CLIENTS];
+	snapshot_t 				*clientSnapshots[MAX_CLIENTS];
 	idBlockAlloc<entityState_t, 256>entityStateAllocator;
 	idBlockAlloc<snapshot_t, 64>snapshotAllocator;
 

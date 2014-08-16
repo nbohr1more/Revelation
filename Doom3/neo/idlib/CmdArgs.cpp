@@ -117,7 +117,7 @@ void idCmdArgs::TokenizeString( const char *text, bool keepAsStrings ) {
 				  | LEXFL_NOSTRINGESCAPECHARS
 				  | LEXFL_ALLOWIPADDRESSES | ( keepAsStrings ? LEXFL_ONLYSTRINGS : 0 ) );
 	totalLen = 0;
-	while( 1 ) {
+	while( true ) {
 		if( argc == MAX_COMMAND_ARGS ) {
 			return;			// this is usually something malicious
 		}

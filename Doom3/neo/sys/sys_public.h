@@ -342,13 +342,15 @@ void			Sys_ShutdownNetworking( void );
 typedef unsigned int ( *xthread_t )( void * );
 
 typedef enum {
+	THREAD_LOWEST,
+	THREAD_BELOW_NORMAL,
 	THREAD_NORMAL,
 	THREAD_ABOVE_NORMAL,
 	THREAD_HIGHEST
 } xthreadPriority;
 
 typedef struct {
-	const char 	*name;
+	const char 		*name;
 	int				threadHandle;
 	unsigned long	threadId;
 } xthreadInfo;

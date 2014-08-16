@@ -992,10 +992,6 @@ extern idCVar r_materialOverride;		// override all materials
 extern idCVar r_debugRenderToTexture;
 extern idCVar r_splitShaders;			// output split shaders from vfp versions
 
-extern idCVar r_smartflt_y;				// resampling control
-extern idCVar r_smartflt_cb;			// resampling control
-extern idCVar r_smartflt_cr;			// resampling control
-
 /*
 ====================================================================
 

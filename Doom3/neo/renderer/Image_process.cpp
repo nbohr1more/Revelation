@@ -225,15 +225,13 @@ Returns a new copy of the texture, quartered in size and filtered.
 The alpha channel is taken to be the minimum of the dots of all surrounding normals.
 ================
 */
-#define MIP_MIN(a,b) (a<b?a:b)
-
 byte *R_MipMapWithAlphaSpecularity( const byte *in, int width, int height ) {
-	int		i, j, c, x, y, sx, sy;
+	int			i, j, c, x, y, sx, sy;
 	const byte	*in_p;
-	byte	*out, *out_p;
-	int		row;
-	int		newWidth, newHeight;
-	float	*fbuf, *fbuf_p;
+	byte		*out, *out_p;
+	int			row;
+	int			newWidth, newHeight;
+	float		*fbuf, *fbuf_p;
 	if( width < 1 || height < 1 || ( width + height == 2 ) ) {
 		common->FatalError( "R_MipMapWithAlphaMin called with size %i,%i", width, height );
 	}
@@ -431,310 +429,93 @@ byte *R_MipMap3D( const byte *in, int width, int height, int depth, bool preserv
 
 /*
 ================
-BorderCheck macro. the pixels that get passed in should be pre-converted
-to the YCbCr colorspace.
+R_ResampleTextureLerpLine
 ================
 */
-#define BorderCheck(pix1, pix2, dY, dCb, dCr) ( (abs(*pix1 - *pix2) > dY) || (abs(*(pix1+1) - *(pix2+1)) > dCb) || (abs(*(pix1+2) - *(pix2+2)) > dCr) )
-
-/*
-================
-LinearScale macro.
-================
-*/
-#define LinearScale(src1, src2, pct) (( src1 * (1 - pct) ) + ( src2 * pct))
-
-/*
-================
-GetOffSet macro.
-================
-*/
-#define GetOffSet(new, start, cur) (new + (cur - ((unsigned char*)start)))
-
-/*
-================
-Clamp macro.
-================
-*/
-#define Clamp(a, b, c) (max(a, min(b, c)))
-
-/*
-================
-RGBAtoTCbCrA - converts a source RGBA pixel into a destination YCbCrA pixel
-================
-*/
-ID_FORCE_INLINE void RGBAtoYCbCrA( unsigned char *dest, unsigned char *src ) {
-	unsigned char s0, s1, s2;
-	s0 = *( src );
-	s1 = *( src + 1 );
-	s2 = *( src + 2 );
-#define MIX(i,n,m0,m1,m2) (*(dest+i) = (unsigned char) (n + (((s0 * m0) + (s1 * m0) + (s2 * m2))/256.0f)))
-	MIX( 0, 16.0f, 65.738f, 129.057f, 25.064f );
-	MIX( 1, 128.0f, -37.945f, -74.494f, 112.439f );
-	MIX( 2, 128.0f, 112.439f, -94.154f, -18.285f );
-#undef MIX
-	*( dest + 3 ) = *( src + 3 );
+static void R_ResampleTextureLerpLine( const byte *in, byte *out, int inwidth, int outwidth ) {
+	int	j, xi, oldx = 0, f, fstep, endx = ( inwidth - 1 ), lerp;
+	fstep = ( inwidth << 16 ) / outwidth;
+	for( j = 0, f = 0 ; j < outwidth ; j++, f += fstep ) {
+		xi = f >> 16;
+		if( xi != oldx ) {
+			in += ( xi - oldx ) * 4;
+			oldx = xi;
+		}
+		if( xi < endx ) {
+			lerp = f & 0xFFFF;
+			*out++ = static_cast<byte>( ( ( ( in[4] - in[0] ) * lerp ) >> 16 ) + in[0] );
+			*out++ = static_cast<byte>( ( ( ( in[5] - in[1] ) * lerp ) >> 16 ) + in[1] );
+			*out++ = static_cast<byte>( ( ( ( in[6] - in[2] ) * lerp ) >> 16 ) + in[2] );
+			*out++ = static_cast<byte>( ( ( ( in[7] - in[3] ) * lerp ) >> 16 ) + in[3] );
+		} else {	// last pixel of the line has no pixel to lerp to
+			*out++ = in[0];
+			*out++ = in[1];
+			*out++ = in[2];
+			*out++ = in[3];
+		}
+	}
 }
 
 /*
 ================
-R_ResampleTexture - resamples the texture given in indata, of the
-dimensions inwidth by inheight to outdata, of the dimensions outwidth by
-outheight, using a method based on the brief description of SmartFlt
-given at http://www.hiend3d.com/smartflt.html
-this could probably do with some optimizations.
+R_ResampleTexture
+
+Lord Havocs Version.
 ================
 */
-void R_ResampleTexture( void *indata, int inwidth, int inheight, void *outdata, int outwidth, int outheight ) {
-	float			xstep = ( static_cast< float >( inwidth ) ) / ( static_cast< float >( outwidth ) );
-	float			ystep = ( static_cast< float >( inheight ) ) / ( static_cast< float >( outheight ) );
-	int				dY = r_smartflt_y.GetInteger();
-	int				dCb = r_smartflt_cb.GetInteger();
-	int				dCr = r_smartflt_cr.GetInteger();
-	int				DestX, DestY;
-	float			SrcX, SrcY;
-	// buffer to stor the YCbCrA version of the input texture.
-	unsigned char	*Ybuffer = static_cast< byte * >( R_StaticAlloc( inwidth * inheight * 4 ) );
-	unsigned char	*id = static_cast< byte * >( indata );
-	unsigned char	*od = static_cast< byte * >( outdata );
-	unsigned char	*idrowstart = id;
-	// convert the input texture to YCbCr into a temp buffer, for border detections.
-	for( DestX = 0, idrowstart = Ybuffer; DestX < ( inwidth * inheight ); DestX++, idrowstart += 4, id += 4 ) {
-		RGBAtoYCbCrA( idrowstart, id );
-	}
-	for( DestY = 0, SrcY = 0; DestY < outheight; DestY++, SrcY += ystep ) {
-		// four "work" pointers to make code a little nicer.
-		unsigned char	*w0, *w1, *w2, *w3;
-		// right == clockwise, left == counter-clockwise
-		unsigned char	*nearest, *left, *right, *opposite;
-		float			pctnear, pctleft, pctright, pctopp;
-		float			w0pct, w1pct, w2pct, w3pct;
-		float			x, y, tmpx, tmpy;
-		char			edges[6];
-		// clamp SrcY to cover for possible float error
-		// to make sure the edges fall into the special cases
-		if( SrcY > ( inheight - 1.01f ) ) {
-			SrcY = ( inheight - 1.01f );
-		}
-		// go to the start of the next row. "od" should be pointing at the right place already.
-		idrowstart = ( static_cast< byte * >( indata ) ) + ( static_cast< int >( SrcY ) ) * inwidth * 4;
-		for( DestX = 0, SrcX = 0; DestX < outwidth; DestX++, od += 4, SrcX += xstep ) {
-			// clamp SrcY to cover for possible float error
-			// to make sure that the edges fall into the special cases
-			if( SrcX > ( inwidth - 1.01f ) ) {
-				SrcX = inwidth - 1.01f;
-			}
-			id = idrowstart + ( static_cast< int >( SrcX ) ) * 4;
-			x = ( static_cast< int >( SrcX ) );
-			y = ( static_cast< int >( SrcY ) );
-			// if we happen to be directly on a source row
-			if( SrcY == y )	{
-				// and also directly on a source column
-				if( SrcX == x )	{
-					// then we are directly on a source pixel
-					// just copy it and move on.
-					memcpy( od, id, 4 );
-					continue;
-				}
-				// if there is a border between the two surrounding source pixels
-				if( BorderCheck( GetOffSet( Ybuffer, indata, id ), GetOffSet( Ybuffer, indata, ( id + 4 ) ), dY, dCb, dCr ) ) {
-					// if we are closer to the left
-					if( x == ( static_cast< int >( SrcX + 0.5f ) ) ) {
-						// copy the left pixel
-						memcpy( od, id, 4 );
-						continue;
-					} else {
-						// otherwise copy the right pixel
-						memcpy( od, id + 4, 4 );
-						continue;
-					}
+void R_ResampleTexture( const byte *indata, int inwidth, int inheight, byte *outdata, int outwidth, int outheight ) {
+	int			i, j, yi, oldy, f, fstep, endy = ( inheight - 1 ), lerp;
+	int			inwidth4 = inwidth * 4, outwidth4 = outwidth * 4;
+	byte		*outrow, *row1, *row2, *memalloc;
+	const byte	*inrow;
+	outrow = outdata;
+	fstep = ( inheight << 16 ) / outheight;
+	memalloc = ( byte * )R_StaticAlloc( 2 * outwidth4 );
+	row1 = memalloc;
+	row2 = memalloc + outwidth4;
+	inrow = indata;
+	oldy = 0;
+	R_ResampleTextureLerpLine( inrow, row1, inwidth, outwidth );
+	R_ResampleTextureLerpLine( inrow + inwidth4, row2, inwidth, outwidth );
+	for( i = 0, f = 0 ; i < outheight ; i++, f += fstep ) {
+		yi = f >> 16;
+		if( yi < endy ) {
+			lerp = f & 0xFFFF;
+			if( yi != oldy ) {
+				inrow = indata + inwidth4 * yi;
+				if( yi == oldy + 1 ) {
+					memcpy( row1, row2, outwidth4 );
 				} else {
-					// these two bordering pixels are part of the same region.
-					// blend them using a weighted average
-					x = SrcX - x;
-					w0 = id;
-					w1 = id + 4;
-					*od = static_cast< unsigned char >( LinearScale( *w0, *w1, x ) );
-					*( od + 1 ) = static_cast< unsigned char >( LinearScale( *( w0 + 1 ), *( w1 + 1 ), x ) );
-					*( od + 2 ) = static_cast< unsigned char >( LinearScale( *( w0 + 2 ), *( w1 + 2 ), x ) );
-					*( od + 3 ) = static_cast< unsigned char >( LinearScale( *( w0 + 3 ), *( w1 + 3 ), x ) );
-					continue;
+					R_ResampleTextureLerpLine( inrow, row1, inwidth, outwidth );
 				}
+				R_ResampleTextureLerpLine( inrow + inwidth4, row2, inwidth, outwidth );
+				oldy = yi;
 			}
-			// if we aren't direcly on a source row, but we are on a source column
-			if( SrcX == x ) {
-				// if there is a border between this source pixel and the one on
-				// the next row
-				if( BorderCheck( GetOffSet( Ybuffer, indata, id ), GetOffSet( Ybuffer, indata, ( id + inwidth * 4 ) ), dY, dCb, dCr ) )	{
-					// if we are closer to the top
-					if( y == ( static_cast< int >( SrcY + 0.5f ) ) ) {
-						// copy the top
-						memcpy( od, id, 4 );
-						continue;
-					} else {
-						// copy the bottom
-						memcpy( od, ( id + inwidth * 4 ), 4 );
-						continue;
-					}
-				} else {
-					// the two pixels are part of the same region, blend them
-					// together with a weighted average
-					y = SrcY - y;
-					w0 = id;
-					w1 = id + ( inwidth * 4 );
-					*od = static_cast< unsigned char >( LinearScale( *w0, *w1, y ) );
-					*( od + 1 ) = static_cast< unsigned char >( LinearScale( *( w0 + 1 ), *( w1 + 1 ), y ) );
-					*( od + 2 ) = static_cast< unsigned char >( LinearScale( *( w0 + 2 ), *( w1 + 2 ), y ) );
-					*( od + 3 ) = static_cast< unsigned char >( LinearScale( *( w0 + 3 ), *( w1 + 3 ), y ) );
-					continue;
-				}
+			for( j = outwidth ; j ; j-- ) {
+				outrow[0] = static_cast<byte>( ( ( ( row2[0] - row1[0] ) * lerp ) >> 16 ) + row1[0] );
+				outrow[1] = static_cast<byte>( ( ( ( row2[1] - row1[1] ) * lerp ) >> 16 ) + row1[1] );
+				outrow[2] = static_cast<byte>( ( ( ( row2[2] - row1[2] ) * lerp ) >> 16 ) + row1[2] );
+				outrow[3] = static_cast<byte>( ( ( ( row2[3] - row1[3] ) * lerp ) >> 16 ) + row1[3] );
+				outrow += 4;
+				row1 += 4;
+				row2 += 4;
 			}
-			// now for the non-simple case: somewhere between four pixels.
-			// w0 is top-left, w1 is top-right, w2 is bottom-left, and w3 is bottom-right
-			w0 = id;
-			w1 = id + 4;
-			w2 = id + ( inwidth * 4 );
-			w3 = w2 + 4;
-			x = SrcX - x;
-			y = SrcY - y;
-			w0pct = 1.0f - sqrtf( x * x + y * y );
-			w1pct = 1.0f - sqrtf( ( 1 - x ) * ( 1 - x ) + y * y );
-			w2pct = 1.0f - sqrtf( x * x + ( 1 - y ) * ( 1 - y ) );
-			w3pct = 1.0f - sqrtf( ( 1 - x ) * ( 1 - x ) + ( 1 - y ) * ( 1 - y ) );
-			// set up our symbolic identification.
-			// "nearest" is the pixel whose quadrant we are in.
-			// "left" is counter-clockwise from "nearest"
-			// "right" is clockwise from "nearest"
-			// "opposite" is, well, opposite.
-			if( x < 0.5f ) {
-				tmpx = x;
-				if( y < 0.5f ) {
-					nearest = w0;
-					left = w2;
-					right = w1;
-					opposite = w3;
-					pctnear = w0pct;
-					pctleft = w2pct;
-					pctright = w1pct;
-					pctopp = w3pct;
-					tmpy = y;
+			row1 -= outwidth4;
+			row2 -= outwidth4;
+		} else {
+			if( yi != oldy ) {
+				inrow = indata + inwidth4 * yi;
+				if( yi == oldy + 1 ) {
+					memcpy( row1, row2, outwidth4 );
 				} else {
-					nearest = w2;
-					left = w3;
-					right = w0;
-					opposite = w1;
-					pctnear = w2pct;
-					pctleft = w3pct;
-					pctright = w0pct;
-					pctopp = w1pct;
-					tmpy = 1.0f - y;
+					R_ResampleTextureLerpLine( inrow, row1, inwidth, outwidth );
 				}
-			} else {
-				tmpx = 1.0f - x;
-				if( y < 0.5f ) {
-					nearest = w1;
-					left = w0;
-					right = w3;
-					opposite = w2;
-					pctnear = w1pct;
-					pctleft = w0pct;
-					pctright = w3pct;
-					pctopp = w2pct;
-					tmpy = y;
-				} else {
-					nearest = w3;
-					left = w1;
-					right = w2;
-					opposite = w0;
-					pctnear = w3pct;
-					pctleft = w1pct;
-					pctright = w2pct;
-					pctopp = w0pct;
-					tmpy = 1.0f - y;
-				}
+				oldy = yi;
 			}
-			x = tmpx;
-			y = tmpy;
-			w0 = GetOffSet( Ybuffer, indata, nearest );
-			w1 = GetOffSet( Ybuffer, indata, right );
-			w2 = GetOffSet( Ybuffer, indata, left );
-			w3 = GetOffSet( Ybuffer, indata, opposite );
-			edges[0] = BorderCheck( w0, w2, dY, dCb, dCr );
-			edges[1] = BorderCheck( w0, w1, dY, dCb, dCr );
-			edges[2] = BorderCheck( w0, w3, dY, dCb, dCr );
-			edges[3] = BorderCheck( w3, w2, dY, dCb, dCr );
-			edges[4] = BorderCheck( w3, w1, dY, dCb, dCr );
-			edges[5] = BorderCheck( w2, w1, dY, dCb, dCr );
-#undef GetOffSet
-			// do the edge detections.
-			if( edges[0] && edges[1] && edges[2] && !edges[5] )	{
-				// borders all around, and no border between the left and right.
-				// if there is no border between the opposite side and only one
-				// of the two other corners, or if we are closer to the corner
-				if( ( edges[3] && !edges[4] ) || ( !edges[3] && edges[4] ) || ( x + y < 0.5f ) ) {
-					// closer to to the corner.
-					memcpy( od, nearest, 4 );
-				} else {
-					// closer to the center. (note, there is a diagonal line between the nearest pixel
-					// and the center of the four.)
-					// exclude the "nearest" pixel
-					// pctnear = 0.0f;
-					// if there is a border around the opposite corner,
-					// exclude it from the current pixel.
-					if( edges[3] && edges[4] ) {
-						// pctopp = 0.0f;
-						*od = static_cast< unsigned char >( Clamp( 0, ( ( ( *left * pctleft ) + ( *right * pctright ) ) / ( pctleft + pctright ) ), 255 ) );
-						*( od + 1 ) = static_cast< unsigned char >( Clamp( 0, ( ( ( *( left + 1 ) * pctleft ) + ( *( right + 1 ) * pctright ) ) / ( pctleft + pctright ) ), 255 ) );
-						*( od + 2 ) = static_cast< unsigned char >( Clamp( 0, ( ( ( *( left + 2 ) * pctleft ) + ( *( right + 2 ) * pctright ) ) / ( pctleft + pctright ) ), 255 ) );
-						*( od + 3 ) = static_cast< unsigned char >( Clamp( 0, ( ( ( *( left + 3 ) * pctleft ) + ( *( right + 3 ) * pctright ) ) / ( pctleft + pctright ) ), 255 ) );
-					} else {
-						*od = static_cast< unsigned char >( Clamp( 0, ( ( ( *left * pctleft ) + ( *right * pctright ) + ( *opposite * pctopp ) ) / ( pctleft + pctright + pctopp ) ), 255 ) );
-						*( od + 1 ) = static_cast< unsigned char >( Clamp( 0, ( ( ( *( left + 1 ) * pctleft ) + ( *( right + 1 ) * pctright ) + ( *( opposite + 1 ) * pctopp ) ) / ( pctleft + pctright + pctopp ) ), 255 ) );
-						*( od + 2 ) = static_cast< unsigned char >( Clamp( 0, ( ( ( *( left + 2 ) * pctleft ) + ( *( right + 2 ) * pctright ) + ( *( opposite + 2 ) * pctopp ) ) / ( pctleft + pctright + pctopp ) ), 255 ) );
-						*( od + 3 ) = static_cast< unsigned char >( Clamp( 0, ( ( ( *( left + 3 ) * pctleft ) + ( *( right + 3 ) * pctright ) + ( *( opposite + 3 ) * pctopp ) ) / ( pctleft + pctright + pctopp ) ), 255 ) );
-					}
-				}
-			} else if( edges[0] && edges[1] && edges[2] ) {
-				memcpy( od, nearest, 4 );
-			} else {
-				float num[4], denom = pctnear;
-				num[0] = ( *nearest * pctnear );
-				num[1] = ( *( nearest + 1 ) * pctnear );
-				num[2] = ( *( nearest + 2 ) * pctnear );
-				num[3] = ( *( nearest + 3 ) * pctnear );
-				if( !edges[0] )	{
-					num[0] += *left * pctleft;
-					num[1] += *( left + 1 ) * pctleft;
-					num[2] += *( left + 2 ) * pctleft;
-					num[3] += *( left + 3 ) * pctleft;
-					denom += pctleft;
-				}
-				if( edges[1] ) {
-					num[0] += *right * pctright;
-					num[1] += *( right + 1 ) * pctright;
-					num[2] += *( right + 2 ) * pctright;
-					num[3] += *( right + 3 ) * pctright;
-					denom += pctright;
-				}
-				if( edges[2] ) {
-					num[0] += *opposite * pctopp;
-					num[1] += *( opposite + 1 ) * pctopp;
-					num[2] += *( opposite + 2 ) * pctopp;
-					num[3] += *( opposite + 3 ) * pctopp;
-					denom += pctopp;
-				}
-				// blend the source pixels together to get the output pixel.
-				// if a source pixel doesn't affect the output, it's percent should be set to 0 in the edge check
-				// code above. if only one pixel affects the output, its percentage should be set to 1 and all
-				// the others set to 0. (yeah, it is ugly, but I don't see a need to optimize this code (yet)
-				*od = static_cast< unsigned char >( Clamp( 0, num[0] / denom, 255 ) );
-				*( od + 1 ) = static_cast< unsigned char >( Clamp( 0, num[1] / denom, 255 ) );
-				*( od + 2 ) = static_cast< unsigned char >( Clamp( 0, num[2] / denom, 255 ) );
-				*( od + 3 ) = static_cast< unsigned char >( Clamp( 0, num[3] / denom, 255 ) );
-			}
+			memcpy( outrow, row1, outwidth4 );
 		}
 	}
-	R_StaticFree( Ybuffer );
+	R_StaticFree( memalloc );
 }
 
 /*

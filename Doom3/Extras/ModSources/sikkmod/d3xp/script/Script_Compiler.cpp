@@ -352,7 +352,6 @@ idCompiler::Divide
 ID_FORCE_INLINE float idCompiler::Divide( float numerator, float denominator ) {
 	if( denominator == 0 ) {
 		Error( "Divide by zero" );
-		return 0;
 	}
 	return numerator / denominator;
 }

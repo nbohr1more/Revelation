@@ -300,7 +300,7 @@ idMapBrush *idMapBrush::Parse( idLexer &src, const idVec3 &origin, bool newForma
 				sides.DeleteContents( true );
 				return NULL;
 			}
-		} while( 1 );
+		} while( true );
 		src.UnreadToken( &token );
 		side = new idMapBrushSide();
 		sides.Append( side );

@@ -7908,37 +7908,37 @@ bool idPlayer::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
 	int powerup;
 	bool start;
 	switch( event ) {
-	case EVENT_EXIT_TELEPORTER:
-		Event_ExitTeleporter();
-		return true;
-	case EVENT_ABORT_TELEPORTER:
-		SetPrivateCameraView( NULL );
-		return true;
-	case EVENT_POWERUP: {
-		powerup = msg.ReadShort();
-		start = msg.ReadBits( 1 ) != 0;
-		if( start ) {
-			GivePowerUp( powerup, 0 );
-		} else {
-			ClearPowerup( powerup );
-		}
-		return true;
-	}
-	case EVENT_SPECTATE: {
-		bool spectate = ( msg.ReadBits( 1 ) != 0 );
-		Spectate( spectate );
-		return true;
-	}
-	case EVENT_ADD_DAMAGE_EFFECT: {
-		if( spectating ) {
-			// if we're spectating, ignore
-			// happens if the event and the spectate change are written on the server during the same frame (fraglimit)
+		case EVENT_EXIT_TELEPORTER:
+			Event_ExitTeleporter();
+			return true;
+		case EVENT_ABORT_TELEPORTER:
+			SetPrivateCameraView( NULL );
+			return true;
+		case EVENT_POWERUP: {
+			powerup = msg.ReadShort();
+			start = msg.ReadBits( 1 ) != 0;
+			if( start ) {
+				GivePowerUp( powerup, 0 );
+			} else {
+				ClearPowerup( powerup );
+			}
 			return true;
 		}
-	}
-	default: {
-		break;
-	}
+		case EVENT_SPECTATE: {
+			bool spectate = ( msg.ReadBits( 1 ) != 0 );
+			Spectate( spectate );
+			return true;
+		}
+		case EVENT_ADD_DAMAGE_EFFECT: {
+			if( spectating ) {
+				// if we're spectating, ignore
+				// happens if the event and the spectate change are written on the server during the same frame (fraglimit)
+				return true;
+			}
+		}
+		default: {
+			break;
+		}
 	}
 	return idActor::ClientReceiveEvent( event, time, msg );
 }

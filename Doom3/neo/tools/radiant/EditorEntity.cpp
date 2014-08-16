@@ -746,7 +746,7 @@ entity_t *Entity_Parse( bool onlypairs, brush_t *pList ) {
 		} else {
 			ParseEpair( &ent->epairs );
 		}
-	} while( 1 );
+	} while( true );
 	if( onlypairs ) {
 		return ent;
 	}

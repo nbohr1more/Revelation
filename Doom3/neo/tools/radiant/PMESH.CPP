@@ -287,7 +287,7 @@ void Patch_Weld( patchMesh_t *p, patchMesh_t *p2 ) {
 	if( p->width == p2->width ) {
 		int	row		= 0;
 		int	row2	= 0;
-		while( 1 ) {
+		while( true ) {
 			bool	match	= true;
 			// need to see if any of the corners match then run down or up based
 			// on the match edges
@@ -339,7 +339,7 @@ void Patch_Weld( patchMesh_t *p, patchMesh_t *p2 ) {
 	if( p->width == p2->height ) {
 		int	row		= 0;
 		int	col2	= 0;
-		while( 1 ) {
+		while( true ) {
 			bool	match	= true;
 			int		col1	= 0;
 			int		adj1	= 1;
@@ -389,7 +389,7 @@ void Patch_Weld( patchMesh_t *p, patchMesh_t *p2 ) {
 	if( p->height == p2->width ) {
 		int	col		= 0;
 		int	row2	= 0;
-		while( 1 ) {
+		while( true ) {
 			bool	match	= true;
 			int		row1	= 0;
 			int		adj1	= 1;
@@ -439,7 +439,7 @@ void Patch_Weld( patchMesh_t *p, patchMesh_t *p2 ) {
 	if( p->height == p2->height ) {
 		int	col		= 0;
 		int	col2	= 0;
-		while( 1 ) {
+		while( true ) {
 			bool	match	= true;
 			int		row1	= 0;
 			int		adj1	= 1;

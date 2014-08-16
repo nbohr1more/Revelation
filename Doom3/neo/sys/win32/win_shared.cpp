@@ -656,9 +656,8 @@ Sys_GetCallStack
 ==================
 */
 void Sys_GetCallStack( address_t *callStack, const int callStackSize ) {
-#if 1 //def _DEBUG
-	int i;
-	long m_ebp;
+	int		i;
+	long	m_ebp;
 	__asm {
 		mov eax, ebp
 		mov m_ebp, eax
@@ -674,9 +673,6 @@ void Sys_GetCallStack( address_t *callStack, const int callStackSize ) {
 		}
 		m_ebp = *( ( long * )m_ebp );
 	}
-#else
-	int i = 0;
-#endif
 	while( i < callStackSize ) {
 		callStack[i++] = 0;
 	}

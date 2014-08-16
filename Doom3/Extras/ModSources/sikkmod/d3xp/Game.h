@@ -136,7 +136,7 @@ public:
 
 	// When the game is running it's own UI fullscreen, GUI commands are passed through here
 	// return NULL once the fullscreen UI mode should stop, or "main" to go to main menu
-	virtual const char 		*HandleGuiCommands( const char *menuCommand ) = 0;
+	virtual const char 			*HandleGuiCommands( const char *menuCommand ) = 0;
 
 	// main menu commands not caught in the engine are passed here
 	virtual void				HandleMainMenuCommands( const char *menuCommand, idUserInterface *gui ) = 0;
@@ -206,7 +206,7 @@ extern idGame 					*game;
 */
 
 typedef struct {
-	idSoundEmitter 			*referenceSound;	// this is the interface to the sound system, created
+	idSoundEmitter 				*referenceSound;	// this is the interface to the sound system, created
 	// with idSoundWorld::AllocSoundEmitter() when needed
 	idVec3						origin;
 	int							listenerId;		// SSF_PRIVATE_SOUND only plays if == listenerId from PlaceListener
@@ -246,7 +246,7 @@ public:
 	virtual idRenderModel 		*ANIM_GetModelFromName( const char *modelName );
 	virtual const idMD5Anim 	*ANIM_GetAnimFromEntityDef( const char *classname, const char *animname );
 	virtual int					ANIM_GetNumAnimsFromEntityDef( const idDict *args );
-	virtual const char 		*ANIM_GetAnimNameFromEntityDef( const idDict *args, int animNum );
+	virtual const char 			*ANIM_GetAnimNameFromEntityDef( const idDict *args, int animNum );
 	virtual const idMD5Anim 	*ANIM_GetAnim( const char *fileName );
 	virtual int					ANIM_GetLength( const idMD5Anim *anim );
 	virtual int					ANIM_GetNumFrames( const idMD5Anim *anim );
@@ -272,7 +272,7 @@ public:
 	virtual const idDict 		*FindEntityDefDict( const char *name, bool makeDefault = true ) const;
 	virtual void				SpawnEntityDef( const idDict &args, idEntity **ent );
 	virtual idEntity 			*FindEntity( const char *name ) const;
-	virtual const char 		*GetUniqueEntityName( const char *classname ) const;
+	virtual const char 			*GetUniqueEntityName( const char *classname ) const;
 
 	// Entity methods.
 	virtual void				EntityGetOrigin( idEntity *ent, idVec3 &org ) const;
@@ -331,10 +331,10 @@ typedef struct {
 	idCVarSystem 				*cvarSystem;				// console variable system
 	idFileSystem 				*fileSystem;				// file system
 	idNetworkSystem 			*networkSystem;			// network system
-	idRenderSystem 			*renderSystem;			// render system
+	idRenderSystem 				*renderSystem;			// render system
 	idSoundSystem 				*soundSystem;			// sound system
 	idRenderModelManager 		*renderModelManager;		// render model manager
-	idUserInterfaceManager 	*uiManager;				// user interface manager
+	idUserInterfaceManager 		*uiManager;				// user interface manager
 	idDeclManager 				*declManager;			// declaration manager
 	idAASFileManager 			*AASFileManager;			// AAS file manager
 	idCollisionModelManager 	*collisionModelManager;	// collision model manager
@@ -344,8 +344,8 @@ typedef struct {
 typedef struct {
 
 	int							version;				// API version
-	idGame 					*game;					// interface to run the game
-	idGameEdit 				*gameEdit;				// interface for in-game editing
+	idGame 						*game;					// interface to run the game
+	idGameEdit 					*gameEdit;				// interface for in-game editing
 
 } gameExport_t;
 

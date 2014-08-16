@@ -768,7 +768,7 @@ void CSyntaxRichEditCtrl::UpdateVisibleRange( void ) {
 	range->get_End( &visRange.cpMax );
 	range->get_Font( &font );
 	range->SetRange( visRange.cpMin, visRange.cpMin );
-	while( 1 ) {
+	while( true ) {
 		range->get_Start( &visRange.cpMin );
 		if( visRange.cpMin >= visRange.cpMax ) {
 			break;

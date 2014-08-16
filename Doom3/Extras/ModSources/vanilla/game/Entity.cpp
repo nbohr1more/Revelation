@@ -2157,8 +2157,7 @@ void idEntity::InitDefaultPhysics( const idVec3 &origin, const idMat3 &axis ) {
 			idVec3 size;
 			idBounds bounds;
 			bool setClipModel = false;
-			if( spawnArgs.GetVector( "mins", NULL, bounds[0] ) &&
-					spawnArgs.GetVector( "maxs", NULL, bounds[1] ) ) {
+			if( spawnArgs.GetVector( "mins", NULL, bounds[0] ) && spawnArgs.GetVector( "maxs", NULL, bounds[1] ) ) {
 				setClipModel = true;
 				if( bounds[0][0] > bounds[1][0] || bounds[0][1] > bounds[1][1] || bounds[0][2] > bounds[1][2] ) {
 					gameLocal.Error( "Invalid bounds '%s'-'%s' on entity '%s'", bounds[0].ToString(), bounds[1].ToString(), name.c_str() );

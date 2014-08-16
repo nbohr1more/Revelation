@@ -477,7 +477,7 @@ byte *R_MipMap( const byte *in, int width, int height, bool preserveBorder );
 byte *R_MipMap3D( const byte *in, int width, int height, int depth, bool preserveBorder );
 
 // these operate in-place on the provided pixels
-void R_ResampleTexture( void *indata, int inwidth, int inheight, void *outdata, int outwidth, int outheight );
+void R_ResampleTexture( const byte *indata, int inwidth, int inheight, byte *outdata, int outwidth, int outheight );
 void R_SetBorderTexels( byte *inBase, int width, int height, const byte border[4] );
 void R_SetBorderTexels3D( byte *inBase, int width, int height, int depth, const byte border[4] );
 void R_BlendOverTexture( byte *data, int pixelCount, const byte blend[4] );

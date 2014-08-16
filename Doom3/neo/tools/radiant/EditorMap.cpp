@@ -1029,7 +1029,7 @@ void Map_ImportBuffer( char *buf, bool renameEntities ) {
 			}
 		}
 		idDict RemappedNames;	// since I can't use "map <string, string>"... sigh. So much for STL...
-		while( 1 ) {
+		while( true ) {
 			//
 			// use the selected brushes list as it's handy ent = Entity_Parse (false,
 			// &selected_brushes);

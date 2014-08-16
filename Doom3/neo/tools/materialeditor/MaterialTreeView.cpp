@@ -927,7 +927,7 @@ void MaterialTreeView::OnAddMaterial() {
 	HTREEITEM parent = NULL;
 	if( itemType != TYPE_FILE ) {
 		parent = tree.GetParentItem( item );
-		while( 1 ) {
+		while( true ) {
 			if( tree.GetItemData( parent ) == TYPE_FILE ) {
 				break;
 			}
@@ -956,7 +956,7 @@ void MaterialTreeView::OnAddMaterial() {
 	}
 	idStr name;
 	int num = 1;
-	while( 1 ) {
+	while( true ) {
 		if( materialFolder.Length() > 0 ) {
 			name = va( "%s/newmaterial%d", materialFolder.c_str(), num );
 		} else {
@@ -984,7 +984,7 @@ void MaterialTreeView::OnAddFolder() {
 	//Pick a unique material name
 	idStr newFolder;
 	int num = 1;
-	while( 1 ) {
+	while( true ) {
 		newFolder = va( "newfolder%d", num );
 		if( tree.ItemHasChildren( item ) ) {
 			HTREEITEM hChildItem = tree.GetChildItem( item );

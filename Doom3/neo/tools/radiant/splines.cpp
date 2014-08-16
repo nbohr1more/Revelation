@@ -650,7 +650,7 @@ void idSplineList::parse( idParser *src ) {
 	idToken token;
 	idStr key;
 	src->ExpectTokenString( "{" );
-	while( 1 ) {
+	while( true ) {
 		if( !src->ExpectAnyToken( &token ) ) {
 			break;
 		}
@@ -1185,7 +1185,7 @@ void idCameraDef::parse( idParser *src ) {
 	idToken token;
 	src->ReadToken( &token );
 	src->ExpectTokenString( "{" );
-	while( 1 ) {
+	while( true ) {
 		src->ExpectAnyToken( &token );
 		if( token == "}" ) {
 			break;
@@ -1367,7 +1367,7 @@ void idCameraEvent::parse( idParser *src ) {
 	idToken token;
 	idStr key;
 	src->ExpectTokenString( "{" );
-	while( 1 ) {
+	while( true ) {
 		if( !src->ExpectAnyToken( &token ) ) {
 			break;
 		}
@@ -1626,7 +1626,7 @@ idInterpolatedPosition::parse
 void idInterpolatedPosition::parse( idParser *src ) {
 	idToken token;
 	src->ExpectTokenString( "{" );
-	while( 1 ) {
+	while( true ) {
 		if( !src->ExpectAnyToken( &token ) ) {
 			break;
 		}
@@ -1705,7 +1705,7 @@ idCameraFOV::parse
 void idCameraFOV::parse( idParser *src ) {
 	idToken token;
 	src->ExpectTokenString( "{" );
-	while( 1 ) {
+	while( true ) {
 		if( !src->ExpectAnyToken( &token ) ) {
 			break;
 		}
@@ -1757,7 +1757,7 @@ idFixedPosition::parse
 void idFixedPosition::parse( idParser *src ) {
 	idToken token;
 	src->ExpectTokenString( "{" );
-	while( 1 ) {
+	while( true ) {
 		if( !src->ExpectAnyToken( &token ) ) {
 			break;
 		}
@@ -1813,7 +1813,7 @@ idSplinePosition::parse
 void idSplinePosition::parse( idParser *src ) {
 	idToken token;
 	src->ExpectTokenString( "{" );
-	while( 1 ) {
+	while( true ) {
 		if( !src->ExpectAnyToken( &token ) ) {
 			break;
 		}

@@ -94,19 +94,19 @@ idPlayerStart::ClientReceiveEvent
 bool idPlayerStart::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
 	int entityNumber;
 	switch( event ) {
-	case EVENT_TELEPORTPLAYER: {
-		entityNumber = msg.ReadBits( GENTITYNUM_BITS );
-		idPlayer *player = static_cast<idPlayer *>( gameLocal.entities[entityNumber] );
-		if( player != NULL && player->IsType( idPlayer::Type ) ) {
-			Event_TeleportPlayer( player );
+		case EVENT_TELEPORTPLAYER: {
+			entityNumber = msg.ReadBits( GENTITYNUM_BITS );
+			idPlayer *player = static_cast<idPlayer *>( gameLocal.entities[entityNumber] );
+			if( player != NULL && player->IsType( idPlayer::Type ) ) {
+				Event_TeleportPlayer( player );
+			}
+			return true;
 		}
-		return true;
+		default: {
+			break; 
+		}
 	}
-	default: {
-		return idEntity::ClientReceiveEvent( event, time, msg );
-	}
-	}
-	return false;
+	return idEntity::ClientReceiveEvent( event, time, msg );
 }
 
 /*

@@ -3342,7 +3342,7 @@ void idAI::SetEnemyPosition( void ) {
 	idActor		*enemyEnt = enemy.GetEntity();
 	int			enemyAreaNum;
 	int			areaNum;
-	int			lastVisibleReachableEnemyAreaNum;
+	int			lastVisibleReachableEnemyAreaNum = 0;	// sikk - warning C4701: potentially uninitialized local variable used
 	aasPath_t	path;
 	idVec3		pos;
 	bool		onGround;

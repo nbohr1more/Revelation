@@ -202,7 +202,7 @@ void DialogEntityDefEditor::PopulateLists( const char *declText, const int textL
 	src.LoadMemory( declText, textLength, decl->GetFileName(), firstLine );
 	src.SetFlags( DECL_LEXER_FLAGS );
 	src.SkipUntilString( "{" );
-	while( 1 ) {
+	while( true ) {
 		if( !src.ReadToken( &token ) ) {
 			break;
 		}

@@ -4360,34 +4360,34 @@ bool idEntity::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
 	const idSoundShader	*shader;
 	s_channelType		channel;
 	switch( event ) {
-	case EVENT_STARTSOUNDSHADER: {
-		// the sound stuff would early out
-		assert( gameLocal.isNewFrame );
-		if( time < gameLocal.realClientTime - 1000 ) {
-			// too old, skip it ( reliable messages don't need to be parsed in full )
-			common->DPrintf( "ent 0x%x: start sound shader too old (%d ms)\n", entityNumber, gameLocal.realClientTime - time );
+		case EVENT_STARTSOUNDSHADER: {
+			// the sound stuff would early out
+			assert( gameLocal.isNewFrame );
+			if( time < gameLocal.realClientTime - 1000 ) {
+				// too old, skip it ( reliable messages don't need to be parsed in full )
+				common->DPrintf( "ent 0x%x: start sound shader too old (%d ms)\n", entityNumber, gameLocal.realClientTime - time );
+				return true;
+			}
+			index = gameLocal.ClientRemapDecl( DECL_SOUND, msg.ReadLong() );
+			if( index >= 0 && index < declManager->GetNumDecls( DECL_SOUND ) ) {
+				shader = declManager->SoundByIndex( index, false );
+				channel = ( s_channelType )msg.ReadByte();
+				StartSoundShader( shader, channel, 0, false, NULL );
+			}
 			return true;
 		}
-		index = gameLocal.ClientRemapDecl( DECL_SOUND, msg.ReadLong() );
-		if( index >= 0 && index < declManager->GetNumDecls( DECL_SOUND ) ) {
-			shader = declManager->SoundByIndex( index, false );
+		case EVENT_STOPSOUNDSHADER: {
+			// the sound stuff would early out
+			assert( gameLocal.isNewFrame );
 			channel = ( s_channelType )msg.ReadByte();
-			StartSoundShader( shader, channel, 0, false, NULL );
+			StopSound( channel, false );
+			return true;
 		}
-		return true;
+		default: {
+			break;
+		}
 	}
-	case EVENT_STOPSOUNDSHADER: {
-		// the sound stuff would early out
-		assert( gameLocal.isNewFrame );
-		channel = ( s_channelType )msg.ReadByte();
-		StopSound( channel, false );
-		return true;
-	}
-	default: {
-		return false;
-	}
-	}
-	//	return false;	// sikk - warning C4702: unreachable code
+	return false;	// sikk - warning C4702: unreachable code
 }
 
 /*

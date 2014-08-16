@@ -74,7 +74,6 @@ idPlayerView::idPlayerView() {
 	bSoftShadows			= false;
 	bDepthRendered			= false;
 	bDitherRendered			= false;
-	focusDistance			= 0.0f;
 	prevViewAngles.Zero();
 	// <---sikk
 	// sikk---> Explosion FX PostProcess
@@ -2002,7 +2001,7 @@ void idPlayerView::PostFX_HDR() {
 		renderSystem->CaptureRenderToImage( "_hdrGlare" );
 		renderSystem->UnCrop();
 	} else if( r_hdrGlareStyle.GetInteger() > 1 ) {
-		int nGlareBlend;
+		int nGlareBlend = -1;
 		// crop _hdrBloom1 for glare textures
 		renderSystem->CropRenderSize( nGlareWidth, nGlareHeight, true, true );
 		renderSystem->DrawStretchPic( 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, 1.0f, 1.0f, 0.0f, declManager->FindMaterial( "_hdrBloom" ) );
@@ -2381,13 +2380,6 @@ idPlayerView::PostFX_DoF
 ===================
 */
 void idPlayerView::PostFX_DoF() {
-	if( r_useDepthOfField.GetInteger() == 1 && !gameLocal.inCinematic ) {
-		trace_t trace;
-		idVec3 start = hackedView.vieworg;
-		idVec3 end = start + hackedView.viewaxis.ToAngles().ToForward() * 8192.0f;
-		gameLocal.clip.TracePoint( trace, start, end, MASK_SHOT_RENDERMODEL, player );
-		focusDistance = focusDistance * 0.9 + trace.fraction * 0.1;
-	}
 	if( DoFConditionCheck() ) {
 		int	nWidth	= renderSystem->GetScreenWidth() / 2.0f;
 		int	nHeight	= renderSystem->GetScreenHeight() / 2.0f;
@@ -2401,9 +2393,9 @@ void idPlayerView::PostFX_DoF() {
 		} else if( player->weapon.GetEntity()->IsReloading() ) {
 			renderSystem->SetColor4( -1.0f, 0.5f, 64.0f, 2.0f );    // use specific settings for reloading dof
 		} else if( player->bIsZoomed ) {
-			renderSystem->SetColor4( focusDistance, 1.0f, 1.0f, 1.0f );    // zoom uses a mask texture
+			renderSystem->SetColor4( player->focusDistance, 1.0f, 1.0f, 1.0f );    // zoom uses a mask texture
 		} else {
-			renderSystem->SetColor4( focusDistance, 1.0f, 1.0f, 0.0f );
+			renderSystem->SetColor4( player->focusDistance, 1.0f, 1.0f, 0.0f );
 		}
 		renderSystem->DrawStretchPic( 0.0f, 0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, 1.0f, 1.0f, 0.0f, dofMaterial );
 		renderSystem->CaptureRenderToImage( "_dof" );

@@ -1060,7 +1060,7 @@ int idParser::Directive_define( void ) {
 		// read the define parameters
 		last = NULL;
 		if( !idParser::CheckTokenString( ")" ) ) {
-			while( 1 ) {
+			while( true ) {
 				if( !idParser::ReadLine( &token ) ) {
 					idParser::Error( "expected define parameter" );
 					return false;
@@ -2342,7 +2342,7 @@ idParser::ReadToken
 */
 int idParser::ReadToken( idToken *token ) {
 	define_t *define;
-	while( 1 ) {
+	while( true ) {
 		if( !idParser::ReadSourceToken( token ) ) {
 			return false;
 		}

@@ -1009,7 +1009,7 @@ void R_LoadImage( const char *cname, byte **pic, int *width, int *height, ID_TIM
 			if( globalImages->image_roundDown.GetBool() && scaled_height > h ) {
 				scaled_height >>= 1;
 			}
-			pic_p = ( byte * ) R_StaticAlloc( scaled_width * scaled_height * 4 );
+			pic_p = ( byte* )R_StaticAlloc( scaled_width * scaled_height * 4 );
 			R_ResampleTexture( *pic, w, h, pic_p, scaled_width, scaled_height );
 			R_StaticFree( *pic );
 			*pic = pic_p;

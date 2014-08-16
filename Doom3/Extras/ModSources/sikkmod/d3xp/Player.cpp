@@ -1256,6 +1256,7 @@ idPlayer::idPlayer() {
 	bViewModelsModified		= false;	// sikk - Depth Render
 	v3CrosshairPos.Zero();				// sikk - Crosshair Positioning
 	bIsZoomed				= false;	// sikk - Depth of Field PostProcess
+	focusDistance			= 0.0f;
 	bAmbientLightOn			= false;	// sikk - Global Ambient Light
 	nScreenFrostAlpha		= 0;		// sikk - Screen Frost
 	// sikk---> Health Management System
@@ -1406,6 +1407,7 @@ void idPlayer::Init( void ) {
 	bViewModelsModified		= false;	// sikk - Depth Render
 	v3CrosshairPos.Zero();				// sikk - Crosshair Positioning
 	bIsZoomed				= false;	// sikk - Depth of Field PostProcess
+	focusDistance			= 0.0f;
 	bAmbientLightOn			= false;	// sikk - Global Ambient Light
 	nScreenFrostAlpha		= 0;		// sikk - Screen Frost
 	// sikk---> Health Management System
@@ -1768,7 +1770,7 @@ void idPlayer::Spawn( void ) {
 		idLexer src;
 		idToken token;
 		src.LoadMemory( toggleData, toggleData.Length(), "toggleData" );
-		while( 1 ) {
+		while( true ) {
 			if( !src.ReadToken( &token ) ) {
 				break;
 			}
@@ -3800,7 +3802,7 @@ void idPlayer::UpdatePowerUps( void ) {
 			health < g_healthRegenLimit.GetInteger() &&
 			health < prevHeatlh &&
 			!AI_DEAD ) {
-		int currentRegenStep;
+		int currentRegenStep = 0;
 		if( g_healthRegenSteps.GetInteger() > 1 ) {
 			currentRegenStep = g_healthRegenLimit.GetInteger() / g_healthRegenSteps.GetInteger();
 			for( int i = 0; i < g_healthRegenSteps.GetInteger(); i++ )
@@ -4217,7 +4219,7 @@ void idPlayer::NextWeapon( void ) {
 		return;
 	}
 	w = idealWeapon;
-	while( 1 ) {
+	while( true ) {
 		w++;
 		if( w >= MAX_WEAPONS ) {
 			w = 0;
@@ -4266,7 +4268,7 @@ void idPlayer::PrevWeapon( void ) {
 		return;
 	}
 	w = idealWeapon;
-	while( 1 ) {
+	while( true ) {
 		w--;
 		if( w < 0 ) {
 			w = MAX_WEAPONS - 1;
@@ -5056,6 +5058,13 @@ void idPlayer::UpdateFocus( void ) {
 	idUserInterface *ui;
 	if( gameLocal.inCinematic ) {
 		return;
+	}
+	// sikk---> Depth of Field PostProcess
+	if( r_useDepthOfField.GetInteger() == 1 && renderView ) {
+		start = renderView->vieworg;
+		end = start + renderView->viewaxis.ToAngles().ToForward() * 8192.0f;
+		gameLocal.clip.TracePoint( trace, start, end, MASK_SHOT_RENDERMODEL, this );
+		focusDistance = focusDistance * 0.95 + trace.fraction * 0.05;
 	}
 	// only update the focus character when attack button isn't pressed so players
 	// can still chainsaw NPC's
@@ -7278,9 +7287,9 @@ bool idPlayer::CanGive( const char *statname, const char *value ) {
 		}
 		return true;
 	} else {
-		return inventory.CanGive( this, spawnArgs, statname, value, &idealWeapon );
+		return false;
 	}
-	return false;
+	return inventory.CanGive( this, spawnArgs, statname, value, &idealWeapon );
 }
 
 /*
@@ -7760,7 +7769,6 @@ void idPlayer::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &di
 		if( damage < 1 ) {
 			damage = 1;
 		}
-		int oldHealth = health;
 		health -= damage;
 		if( health <= 0 ) {
 			if( health < -999 ) {
@@ -9193,48 +9201,47 @@ bool idPlayer::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
 	int powerup;
 	bool start;
 	switch( event ) {
-	case EVENT_EXIT_TELEPORTER:
-		Event_ExitTeleporter();
-		return true;
-	case EVENT_ABORT_TELEPORTER:
-		SetPrivateCameraView( NULL );
-		return true;
-	case EVENT_POWERUP: {
-		powerup = msg.ReadShort();
-		start = msg.ReadBits( 1 ) != 0;
-		if( start ) {
-			GivePowerUp( powerup, 0 );
-		} else {
-			ClearPowerup( powerup );
-		}
-		return true;
-	}
-#ifdef _D3XP
-	case EVENT_PICKUPNAME: {
-		char buf[MAX_EVENT_PARAM_SIZE];
-		msg.ReadString( buf, MAX_EVENT_PARAM_SIZE );
-		inventory.AddPickupName( buf, "", this ); //_D3XP
-		return true;
-	}
-#endif
-	case EVENT_SPECTATE: {
-		bool spectate = ( msg.ReadBits( 1 ) != 0 );
-		Spectate( spectate );
-		return true;
-	}
-	case EVENT_ADD_DAMAGE_EFFECT: {
-		if( spectating ) {
-			// if we're spectating, ignore
-			// happens if the event and the spectate change are written on the server during the same frame (fraglimit)
+		case EVENT_EXIT_TELEPORTER:
+			Event_ExitTeleporter();
+			return true;
+		case EVENT_ABORT_TELEPORTER:
+			SetPrivateCameraView( NULL );
+			return true;
+		case EVENT_POWERUP: {
+			powerup = msg.ReadShort();
+			start = msg.ReadBits( 1 ) != 0;
+			if( start ) {
+				GivePowerUp( powerup, 0 );
+			} else {
+				ClearPowerup( powerup );
+			}
 			return true;
 		}
-		return idActor::ClientReceiveEvent( event, time, msg );
+#ifdef _D3XP
+		case EVENT_PICKUPNAME: {
+			char buf[MAX_EVENT_PARAM_SIZE];
+			msg.ReadString( buf, MAX_EVENT_PARAM_SIZE );
+			inventory.AddPickupName( buf, "", this ); //_D3XP
+			return true;
+		}
+#endif
+		case EVENT_SPECTATE: {
+			bool spectate = ( msg.ReadBits( 1 ) != 0 );
+			Spectate( spectate );
+			return true;
+		}
+		case EVENT_ADD_DAMAGE_EFFECT: {
+			if( spectating ) {
+				// if we're spectating, ignore
+				// happens if the event and the spectate change are written on the server during the same frame (fraglimit)
+				return true;
+			}
+		}
+		default: {
+			break;
+		}
 	}
-	default: {
-		return idActor::ClientReceiveEvent( event, time, msg );
-	}
-	}
-	return false;
+	return idActor::ClientReceiveEvent( event, time, msg );
 }
 
 /*
@@ -9702,7 +9709,7 @@ void idPlayer::ToggleIRGoggles() {
 		// play sound
 		StartSoundShader( declManager->FindSound( "player_sounds_irgoggles_off" ), SND_CHANNEL_VOICE, 0, false, NULL );
 		// reset bloom parms
-		r_useBloom.SetBool( ( bool )fIRBloomParms[ 0 ] );
+		r_useBloom.SetInteger( ( int )fIRBloomParms[ 0 ] );
 		r_bloomBufferSize.SetInteger( ( int )fIRBloomParms[ 1 ] );
 		r_bloomBlurIterations.SetInteger( ( int )fIRBloomParms[ 2 ] );
 		r_bloomBlurScaleX.SetFloat( ( int )fIRBloomParms[ 3 ] );

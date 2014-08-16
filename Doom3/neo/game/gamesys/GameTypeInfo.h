@@ -7,7 +7,7 @@
 
 	This file has been generated with the Type Info Generator v1.0 (c) 2004 id Software
 
-	325 constants
+	327 constants
 	40 enums
 	161 classes/structs/unions
 	34 templates
@@ -90,9 +90,11 @@ static constantInfo_t constantInfo[] = {
 	{ "int", "NA_LOOPBACK", "1" },
 	{ "int", "NA_BROADCAST", "2" },
 	{ "int", "NA_IP", "3" },
-	{ "int", "THREAD_NORMAL", "0" },
-	{ "int", "THREAD_ABOVE_NORMAL", "1" },
-	{ "int", "THREAD_HIGHEST", "2" },
+	{ "int", "THREAD_LOWEST", "0" },
+	{ "int", "THREAD_BELOW_NORMAL", "1" },
+	{ "int", "THREAD_NORMAL", "2" },
+	{ "int", "THREAD_ABOVE_NORMAL", "3" },
+	{ "int", "THREAD_HIGHEST", "4" },
 	{ "const int", "MAX_THREADS", "10" },
 	{ "const int", "MAX_CRITICAL_SECTIONS", "4" },
 	{ "int", "CRITICAL_SECTION_ZERO", "0" },
@@ -439,9 +441,11 @@ static enumValueInfo_t netadrtype_t_typeInfo[] = {
 };
 
 static enumValueInfo_t xthreadPriority_typeInfo[] = {
-	{ "THREAD_NORMAL", 0 },
-	{ "THREAD_ABOVE_NORMAL", 1 },
-	{ "THREAD_HIGHEST", 2 },
+	{ "THREAD_LOWEST", 0 },
+	{ "THREAD_BELOW_NORMAL", 1 },
+	{ "THREAD_NORMAL", 2 },
+	{ "THREAD_ABOVE_NORMAL", 3 },
+	{ "THREAD_HIGHEST", 4 },
 	{ NULL, 0 }
 };
 

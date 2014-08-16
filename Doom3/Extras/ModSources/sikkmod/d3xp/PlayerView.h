@@ -491,7 +491,6 @@ public:
 	const idMaterial 	*explosionFXMaterial;	// Explosion FX material
 
 	renderView_t		hackedView;
-	float				focusDistance;			// Holds focus distance for depth of field
 	idAngles			prevViewAngles;			// Holds previous frame's player view angles
 	int					prevTime;				// Holds previous frame's time
 	bool				bDepthRendered;			// Holds whether the depth map has been rendered for the current frame

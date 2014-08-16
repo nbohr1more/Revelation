@@ -203,7 +203,6 @@
     <ClCompile />
     <ClCompile />
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
       <AdditionalOptions>/Qpar-report:1 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>

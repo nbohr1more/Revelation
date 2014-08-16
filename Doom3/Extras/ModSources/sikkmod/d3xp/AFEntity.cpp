@@ -2707,7 +2707,7 @@ idGameEdit::AF_CreateMesh
 idRenderModel *idGameEdit::AF_CreateMesh( const idDict &args, idVec3 &meshOrigin, idMat3 &meshAxis, bool &poseIsSet ) {
 	int i, jointNum;
 	const idDeclAF *af;
-	const idDeclAF_Body *fb;
+	const idDeclAF_Body *fb = NULL;
 	renderEntity_t ent;
 	idVec3 origin, *bodyOrigin, *newBodyOrigin, *modifiedOrigin;
 	idMat3 axis, *bodyAxis, *newBodyAxis, *modifiedAxis;
@@ -2929,7 +2929,7 @@ void idHarvestable::Init( idEntity *parent ) {
 	if( skin.Length() ) {
 		parent->SetSkin( declManager->FindSkin( skin.c_str() ) );
 	}
-	idEntity *head;
+	idEntity *head = NULL;
 	if( parent->IsType( idActor::Type ) ) {
 		idActor *withHead = ( idActor * )parent;
 		head = withHead->GetHeadEntity();
@@ -3051,7 +3051,7 @@ void idHarvestable::BeginBurn() {
 	}
 	parent->GetRenderEntity()->noShadow = true;
 	parent->SetShaderParm( SHADERPARM_TIME_OF_DEATH, gameLocal.slow.time * 0.001f );
-	idEntity *head;
+	idEntity *head = NULL;
 	if( parent->IsType( idActor::Type ) ) {
 		idActor *withHead = ( idActor * )parent;
 		head = withHead->GetHeadEntity();

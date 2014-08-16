@@ -1186,25 +1186,25 @@ bool idProjectile::ClientReceiveEvent( int event, int time, const idBitMsg &msg 
 	trace_t collision;
 	idVec3 velocity;
 	switch( event ) {
-	case EVENT_DAMAGE_EFFECT: {
-		memset( &collision, 0, sizeof( collision ) );
-		collision.c.point[0] = msg.ReadFloat();
-		collision.c.point[1] = msg.ReadFloat();
-		collision.c.point[2] = msg.ReadFloat();
-		collision.c.normal = msg.ReadDir( 24 );
-		int index = gameLocal.ClientRemapDecl( DECL_MATERIAL, msg.ReadLong() );
-		collision.c.material = ( index != -1 ) ? static_cast<const idMaterial *>( declManager->DeclByIndex( DECL_MATERIAL, index ) ) : NULL;
-		velocity[0] = msg.ReadFloat( 5, 10 );
-		velocity[1] = msg.ReadFloat( 5, 10 );
-		velocity[2] = msg.ReadFloat( 5, 10 );
-		DefaultDamageEffect( this, spawnArgs, collision, velocity );
-		return true;
+		case EVENT_DAMAGE_EFFECT: {
+			memset( &collision, 0, sizeof( collision ) );
+			collision.c.point[0] = msg.ReadFloat();
+			collision.c.point[1] = msg.ReadFloat();
+			collision.c.point[2] = msg.ReadFloat();
+			collision.c.normal = msg.ReadDir( 24 );
+			int index = gameLocal.ClientRemapDecl( DECL_MATERIAL, msg.ReadLong() );
+			collision.c.material = ( index != -1 ) ? static_cast<const idMaterial *>( declManager->DeclByIndex( DECL_MATERIAL, index ) ) : NULL;
+			velocity[0] = msg.ReadFloat( 5, 10 );
+			velocity[1] = msg.ReadFloat( 5, 10 );
+			velocity[2] = msg.ReadFloat( 5, 10 );
+			DefaultDamageEffect( this, spawnArgs, collision, velocity );
+			return true;
+		}
+		default: {
+			break; 
+		}
 	}
-	default: {
-		return idEntity::ClientReceiveEvent( event, time, msg );
-	}
-	}
-	return false;
+	return idEntity::ClientReceiveEvent( event, time, msg );
 }
 
 /*

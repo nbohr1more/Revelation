@@ -622,7 +622,7 @@ bool MaterialDocManager::FindMaterial( const char *name, MaterialSearchData_t *s
 */
 idStr MaterialDocManager::GetUniqueMaterialName( idStr name ) {
 	int num = 0;
-	while( 1 ) {
+	while( true ) {
 		idStr testName;
 		if( num == 0 ) {
 			testName = name;

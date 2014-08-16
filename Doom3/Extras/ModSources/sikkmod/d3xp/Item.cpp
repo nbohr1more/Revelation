@@ -463,31 +463,31 @@ idItem::ClientReceiveEvent
 */
 bool idItem::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
 	switch( event ) {
-	case EVENT_PICKUP: {
-		// play pickup sound
-		StartSound( "snd_acquire", SND_CHANNEL_ITEM, 0, false, NULL );
-		// hide the model
-		Hide();
-		// remove the highlight shell
-		if( itemShellHandle != -1 ) {
-			gameRenderWorld->FreeEntityDef( itemShellHandle );
-			itemShellHandle = -1;
+		case EVENT_PICKUP: {
+			// play pickup sound
+			StartSound( "snd_acquire", SND_CHANNEL_ITEM, 0, false, NULL );
+			// hide the model
+			Hide();
+			// remove the highlight shell
+			if( itemShellHandle != -1 ) {
+				gameRenderWorld->FreeEntityDef( itemShellHandle );
+				itemShellHandle = -1;
+			}
+			return true;
 		}
-		return true;
+		case EVENT_RESPAWN: {
+			Event_Respawn();
+			return true;
+		}
+		case EVENT_RESPAWNFX: {
+			Event_RespawnFx();
+			return true;
+		}
+		default: {
+			break; 
+		}
 	}
-	case EVENT_RESPAWN: {
-		Event_Respawn();
-		return true;
-	}
-	case EVENT_RESPAWNFX: {
-		Event_RespawnFx();
-		return true;
-	}
-	default: {
-		return idEntity::ClientReceiveEvent( event, time, msg );
-	}
-	}
-	return false;
+	return idEntity::ClientReceiveEvent( event, time, msg );
 }
 
 /*
@@ -1323,7 +1323,7 @@ void idObjective::Event_CamShot( ) {
 				renderView_t	portalView = fullView;
 				portalView.vieworg = gameLocal.portalSkyEnt.GetEntity()->GetPhysics()->GetOrigin();
 				// setup global fixup projection vars
-				if( 1 ) {
+				if( true ) {
 					int vidWidth, vidHeight;
 					idVec2 shiftScale;
 					renderSystem->GetGLSettings( vidWidth, vidHeight );

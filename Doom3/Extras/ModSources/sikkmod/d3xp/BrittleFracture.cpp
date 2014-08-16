@@ -255,7 +255,7 @@ void idBrittleFracture::Spawn( void ) {
 	spawnArgs.SetBool( "bleed", 1 );
 #ifdef _D3XP
 	// check for xray surface
-	if( 1 ) {
+	if( true ) {
 		const idRenderModel *model = renderEntity.hModel;
 		isXraySurface = false;
 		for( int i = 0; i < model->NumSurfaces(); i++ ) {

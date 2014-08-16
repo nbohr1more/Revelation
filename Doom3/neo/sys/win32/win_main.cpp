@@ -1,4 +1,4 @@
-/*
+﻿/*
 ===========================================================================
 
 Doom 3 GPL Source Code
@@ -90,17 +90,37 @@ Sys_Createthread
 ==================
 */
 void Sys_CreateThread( xthread_t function, void *parms, xthreadPriority priority, xthreadInfo &info, const char *name, xthreadInfo *threads[MAX_THREADS], int *thread_count ) {
-	HANDLE temp = CreateThread(	NULL,	// LPSECURITY_ATTRIBUTES lpsa,
-								0,		// DWORD cbStack,
-								( LPTHREAD_START_ROUTINE )function,	// LPTHREAD_START_ROUTINE lpStartAddr,
-								parms,	// LPVOID lpvThreadParm,
-								0,		//   DWORD fdwCreate,
+	DWORD  flags = ( priority == THREAD_NORMAL ? CREATE_SUSPENDED : 0 );
+	// Without this flag the 'dwStackSize' parameter to CreateThread specifies the "Stack Commit Size"
+	// and the "Stack Reserve Size" is set to the value specified at link-time.
+	// With this flag the 'dwStackSize' parameter to CreateThread specifies the "Stack Reserve Size"
+	// and the �Stack Commit Size� is set to the value specified at link-time.
+	// For various reasons (some of which historic) we reserve a large amount of stack space in the
+	// project settings. By setting this flag and by specifying 64 kB for the "Stack Commit Size" in
+	// the project settings we can create new threads with a much smaller reserved (and committed)
+	// stack space. It is very important that the "Stack Commit Size" is set to a small value in
+	// the project settings. If it is set to a large value we may be both reserving and committing
+	// a lot of memory by setting the STACK_SIZE_PARAM_IS_A_RESERVATION flag. There are some
+	// 50 threads allocated for normal game play. If, for instance, the commit size is set to 16 MB
+	// then by adding this flag we would be reserving and committing 50 x 16 = 800 MB of memory.
+	// On the other hand, if this flag is not set and the "Stack Reserve Size" is set to 16 MB in the
+	// project settings, then we would still be reserving 50 x 16 = 800 MB of virtual address space.
+	flags |= STACK_SIZE_PARAM_IS_A_RESERVATION;
+	HANDLE temp = CreateThread(	NULL,									// LPSECURITY_ATTRIBUTES lpsa,
+								0,										// DWORD cbStack,
+								( LPTHREAD_START_ROUTINE )function,		// LPTHREAD_START_ROUTINE lpStartAddr,
+								parms,									// LPVOID lpvThreadParm,
+								flags,									//   DWORD fdwCreate,
 								&info.threadId );
-	info.threadHandle = ( int ) temp;
+	info.threadHandle = reinterpret_cast<int>( temp );
 	if( priority == THREAD_HIGHEST ) {
 		SetThreadPriority( ( HANDLE )info.threadHandle, THREAD_PRIORITY_HIGHEST );		//  we better sleep enough to do this
 	} else if( priority == THREAD_ABOVE_NORMAL ) {
 		SetThreadPriority( ( HANDLE )info.threadHandle, THREAD_PRIORITY_ABOVE_NORMAL );
+	} else if( priority == THREAD_BELOW_NORMAL ) {
+		SetThreadPriority( ( HANDLE )info.threadHandle, THREAD_PRIORITY_BELOW_NORMAL );
+	} else if( priority == THREAD_LOWEST ) {
+		SetThreadPriority( ( HANDLE )info.threadHandle, THREAD_PRIORITY_LOWEST );
 	}
 	info.name = name;
 	if( *thread_count < MAX_THREADS ) {
@@ -119,15 +139,6 @@ void Sys_DestroyThread( xthreadInfo &info ) {
 	WaitForSingleObject( ( HANDLE )info.threadHandle, INFINITE );
 	CloseHandle( ( HANDLE )info.threadHandle );
 	info.threadHandle = 0;
-}
-
-/*
-==================
-Sys_Sentry
-==================
-*/
-void Sys_Sentry() {
-	int j = 0;
 }
 
 /*
@@ -161,7 +172,6 @@ void Sys_EnterCriticalSection( int index ) {
 	assert( index >= 0 && index < MAX_CRITICAL_SECTIONS );
 	if( TryEnterCriticalSection( &win32.criticalSections[index] ) == 0 ) {
 		EnterCriticalSection( &win32.criticalSections[index] );
-		//		Sys_DebugPrintf( "busy lock '%s' in thread '%s'\n", lock->name, Sys_GetThreadName() );
 	}
 }
 
@@ -199,12 +209,9 @@ void Sys_TriggerEvent( int index ) {
 	SetEvent( win32.backgroundDownloadSemaphore );
 }
 
-
-
 #pragma optimize( "", on )
 
 #ifdef DEBUG
-
 
 static unsigned int debug_total_alloc = 0;
 static unsigned int debug_total_alloc_count = 0;
@@ -511,10 +518,10 @@ Sys_ListFiles
 ==============
 */
 int Sys_ListFiles( const char *directory, const char *extension, idStrList &list ) {
-	idStr		search;
-	struct _finddata_t findinfo;
-	int			findhandle;
-	int			flag;
+	idStr				search;
+	struct _finddata_t	findinfo;
+	int					findhandle;
+	int					flag;
 	if( !extension ) {
 		extension = "";
 	}
@@ -572,7 +579,7 @@ Sys_SetClipboardData
 */
 void Sys_SetClipboardData( const char *string ) {
 	HGLOBAL HMem;
-	char *PMem;
+	char	*PMem;
 	// allocate memory block
 	HMem = ( char * )::GlobalAlloc( GMEM_MOVEABLE | GMEM_DDESHARE, strlen( string ) + 1 );
 	if( HMem == NULL ) {
@@ -813,10 +820,12 @@ Sys_AsyncThread
 ==================
 */
 static void Sys_AsyncThread( void *parm ) {
+#if _DEBUG
 	int		wakeNumber;
 	int		startTime;
 	startTime = Sys_Milliseconds();
 	wakeNumber = 0;
+#endif
 	while( true ) {
 #ifdef WIN32
 		// this will trigger 60 times a second
@@ -825,7 +834,7 @@ static void Sys_AsyncThread( void *parm ) {
 			OutputDebugString( "idPacketServer::PacketServerInterrupt: bad wait return" );
 		}
 #endif
-#if 0
+#if _DEBUG
 		wakeNumber++;
 		int		msec = Sys_Milliseconds();
 		int		deltaTime = msec - startTime;

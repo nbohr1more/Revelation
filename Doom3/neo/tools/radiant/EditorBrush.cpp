@@ -1329,7 +1329,7 @@ brush_t *Brush_Parse( idVec3 origin ) {
 			GetToken( false );
 			f->texdef.value = atoi( token );
 		}
-	} while( 1 );
+	} while( true );
 	return b;
 }
 

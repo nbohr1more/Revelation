@@ -592,7 +592,7 @@ void MaterialDoc::ParseMaterial( idLexer *src ) {
 	idToken		token;
 	//Parse past the name
 	src->SkipUntilString( "{" );
-	while( 1 ) {
+	while( true ) {
 		if( !src->ExpectAnyToken( &token ) ) {
 			//Todo: Add some error checking here
 			return;
@@ -633,7 +633,7 @@ void MaterialDoc::ParseStage( idLexer *src ) {
 	newStage->stageData.SetInt( "stagetype", STAGE_TYPE_NORMAL );
 	newStage->enabled = true;
 	idToken		token;
-	while( 1 ) {
+	while( true ) {
 		if( !src->ExpectAnyToken( &token ) ) {
 			//Todo: Add some error checking here
 			return;

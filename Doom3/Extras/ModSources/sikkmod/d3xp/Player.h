@@ -399,7 +399,7 @@ public:
 	void					SetLevelTrigger( const char *levelName, const char *triggerName );
 
 	bool					UserInfoChanged( bool canModify );
-	idDict 				*GetUserInfo( void );
+	idDict 					*GetUserInfo( void );
 	bool					BalanceTDM( void );
 
 	void					CacheWeapons( void );
@@ -455,7 +455,7 @@ public:
 	void					RemoveInventoryItem( idDict *item );
 	bool					GiveInventoryItem( const char *name );
 	void					RemoveInventoryItem( const char *name );
-	idDict 				*FindInventoryItem( const char *name );
+	idDict 					*FindInventoryItem( const char *name );
 
 	void					GivePDA( const char *pdaName, idDict *item );
 	void					GiveVideo( const char *videoName, idDict *item );
@@ -659,6 +659,7 @@ public:
 		return talkCursor;
 	};	// used to check if character has focus
 	bool					bIsZoomed;
+	float					focusDistance;			// Holds focus distance for depth of field
 	// <---sikk
 
 	// sikk---> Global Ambient Light

@@ -1171,7 +1171,7 @@ idWindow *rvGEWorkspace::NewWindow( idDict *state, rvGEWindowWrapper::EWindowTyp
 	count = 0;
 	if( mInterface->GetDesktop()->FindChildByName( baseName ) ) {
 		count = 1;
-		while( 1 ) {
+		while( true ) {
 			drawWin_t *dw = mInterface->GetDesktop()->FindChildByName( va( "%s%d", baseName.c_str(), count ) );
 			if( !dw ) {
 				break;

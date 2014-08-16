@@ -225,7 +225,7 @@ BOOL CRadiantApp::InitInstance() {
 				}
 			}
 			i++;
-		} while( 1 );
+		} while( true );
 		g_qeglobals.use_ini = true;
 	} else {
 		// Change the registry key under which our settings are stored.

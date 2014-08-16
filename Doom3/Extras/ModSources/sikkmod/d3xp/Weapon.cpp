@@ -171,7 +171,8 @@ void idWeapon::Spawn( void ) {
 		worldModel.GetEntity()->fl.networkSync = true;
 	}
 #ifdef _D3XP
-	if( 1 /*!gameLocal.isMultiplayer*/ ) {
+	/*!gameLocal.isMultiplayer*/
+	if( true ) {
 		grabber.Initialize();
 	}
 #endif
@@ -2368,35 +2369,35 @@ idWeapon::ClientReceiveEvent
 */
 bool idWeapon::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
 	switch( event ) {
-	case EVENT_RELOAD: {
-		if( gameLocal.time - time < 1000 ) {
-			if( WEAPON_NETRELOAD.IsLinked() ) {
-				WEAPON_NETRELOAD = true;
-				WEAPON_NETENDRELOAD = false;
+		case EVENT_RELOAD: {
+			if( gameLocal.time - time < 1000 ) {
+				if( WEAPON_NETRELOAD.IsLinked() ) {
+					WEAPON_NETRELOAD = true;
+					WEAPON_NETENDRELOAD = false;
+				}
 			}
+			return true;
 		}
-		return true;
-	}
-	case EVENT_ENDRELOAD: {
-		if( WEAPON_NETENDRELOAD.IsLinked() ) {
-			WEAPON_NETENDRELOAD = true;
+		case EVENT_ENDRELOAD: {
+			if( WEAPON_NETENDRELOAD.IsLinked() ) {
+				WEAPON_NETENDRELOAD = true;
+			}
+			return true;
 		}
-		return true;
-	}
-	case EVENT_CHANGESKIN: {
-		int index = gameLocal.ClientRemapDecl( DECL_SKIN, msg.ReadLong() );
-		renderEntity.customSkin = ( index != -1 ) ? static_cast<const idDeclSkin *>( declManager->DeclByIndex( DECL_SKIN, index ) ) : NULL;
-		UpdateVisuals();
-		if( worldModel.GetEntity() ) {
-			worldModel.GetEntity()->SetSkin( renderEntity.customSkin );
+		case EVENT_CHANGESKIN: {
+			int index = gameLocal.ClientRemapDecl( DECL_SKIN, msg.ReadLong() );
+			renderEntity.customSkin = ( index != -1 ) ? static_cast<const idDeclSkin *>( declManager->DeclByIndex( DECL_SKIN, index ) ) : NULL;
+			UpdateVisuals();
+			if( worldModel.GetEntity() ) {
+				worldModel.GetEntity()->SetSkin( renderEntity.customSkin );
+			}
+			return true;
 		}
-		return true;
+		default: {
+			break; 
+		}
 	}
-	default: {
-		return idEntity::ClientReceiveEvent( event, time, msg );
-	}
-	}
-	return false;
+	return idEntity::ClientReceiveEvent( event, time, msg );
 }
 
 /***********************************************************************
@@ -2918,7 +2919,6 @@ void idWeapon::Event_LaunchProjectiles( int num_projectiles, float spread, float
 	// avoid all ammo considerations on an MP client
 	if( !gameLocal.isClient ) {
 #ifdef _D3XP
-		int ammoAvail = owner->inventory.HasAmmo( ammoType, ammoRequired );
 		if( ( clipSize != 0 ) && ( ammoClip <= 0 ) ) {
 			return;
 		}
@@ -2999,7 +2999,7 @@ void idWeapon::Event_LaunchProjectiles( int num_projectiles, float spread, float
 			float spreadRad = DEG2RAD( spread );
 			muzzle_pos = muzzleOrigin + playerViewAxis[ 0 ] * 2.0f;
 			for( i = 0; i < num_projectiles; i++ ) {
-				ang = idMath::Sin( spreadRad * gameLocal.random.RandomFloat() * ( ( owner->bIsZoomed && g_weaponHandlingType.GetBool() ) ? ( ( GetEntityDefName() == "weapon_shotgun" ) ? 0.5 : 0.25f ) : 1.0f ) );	// sikk - Weapon Handling System: Zoom Spread Reduction
+				ang = idMath::Sin( spreadRad * gameLocal.random.RandomFloat() * ( ( owner->bIsZoomed && g_weaponHandlingType.GetBool() ) ? ( ( !idStr::Icmp( GetEntityDefName(), "weapon_shotgun" ) ) ? 0.5 : 0.25f ) : 1.0f ) );	// sikk - Weapon Handling System: Zoom Spread Reduction
 				spin = ( float )DEG2RAD( 360.0f ) * gameLocal.random.RandomFloat();
 				dir = playerViewAxis[ 0 ] + playerViewAxis[ 2 ] * ( ang * idMath::Sin( spin ) ) - playerViewAxis[ 1 ] * ( ang * idMath::Cos( spin ) );
 				dir.Normalize();
@@ -3093,7 +3093,6 @@ void idWeapon::Event_LaunchProjectilesEllipse( int num_projectiles, float spread
 	}
 	// avoid all ammo considerations on a client
 	if( !gameLocal.isClient ) {
-		int ammoAvail = owner->inventory.HasAmmo( ammoType, ammoRequired );
 		if( ( clipSize != 0 ) && ( ammoClip <= 0 ) ) {
 			return;
 		}

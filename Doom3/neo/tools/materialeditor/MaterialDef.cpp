@@ -99,7 +99,7 @@ void MaterialDefManager::InitializeMaterialDefList( idLexer *src, const char *ty
 	src->Reset();
 	src->SkipUntilString( typeName );
 	src->SkipUntilString( "{" );
-	while( 1 ) {
+	while( true ) {
 		if( !src->ExpectAnyToken( &token ) ) {
 			//Todo: Add some error checking here
 			return;

@@ -269,7 +269,7 @@ When a newline character is found the scripts line counter is increased.
 ================
 */
 int idLexer::ReadWhiteSpace( void ) {
-	while( 1 ) {
+	while( true ) {
 		// skip white space
 		while( *idLexer::script_p <= ' ' ) {
 			if( !*idLexer::script_p ) {
@@ -449,7 +449,7 @@ int idLexer::ReadString( idToken *token, int quote ) {
 	}
 	// leading quote
 	idLexer::script_p++;
-	while( 1 ) {
+	while( true ) {
 		// if there is an escape character and escape characters are allowed
 		if( *idLexer::script_p == '\\' && !( idLexer::flags & LEXFL_NOSTRINGESCAPECHARS ) ) {
 			if( !idLexer::ReadEscapeCharacter( &ch ) ) {
@@ -1175,7 +1175,7 @@ idLexer::ReadRestOfLine
 ================
 */
 const char	*idLexer::ReadRestOfLine( idStr &out ) {
-	while( 1 ) {
+	while( true ) {
 		if( *idLexer::script_p == '\n' ) {
 			idLexer::line++;
 			break;

@@ -214,10 +214,6 @@ idCVar r_materialOverride( "r_materialOverride", "", CVAR_RENDERER, "overrides a
 idCVar r_debugRenderToTexture( "r_debugRenderToTexture", "0", CVAR_RENDERER | CVAR_INTEGER, "" );
 idCVar r_splitShaders( "r_splitShaders", "0", CVAR_RENDERER | CVAR_BOOL, "Splits vertex/fragment shaders into seperate vertex and fragment shaders" );
 
-idCVar r_smartflt_y( "r_smartflt_y", "10", CVAR_INTEGER | CVAR_RENDERER, "Smart Filter Y Value" );
-idCVar r_smartflt_cb( "r_smartflt_cb", "50", CVAR_INTEGER | CVAR_RENDERER, "Smart Filter CB Value" );
-idCVar r_smartflt_cr( "r_smartflt_cr", "50", CVAR_INTEGER | CVAR_RENDERER, "Smart Filter CR Value" );
-
 /*
 ==================
 R_CheckPortableExtensions
