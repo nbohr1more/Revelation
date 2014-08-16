@@ -76,8 +76,9 @@ public:
 	const type 		&GetEndValue( void ) const {
 		return endValue;
 	}
-
+#ifndef _DEBUG
 private:
+#endif
 	float				startTime;
 	float				duration;
 	type				startValue;
@@ -191,8 +192,9 @@ public:
 	const type 		&GetEndValue( void ) const {
 		return endValue;
 	}
-
+#ifndef _DEBUG
 private:
+#endif
 	float				startTime;
 	float				accelTime;
 	float				linearTime;
@@ -361,7 +363,9 @@ public:
 		return endValue;
 	}
 
+#ifndef _DEBUG
 private:
+#endif
 	float				startTime;
 	float				accelTime;
 	float				linearTime;

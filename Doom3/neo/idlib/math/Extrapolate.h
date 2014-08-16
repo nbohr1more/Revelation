@@ -75,20 +75,21 @@ public:
 		startValue = value;
 		currentTime = -1;
 	}
-	const type 		&GetStartValue( void ) const {
+	const type 			&GetStartValue( void ) const {
 		return startValue;
 	}
-	const type 		&GetBaseSpeed( void ) const {
+	const type 			&GetBaseSpeed( void ) const {
 		return baseSpeed;
 	}
-	const type 		&GetSpeed( void ) const {
+	const type 			&GetSpeed( void ) const {
 		return speed;
 	}
 	extrapolation_t		GetExtrapolationType( void ) const {
 		return extrapolationType;
 	}
-
+#ifndef _DEBUG
 private:
+#endif
 	extrapolation_t		extrapolationType;
 	float				startTime;
 	float				duration;

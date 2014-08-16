@@ -218,7 +218,7 @@ private:
 	static idCVar 			*staticVars;
 };
 
-ID_FORCE_INLINE idCVar::idCVar( const char *name, const char *value, int flags, const char *description,
+ID_INLINE idCVar::idCVar( const char *name, const char *value, int flags, const char *description,
 								argCompletion_t valueCompletion ) {
 	if( !valueCompletion && ( flags & CVAR_BOOL ) ) {
 		valueCompletion = idCmdSystem::ArgCompletion_Boolean;
@@ -226,12 +226,12 @@ ID_FORCE_INLINE idCVar::idCVar( const char *name, const char *value, int flags, 
 	Init( name, value, flags, description, 1, -1, NULL, valueCompletion );
 }
 
-ID_FORCE_INLINE idCVar::idCVar( const char *name, const char *value, int flags, const char *description,
+ID_INLINE idCVar::idCVar( const char *name, const char *value, int flags, const char *description,
 								float valueMin, float valueMax, argCompletion_t valueCompletion ) {
 	Init( name, value, flags, description, valueMin, valueMax, NULL, valueCompletion );
 }
 
-ID_FORCE_INLINE idCVar::idCVar( const char *name, const char *value, int flags, const char *description,
+ID_INLINE idCVar::idCVar( const char *name, const char *value, int flags, const char *description,
 								const char **valueStrings, argCompletion_t valueCompletion ) {
 	Init( name, value, flags, description, 1, -1, valueStrings, valueCompletion );
 }
@@ -315,7 +315,7 @@ extern idCVarSystem 		*cvarSystem;
 ===============================================================================
 */
 
-ID_FORCE_INLINE void idCVar::Init( const char *name, const char *value, int flags, const char *description,
+ID_INLINE void idCVar::Init( const char *name, const char *value, int flags, const char *description,
 								   float valueMin, float valueMax, const char **valueStrings, argCompletion_t valueCompletion ) {
 	this->name = name;
 	this->value = value;
@@ -337,7 +337,7 @@ ID_FORCE_INLINE void idCVar::Init( const char *name, const char *value, int flag
 	}
 }
 
-ID_FORCE_INLINE void idCVar::RegisterStaticVars( void ) {
+ID_INLINE void idCVar::RegisterStaticVars( void ) {
 	if( staticVars != ( idCVar * )0xFFFFFFFF ) {
 		for( idCVar *cvar = staticVars; cvar; cvar = cvar->next ) {
 			cvarSystem->Register( cvar );

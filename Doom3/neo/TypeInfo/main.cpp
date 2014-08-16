@@ -134,7 +134,7 @@ idCommon 			*common = &commonLocal;
 */
 
 void			Sys_Mkdir( const char *path ) {}
-ID_TIME_T			Sys_FileTimeStamp( FILE *fp ) {
+ID_TIME_T		Sys_FileTimeStamp( FILE *fp ) {
 	return 0;
 }
 
@@ -212,7 +212,7 @@ const char 	*Sys_DefaultBasePath( void ) {
 const char 	*Sys_DefaultSavePath( void ) {
 	return "";
 }
-int				Sys_ListFiles( const char *directory, const char *extension, idStrList &list ) {
+int			Sys_ListFiles( const char *directory, const char *extension, idStrList &list ) {
 	return 0;
 }
 

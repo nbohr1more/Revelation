@@ -12,7 +12,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "idLib", "idlib.vcxproj", "{
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TypeInfo", "typeinfo.vcxproj", "{6EA6406F-3E65-47D9-8246-D6660A81606F}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DoomDLL", "doomdll.vcxproj", "{49BEC5C6-B964-417A-851E-808886B57420}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Revelation", "revelation.vcxproj", "{49BEC5C6-B964-417A-851E-808886B57420}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "MayaImport", "MayaImport.vcxproj", "{49BEC5C6-B964-417A-851E-808886B574F1}"
 EndProject
@@ -94,14 +94,14 @@ Global
 		{49BEC5C6-B964-417A-851E-808886B574F1}.Release|Win32.ActiveCfg = Release|Win32
 		{0BC6FCC9-C65E-4B1F-9A58-0B9399987C9F}.Debug with inlines and memory log|Win32.ActiveCfg = Debug|Win32
 		{0BC6FCC9-C65E-4B1F-9A58-0B9399987C9F}.Debug with inlines and memory log|Win32.Build.0 = Debug|Win32
-		{0BC6FCC9-C65E-4B1F-9A58-0B9399987C9F}.Debug with inlines|Win32.ActiveCfg = Debug|Win32
-		{0BC6FCC9-C65E-4B1F-9A58-0B9399987C9F}.Debug with inlines|Win32.Build.0 = Debug|Win32
+		{0BC6FCC9-C65E-4B1F-9A58-0B9399987C9F}.Debug with inlines|Win32.ActiveCfg = Debug with inlines|Win32
+		{0BC6FCC9-C65E-4B1F-9A58-0B9399987C9F}.Debug with inlines|Win32.Build.0 = Debug with inlines|Win32
 		{0BC6FCC9-C65E-4B1F-9A58-0B9399987C9F}.Debug|Win32.ActiveCfg = Debug|Win32
 		{0BC6FCC9-C65E-4B1F-9A58-0B9399987C9F}.Debug|Win32.Build.0 = Debug|Win32
-		{0BC6FCC9-C65E-4B1F-9A58-0B9399987C9F}.Dedicated Debug with inlines|Win32.ActiveCfg = Debug|Win32
-		{0BC6FCC9-C65E-4B1F-9A58-0B9399987C9F}.Dedicated Debug with inlines|Win32.Build.0 = Debug|Win32
-		{0BC6FCC9-C65E-4B1F-9A58-0B9399987C9F}.Dedicated Debug|Win32.ActiveCfg = Debug|Win32
-		{0BC6FCC9-C65E-4B1F-9A58-0B9399987C9F}.Dedicated Debug|Win32.Build.0 = Debug|Win32
+		{0BC6FCC9-C65E-4B1F-9A58-0B9399987C9F}.Dedicated Debug with inlines|Win32.ActiveCfg = Dedicated Debug with inlines|Win32
+		{0BC6FCC9-C65E-4B1F-9A58-0B9399987C9F}.Dedicated Debug with inlines|Win32.Build.0 = Dedicated Debug with inlines|Win32
+		{0BC6FCC9-C65E-4B1F-9A58-0B9399987C9F}.Dedicated Debug|Win32.ActiveCfg = Dedicated Debug|Win32
+		{0BC6FCC9-C65E-4B1F-9A58-0B9399987C9F}.Dedicated Debug|Win32.Build.0 = Dedicated Debug|Win32
 		{0BC6FCC9-C65E-4B1F-9A58-0B9399987C9F}.Dedicated Release|Win32.ActiveCfg = Dedicated Release|Win32
 		{0BC6FCC9-C65E-4B1F-9A58-0B9399987C9F}.Dedicated Release|Win32.Build.0 = Dedicated Release|Win32
 		{0BC6FCC9-C65E-4B1F-9A58-0B9399987C9F}.Release|Win32.ActiveCfg = Release|Win32

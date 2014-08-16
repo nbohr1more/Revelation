@@ -100,10 +100,8 @@ void GL_DepthBoundsTest( const float zmin, const float zmax ) {
 		return;
 	}
 	if( zmin == 0.0f && zmax == 0.0f ) {
-		glDisable( GL_DEPTH_CLAMP );
 		glDisable( GL_DEPTH_BOUNDS_TEST_EXT );
 	} else {
-		glEnable( GL_DEPTH_CLAMP );
 		glEnable( GL_DEPTH_BOUNDS_TEST_EXT );
 		glDepthBoundsEXT( zmin, zmax );
 	}

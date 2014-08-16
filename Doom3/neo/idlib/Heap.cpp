@@ -82,14 +82,14 @@ private:
 	struct page_s {									// allocation page
 		void 				*data;					// data pointer to allocated memory
 		dword				dataSize;				// number of bytes of memory 'data' points to
-		page_s 			*next;					// next free page in same page manager
-		page_s 			*prev;					// used only when allocated
+		page_s 				*next;					// next free page in same page manager
+		page_s 				*prev;					// used only when allocated
 		dword				largestFree;			// this data used by the medium-size heap manager
 		void 				*firstFree;				// pointer to first free entry
 	};
 
 	struct mediumHeapEntry_s {
-		page_s 			*page;					// pointer to page
+		page_s 				*page;					// pointer to page
 		dword				size;					// size of block
 		mediumHeapEntry_s 	*prev;					// previous block
 		mediumHeapEntry_s 	*next;					// next block
@@ -99,32 +99,32 @@ private:
 	};
 
 	// variables
-	void 			*smallFirstFree[256 / ALIGN + 1];	// small heap allocator lists (for allocs of 1-255 bytes)
-	page_s 		*smallCurPage;					// current page for small allocations
-	dword			smallCurPageOffset;				// byte offset in current page
-	page_s 		*smallFirstUsedPage;				// first used page of the small heap manager
+	void 					*smallFirstFree[256 / ALIGN + 1];	// small heap allocator lists (for allocs of 1-255 bytes)
+	page_s 					*smallCurPage;						// current page for small allocations
+	dword					smallCurPageOffset;					// byte offset in current page
+	page_s 					*smallFirstUsedPage;				// first used page of the small heap manager
 
-	page_s 		*mediumFirstFreePage;			// first partially free page
-	page_s 		*mediumLastFreePage;				// last partially free page
-	page_s 		*mediumFirstUsedPage;			// completely used page
+	page_s 					*mediumFirstFreePage;				// first partially free page
+	page_s 					*mediumLastFreePage;				// last partially free page
+	page_s 					*mediumFirstUsedPage;				// completely used page
 
-	page_s 		*largeFirstUsedPage;				// first page used by the large heap manager
+	page_s 					*largeFirstUsedPage;				// first page used by the large heap manager
 
-	page_s 		*swapPage;
+	page_s 					*swapPage;
 
-	dword			pagesAllocated;					// number of pages currently allocated
-	dword			pageSize;						// size of one alloc page in bytes
+	dword					pagesAllocated;						// number of pages currently allocated
+	dword					pageSize;							// size of one alloc page in bytes
 
-	dword			pageRequests;					// page requests
-	dword			OSAllocs;						// number of allocs made to the OS
+	dword					pageRequests;						// page requests
+	dword					OSAllocs;							// number of allocs made to the OS
 
-	int				c_heapAllocRunningCount;
+	int						c_heapAllocRunningCount;
 
-	void			*defragBlock;					// a single huge block that can be allocated
+	void					*defragBlock;						// a single huge block that can be allocated
 	// at startup, then freed when needed
 
 	// methods
-	page_s 		*AllocatePage( dword bytes );	// allocate page from the OS
+	page_s 			*AllocatePage( dword bytes );	// allocate page from the OS
 	void			FreePage( idHeap::page_s *p );	// free an OS allocated page
 
 	void 			*SmallAllocate( dword bytes );	// allocate memory (1-255 bytes) from small heap manager

@@ -280,6 +280,10 @@ static void RB_T_FillDepthBuffer( const drawSurf_t *surf ) {
 	if( stage == shader->GetNumStages() ) {
 		return;
 	}
+	// change the matrix if needed (BFG)
+	if( surf->space != backEnd.currentSpace ) {
+		glLoadMatrixf( surf->space->modelViewMatrix );
+	}
 	// set polygon offset if necessary
 	if( shader->TestMaterialFlag( MF_POLYGONOFFSET ) ) {
 		glEnable( GL_POLYGON_OFFSET_FILL );
@@ -812,7 +816,7 @@ static void RB_T_Shadow( const drawSurf_t *surf ) {
 		idVec4 localLight;
 		R_GlobalPointToLocal( surf->space->modelMatrix, backEnd.vLight->globalLightOrigin, localLight.ToVec3() );
 		localLight.w = 0.0f;
-		// Only the Arb2 backend can use this so make sure its set
+		// Only the Arb2 and GLSL backends can use these so make sure its set
 		if( glConfig.ARBVertexProgramAvailable && tr.backEndRenderer == BE_ARB2 ) {
 			glProgramEnvParameter4fvARB( GL_VERTEX_PROGRAM_ARB, PP_LIGHT_ORIGIN, localLight.ToFloatPtr() );
 		} else if( glConfig.ARBShadingLanguageAvailable && tr.backEndRenderer == BE_GLSL ) {
@@ -829,10 +833,11 @@ static void RB_T_Shadow( const drawSurf_t *surf ) {
 	bool	external = false;
 	if( !r_useExternalShadows.GetInteger() ) {
 		numIndexes = tri->numIndexes;
-	} else if( r_useExternalShadows.GetInteger() == 2 ) {  // force to no caps for testing
+	} else if( r_useExternalShadows.GetInteger() == 2 ) {
+		// force to no caps for testing
 		numIndexes = tri->numShadowIndexesNoCaps;
 	} else if( !( surf->dsFlags & DSF_VIEW_INSIDE_SHADOW ) ) {
-		// if we aren't inside the shadow projection, no caps are ever needed needed
+		// if we aren't inside the shadow projection, no caps are ever needed
 		numIndexes = tri->numShadowIndexesNoCaps;
 		external = true;
 	} else if( !backEnd.vLight->viewInsideLight && !( surf->geo->shadowCapPlaneBits & SHADOW_CAP_INFINITE ) ) {

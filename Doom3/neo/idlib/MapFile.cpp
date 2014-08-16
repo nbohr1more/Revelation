@@ -152,6 +152,7 @@ idMapPatch *idMapPatch::Parse( idLexer &src, const idVec3 &origin, bool patchDef
 		delete patch;
 		return NULL;
 	}
+#pragma loop( hint_parallel(8) )
 	for( j = 0; j < patch->GetWidth(); j++ ) {
 		if( !src.ExpectTokenString( "(" ) ) {
 			src.Error( "idMapPatch::Parse: bad vertex row data" );
@@ -214,6 +215,7 @@ bool idMapPatch::Write( idFile *fp, int primitiveNum, const idVec3 &origin ) con
 		fp->WriteFloatString( "  \"%s\"\n  ( %d %d 0 0 0 )\n", GetMaterial(), GetWidth(), GetHeight() );
 	}
 	fp->WriteFloatString( "  (\n" );
+#pragma loop( hint_parallel(8) )
 	for( i = 0; i < GetWidth(); i++ ) {
 		fp->WriteFloatString( "   ( " );
 		for( j = 0; j < GetHeight(); j++ ) {
@@ -236,6 +238,7 @@ unsigned int idMapPatch::GetGeometryCRC( void ) const {
 	int i, j;
 	unsigned int crc;
 	crc = GetHorzSubdivisions() ^ GetVertSubdivisions();
+#pragma loop( hint_parallel(8) )
 	for( i = 0; i < GetWidth(); i++ ) {
 		for( j = 0; j < GetHeight(); j++ ) {
 			crc ^= FloatCRC( verts[j * GetWidth() + i].xyz.x );
@@ -262,6 +265,7 @@ idMapBrush *idMapBrush::Parse( idLexer &src, const idVec3 &origin, bool newForma
 	if( !src.ExpectTokenString( "{" ) ) {
 		return NULL;
 	}
+#pragma loop( hint_parallel(8) )
 	do {
 		if( !src.ReadToken( &token ) ) {
 			src.Error( "idMapBrush::Parse: unexpected EOF" );
@@ -373,6 +377,7 @@ idMapBrush *idMapBrush::ParseQ3( idLexer &src, const idVec3 &origin ) {
 	idList<idMapBrushSide *> sides;
 	idMapBrushSide	*side;
 	idDict epairs;
+#pragma loop( hint_parallel(8) )
 	do {
 		if( src.CheckTokenString( "}" ) ) {
 			break;
@@ -434,10 +439,12 @@ bool idMapBrush::Write( idFile *fp, int primitiveNum, const idVec3 &origin ) con
 	idMapBrushSide *side;
 	fp->WriteFloatString( "// primitive %d\n{\n brushDef3\n {\n", primitiveNum );
 	// write brush epairs
+#pragma loop( hint_parallel(8) )
 	for( i = 0; i < epairs.GetNumKeyVals(); i++ ) {
 		fp->WriteFloatString( "  \"%s\" \"%s\"\n", epairs.GetKeyVal( i )->GetKey().c_str(), epairs.GetKeyVal( i )->GetValue().c_str() );
 	}
 	// write brush sides
+#pragma loop( hint_parallel(8) )
 	for( i = 0; i < GetNumSides(); i++ ) {
 		side = GetSide( i );
 		fp->WriteFloatString( "  ( %f %f %f %f ) ", side->plane[0], side->plane[1], side->plane[2], side->plane[3] );
@@ -460,6 +467,7 @@ unsigned int idMapBrush::GetGeometryCRC( void ) const {
 	idMapBrushSide *mapSide;
 	unsigned int crc;
 	crc = 0;
+#pragma loop( hint_parallel(8) )
 	for( i = 0; i < GetNumSides(); i++ ) {
 		mapSide = GetSide( i );
 		for( j = 0; j < 4; j++ ) {
@@ -496,6 +504,7 @@ idMapEntity *idMapEntity::Parse( idLexer &src, bool worldSpawn, float version ) 
 	}
 	origin.Zero();
 	worldent = false;
+#pragma loop( hint_parallel(8) )
 	do {
 		if( !src.ReadToken( &token ) ) {
 			src.Error( "idMapEntity::Parse: EOF without closing brace" );
@@ -575,11 +584,13 @@ bool idMapEntity::Write( idFile *fp, int entityNum ) const {
 	idVec3 origin;
 	fp->WriteFloatString( "// entity %d\n{\n", entityNum );
 	// write entity epairs
+#pragma loop( hint_parallel(8) )
 	for( i = 0; i < epairs.GetNumKeyVals(); i++ ) {
 		fp->WriteFloatString( "\"%s\" \"%s\"\n", epairs.GetKeyVal( i )->GetKey().c_str(), epairs.GetKeyVal( i )->GetValue().c_str() );
 	}
 	epairs.GetVector( "origin", "0 0 0", origin );
 	// write pritimives
+#pragma loop( hint_parallel(8) )
 	for( i = 0; i < GetNumPrimitives(); i++ ) {
 		mapPrim = GetPrimitive( i );
 		switch( mapPrim->GetType() ) {
@@ -614,6 +625,7 @@ unsigned int idMapEntity::GetGeometryCRC( void ) const {
 	unsigned int crc;
 	idMapPrimitive	*mapPrim;
 	crc = 0;
+#pragma loop( hint_parallel(8) )
 	for( i = 0; i < GetNumPrimitives(); i++ ) {
 		mapPrim = GetPrimitive( i );
 		switch( mapPrim->GetType() ) {
