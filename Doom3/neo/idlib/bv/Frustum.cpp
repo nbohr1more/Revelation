@@ -401,13 +401,13 @@ idFrustum::CullWinding
 ============
 */
 bool idFrustum::CullWinding( const idWinding &winding ) const {
-	int i, *pointCull;
-	idVec3 *localPoints;
+	int		*pointCull;
+	idVec3	*localPoints;
 	idMat3 transpose;
 	localPoints = ( idVec3 * ) _alloca16( winding.GetNumPoints() * sizeof( idVec3 ) );
 	pointCull = ( int * ) _alloca16( winding.GetNumPoints() * sizeof( int ) );
 	transpose = axis.Transpose();
-	for( i = 0; i < winding.GetNumPoints(); i++ ) {
+	for( int i = 0; i < winding.GetNumPoints(); i++ ) {
 		localPoints[i] = ( winding[i].ToVec3() - origin ) * transpose;
 	}
 	return CullLocalWinding( localPoints, winding.GetNumPoints(), pointCull );
@@ -1027,11 +1027,11 @@ idFrustum::IntersectsWinding
 ============
 */
 bool idFrustum::IntersectsWinding( const idWinding &winding ) const {
-	int i, j, *pointCull;
-	float min, max;
-	idVec3 *localPoints, indexPoints[8], cornerVecs[4];
-	idMat3 transpose;
-	idPlane plane;
+	int			i, j, *pointCull;
+	float		min, max;
+	idVec3		*localPoints, indexPoints[8], cornerVecs[4];
+	idMat3		transpose;
+	idPlane		plane;
 	localPoints = ( idVec3 * ) _alloca16( winding.GetNumPoints() * sizeof( idVec3 ) );
 	pointCull = ( int * ) _alloca16( winding.GetNumPoints() * sizeof( int ) );
 	transpose = axis.Transpose();
@@ -2396,7 +2396,7 @@ static int capPointIndex[4][2] = {
 	{ 2, 3 }
 };
 
-ID_FORCE_INLINE bool idFrustum::AddLocalCapsToProjectionBounds( const idVec3 endPoints[4], const int endPointCull[4], const idVec3 &point, int pointCull, int pointClip, idBounds &projectionBounds ) const {
+ID_INLINE bool idFrustum::AddLocalCapsToProjectionBounds( const idVec3 endPoints[4], const int endPointCull[4], const idVec3 &point, int pointCull, int pointClip, idBounds &projectionBounds ) const {
 	int *p;
 	if( pointClip < 0 ) {
 		return false;

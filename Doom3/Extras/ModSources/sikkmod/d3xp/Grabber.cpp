@@ -573,12 +573,12 @@ bool idGrabber::grabbableAI( const char *aiName ) {
 	// skip "monster_"
 	aiName += 8;
 	if( ( !idStr::Cmpn( aiName, "flying_lostsoul", 15 ) ||
-			!idStr::Cmpn( aiName, "demon_trite", 11 ) ||
-			!idStr::Cmp( aiName, "flying_forgotten" ) ||
-			!idStr::Cmp( aiName, "demon_cherub" ) ||
-			!idStr::Cmp( aiName, "demon_tick" ) ) &&
-			g_grabbableAI.GetBool() ) {	// sikk - Grabbable Enemy Toggle
-		return true;
+		  !idStr::Cmpn( aiName, "demon_trite", 11 ) ||
+		  !idStr::Cmp( aiName, "flying_forgotten" ) ||
+		  !idStr::Cmp( aiName, "demon_cherub" ) ||
+		  !idStr::Cmp( aiName, "demon_tick" ) ) &&
+		  g_grabbableAI.GetBool() ) {	// sikk - Grabbable Enemy Toggle
+		 return true;
 	}
 	return false;
 }

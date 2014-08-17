@@ -481,7 +481,7 @@ plane extends from, allowing you to see doubled edges
 =================
 */
 void RB_ShowSilhouette( void ) {
-	int		i;
+	int					i;
 	const drawSurf_t	*surf;
 	const viewLight_t	*vLight;
 	if( !r_showSilhouette.GetBool() ) {
@@ -564,8 +564,7 @@ static void RB_ShowShadowCount( void ) {
 	GL_Cull( CT_TWO_SIDED );
 	for( vLight = backEnd.viewDef->viewLights ; vLight ; vLight = vLight->next ) {
 		for( i = 0 ; i < 2 ; i++ ) {
-			for( surf = i ? vLight->localShadows : vLight->globalShadows
-						; surf ; surf = ( drawSurf_t * )surf->nextOnLight ) {
+			for( surf = i ? vLight->localShadows : vLight->globalShadows; surf ; surf = ( drawSurf_t * )surf->nextOnLight ) {
 				RB_SimpleSurfaceSetup( surf );
 				const srfTriangles_t	*tri = surf->geo;
 				if( !tri->shadowCache ) {

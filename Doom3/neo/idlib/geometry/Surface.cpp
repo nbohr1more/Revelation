@@ -35,7 +35,7 @@ If you have questions concerning this license or the applicable additional terms
 UpdateVertexIndex
 =================
 */
-ID_FORCE_INLINE int UpdateVertexIndex( int vertexIndexNum[2], int *vertexRemap, int *vertexCopyIndex, int vertNum ) {
+ID_INLINE int UpdateVertexIndex( int vertexIndexNum[2], int *vertexRemap, int *vertexCopyIndex, int vertNum ) {
 	int s = INTSIGNBITSET( vertexRemap[vertNum] );
 	vertexIndexNum[0] = vertexRemap[vertNum];
 	vertexRemap[vertNum] = vertexIndexNum[s];
@@ -550,11 +550,11 @@ idSurface::IsConnected
 =============
 */
 bool idSurface::IsConnected( void ) const {
-	int i, j, numIslands, numTris;
-	int queueStart, queueEnd;
-	int *queue, *islandNum;
-	int curTri, nextTri, edgeNum;
-	const int *index;
+	int			i, j, numIslands, numTris;
+	int			queueStart, queueEnd;
+	int			*queue, *islandNum;
+	int			curTri, nextTri, edgeNum;
+	const int	*index;
 	numIslands = 0;
 	numTris = indexes.Num() / 3;
 	islandNum = ( int * ) _alloca16( numTris * sizeof( int ) );

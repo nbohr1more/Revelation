@@ -351,19 +351,19 @@ private:
 	void			SuddenRespawn( void );
 };
 
-ID_FORCE_INLINE idMultiplayerGame::gameState_t idMultiplayerGame::GetGameState( void ) const {
+ID_INLINE idMultiplayerGame::gameState_t idMultiplayerGame::GetGameState( void ) const {
 	return gameState;
 }
 
-ID_FORCE_INLINE bool idMultiplayerGame::IsPureReady( void ) const {
+ID_INLINE bool idMultiplayerGame::IsPureReady( void ) const {
 	return pureReady;
 }
 
-ID_FORCE_INLINE void idMultiplayerGame::ClearFrags( int clientNum ) {
+ID_INLINE void idMultiplayerGame::ClearFrags( int clientNum ) {
 	playerState[ clientNum ].fragCount = 0;
 }
 
-ID_FORCE_INLINE bool idMultiplayerGame::IsInGame( int clientNum ) {
+ID_INLINE bool idMultiplayerGame::IsInGame( int clientNum ) {
 	return playerState[ clientNum ].ingame;
 }
 

@@ -62,7 +62,7 @@ protected:
 idSurface_SweptSpline::idSurface_SweptSpline
 ====================
 */
-ID_FORCE_INLINE idSurface_SweptSpline::idSurface_SweptSpline( void ) {
+ID_INLINE idSurface_SweptSpline::idSurface_SweptSpline( void ) {
 	spline = NULL;
 	sweptSpline = NULL;
 }
@@ -72,7 +72,7 @@ ID_FORCE_INLINE idSurface_SweptSpline::idSurface_SweptSpline( void ) {
 idSurface_SweptSpline::~idSurface_SweptSpline
 ====================
 */
-ID_FORCE_INLINE idSurface_SweptSpline::~idSurface_SweptSpline( void ) {
+ID_INLINE idSurface_SweptSpline::~idSurface_SweptSpline( void ) {
 	delete spline;
 	delete sweptSpline;
 }
@@ -82,7 +82,7 @@ ID_FORCE_INLINE idSurface_SweptSpline::~idSurface_SweptSpline( void ) {
 idSurface_SweptSpline::Clear
 ====================
 */
-ID_FORCE_INLINE void idSurface_SweptSpline::Clear( void ) {
+ID_INLINE void idSurface_SweptSpline::Clear( void ) {
 	idSurface::Clear();
 	delete spline;
 	spline = NULL;

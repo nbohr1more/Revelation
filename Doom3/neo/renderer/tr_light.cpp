@@ -127,7 +127,7 @@ void R_CreateVertexProgramShadowCache( srfTriangles_t *tri ) {
 R_SkyboxTexGen
 ==================
 */
-void R_SkyboxTexGen( drawSurf_t *surf, const idVec3 &viewOrg ) {
+ID_FORCE_INLINE void R_SkyboxTexGen( drawSurf_t *surf, const idVec3 &viewOrg ) {
 	int					i;
 	idVec3				localViewOrigin;
 	R_GlobalPointToLocal( surf->space->modelMatrix, viewOrg, localViewOrigin );
@@ -148,7 +148,7 @@ void R_SkyboxTexGen( drawSurf_t *surf, const idVec3 &viewOrg ) {
 R_WobbleskyTexGen
 ==================
 */
-void R_WobbleskyTexGen( drawSurf_t *surf, const idVec3 &viewOrg ) {
+ID_FORCE_INLINE void R_WobbleskyTexGen( drawSurf_t *surf, const idVec3 &viewOrg ) {
 	int			i;
 	idVec3		localViewOrigin;
 	const int	*parms = surf->material->GetTexGenRegisters();
@@ -271,7 +271,7 @@ R_TestPointInViewLight
 */
 static const float INSIDE_LIGHT_FRUSTUM_SLOP = 32.0f;
 // this needs to be greater than the dist from origin to corner of near clip plane
-static bool R_TestPointInViewLight( const idVec3 &org, const idRenderLightLocal *light ) {
+ID_STATIC_TEMPLATE ID_INLINE bool R_TestPointInViewLight( const idVec3 &org, const idRenderLightLocal *light ) {
 	int		i;
 	idVec3	local;
 	for( i = 0 ; i < 6 ; i++ ) {
@@ -290,7 +290,7 @@ R_PointInFrustum
 Assumes positive sides face outward
 ===================
 */
-static bool R_PointInFrustum( idVec3 &p, idPlane *planes, int numPlanes ) {
+ID_STATIC_TEMPLATE ID_INLINE bool R_PointInFrustum( idVec3 &p, idPlane *planes, int numPlanes ) {
 	for( int i = 0 ; i < numPlanes ; i++ ) {
 		float d = planes[i].Distance( p );
 		if( d > 0 ) {

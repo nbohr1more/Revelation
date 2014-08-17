@@ -106,7 +106,7 @@ protected:
 	idVec3					origin;
 };
 
-ID_FORCE_INLINE idMapBrushSide::idMapBrushSide( void ) {
+ID_INLINE idMapBrushSide::idMapBrushSide( void ) {
 	plane.Zero();
 	texMat[0].Zero();
 	texMat[1].Zero();
@@ -183,7 +183,7 @@ protected:
 	bool					explicitSubdivisions;
 };
 
-ID_FORCE_INLINE idMapPatch::idMapPatch( void ) {
+ID_INLINE idMapPatch::idMapPatch( void ) {
 	type = TYPE_PATCH;
 	horzSubdivisions = vertSubdivisions = 0;
 	explicitSubdivisions = false;
@@ -192,7 +192,7 @@ ID_FORCE_INLINE idMapPatch::idMapPatch( void ) {
 	expanded = false;
 }
 
-ID_FORCE_INLINE idMapPatch::idMapPatch( int maxPatchWidth, int maxPatchHeight ) {
+ID_INLINE idMapPatch::idMapPatch( int maxPatchWidth, int maxPatchHeight ) {
 	type = TYPE_PATCH;
 	horzSubdivisions = vertSubdivisions = 0;
 	explicitSubdivisions = false;
@@ -295,7 +295,7 @@ private:
 	void					SetGeometryCRC( void );
 };
 
-ID_FORCE_INLINE idMapFile::idMapFile( void ) {
+ID_INLINE idMapFile::idMapFile( void ) {
 	version = CURRENT_MAP_VERSION;
 	fileTime = 0;
 	geometryCRC = 0;

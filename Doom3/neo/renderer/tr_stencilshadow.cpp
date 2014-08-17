@@ -223,7 +223,7 @@ If surfaces are ever guaranteed to not have to edge match with
 other surfaces, we could just compare indexes.
 ===============
 */
-static bool PointsOrdered( const idVec3 &a, const idVec3 &b ) {
+ID_STATIC_TEMPLATE ID_INLINE bool PointsOrdered( const idVec3 &a, const idVec3 &b ) {
 	float	i, j;
 	// vectors that wind up getting an equal hash value will
 	// potentially cause a misorder, which can show as a couple
@@ -278,7 +278,7 @@ make a projected copy of the even verts into the odd spots
 that is on the far light clip plane
 ===================
 */
-static void R_ProjectPointsToFarPlane( stencilRef_t *st, const idRenderEntityLocal *ent, const idRenderLightLocal *light, const idPlane &lightPlaneLocal, int firstShadowVert, int numShadowVerts ) {
+ID_STATIC_TEMPLATE ID_INLINE void R_ProjectPointsToFarPlane( stencilRef_t *st, const idRenderEntityLocal *ent, const idRenderLightLocal *light, const idPlane &lightPlaneLocal, int firstShadowVert, int numShadowVerts ) {
 	idVec3		lv;
 	idVec4		mat[4];
 	int			i;
@@ -322,7 +322,7 @@ I have some worries about edge flag cases when polygons are clipped
 multiple times near the epsilon.
 =============
 */
-static int R_ChopWinding( clipTri_t clipTris[2], int inNum, const idPlane &plane ) {
+ID_STATIC_TEMPLATE ID_INLINE int R_ChopWinding( clipTri_t clipTris[2], int inNum, const idPlane &plane ) {
 	clipTri_t	*in, *out;
 	float		dists[MAX_CLIPPED_POINTS];
 	int			sides[MAX_CLIPPED_POINTS];
@@ -399,7 +399,7 @@ R_ClipTriangleToLight
 Returns false if nothing is left after clipping
 ===================
 */
-static bool	R_ClipTriangleToLight( stencilRef_t *st, const idVec3 &a, const idVec3 &b, const idVec3 &c, int planeBits, const idPlane frustum[6] ) {
+ID_STATIC_TEMPLATE ID_INLINE bool	R_ClipTriangleToLight( stencilRef_t *st, const idVec3 &a, const idVec3 &b, const idVec3 &c, int planeBits, const idPlane frustum[6] ) {
 	int			i;
 	int			base;
 	clipTri_t	pingPong[2], *ct;
@@ -472,7 +472,7 @@ If one point is clearly clipped by the plane and the
 other point is on the plane, it will be completely removed.
 ===================
 */
-static bool R_ClipLineToLight( const idVec3 &a, const idVec3 &b, const idPlane frustum[6], idVec3 &p1, idVec3 &p2 ) {
+ID_STATIC_TEMPLATE ID_INLINE bool R_ClipLineToLight( const idVec3 &a, const idVec3 &b, const idPlane frustum[6], idVec3 &p1, idVec3 &p2 ) {
 	float	*clip;
 	int		j;
 	float	d1, d2;
@@ -519,7 +519,7 @@ the frustum.
 Only done for simple projected lights, not point lights.
 ==================
 */
-static void R_AddClipSilEdges( stencilRef_t *st ) {
+ID_STATIC_TEMPLATE ID_INLINE void R_AddClipSilEdges( stencilRef_t *st ) {
 	int		v1, v2;
 	int		v1_back, v2_back;
 	int		i;
@@ -559,7 +559,7 @@ Add quads from the front points to the projected points
 for each silhouette edge in the light
 =================
 */
-static void R_AddSilEdges( stencilRef_t *st, const srfTriangles_t *tri, unsigned short *pointCull, const idPlane frustum[6] ) {
+ID_STATIC_TEMPLATE ID_INLINE void R_AddSilEdges( stencilRef_t *st, const srfTriangles_t *tri, unsigned short *pointCull, const idPlane frustum[6] ) {
 	int			v1, v2;
 	int			i;
 	silEdge_t	*sil;
@@ -659,7 +659,7 @@ R_CalcPointCull
 Also inits the remap[] array to all -1
 ================
 */
-static void R_CalcPointCull( stencilRef_t *st, const srfTriangles_t *tri, const idPlane frustum[6], unsigned short *pointCull ) {
+ID_STATIC_TEMPLATE void R_CalcPointCull( stencilRef_t *st, const srfTriangles_t *tri, const idPlane frustum[6], unsigned short *pointCull ) {
 	int		i;
 	int		frontBits;
 	float	*planeSide;
@@ -711,7 +711,7 @@ If the frustum is just part of a point light, clipped planes don't
 need to be added.
 =================
 */
-static void R_CreateShadowVolumeInFrustum( stencilRef_t *st,
+ID_STATIC_TEMPLATE void R_CreateShadowVolumeInFrustum( stencilRef_t *st,
 		const idRenderEntityLocal *ent,
 		const srfTriangles_t *tri,
 		const idRenderLightLocal *light,
@@ -921,9 +921,9 @@ void R_MakeShadowFrustums( idRenderLightLocal *light ) {
 		bool centerOutside = false;
 		// if the light center of projection is outside the light bounds,
 		// we will need to build the planes a little differently
-		if( fabs( light->parms.lightCenter[0] ) > light->parms.lightRadius[0] ||
-			fabs( light->parms.lightCenter[1] ) > light->parms.lightRadius[1] ||
-			fabs( light->parms.lightCenter[2] ) > light->parms.lightRadius[2] )	{
+		if( idMath::Fabs( light->parms.lightCenter[0] ) > light->parms.lightRadius[0] ||
+			idMath::Fabs( light->parms.lightCenter[1] ) > light->parms.lightRadius[1] ||
+			idMath::Fabs( light->parms.lightCenter[2] ) > light->parms.lightRadius[2] )	{
 			centerOutside = true;
 		}
 		// make the corners

@@ -559,16 +559,16 @@ public:
 	void					PushState( int timeGroup );
 };
 
-ID_FORCE_INLINE SetTimeState::SetTimeState() {
+ID_INLINE SetTimeState::SetTimeState() {
 	activated = false;
 }
 
-ID_FORCE_INLINE SetTimeState::SetTimeState( int timeGroup ) {
+ID_INLINE SetTimeState::SetTimeState( int timeGroup ) {
 	activated = false;
 	PushState( timeGroup );
 }
 
-ID_FORCE_INLINE void SetTimeState::PushState( int timeGroup ) {
+ID_INLINE void SetTimeState::PushState( int timeGroup ) {
 	// Don't mess with time in Multiplayer
 	if( !gameLocal.isMultiplayer ) {
 		activated = true;
@@ -593,7 +593,7 @@ ID_FORCE_INLINE void SetTimeState::PushState( int timeGroup ) {
 	}
 }
 
-ID_FORCE_INLINE SetTimeState::~SetTimeState() {
+ID_INLINE SetTimeState::~SetTimeState() {
 	if( activated && !gameLocal.isMultiplayer ) {
 		// set previous correct time
 		if( previousFast ) {

@@ -1598,8 +1598,6 @@ void idMoveableItem::Spawn( void ) {
 	physicsObj.SetFriction( 0.6f, 0.6f, friction );
 	physicsObj.SetGravity( gameLocal.GetGravity() );
 	// sikk---> We want moveable items to clip with other items and we also want ragdolls to clip with items
-	//physicsObj.SetContents( CONTENTS_RENDERMODEL );
-	//physicsObj.SetClipMask( MASK_SOLID | CONTENTS_MOVEABLECLIP );
 	physicsObj.SetContents( CONTENTS_RENDERMODEL | CONTENTS_CORPSE );
 	physicsObj.SetClipMask( MASK_SOLID | CONTENTS_CORPSE | CONTENTS_MOVEABLECLIP | CONTENTS_RENDERMODEL );
 	// <---sikk
@@ -1744,8 +1742,7 @@ idEntity *idMoveableItem::DropItem( const char *classname, const idVec3 &origin,
 		if( !removeDelay ) {
 			removeDelay = 5 * 60 * 1000;
 		}
-		// always remove a dropped item after 5 minutes in case it dropped to an unreachable location
-		//		item->PostEventMS( &EV_Remove, removeDelay );	// sikk - Dropped moveable items no longer are removed
+		// sikk - Dropped moveable items are no longer removed
 	}
 	return item;
 }
@@ -2000,8 +1997,6 @@ bool idMoveableItemPowerup::GiveToPlayer( idPlayer *player ) {
 		return false;
 	}
 	// sikk---> Adrenaline Pack System
-	//	player->GivePowerUp( type, time * 1000 );
-	//	return true;
 	return player->GivePowerUp( type, time * 1000 );
 	// <---sikk
 }

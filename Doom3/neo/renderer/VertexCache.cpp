@@ -44,7 +44,7 @@ idVertexCache     vertexCache;
 R_ShowVBOMem_f
 ==============
 */
-void R_ShowVBOMem_f( const idCmdArgs &args ) {
+ID_STATIC_TEMPLATE ID_INLINE void R_ShowVBOMem_f( const idCmdArgs &args ) {
 	vertexCache.Show();
 }
 
@@ -53,7 +53,7 @@ void R_ShowVBOMem_f( const idCmdArgs &args ) {
 R_ListVBOMem_f
 ==============
 */
-void R_ListVBOMem_f( const idCmdArgs &args ) {
+ID_STATIC_TEMPLATE ID_INLINE void R_ListVBOMem_f( const idCmdArgs &args ) {
 	vertexCache.List();
 }
 
@@ -143,7 +143,7 @@ idVertexCache::BindIndex
 Makes sure it only allocates the right buffers once.
 ===========
 */
-void idVertexCache::BindIndex( GLenum target, GLuint vbo ) {
+ID_FORCE_INLINE void idVertexCache::BindIndex( GLenum target, GLuint vbo ) {
 	switch( target ) {
 	case GL_ARRAY_BUFFER:
 		if( vertexBuffer != vbo ) {
@@ -174,7 +174,7 @@ idVertexCache::UnbindIndex
 Makes sure it only deallocates the right buffers once.
 ===========
 */
-void idVertexCache::UnbindIndex( GLenum target ) {
+ID_FORCE_INLINE void idVertexCache::UnbindIndex( GLenum target ) {
 	switch( target ) {
 	case GL_ARRAY_BUFFER:
 		if( vertexBuffer != 0 )	{
@@ -409,7 +409,7 @@ idVertexCache::MapBufferRange
 MH's Version fast on Nvidia But may fail on AMD.
 ===========
 */
-vertCache_t *idVertexCache::MapBufferRange( vertCache_t *buffer, void *data, int size ) {
+ID_FORCE_INLINE vertCache_t *idVertexCache::MapBufferRange( vertCache_t *buffer, void *data, int size ) {
 	GLbitfield	access = ( GL_MAP_WRITE_BIT | ( ( buffer->offset == 0 ) ? GL_MAP_INVALIDATE_BUFFER_BIT : GL_MAP_UNSYNCHRONIZED_BIT | GL_MAP_INVALIDATE_RANGE_BIT ) );
 	GLvoid      *ptr = glMapBufferRange( GL_ARRAY_BUFFER, static_cast<GLintptr>( buffer->offset ), static_cast<GLsizeiptr>( size ), access );
 	if( ptr ) {
@@ -429,7 +429,7 @@ If the above fails we can still map using the old version.
 Note the old version uses enums not bitfields.
 ===========
 */
-vertCache_t *idVertexCache::MapBuffer( vertCache_t *buffer, void *data, int size ) {
+ID_FORCE_INLINE vertCache_t *idVertexCache::MapBuffer( vertCache_t *buffer, void *data, int size ) {
 	GLenum	access = ( GL_MAP_WRITE_BIT | ( ( buffer->offset == 0 ) ? GL_MAP_INVALIDATE_BUFFER_BIT : GL_MAP_UNSYNCHRONIZED_BIT | GL_MAP_INVALIDATE_RANGE_BIT ) );
 	GLvoid  *ptr = glMapBufferARB( GL_ARRAY_BUFFER, access );
 	if( ptr ) {
@@ -565,7 +565,7 @@ void idVertexCache::EndFrame() {
 idVertexCache::List
 =============
 */
-void idVertexCache::List( void ) {
+ID_FORCE_INLINE void idVertexCache::List( void ) {
 	int			numActive = 0;
 	int			frameStatic = 0;
 	int			totalStatic = 0;
@@ -606,7 +606,7 @@ replaces the broken glconfig string version.
 Revelator cannot use glew's function pointers.
 =============
 */
-void idVertexCache::Show( void ) {
+ID_FORCE_INLINE void idVertexCache::Show( void ) {
 	GLint  mem[4];
 	if( glewIsExtensionSupported( "GL_NVX_gpu_memory_info" ) ) {
 		common->Printf( "\nNvidia specific memory info:\n" );

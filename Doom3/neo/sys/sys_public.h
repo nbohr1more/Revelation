@@ -355,9 +355,9 @@ typedef struct {
 	unsigned long	threadId;
 } xthreadInfo;
 
-const int MAX_THREADS				= 10;
-extern xthreadInfo *g_threads[MAX_THREADS];
-extern int			g_thread_count;
+const int MAX_THREADS		= 10;
+ID_TLS extern xthreadInfo  *g_threads[MAX_THREADS];
+ID_TLS extern int			g_thread_count;
 
 void						Sys_CreateThread( xthread_t function, void *parms, xthreadPriority priority, xthreadInfo &info, const char *name, xthreadInfo *threads[MAX_THREADS], int *thread_count );
 void						Sys_DestroyThread( xthreadInfo &info ); // sets threadHandle back to 0
@@ -432,7 +432,7 @@ public:
 	virtual void			StartProcess( const char *exePath, bool quit ) = 0;
 };
 
-extern idSys 				*sys;
+extern	idSys 				*sys;
 
 bool Sys_LoadOpenAL( void );
 void Sys_FreeOpenAL( void );

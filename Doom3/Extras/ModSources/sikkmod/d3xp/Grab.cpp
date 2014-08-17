@@ -68,7 +68,7 @@ idGrabEntity::StartDrag
 */
 void idGrabEntity::StartDrag( idPlayer *player, idEntity *grabEnt, int id ) {
 	if( grabEnt && grabEnt->GetPhysics()->GetBounds().GetRadius() < MAX_PICKUP_SIZE &&
-			grabEnt->GetPhysics()->GetLinearVelocity().LengthSqr() < MAX_PICKUP_VELOCITY ) {
+		grabEnt->GetPhysics()->GetLinearVelocity().LengthSqr() < MAX_PICKUP_VELOCITY ) {
 		dragFailTime = gameLocal.time + FAIL_TIME;
 		oldUcmdFlags = player->usercmd.flags;
 		// This is the new object to drag around

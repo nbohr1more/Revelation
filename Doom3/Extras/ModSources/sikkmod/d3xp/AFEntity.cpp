@@ -1153,14 +1153,12 @@ void idAFEntity_Gibbable::Gib( const idVec3 &dir, const char *damageDefName ) {
 		// This is why only one entity will get gibbed while the rest just disappear after a few seconds.
 		// I commented this out instead of moving the variable to the proper class because it's easier and
 		// the delay is only 200ms so the difference should be unnoticable.
-		//		if ( gameLocal.time > gameLocal.GetGibTime() ) {
 		gameLocal.SetGibTime( gameLocal.time + GIB_DELAY );
 		SpawnGibs( dir, damageDefName );
 		renderEntity.noShadow = true;
 		renderEntity.shaderParms[ SHADERPARM_TIME_OF_DEATH ] = gameLocal.time * 0.001f;
 		StartSound( "snd_gibbed", SND_CHANNEL_ANY, 0, false, NULL );
 		gibbed = true;
-		//		}
 	} else {
 		gibbed = true;
 	}

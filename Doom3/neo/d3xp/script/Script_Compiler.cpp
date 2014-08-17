@@ -273,7 +273,7 @@ idCompiler::VirtualFunctionConstant
 Creates a def for an index into a virtual function table
 ============
 */
-ID_FORCE_INLINE idVarDef *idCompiler::VirtualFunctionConstant( idVarDef *func ) {
+ID_INLINE idVarDef *idCompiler::VirtualFunctionConstant( idVarDef *func ) {
 	eval_t eval;
 	memset( &eval, 0, sizeof( eval ) );
 	eval._int = func->scope->TypeDef()->GetFunctionNumber( func->value.functionPtr );
@@ -290,7 +290,7 @@ idCompiler::SizeConstant
 Creates a def for a size constant
 ============
 */
-ID_FORCE_INLINE idVarDef *idCompiler::SizeConstant( int size ) {
+ID_INLINE idVarDef *idCompiler::SizeConstant( int size ) {
 	eval_t eval;
 	memset( &eval, 0, sizeof( eval ) );
 	eval._int = size;
@@ -304,7 +304,7 @@ idCompiler::JumpConstant
 Creates a def for a jump constant
 ============
 */
-ID_FORCE_INLINE idVarDef *idCompiler::JumpConstant( int value ) {
+ID_INLINE idVarDef *idCompiler::JumpConstant( int value ) {
 	eval_t eval;
 	memset( &eval, 0, sizeof( eval ) );
 	eval._int = value;
@@ -318,7 +318,7 @@ idCompiler::JumpDef
 Creates a def for a relative jump from one code location to another
 ============
 */
-ID_FORCE_INLINE idVarDef *idCompiler::JumpDef( int jumpfrom, int jumpto ) {
+ID_INLINE idVarDef *idCompiler::JumpDef( int jumpfrom, int jumpto ) {
 	return JumpConstant( jumpto - jumpfrom );
 }
 
@@ -329,7 +329,7 @@ idCompiler::JumpTo
 Creates a def for a relative jump from current code location
 ============
 */
-ID_FORCE_INLINE idVarDef *idCompiler::JumpTo( int jumpto ) {
+ID_INLINE idVarDef *idCompiler::JumpTo( int jumpto ) {
 	return JumpDef( gameLocal.program.NumStatements(), jumpto );
 }
 
@@ -340,7 +340,7 @@ idCompiler::JumpFrom
 Creates a def for a relative jump from code location to current code location
 ============
 */
-ID_FORCE_INLINE idVarDef *idCompiler::JumpFrom( int jumpfrom ) {
+ID_INLINE idVarDef *idCompiler::JumpFrom( int jumpfrom ) {
 	return JumpDef( jumpfrom, gameLocal.program.NumStatements() );
 }
 
@@ -349,7 +349,7 @@ ID_FORCE_INLINE idVarDef *idCompiler::JumpFrom( int jumpfrom ) {
 idCompiler::Divide
 ============
 */
-ID_FORCE_INLINE float idCompiler::Divide( float numerator, float denominator ) {
+ID_INLINE float idCompiler::Divide( float numerator, float denominator ) {
 	if( denominator == 0 ) {
 		Error( "Divide by zero" );
 		return 0;
@@ -699,7 +699,7 @@ idCompiler::EmitOpcode
 Emits a primitive statement, returning the var it places it's value in
 ============
 */
-ID_FORCE_INLINE idVarDef *idCompiler::EmitOpcode( int op, idVarDef *var_a, idVarDef *var_b ) {
+ID_INLINE idVarDef *idCompiler::EmitOpcode( int op, idVarDef *var_a, idVarDef *var_b ) {
 	return EmitOpcode( &opcodes[ op ], var_a, var_b );
 }
 

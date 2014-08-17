@@ -102,7 +102,7 @@ private:
 idStrPool::SetCaseSensitive
 ================
 */
-ID_FORCE_INLINE void idStrPool::SetCaseSensitive( bool caseSensitive ) {
+ID_INLINE void idStrPool::SetCaseSensitive( bool caseSensitive ) {
 	this->caseSensitive = caseSensitive;
 }
 
@@ -111,7 +111,7 @@ ID_FORCE_INLINE void idStrPool::SetCaseSensitive( bool caseSensitive ) {
 idStrPool::AllocString
 ================
 */
-ID_FORCE_INLINE const idPoolStr *idStrPool::AllocString( const char *string ) {
+ID_INLINE const idPoolStr *idStrPool::AllocString( const char *string ) {
 	int i, hash;
 	idPoolStr *poolStr;
 	hash = poolHash.GenerateKey( string, caseSensitive );
@@ -143,7 +143,7 @@ ID_FORCE_INLINE const idPoolStr *idStrPool::AllocString( const char *string ) {
 idStrPool::FreeString
 ================
 */
-ID_FORCE_INLINE void idStrPool::FreeString( const idPoolStr *poolStr ) {
+ID_INLINE void idStrPool::FreeString( const idPoolStr *poolStr ) {
 	int i, hash;
 	assert( poolStr->numUsers >= 1 );
 	assert( poolStr->pool == this );
@@ -176,7 +176,7 @@ ID_FORCE_INLINE void idStrPool::FreeString( const idPoolStr *poolStr ) {
 idStrPool::CopyString
 ================
 */
-ID_FORCE_INLINE const idPoolStr *idStrPool::CopyString( const idPoolStr *poolStr ) {
+ID_INLINE const idPoolStr *idStrPool::CopyString( const idPoolStr *poolStr ) {
 	assert( poolStr->numUsers >= 1 );
 	if( poolStr->pool == this ) {
 		// the string is from this pool so just increase the user count
@@ -193,7 +193,7 @@ ID_FORCE_INLINE const idPoolStr *idStrPool::CopyString( const idPoolStr *poolStr
 idStrPool::Clear
 ================
 */
-ID_FORCE_INLINE void idStrPool::Clear( void ) {
+ID_INLINE void idStrPool::Clear( void ) {
 	int i;
 	for( i = 0; i < pool.Num(); i++ ) {
 		pool[i]->numUsers = 0;
@@ -207,7 +207,7 @@ ID_FORCE_INLINE void idStrPool::Clear( void ) {
 idStrPool::Allocated
 ================
 */
-ID_FORCE_INLINE size_t idStrPool::Allocated( void ) const {
+ID_INLINE size_t idStrPool::Allocated( void ) const {
 	int i;
 	size_t size;
 	size = pool.Allocated() + poolHash.Allocated();
@@ -222,7 +222,7 @@ ID_FORCE_INLINE size_t idStrPool::Allocated( void ) const {
 idStrPool::Size
 ================
 */
-ID_FORCE_INLINE size_t idStrPool::Size( void ) const {
+ID_INLINE size_t idStrPool::Size( void ) const {
 	int i;
 	size_t size;
 	size = pool.Size() + poolHash.Size();

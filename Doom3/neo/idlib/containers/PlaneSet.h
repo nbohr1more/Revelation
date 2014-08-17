@@ -51,7 +51,7 @@ private:
 	idHashIndex				hash;
 };
 
-ID_FORCE_INLINE int idPlaneSet::FindPlane( const idPlane &plane, const float normalEps, const float distEps ) {
+ID_INLINE int idPlaneSet::FindPlane( const idPlane &plane, const float normalEps, const float distEps ) {
 	int i, border, hashKey;
 	assert( distEps <= 0.125f );
 	hashKey = ( int )( idMath::Fabs( plane.Dist() ) * 0.125f );

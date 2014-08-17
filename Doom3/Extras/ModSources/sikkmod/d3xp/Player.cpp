@@ -1749,8 +1749,6 @@ void idPlayer::Spawn( void ) {
 #else
 			g_damageScale.SetFloat( 1.0f );
 #endif
-			// sikk - Commented to allow this to be set by the user
-			//			g_armorProtection.SetFloat( ( g_skill.GetInteger() < 2 ) ? 0.4f : 0.2f );
 #ifndef ID_DEMO_BUILD
 			if( g_skill.GetInteger() == 3 ) {
 				healthTake = true;
@@ -1812,7 +1810,7 @@ void idPlayer::Spawn( void ) {
 			const idKeyValue *kv = decl->dict.MatchPrefix( "re_" );
 			if( kv ) {
 				while( kv ) {
-					//gameLocal.Printf( "monster list = %s	%s\n", kv->GetKey().c_str(), kv->GetValue().c_str() );
+					gameLocal.DPrintf( "monster list = %s, %s\n", kv->GetKey().c_str(), kv->GetValue().c_str() );
 					declManager->FindType( DECL_ENTITYDEF, kv->GetValue().c_str() );
 					kv = decl->dict.MatchPrefix( "re_", kv );
 				}
@@ -2731,7 +2729,7 @@ void idPlayer::UpdateHudAmmo( idUserInterface *_hud ) {
 	} else {
 		// sikk---> Dynamic Hud System
 		if( atoi( _hud->GetStateString( "player_ammo" ) ) != inclip ||
-				atoi( _hud->GetStateString( "player_totalammo" ) ) != ammoamount ) {
+			atoi( _hud->GetStateString( "player_totalammo" ) ) != ammoamount ) {
 			bStatsChanged = true;
 		}
 		// <---sikk
@@ -2805,7 +2803,7 @@ void idPlayer::UpdateHudStats( idUserInterface *_hud ) {
 	}
 	// sikk---> Dynamic Hud System
 	if( _hud->GetStateInt( "player_health" ) != health ||
-			_hud->GetStateInt( "player_armor" ) != inventory.armor	) {
+		_hud->GetStateInt( "player_armor" ) != inventory.armor	) {
 		bStatsChanged = true;
 	}
 	// <---sikk
@@ -2965,8 +2963,7 @@ void idPlayer::DrawHUD( idUserInterface *_hud ) {
 				idMat3	muzzleAxis;
 				// detemine the point at which the weapon is aiming
 				if( weapon.GetEntity()->GetBarrelJointView() != INVALID_JOINT &&
-						weapon.GetEntity()->GetProjectileDict().GetBool( "launchFromBarrel" ) &&
-						( GetCurrentWeaponNum() < 9 && GetCurrentWeaponNum() > 11 ) ) {
+					weapon.GetEntity()->GetProjectileDict().GetBool( "launchFromBarrel" ) && ( GetCurrentWeaponNum() < 9 && GetCurrentWeaponNum() > 11 ) ) {
 					// there is an explicit joint for the muzzle
 					weapon.GetEntity()->GetGlobalJointTransform( true, weapon.GetEntity()->GetBarrelJointView(), muzzleOrigin, muzzleAxis );
 				} else {
@@ -3035,16 +3032,7 @@ void idPlayer::DrawHUD( idUserInterface *_hud ) {
 					}
 				}
 			}
-#ifdef _D3XP
-			/*			if ( weapon.GetEntity()->GetGrabberState() == 1 || weapon.GetEntity()->GetGrabberState() == 2 ) {
-							cursor->SetStateString( "grabbercursor", "1" );
-							cursor->SetStateString( "combatcursor", "0" );
-						} else {
-							cursor->SetStateString( "grabbercursor", "0" );
-							cursor->SetStateString( "combatcursor", "1" );
-						}*/
-#endif
-			// <---sikk
+#			// <---sikk
 			cursor->Redraw( gameLocal.realClientTime );
 		}
 	}
@@ -3556,7 +3544,6 @@ bool idPlayer::GivePowerUp( int powerup, int time ) {
 			if( adrenalineAmount > 1 ) {
 				adrenalineAmount = 1;
 			}
-			//				stamina = 100.0f;
 			// <---sikk
 			break;
 		}

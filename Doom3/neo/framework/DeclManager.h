@@ -287,10 +287,9 @@ public:
 
 
 template< class type >
-ID_FORCE_INLINE idDecl *idDeclAllocator( void ) {
+ID_INLINE idDecl *idDeclAllocator( void ) {
 	return new type;
 }
-
 
 class idMaterial;
 class idDeclSkin;
@@ -373,12 +372,12 @@ extern idDeclManager 		*declManager;
 
 
 template< declType_t type >
-ID_FORCE_INLINE void idListDecls_f( const idCmdArgs &args ) {
+ID_INLINE void idListDecls_f( const idCmdArgs &args ) {
 	declManager->ListType( args, type );
 }
 
 template< declType_t type >
-ID_FORCE_INLINE void idPrintDecls_f( const idCmdArgs &args ) {
+ID_INLINE void idPrintDecls_f( const idCmdArgs &args ) {
 	declManager->PrintType( args, type );
 }
 

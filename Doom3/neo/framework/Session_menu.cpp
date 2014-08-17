@@ -122,7 +122,7 @@ void idSessionLocal::ExitMenu( void ) {
 idListSaveGameCompare
 ===============
 */
-ID_FORCE_INLINE int idListSaveGameCompare( const fileTIME_T *a, const fileTIME_T *b ) {
+ID_INLINE int idListSaveGameCompare( const fileTIME_T *a, const fileTIME_T *b ) {
 	return b->timeStamp - a->timeStamp;
 }
 

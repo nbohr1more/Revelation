@@ -77,14 +77,15 @@ If you have questions concerning this license or the applicable additional terms
 
 #define ALIGNPTR( x, a )				( ( ( x ) + ((a)-1) ) & ~((a)-1) )
 
-#define _alloca16( x )					((void *)ALIGNPTR( (int)_alloca( ALIGNPTR( x, 16 ) + 16 ), 16 ) )
-#define _alloca32( x )					((void *)ALIGNPTR( (int)_alloca( ALIGNPTR( x, 32 ) + 32 ), 32 ) )
-#define _alloca64( x )					((void *)ALIGNPTR( (int)_alloca( ALIGNPTR( x, 64 ) + 64 ), 64 ) )
-#define _alloca128( x )					((void *)ALIGNPTR( (int)_alloca( ALIGNPTR( x, 128 ) + 128 ), 128 ) )
+#define _alloca16( x )					((volatile void *)ALIGNPTR( (int)_alloca( ALIGNPTR( x, 16 ) + 16 ), 16 ) )
+#define _alloca32( x )					((volatile void *)ALIGNPTR( (int)_alloca( ALIGNPTR( x, 32 ) + 32 ), 32 ) )
+#define _alloca64( x )					((volatile void *)ALIGNPTR( (int)_alloca( ALIGNPTR( x, 64 ) + 64 ), 64 ) )
+#define _alloca128( x )					((volatile void *)ALIGNPTR( (int)_alloca( ALIGNPTR( x, 128 ) + 128 ), 128 ) )
 
 #define PATHSEPERATOR_STR				"\\"
 #define PATHSEPERATOR_CHAR				'\\'
 
+#define ID_TLS							__declspec(thread)
 #define ID_INLINE						__inline
 #define ID_FORCE_INLINE					__forceinline
 #define ID_STATIC_TEMPLATE				static
@@ -129,6 +130,7 @@ If you have questions concerning this license or the applicable additional terms
 #define __cdecl
 #define ASSERT							assert
 
+#define ID_TLS
 #define ID_INLINE						__inline
 #define ID_FORCE_INLINE					__forceinline
 #define ID_STATIC_TEMPLATE
@@ -170,6 +172,7 @@ If you have questions concerning this license or the applicable additional terms
 #define __cdecl
 #define ASSERT							assert
 
+#define ID_TLS
 #define ID_INLINE						__inline
 #define ID_FORCE_INLINE					__forceinline
 #define ID_STATIC_TEMPLATE

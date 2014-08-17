@@ -93,7 +93,7 @@ idInterpolate::idInterpolate
 ====================
 */
 template< class type >
-ID_FORCE_INLINE idInterpolate<type>::idInterpolate() {
+ID_INLINE idInterpolate<type>::idInterpolate() {
 	currentTime = startTime = duration = 0;
 	memset( &currentValue, 0, sizeof( currentValue ) );
 	startValue = endValue = currentValue;
@@ -105,7 +105,7 @@ idInterpolate::Init
 ====================
 */
 template< class type >
-ID_FORCE_INLINE void idInterpolate<type>::Init( const float startTime, const float duration, const type &startValue, const type &endValue ) {
+ID_INLINE void idInterpolate<type>::Init( const float startTime, const float duration, const type &startValue, const type &endValue ) {
 	this->startTime = startTime;
 	this->duration = duration;
 	this->startValue = startValue;
@@ -120,7 +120,7 @@ idInterpolate::GetCurrentValue
 ====================
 */
 template< class type >
-ID_FORCE_INLINE type idInterpolate<type>::GetCurrentValue( float time ) const {
+ID_INLINE type idInterpolate<type>::GetCurrentValue( float time ) const {
 	float deltaTime;
 	deltaTime = time - startTime;
 	if( time != currentTime ) {
@@ -213,7 +213,7 @@ idInterpolateAccelDecelLinear::idInterpolateAccelDecelLinear
 ====================
 */
 template< class type >
-ID_FORCE_INLINE idInterpolateAccelDecelLinear<type>::idInterpolateAccelDecelLinear() {
+ID_INLINE idInterpolateAccelDecelLinear<type>::idInterpolateAccelDecelLinear() {
 	startTime = accelTime = linearTime = decelTime = 0;
 	memset( &startValue, 0, sizeof( startValue ) );
 	endValue = startValue;
@@ -225,7 +225,7 @@ idInterpolateAccelDecelLinear::Init
 ====================
 */
 template< class type >
-ID_FORCE_INLINE void idInterpolateAccelDecelLinear<type>::Init( const float startTime, const float accelTime, const float decelTime, const float duration, const type &startValue, const type &endValue ) {
+ID_INLINE void idInterpolateAccelDecelLinear<type>::Init( const float startTime, const float accelTime, const float decelTime, const float duration, const type &startValue, const type &endValue ) {
 	type speed;
 	this->startTime = startTime;
 	this->accelTime = accelTime;
@@ -256,7 +256,7 @@ idInterpolateAccelDecelLinear::Invalidate
 ====================
 */
 template< class type >
-ID_FORCE_INLINE void idInterpolateAccelDecelLinear<type>::Invalidate( void ) {
+ID_INLINE void idInterpolateAccelDecelLinear<type>::Invalidate( void ) {
 	extrapolate.Init( 0, 0, extrapolate.GetStartValue(), extrapolate.GetBaseSpeed(), extrapolate.GetSpeed(), EXTRAPOLATION_NONE );
 }
 
@@ -266,7 +266,7 @@ idInterpolateAccelDecelLinear::SetPhase
 ====================
 */
 template< class type >
-ID_FORCE_INLINE void idInterpolateAccelDecelLinear<type>::SetPhase( float time ) const {
+ID_INLINE void idInterpolateAccelDecelLinear<type>::SetPhase( float time ) const {
 	float deltaTime;
 	deltaTime = time - startTime;
 	if( deltaTime < accelTime ) {
@@ -290,7 +290,7 @@ idInterpolateAccelDecelLinear::GetCurrentValue
 ====================
 */
 template< class type >
-ID_FORCE_INLINE type idInterpolateAccelDecelLinear<type>::GetCurrentValue( float time ) const {
+ID_INLINE type idInterpolateAccelDecelLinear<type>::GetCurrentValue( float time ) const {
 	SetPhase( time );
 	return extrapolate.GetCurrentValue( time );
 }
@@ -301,7 +301,7 @@ idInterpolateAccelDecelLinear::GetCurrentSpeed
 ====================
 */
 template< class type >
-ID_FORCE_INLINE type idInterpolateAccelDecelLinear<type>::GetCurrentSpeed( float time ) const {
+ID_INLINE type idInterpolateAccelDecelLinear<type>::GetCurrentSpeed( float time ) const {
 	SetPhase( time );
 	return extrapolate.GetCurrentSpeed( time );
 }
@@ -384,7 +384,7 @@ idInterpolateAccelDecelSine::idInterpolateAccelDecelSine
 ====================
 */
 template< class type >
-ID_FORCE_INLINE idInterpolateAccelDecelSine<type>::idInterpolateAccelDecelSine() {
+ID_INLINE idInterpolateAccelDecelSine<type>::idInterpolateAccelDecelSine() {
 	startTime = accelTime = linearTime = decelTime = 0;
 	memset( &startValue, 0, sizeof( startValue ) );
 	endValue = startValue;
@@ -396,7 +396,7 @@ idInterpolateAccelDecelSine::Init
 ====================
 */
 template< class type >
-ID_FORCE_INLINE void idInterpolateAccelDecelSine<type>::Init( const float startTime, const float accelTime, const float decelTime, const float duration, const type &startValue, const type &endValue ) {
+ID_INLINE void idInterpolateAccelDecelSine<type>::Init( const float startTime, const float accelTime, const float decelTime, const float duration, const type &startValue, const type &endValue ) {
 	type speed;
 	this->startTime = startTime;
 	this->accelTime = accelTime;
@@ -427,7 +427,7 @@ idInterpolateAccelDecelSine::Invalidate
 ====================
 */
 template< class type >
-ID_FORCE_INLINE void idInterpolateAccelDecelSine<type>::Invalidate( void ) {
+ID_INLINE void idInterpolateAccelDecelSine<type>::Invalidate( void ) {
 	extrapolate.Init( 0, 0, extrapolate.GetStartValue(), extrapolate.GetBaseSpeed(), extrapolate.GetSpeed(), EXTRAPOLATION_NONE );
 }
 
@@ -437,7 +437,7 @@ idInterpolateAccelDecelSine::SetPhase
 ====================
 */
 template< class type >
-ID_FORCE_INLINE void idInterpolateAccelDecelSine<type>::SetPhase( float time ) const {
+ID_INLINE void idInterpolateAccelDecelSine<type>::SetPhase( float time ) const {
 	float deltaTime;
 	deltaTime = time - startTime;
 	if( deltaTime < accelTime ) {
@@ -461,7 +461,7 @@ idInterpolateAccelDecelSine::GetCurrentValue
 ====================
 */
 template< class type >
-ID_FORCE_INLINE type idInterpolateAccelDecelSine<type>::GetCurrentValue( float time ) const {
+ID_INLINE type idInterpolateAccelDecelSine<type>::GetCurrentValue( float time ) const {
 	SetPhase( time );
 	return extrapolate.GetCurrentValue( time );
 }
@@ -472,7 +472,7 @@ idInterpolateAccelDecelSine::GetCurrentSpeed
 ====================
 */
 template< class type >
-ID_FORCE_INLINE type idInterpolateAccelDecelSine<type>::GetCurrentSpeed( float time ) const {
+ID_INLINE type idInterpolateAccelDecelSine<type>::GetCurrentSpeed( float time ) const {
 	SetPhase( time );
 	return extrapolate.GetCurrentSpeed( time );
 }

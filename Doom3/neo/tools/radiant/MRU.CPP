@@ -392,8 +392,7 @@ void PlaceMenuMRUItem( LPMRUMENU lpMruMenu, HMENU hMenu, UINT uiItem ) {
 	for( i = ( int )wNbShow - 1; i >= 0; i-- ) {
 		LPSTR lpTxt;
 		if( lpTxt = ( LPSTR )GlobalAllocPtr( GHND, lpMruMenu->wMaxSizeLruItem + 20 ) ) {
-			wsprintf( lpTxt, "&%lu %s",
-					  ( DWORD )( i + 1 ), lpMruMenu->lpMRU + ( lpMruMenu->wMaxSizeLruItem * ( UINT )i ) );
+			wsprintf( lpTxt, "&%lu %s", ( DWORD )( i + 1 ), lpMruMenu->lpMRU + ( lpMruMenu->wMaxSizeLruItem * ( UINT )i ) );
 			InsertMenu( hMenu, ( ( ( WORD )i ) != ( wNbShow - 1 ) ) ? ( lpMruMenu->wIdMru + i + 2 ) : lpMruMenu->wIdMru,
 						MF_STRING, lpMruMenu->wIdMru + i + 1, lpTxt );
 			GlobalFreePtr( lpTxt );

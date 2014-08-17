@@ -101,20 +101,20 @@ private:
 	int				Laguer( const idComplex *coef, const int degree, idComplex &r ) const;
 };
 
-ID_FORCE_INLINE idPolynomial::idPolynomial( void ) {
+ID_INLINE idPolynomial::idPolynomial( void ) {
 	degree = -1;
 	allocated = 0;
 	coefficient = NULL;
 }
 
-ID_FORCE_INLINE idPolynomial::idPolynomial( int d ) {
+ID_INLINE idPolynomial::idPolynomial( int d ) {
 	degree = -1;
 	allocated = 0;
 	coefficient = NULL;
 	Resize( d, false );
 }
 
-ID_FORCE_INLINE idPolynomial::idPolynomial( float a, float b ) {
+ID_INLINE idPolynomial::idPolynomial( float a, float b ) {
 	degree = -1;
 	allocated = 0;
 	coefficient = NULL;
@@ -123,7 +123,7 @@ ID_FORCE_INLINE idPolynomial::idPolynomial( float a, float b ) {
 	coefficient[1] = a;
 }
 
-ID_FORCE_INLINE idPolynomial::idPolynomial( float a, float b, float c ) {
+ID_INLINE idPolynomial::idPolynomial( float a, float b, float c ) {
 	degree = -1;
 	allocated = 0;
 	coefficient = NULL;
@@ -133,7 +133,7 @@ ID_FORCE_INLINE idPolynomial::idPolynomial( float a, float b, float c ) {
 	coefficient[2] = a;
 }
 
-ID_FORCE_INLINE idPolynomial::idPolynomial( float a, float b, float c, float d ) {
+ID_INLINE idPolynomial::idPolynomial( float a, float b, float c, float d ) {
 	degree = -1;
 	allocated = 0;
 	coefficient = NULL;
@@ -144,7 +144,7 @@ ID_FORCE_INLINE idPolynomial::idPolynomial( float a, float b, float c, float d )
 	coefficient[3] = a;
 }
 
-ID_FORCE_INLINE idPolynomial::idPolynomial( float a, float b, float c, float d, float e ) {
+ID_INLINE idPolynomial::idPolynomial( float a, float b, float c, float d, float e ) {
 	degree = -1;
 	allocated = 0;
 	coefficient = NULL;
@@ -156,17 +156,17 @@ ID_FORCE_INLINE idPolynomial::idPolynomial( float a, float b, float c, float d, 
 	coefficient[4] = a;
 }
 
-ID_FORCE_INLINE float idPolynomial::operator[]( int index ) const {
+ID_INLINE float idPolynomial::operator[]( int index ) const {
 	assert( index >= 0 && index <= degree );
 	return coefficient[ index ];
 }
 
-ID_FORCE_INLINE float &idPolynomial::operator[]( int index ) {
+ID_INLINE float &idPolynomial::operator[]( int index ) {
 	assert( index >= 0 && index <= degree );
 	return coefficient[ index ];
 }
 
-ID_FORCE_INLINE idPolynomial idPolynomial::operator-() const {
+ID_INLINE idPolynomial idPolynomial::operator-() const {
 	int i;
 	idPolynomial n;
 	n = *this;
@@ -176,7 +176,7 @@ ID_FORCE_INLINE idPolynomial idPolynomial::operator-() const {
 	return n;
 }
 
-ID_FORCE_INLINE idPolynomial &idPolynomial::operator=( const idPolynomial &p ) {
+ID_INLINE idPolynomial &idPolynomial::operator=( const idPolynomial &p ) {
 	Resize( p.degree, false );
 	for( int i = 0; i <= degree; i++ ) {
 		coefficient[i] = p.coefficient[i];
@@ -184,7 +184,7 @@ ID_FORCE_INLINE idPolynomial &idPolynomial::operator=( const idPolynomial &p ) {
 	return *this;
 }
 
-ID_FORCE_INLINE idPolynomial idPolynomial::operator+( const idPolynomial &p ) const {
+ID_INLINE idPolynomial idPolynomial::operator+( const idPolynomial &p ) const {
 	int i;
 	idPolynomial n;
 	if( degree > p.degree ) {
@@ -218,7 +218,7 @@ ID_FORCE_INLINE idPolynomial idPolynomial::operator+( const idPolynomial &p ) co
 	return n;
 }
 
-ID_FORCE_INLINE idPolynomial idPolynomial::operator-( const idPolynomial &p ) const {
+ID_INLINE idPolynomial idPolynomial::operator-( const idPolynomial &p ) const {
 	int i;
 	idPolynomial n;
 	if( degree > p.degree ) {
@@ -252,7 +252,7 @@ ID_FORCE_INLINE idPolynomial idPolynomial::operator-( const idPolynomial &p ) co
 	return n;
 }
 
-ID_FORCE_INLINE idPolynomial idPolynomial::operator*( const float s ) const {
+ID_INLINE idPolynomial idPolynomial::operator*( const float s ) const {
 	idPolynomial n;
 	if( s == 0.0f ) {
 		n.degree = 0;
@@ -265,7 +265,7 @@ ID_FORCE_INLINE idPolynomial idPolynomial::operator*( const float s ) const {
 	return n;
 }
 
-ID_FORCE_INLINE idPolynomial idPolynomial::operator/( const float s ) const {
+ID_INLINE idPolynomial idPolynomial::operator/( const float s ) const {
 	float invs;
 	idPolynomial n;
 	assert( s != 0.0f );
@@ -277,7 +277,7 @@ ID_FORCE_INLINE idPolynomial idPolynomial::operator/( const float s ) const {
 	return n;
 }
 
-ID_FORCE_INLINE idPolynomial &idPolynomial::operator+=( const idPolynomial &p ) {
+ID_INLINE idPolynomial &idPolynomial::operator+=( const idPolynomial &p ) {
 	int i;
 	if( degree > p.degree ) {
 		for( i = 0; i <= p.degree; i++ ) {
@@ -302,7 +302,7 @@ ID_FORCE_INLINE idPolynomial &idPolynomial::operator+=( const idPolynomial &p ) 
 	return *this;
 }
 
-ID_FORCE_INLINE idPolynomial &idPolynomial::operator-=( const idPolynomial &p ) {
+ID_INLINE idPolynomial &idPolynomial::operator-=( const idPolynomial &p ) {
 	int i;
 	if( degree > p.degree ) {
 		for( i = 0; i <= p.degree; i++ ) {
@@ -327,7 +327,7 @@ ID_FORCE_INLINE idPolynomial &idPolynomial::operator-=( const idPolynomial &p ) 
 	return *this;
 }
 
-ID_FORCE_INLINE idPolynomial &idPolynomial::operator*=( const float s ) {
+ID_INLINE idPolynomial &idPolynomial::operator*=( const float s ) {
 	if( s == 0.0f ) {
 		degree = 0;
 	} else {
@@ -338,7 +338,7 @@ ID_FORCE_INLINE idPolynomial &idPolynomial::operator*=( const float s ) {
 	return *this;
 }
 
-ID_FORCE_INLINE idPolynomial &idPolynomial::operator/=( const float s ) {
+ID_INLINE idPolynomial &idPolynomial::operator/=( const float s ) {
 	float invs;
 	assert( s != 0.0f );
 	invs = 1.0f / s;
@@ -348,7 +348,7 @@ ID_FORCE_INLINE idPolynomial &idPolynomial::operator/=( const float s ) {
 	return *this;;
 }
 
-ID_FORCE_INLINE bool idPolynomial::Compare( const idPolynomial &p ) const {
+ID_INLINE bool idPolynomial::Compare( const idPolynomial &p ) const {
 	if( degree != p.degree ) {
 		return false;
 	}
@@ -360,7 +360,7 @@ ID_FORCE_INLINE bool idPolynomial::Compare( const idPolynomial &p ) const {
 	return true;
 }
 
-ID_FORCE_INLINE bool idPolynomial::Compare( const idPolynomial &p, const float epsilon ) const {
+ID_INLINE bool idPolynomial::Compare( const idPolynomial &p, const float epsilon ) const {
 	if( degree != p.degree ) {
 		return false;
 	}
@@ -372,34 +372,34 @@ ID_FORCE_INLINE bool idPolynomial::Compare( const idPolynomial &p, const float e
 	return true;
 }
 
-ID_FORCE_INLINE bool idPolynomial::operator==( const idPolynomial &p ) const {
+ID_INLINE bool idPolynomial::operator==( const idPolynomial &p ) const {
 	return Compare( p );
 }
 
-ID_FORCE_INLINE bool idPolynomial::operator!=( const idPolynomial &p ) const {
+ID_INLINE bool idPolynomial::operator!=( const idPolynomial &p ) const {
 	return !Compare( p );
 }
 
-ID_FORCE_INLINE void idPolynomial::Zero( void ) {
+ID_INLINE void idPolynomial::Zero( void ) {
 	degree = 0;
 }
 
-ID_FORCE_INLINE void idPolynomial::Zero( int d ) {
+ID_INLINE void idPolynomial::Zero( int d ) {
 	Resize( d, false );
 	for( int i = 0; i <= degree; i++ ) {
 		coefficient[i] = 0.0f;
 	}
 }
 
-ID_FORCE_INLINE int idPolynomial::GetDimension( void ) const {
+ID_INLINE int idPolynomial::GetDimension( void ) const {
 	return degree;
 }
 
-ID_FORCE_INLINE int idPolynomial::GetDegree( void ) const {
+ID_INLINE int idPolynomial::GetDegree( void ) const {
 	return degree;
 }
 
-ID_FORCE_INLINE float idPolynomial::GetValue( const float x ) const {
+ID_INLINE float idPolynomial::GetValue( const float x ) const {
 	float y, z;
 	y = coefficient[0];
 	z = x;
@@ -410,7 +410,7 @@ ID_FORCE_INLINE float idPolynomial::GetValue( const float x ) const {
 	return y;
 }
 
-ID_FORCE_INLINE idComplex idPolynomial::GetValue( const idComplex &x ) const {
+ID_INLINE idComplex idPolynomial::GetValue( const idComplex &x ) const {
 	idComplex y, z;
 	y.Set( coefficient[0], 0.0f );
 	z = x;
@@ -421,7 +421,7 @@ ID_FORCE_INLINE idComplex idPolynomial::GetValue( const idComplex &x ) const {
 	return y;
 }
 
-ID_FORCE_INLINE idPolynomial idPolynomial::GetDerivative( void ) const {
+ID_INLINE idPolynomial idPolynomial::GetDerivative( void ) const {
 	idPolynomial n;
 	if( degree == 0 ) {
 		return n;
@@ -433,7 +433,7 @@ ID_FORCE_INLINE idPolynomial idPolynomial::GetDerivative( void ) const {
 	return n;
 }
 
-ID_FORCE_INLINE idPolynomial idPolynomial::GetAntiDerivative( void ) const {
+ID_INLINE idPolynomial idPolynomial::GetAntiDerivative( void ) const {
 	idPolynomial n;
 	if( degree == 0 ) {
 		return n;
@@ -446,13 +446,13 @@ ID_FORCE_INLINE idPolynomial idPolynomial::GetAntiDerivative( void ) const {
 	return n;
 }
 
-ID_FORCE_INLINE int idPolynomial::GetRoots1( float a, float b, float *roots ) {
+ID_INLINE int idPolynomial::GetRoots1( float a, float b, float *roots ) {
 	assert( a != 0.0f );
 	roots[0] = - b / a;
 	return 1;
 }
 
-ID_FORCE_INLINE int idPolynomial::GetRoots2( float a, float b, float c, float *roots ) {
+ID_INLINE int idPolynomial::GetRoots2( float a, float b, float c, float *roots ) {
 	float inva, ds;
 	if( a != 1.0f ) {
 		assert( a != 0.0f );
@@ -474,7 +474,7 @@ ID_FORCE_INLINE int idPolynomial::GetRoots2( float a, float b, float c, float *r
 	}
 }
 
-ID_FORCE_INLINE int idPolynomial::GetRoots3( float a, float b, float c, float d, float *roots ) {
+ID_INLINE int idPolynomial::GetRoots3( float a, float b, float c, float d, float *roots ) {
 	float inva, f, g, halfg, ofs, ds, dist, angle, cs, ss, t;
 	if( a != 1.0f ) {
 		assert( a != 0.0f );
@@ -526,7 +526,7 @@ ID_FORCE_INLINE int idPolynomial::GetRoots3( float a, float b, float c, float d,
 	}
 }
 
-ID_FORCE_INLINE int idPolynomial::GetRoots4( float a, float b, float c, float d, float e, float *roots ) {
+ID_INLINE int idPolynomial::GetRoots4( float a, float b, float c, float d, float e, float *roots ) {
 	int count;
 	float inva, y, ds, r, s1, s2, t1, t2, tp, tm;
 	float roots3[3];
@@ -581,15 +581,15 @@ ID_FORCE_INLINE int idPolynomial::GetRoots4( float a, float b, float c, float d,
 	}
 }
 
-ID_FORCE_INLINE const float *idPolynomial::ToFloatPtr( void ) const {
+ID_INLINE const float *idPolynomial::ToFloatPtr( void ) const {
 	return coefficient;
 }
 
-ID_FORCE_INLINE float *idPolynomial::ToFloatPtr( void ) {
+ID_INLINE float *idPolynomial::ToFloatPtr( void ) {
 	return coefficient;
 }
 
-ID_FORCE_INLINE void idPolynomial::Resize( int d, bool keep ) {
+ID_INLINE void idPolynomial::Resize( int d, bool keep ) {
 	int alloc = ( d + 1 + 3 ) & ~3;
 	if( alloc > allocated ) {
 		float *ptr = ( float * ) Mem_Alloc16( alloc * sizeof( float ) );

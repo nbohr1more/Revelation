@@ -66,14 +66,12 @@ Win32Vars_t	win32;
 static char		sys_cmdline[MAX_STRING_CHARS];
 
 // not a hard limit, just what we keep track of for debugging
-xthreadInfo *g_threads[MAX_THREADS];
+ID_TLS xthreadInfo *g_threads[MAX_THREADS];
+ID_TLS int			g_thread_count = 0;
 
-int g_thread_count = 0;
-
-static sysMemoryStats_t exeLaunchMemoryStats;
-
-static	xthreadInfo	threadInfo;
-static	HANDLE		hTimer;
+ID_TLS static sysMemoryStats_t	exeLaunchMemoryStats;
+ID_TLS static xthreadInfo		threadInfo;
+ID_TLS static HANDLE			hTimer;
 
 /*
 ================

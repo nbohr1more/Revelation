@@ -70,7 +70,7 @@ private:
 };
 
 template< class type, int dimension >
-ID_FORCE_INLINE idVectorSet<type, dimension>::idVectorSet( void ) {
+ID_INLINE idVectorSet<type, dimension>::idVectorSet( void ) {
 	hash.Clear( idMath::IPow( boxHashSize, dimension ), 128 );
 	boxHashSize = 16;
 	memset( boxInvSize, 0, dimension * sizeof( boxInvSize[0] ) );
@@ -78,12 +78,12 @@ ID_FORCE_INLINE idVectorSet<type, dimension>::idVectorSet( void ) {
 }
 
 template< class type, int dimension >
-ID_FORCE_INLINE idVectorSet<type, dimension>::idVectorSet( const type &mins, const type &maxs, const int boxHashSize, const int initialSize ) {
+ID_INLINE idVectorSet<type, dimension>::idVectorSet( const type &mins, const type &maxs, const int boxHashSize, const int initialSize ) {
 	Init( mins, maxs, boxHashSize, initialSize );
 }
 
 template< class type, int dimension >
-ID_FORCE_INLINE void idVectorSet<type, dimension>::Init( const type &mins, const type &maxs, const int boxHashSize, const int initialSize ) {
+ID_INLINE void idVectorSet<type, dimension>::Init( const type &mins, const type &maxs, const int boxHashSize, const int initialSize ) {
 	int i;
 	float boxSize;
 	idList<type>::AssureSize( initialSize );
@@ -100,19 +100,19 @@ ID_FORCE_INLINE void idVectorSet<type, dimension>::Init( const type &mins, const
 }
 
 template< class type, int dimension >
-ID_FORCE_INLINE void idVectorSet<type, dimension>::ResizeIndex( const int newSize ) {
+ID_INLINE void idVectorSet<type, dimension>::ResizeIndex( const int newSize ) {
 	idList<type>::Resize( newSize );
 	hash.ResizeIndex( newSize );
 }
 
 template< class type, int dimension >
-ID_FORCE_INLINE void idVectorSet<type, dimension>::Clear( void ) {
+ID_INLINE void idVectorSet<type, dimension>::Clear( void ) {
 	idList<type>::Clear();
 	hash.Clear();
 }
 
 template< class type, int dimension >
-ID_FORCE_INLINE int idVectorSet<type, dimension>::FindVector( const type &v, const float epsilon ) {
+ID_INLINE int idVectorSet<type, dimension>::FindVector( const type &v, const float epsilon ) {
 	int i, j, k, hashKey, partialHashKey[dimension];
 	for( i = 0; i < dimension; i++ ) {
 		assert( epsilon <= boxHalfSize[i] );
@@ -188,7 +188,7 @@ private:
 };
 
 template< class type, int dimension >
-ID_FORCE_INLINE idVectorSubset<type, dimension>::idVectorSubset( void ) {
+ID_INLINE idVectorSubset<type, dimension>::idVectorSubset( void ) {
 	hash.Clear( idMath::IPow( boxHashSize, dimension ), 128 );
 	boxHashSize = 16;
 	memset( boxInvSize, 0, dimension * sizeof( boxInvSize[0] ) );
@@ -196,12 +196,12 @@ ID_FORCE_INLINE idVectorSubset<type, dimension>::idVectorSubset( void ) {
 }
 
 template< class type, int dimension >
-ID_FORCE_INLINE idVectorSubset<type, dimension>::idVectorSubset( const type &mins, const type &maxs, const int boxHashSize, const int initialSize ) {
+ID_INLINE idVectorSubset<type, dimension>::idVectorSubset( const type &mins, const type &maxs, const int boxHashSize, const int initialSize ) {
 	Init( mins, maxs, boxHashSize, initialSize );
 }
 
 template< class type, int dimension >
-ID_FORCE_INLINE void idVectorSubset<type, dimension>::Init( const type &mins, const type &maxs, const int boxHashSize, const int initialSize ) {
+ID_INLINE void idVectorSubset<type, dimension>::Init( const type &mins, const type &maxs, const int boxHashSize, const int initialSize ) {
 	int i;
 	float boxSize;
 	hash.Clear( idMath::IPow( boxHashSize, dimension ), initialSize );
@@ -216,13 +216,13 @@ ID_FORCE_INLINE void idVectorSubset<type, dimension>::Init( const type &mins, co
 }
 
 template< class type, int dimension >
-ID_FORCE_INLINE void idVectorSubset<type, dimension>::Clear( void ) {
+ID_INLINE void idVectorSubset<type, dimension>::Clear( void ) {
 	idList<type>::Clear();
 	hash.Clear();
 }
 
 template< class type, int dimension >
-ID_FORCE_INLINE int idVectorSubset<type, dimension>::FindVector( const type *vectorList, const int vectorNum, const float epsilon ) {
+ID_INLINE int idVectorSubset<type, dimension>::FindVector( const type *vectorList, const int vectorNum, const float epsilon ) {
 	int i, j, k, hashKey, partialHashKey[dimension];
 	const type &v = vectorList[vectorNum];
 	for( i = 0; i < dimension; i++ ) {

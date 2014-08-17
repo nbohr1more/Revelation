@@ -47,7 +47,7 @@ idBinSearch_GreaterEqual
 ====================
 */
 template< class type >
-ID_FORCE_INLINE int idBinSearch_Less( const type *array, const int arraySize, const type &value ) {
+ID_INLINE int idBinSearch_Less( const type *array, const int arraySize, const type &value ) {
 	int len = arraySize;
 	int mid = len;
 	int offset = 0;
@@ -69,7 +69,7 @@ idBinSearch_GreaterEqual
 ====================
 */
 template< class type >
-ID_FORCE_INLINE int idBinSearch_LessEqual( const type *array, const int arraySize, const type &value ) {
+ID_INLINE int idBinSearch_LessEqual( const type *array, const int arraySize, const type &value ) {
 	int len = arraySize;
 	int mid = len;
 	int offset = 0;
@@ -91,7 +91,7 @@ idBinSearch_Greater
 ====================
 */
 template< class type >
-ID_FORCE_INLINE int idBinSearch_Greater( const type *array, const int arraySize, const type &value ) {
+ID_INLINE int idBinSearch_Greater( const type *array, const int arraySize, const type &value ) {
 	int len = arraySize;
 	int mid = len;
 	int offset = 0;
@@ -117,7 +117,7 @@ idBinSearch_GreaterEqual
 ====================
 */
 template< class type >
-ID_FORCE_INLINE int idBinSearch_GreaterEqual( const type *array, const int arraySize, const type &value ) {
+ID_INLINE int idBinSearch_GreaterEqual( const type *array, const int arraySize, const type &value ) {
 	int len = arraySize;
 	int mid = len;
 	int offset = 0;

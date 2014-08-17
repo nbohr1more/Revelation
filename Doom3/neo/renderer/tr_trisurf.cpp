@@ -1049,7 +1049,7 @@ static void	R_DeriveFaceTangents( const srfTriangles_t *tri, faceTangents_t *fac
 		d1[3] = c->st[0] - a->st[0];
 		d1[4] = c->st[1] - a->st[1];
 		area = d0[3] * d1[4] - d0[4] * d1[3];
-		if( fabs( area ) < 1e-20f ) {
+		if( idMath::Fabs( area ) < 1e-20f ) {
 			ft->negativePolarity = false;
 			ft->degenerate = true;
 			ft->tangents[0].Zero();

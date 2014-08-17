@@ -2761,7 +2761,7 @@ bool idGameLocal::InhibitEntitySpawn( idDict &spawnArgs ) {
 #endif
 	// sikk---> Item Management: Random Item Removal
 	if( spawnArgs.GetBool( "removeable" ) && !idStr::Icmp( spawnArgs.GetString( "target" ), "" ) &&
-			( gameLocal.random.RandomFloat() * 0.99999f ) < g_itemRemovalFactor.GetFloat() ) {
+	  ( gameLocal.random.RandomFloat() * 0.99999f ) < g_itemRemovalFactor.GetFloat() ) {
 		result = true;
 	}
 	// <---sikk

@@ -294,7 +294,7 @@ public:
 idThread::WaitingOnThread
 ================
 */
-ID_FORCE_INLINE idThread *idThread::WaitingOnThread( void ) {
+ID_INLINE idThread *idThread::WaitingOnThread( void ) {
 	return waitingForThread;
 }
 
@@ -303,7 +303,7 @@ ID_FORCE_INLINE idThread *idThread::WaitingOnThread( void ) {
 idThread::SetThreadNum
 ================
 */
-ID_FORCE_INLINE void idThread::SetThreadNum( int num ) {
+ID_INLINE void idThread::SetThreadNum( int num ) {
 	threadNum = num;
 }
 
@@ -312,7 +312,7 @@ ID_FORCE_INLINE void idThread::SetThreadNum( int num ) {
 idThread::GetThreadNum
 ================
 */
-ID_FORCE_INLINE int idThread::GetThreadNum( void ) {
+ID_INLINE int idThread::GetThreadNum( void ) {
 	return threadNum;
 }
 
@@ -321,7 +321,7 @@ ID_FORCE_INLINE int idThread::GetThreadNum( void ) {
 idThread::GetThreadName
 ================
 */
-ID_FORCE_INLINE const char *idThread::GetThreadName( void ) {
+ID_INLINE const char *idThread::GetThreadName( void ) {
 	return threadName.c_str();
 }
 
@@ -330,7 +330,7 @@ ID_FORCE_INLINE const char *idThread::GetThreadName( void ) {
 idThread::GetThreads
 ================
 */
-ID_FORCE_INLINE idList<idThread *> &idThread::GetThreads( void ) {
+ID_INLINE idList<idThread *> &idThread::GetThreads( void ) {
 	return threadList;
 }
 
@@ -339,7 +339,7 @@ ID_FORCE_INLINE idList<idThread *> &idThread::GetThreads( void ) {
 idThread::IsDoneProcessing
 ================
 */
-ID_FORCE_INLINE bool idThread::IsDoneProcessing( void ) {
+ID_INLINE bool idThread::IsDoneProcessing( void ) {
 	return interpreter.doneProcessing;
 }
 
@@ -348,7 +348,7 @@ ID_FORCE_INLINE bool idThread::IsDoneProcessing( void ) {
 idThread::IsDying
 ================
 */
-ID_FORCE_INLINE bool idThread::IsDying( void ) {
+ID_INLINE bool idThread::IsDying( void ) {
 	return interpreter.threadDying;
 }
 

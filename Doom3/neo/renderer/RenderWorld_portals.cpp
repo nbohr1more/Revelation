@@ -112,10 +112,10 @@ bool idRenderWorldLocal::PortalIsFoggedOut( const portal_t *p ) {
 		// otherwise, distance = alpha color
 		a = -0.5f / alpha;
 	}
-	forward[0] = a * tr.viewDef->worldSpace.modelViewMatrix[2];
-	forward[1] = a * tr.viewDef->worldSpace.modelViewMatrix[6];
-	forward[2] = a * tr.viewDef->worldSpace.modelViewMatrix[10];
-	forward[3] = a * tr.viewDef->worldSpace.modelViewMatrix[14];
+	forward[0] = a * tr.viewDef->worldSpace.modelViewMatrix[0 * 4 + 2];
+	forward[1] = a * tr.viewDef->worldSpace.modelViewMatrix[1 * 4 + 2];
+	forward[2] = a * tr.viewDef->worldSpace.modelViewMatrix[2 * 4 + 2];
+	forward[3] = a * tr.viewDef->worldSpace.modelViewMatrix[3 * 4 + 2];
 	w = p->w;
 	for( i = 0 ; i < w->GetNumPoints() ; i++ ) {
 		float	d;

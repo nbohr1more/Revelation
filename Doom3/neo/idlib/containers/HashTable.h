@@ -89,7 +89,7 @@ idHashTable<Type>::idHashTable
 ================
 */
 template< class Type >
-ID_FORCE_INLINE idHashTable<Type>::idHashTable( int newtablesize ) {
+ID_INLINE idHashTable<Type>::idHashTable( int newtablesize ) {
 	assert( idMath::IsPowerOfTwo( newtablesize ) );
 	tablesize = newtablesize;
 	assert( tablesize > 0 );
@@ -105,7 +105,7 @@ idHashTable<Type>::idHashTable
 ================
 */
 template< class Type >
-ID_FORCE_INLINE idHashTable<Type>::idHashTable( const idHashTable<Type> &map ) {
+ID_INLINE idHashTable<Type>::idHashTable( const idHashTable<Type> &map ) {
 	int			i;
 	hashnode_s	*node;
 	hashnode_s	**prev;
@@ -133,7 +133,7 @@ idHashTable<Type>::~idHashTable<Type>
 ================
 */
 template< class Type >
-ID_FORCE_INLINE idHashTable<Type>::~idHashTable( void ) {
+ID_INLINE idHashTable<Type>::~idHashTable( void ) {
 	Clear();
 	delete[] heads;
 }
@@ -144,7 +144,7 @@ idHashTable<Type>::Allocated
 ================
 */
 template< class Type >
-ID_FORCE_INLINE size_t idHashTable<Type>::Allocated( void ) const {
+ID_INLINE size_t idHashTable<Type>::Allocated( void ) const {
 	return sizeof( heads ) * tablesize + sizeof( *heads ) * numentries;
 }
 
@@ -154,7 +154,7 @@ idHashTable<Type>::Size
 ================
 */
 template< class Type >
-ID_FORCE_INLINE size_t idHashTable<Type>::Size( void ) const {
+ID_INLINE size_t idHashTable<Type>::Size( void ) const {
 	return sizeof( idHashTable<Type> ) + sizeof( heads ) * tablesize + sizeof( *heads ) * numentries;
 }
 
@@ -164,7 +164,7 @@ idHashTable<Type>::GetHash
 ================
 */
 template< class Type >
-ID_FORCE_INLINE int idHashTable<Type>::GetHash( const char *key ) const {
+ID_INLINE int idHashTable<Type>::GetHash( const char *key ) const {
 	return ( idStr::Hash( key ) & tablesizemask );
 }
 
@@ -174,7 +174,7 @@ idHashTable<Type>::Set
 ================
 */
 template< class Type >
-ID_FORCE_INLINE void idHashTable<Type>::Set( const char *key, Type &value ) {
+ID_INLINE void idHashTable<Type>::Set( const char *key, Type &value ) {
 	hashnode_s *node, **nextPtr;
 	int hash, s;
 	hash = GetHash( key );
@@ -199,7 +199,7 @@ idHashTable<Type>::Get
 ================
 */
 template< class Type >
-ID_FORCE_INLINE bool idHashTable<Type>::Get( const char *key, Type **value ) const {
+ID_INLINE bool idHashTable<Type>::Get( const char *key, Type **value ) const {
 	hashnode_s *node;
 	int hash, s;
 	hash = GetHash( key );
@@ -230,7 +230,7 @@ exact index for a given element may change when new elements are added
 ================
 */
 template< class Type >
-ID_FORCE_INLINE Type *idHashTable<Type>::GetIndex( int index ) const {
+ID_INLINE Type *idHashTable<Type>::GetIndex( int index ) const {
 	hashnode_s	*node;
 	int			count;
 	int			i;
@@ -256,7 +256,7 @@ idHashTable<Type>::Remove
 ================
 */
 template< class Type >
-ID_FORCE_INLINE bool idHashTable<Type>::Remove( const char *key ) {
+ID_INLINE bool idHashTable<Type>::Remove( const char *key ) {
 	hashnode_s	**head;
 	hashnode_s	*node;
 	hashnode_s	*prev;
@@ -286,7 +286,7 @@ idHashTable<Type>::Clear
 ================
 */
 template< class Type >
-ID_FORCE_INLINE void idHashTable<Type>::Clear( void ) {
+ID_INLINE void idHashTable<Type>::Clear( void ) {
 	int			i;
 	hashnode_s	*node;
 	hashnode_s	*next;
@@ -308,7 +308,7 @@ idHashTable<Type>::DeleteContents
 ================
 */
 template< class Type >
-ID_FORCE_INLINE void idHashTable<Type>::DeleteContents( void ) {
+ID_INLINE void idHashTable<Type>::DeleteContents( void ) {
 	int			i;
 	hashnode_s	*node;
 	hashnode_s	*next;
@@ -331,7 +331,7 @@ idHashTable<Type>::Num
 ================
 */
 template< class Type >
-ID_FORCE_INLINE int idHashTable<Type>::Num( void ) const {
+ID_INLINE int idHashTable<Type>::Num( void ) const {
 	return numentries;
 }
 

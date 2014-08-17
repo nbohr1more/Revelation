@@ -552,7 +552,7 @@ int idLexer::ReadName( idToken *token ) {
 idLexer::CheckString
 ================
 */
-ID_FORCE_INLINE int idLexer::CheckString( const char *str ) const {
+ID_INLINE int idLexer::CheckString( const char *str ) const {
 	int i;
 	for( i = 0; str[i]; i++ ) {
 		if( idLexer::script_p[i] != str[i] ) {

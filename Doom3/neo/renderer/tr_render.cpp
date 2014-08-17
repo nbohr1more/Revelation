@@ -610,15 +610,10 @@ void R_SetDrawInteraction( const shaderStage_t *surfaceStage, const float *surfa
 	}
 	if( color ) {
 		for( int i = 0 ; i < 4 ; i++ ) {
-			color[i] = surfaceRegs[surfaceStage->color.registers[i]];
 			// clamp here, so card with greater range don't look different.
 			// we could perform overbrighting like we do for lights, but
 			// it doesn't currently look worth it.
-			if( color[i] < 0.0f ) {
-				color[i] = 0.0f;
-			} else if( color[i] > 1.0f ) {
-				color[i] = 1.0f;
-			}
+			color[i] = idMath::ClampFloat( 0.0f, 1.0f, surfaceRegs[surfaceStage->color.registers[i]] );
 		}
 	}
 }
@@ -680,7 +675,6 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void ( *DrawIntera
 	}
 	// change the matrix and light projection vectors if needed
 	if( surf->space != backEnd.currentSpace ) {
-		backEnd.currentSpace = surf->space;
 		// Disable the depth bounds test because translucent surfaces don't work with
 		// the depth bounds tests since they do not write depth during the depth pass.
 		if( !vLight->translucentInteractions ) {
@@ -699,6 +693,7 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void ( *DrawIntera
 		}
 		// model-view-projection
 		glLoadMatrixf( surf->space->modelViewMatrix );
+		backEnd.currentSpace = surf->space;
 	}
 	// change the scissor if needed
 	if( r_useScissor.GetBool() && !backEnd.currentScissor.Equals( surf->scissorRect ) ) {
@@ -719,8 +714,8 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void ( *DrawIntera
 	inter.lightFalloffImage = vLight->falloffImage;
 	R_GlobalPointToLocal( surf->space->modelMatrix, vLight->globalLightOrigin, inter.localLightOrigin.ToVec3() );
 	R_GlobalPointToLocal( surf->space->modelMatrix, backEnd.viewDef->renderView.vieworg, inter.localViewOrigin.ToVec3() );
-	inter.localLightOrigin[3] = 0;
-	inter.localViewOrigin[3] = 1;
+	inter.localLightOrigin[3] = 0.0f;
+	inter.localViewOrigin[3] = 1.0f;
 	inter.ambientLight = lightShader->IsAmbientLight();
 	// the base projections may be modified by texture matrix on light stages
 	idPlane lightProject[4];
@@ -745,7 +740,7 @@ void RB_CreateSingleDrawInteractions( const drawSurf_t *surf, void ( *DrawIntera
 		inter.diffuseImage = NULL;
 		inter.diffuseColor[0] = inter.diffuseColor[1] = inter.diffuseColor[2] = inter.diffuseColor[3] = 0;
 		inter.specularColor[0] = inter.specularColor[1] = inter.specularColor[2] = inter.specularColor[3] = 0;
-		float lightColor[4];
+		float lightColor[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 		// backEnd.lightScale is calculated so that lightColor[] will never exceed
 		// tr.backEndRendererMaxLight
 		lightColor[0] = backEnd.lightScale * lightRegs[ lightStage->color.registers[0] ];

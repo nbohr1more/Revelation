@@ -1347,9 +1347,9 @@ R_SampleCubeMap
 void R_SampleCubeMap( const idVec3 &dir, int size, byte *buffers[6], byte result[4] ) {
 	float	adir[3];
 	int		axis, x, y;
-	adir[0] = fabs( dir[0] );
-	adir[1] = fabs( dir[1] );
-	adir[2] = fabs( dir[2] );
+	adir[0] = idMath::Fabs( dir[0] );
+	adir[1] = idMath::Fabs( dir[1] );
+	adir[2] = idMath::Fabs( dir[2] );
 	if( dir[0] >= adir[1] && dir[0] >= adir[2] ) {
 		axis = 0;
 	} else if( -dir[0] >= adir[1] && -dir[0] >= adir[2] ) {

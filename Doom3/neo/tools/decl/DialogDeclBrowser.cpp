@@ -255,11 +255,11 @@ DialogDeclBrowser::EditSelected
 ================
 */
 void DialogDeclBrowser::EditSelected( void ) const {
-	int id, index;
-	idDict spawnArgs;
-	const idDecl *decl;
-	declType_t type;
-	HTREEITEM item;
+	int				id, index;
+	idDict			spawnArgs;
+	const idDecl	*decl;
+	declType_t		type;
+	HTREEITEM		item;
 	item = declTree.GetSelectedItem();
 	if( declTree.GetChildItem( item ) ) {
 		return;

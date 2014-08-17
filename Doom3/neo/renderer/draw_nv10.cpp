@@ -63,8 +63,8 @@ static void RB_RenderInteraction( const drawSurf_t *surf ) {
 	const shaderStage_t		*lastBumpStage = NULL;
 	// change the matrix and light projection vectors if needed
 	if( surf->space != backEnd.currentSpace ) {
-		backEnd.currentSpace = surf->space;
 		glLoadMatrixf( surf->space->modelViewMatrix );
+		backEnd.currentSpace = surf->space;
 		for( int i = 0 ; i < 4 ; i++ ) {
 			R_GlobalPlaneToLocal( surf->space->modelMatrix, backEnd.vLight->lightProject[i], lightProject[i] );
 		}

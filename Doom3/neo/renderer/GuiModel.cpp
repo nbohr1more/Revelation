@@ -241,10 +241,10 @@ void idGuiModel::EmitFullScreen( void ) {
 	viewDef->projectionMatrix[13] = 1.0f;
 	viewDef->projectionMatrix[14] = -1.0f;
 	viewDef->projectionMatrix[15] = 1.0f;
-	viewDef->worldSpace.modelViewMatrix[0] = 1.0f;
-	viewDef->worldSpace.modelViewMatrix[5] = 1.0f;
-	viewDef->worldSpace.modelViewMatrix[10] = 1.0f;
-	viewDef->worldSpace.modelViewMatrix[15] = 1.0f;
+	viewDef->worldSpace.modelViewMatrix[0 * 4 + 0] = 1.0f;
+	viewDef->worldSpace.modelViewMatrix[1 * 4 + 1] = 1.0f;
+	viewDef->worldSpace.modelViewMatrix[2 * 4 + 2] = 1.0f;
+	viewDef->worldSpace.modelViewMatrix[3 * 4 + 3] = 1.0f;
 	viewDef->maxDrawSurfs = surfaces.Num();
 	viewDef->drawSurfs = ( drawSurf_t ** )R_FrameAlloc( viewDef->maxDrawSurfs * sizeof( viewDef->drawSurfs[0] ) );
 	viewDef->numDrawSurfs = 0;
