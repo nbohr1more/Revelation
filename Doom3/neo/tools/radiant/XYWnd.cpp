@@ -478,7 +478,7 @@ CXYWnd::CXYWnd() {
 	g_bPathMode = false;
 	g_nPathCount = 0;
 	g_nPathLimit = 0;
-	m_nTimerID = -1;
+	m_nTimerID = ( unsigned int )-1;
 	m_nButtonstate = 0;
 	XY_Init();
 }
@@ -1132,8 +1132,7 @@ void CXYWnd::OnMouseMove( UINT nFlags, CPoint point ) {
 		KillTimer( m_nTimerID );
 		pressx -= m_ptDragTotal.x;
 		pressy += m_ptDragTotal.y;
-		m_nTimerID = -1;
-		// return;
+		m_nTimerID = ( unsigned int )-1;
 	}
 	bool	bCrossHair = false;
 	if( !m_bRButtonDown ) {

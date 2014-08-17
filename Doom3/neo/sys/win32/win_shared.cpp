@@ -644,7 +644,7 @@ address_t GetCallerAddr( long _ebp ) {
 		mov		midPtPtr, eax
 	}
 	res = GetFuncAddr( midPtPtr );
-	label:
+label:
 	return res;
 }
 

@@ -149,7 +149,7 @@ Sys_GetThreadName
 const char *Sys_GetThreadName( int *index ) {
 	int id = GetCurrentThreadId();
 	for( int i = 0; i < g_thread_count; i++ ) {
-		if( id == g_threads[i]->threadId ) {
+		if( id == static_cast<int>( g_threads[i]->threadId ) ) {
 			if( index ) {
 				*index = i;
 			}

@@ -537,10 +537,10 @@ bool Net_GetUDPPacket( int netSocket, netadr_t &net_from, char *data, int &size,
 		OutputDebugString( buf );
 		return false;
 	}
-	if( netSocket == ip_socket ) {
+	if( netSocket == static_cast<int>( ip_socket ) ) {
 		memset( ( ( struct sockaddr_in * )&from )->sin_zero, 0, 8 );
 	}
-	if( usingSocks && netSocket == ip_socket && memcmp( &from, &socksRelayAddr, fromlen ) == 0 ) {
+	if( usingSocks && netSocket == static_cast<int>( ip_socket ) && memcmp( &from, &socksRelayAddr, fromlen ) == 0 ) {
 		if( ret < 10 || data[0] != 0 || data[1] != 0 || data[2] != 0 || data[3] != 1 ) {
 			return false;
 		}

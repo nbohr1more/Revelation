@@ -989,13 +989,13 @@ RenderBump_f
 */
 void RenderBump_f( const idCmdArgs &args ) {
 	idRenderModel	*lowPoly;
-	idStr	source;
-	int		i, j;
-	const char	*cmdLine;
-	int		numRenderBumps;
-	renderBump_t	*renderBumps, *rb;
+	idStr			source;
+	int				i, j;
+	const char		*cmdLine;
+	int				numRenderBumps;
+	renderBump_t	*renderBumps, *rb = NULL;
 	renderBump_t	opt;
-	int		startTime, endTime;
+	int				startTime, endTime;
 	// update the screen as we print
 	common->SetRefreshOnPrint( true );
 	// there should be a single parameter, the filename for a game loadable low-poly model

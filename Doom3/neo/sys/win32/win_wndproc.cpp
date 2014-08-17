@@ -174,9 +174,9 @@ Map from windows to Doom keynums
 =======
 */
 int MapKey( int key ) {
-	int result;
-	int modified;
-	bool is_extended;
+	int		result;
+	int		modified;
+	bool	is_extended;
 	modified = ( key >> 16 ) & 255;
 	if( modified > 127 ) {
 		return 0;
@@ -239,7 +239,6 @@ int MapKey( int key ) {
 	}
 	return result;
 }
-
 
 /*
 ====================

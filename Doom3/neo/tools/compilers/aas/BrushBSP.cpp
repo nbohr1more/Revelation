@@ -1177,12 +1177,12 @@ leads from the outside leaf to a specific occupied leaf.
 =============
 */
 void idBrushBSP::LeakFile( const idStr &fileName ) {
-	int count, next, s;
-	idVec3 mid;
-	idFile *lineFile;
-	idBrushBSPNode *node, *nextNode;
-	idBrushBSPPortal *p, *nextPortal;
-	idStr qpath, name;
+	int					count, next, s;
+	idVec3				mid;
+	idFile				*lineFile;
+	idBrushBSPNode		*node, *nextNode = NULL;
+	idBrushBSPPortal	*p, *nextPortal = NULL;
+	idStr				qpath, name;
 	if( !outside->occupied ) {
 		return;
 	}

@@ -311,7 +311,7 @@ void R_LoadARBProgram( int progIndex ) {
 	fullPath += progs[progIndex].name;
 	char	*fileBuffer;
 	char	*buffer;
-	char	*start, *end;
+	char	*start = NULL, *end = NULL;
 	common->Printf( "%s", fullPath.c_str() );
 	// load the program even if we don't support it, so
 	// fs_copyfiles can generate cross-platform data dumps

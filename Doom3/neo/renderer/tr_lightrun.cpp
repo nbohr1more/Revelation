@@ -693,8 +693,8 @@ R_CheckForEntityDefsUsingModel
 ===================
 */
 void R_CheckForEntityDefsUsingModel( idRenderModel *model ) {
-	int i, j;
-	idRenderWorldLocal *rw;
+	int					i, j;
+	idRenderWorldLocal	*rw;
 	idRenderEntityLocal	*def;
 	for( j = 0; j < tr.worlds.Num(); j++ ) {
 		rw = tr.worlds[j];

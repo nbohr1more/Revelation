@@ -2491,9 +2491,9 @@ LPCSTR String_ToLower( LPCSTR psString ) {
 
 
 bool FindNextBrush( brush_t *pPrevFoundBrush ) {	// can be NULL for fresh search
-	bool bFoundSomething = false;
-	entity_t *pLastFoundEnt;
-	brush_t  *pLastFoundBrush;
+	bool		bFoundSomething = false;
+	entity_t	*pLastFoundEnt = NULL;
+	brush_t		*pLastFoundBrush = NULL;
 	CWaitCursor waitcursor;
 	Select_Deselect( true );	// bool bDeSelectToListBack
 	// see whether to start search from prev_brush->next by checking if prev_brush is still in the active list...
@@ -2565,19 +2565,19 @@ bool FindNextBrush( brush_t *pPrevFoundBrush ) {	// can be NULL for fresh search
 				for( int i = 0; i < iNumEntKeys; i++ ) {
 					const char *psEntFoundValue = ValueForKey( ent, GetKeyString( ent, i ) );
 					if( psEntFoundValue ) {
-						if(	( strlen( psEntFoundValue ) &&	strFindValue.IsEmpty() )	// if blank <value> search specified then any found-value is ok
-								||
-								( gbWholeStringMatchOnly && stricmp( psEntFoundValue, strFindValue ) == 0 )
-								||
-								( !gbWholeStringMatchOnly && strstr( String_ToLower( psEntFoundValue ), String_ToLower( strFindValue ) ) )
-						  ) {
+						// if blank <value> search specified then any found-value is ok
+						if(	( strlen( psEntFoundValue ) &&	strFindValue.IsEmpty() ) ||
+							( gbWholeStringMatchOnly && stricmp( psEntFoundValue, strFindValue ) == 0 )	||
+							( !gbWholeStringMatchOnly && strstr( String_ToLower( psEntFoundValue ), String_ToLower( strFindValue ) ) ) ) {
 							if( !gbWholeStringMatchOnly && strstr( String_ToLower( psEntFoundValue ), String_ToLower( strFindValue ) ) ) {
-								//								OutputDebugString(va("Matching because: psEntFoundValue '%s' & strFindValue '%s'\n",psEntFoundValue, strFindValue));
-								//								Sys_Printf("Matching because: psEntFoundValue '%s' & strFindValue '%s'\n",psEntFoundValue, strFindValue);
-								//								if (strstr(psEntFoundValue,"killsplat"))
-								//								{
-								//									DebugBreak();
-								//								}
+#if _DEBUG
+								OutputDebugString(va("Matching because: psEntFoundValue '%s' & strFindValue '%s'\n", psEntFoundValue, strFindValue));
+								Sys_Printf("Matching because: psEntFoundValue '%s' & strFindValue '%s'\n", psEntFoundValue, strFindValue);
+								if (strstr(psEntFoundValue, "killsplat"))
+								{
+										DebugBreak();
+								}
+#endif
 							}
 							bMatch = true;
 							break;

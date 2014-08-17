@@ -1467,18 +1467,18 @@ void idImage::Bind() {
 	}
 	// bind the texture
 	if( type == TT_2D ) {
-		if( tmu->current2DMap != texnum ) {
-			tmu->current2DMap = texnum;
+		if( tmu->current2DMap != static_cast<int>( texnum ) ) {
+			tmu->current2DMap = static_cast<int>( texnum );
 			glBindTexture( GL_TEXTURE_2D, texnum );
 		}
 	} else if( type == TT_CUBIC ) {
-		if( tmu->currentCubeMap != texnum ) {
-			tmu->currentCubeMap = texnum;
+		if( tmu->currentCubeMap != static_cast<int>( texnum ) ) {
+			tmu->currentCubeMap = static_cast<int>( texnum );
 			glBindTexture( GL_TEXTURE_CUBE_MAP_EXT, texnum );
 		}
 	} else if( type == TT_3D ) {
-		if( tmu->current3DMap != texnum ) {
-			tmu->current3DMap = texnum;
+		if( tmu->current3DMap != static_cast<int>( texnum ) ) {
+			tmu->current3DMap = static_cast<int>( texnum );
 			glBindTexture( GL_TEXTURE_3D, texnum );
 		}
 	}

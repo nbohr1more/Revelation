@@ -30,9 +30,9 @@ If you have questions concerning this license or the applicable additional terms
 #pragma hdrstop
 #include "tr_local.h"
 
-shaderProgram_t		interactionShader = { -1};
-shaderProgram_t		ambientInteractionShader = { -1};
-shaderProgram_t		stencilShadowShader = { -1};
+shaderProgram_t		interactionShader = { static_cast<GLhandleARB>( -1 ) };
+shaderProgram_t		ambientInteractionShader = { static_cast<GLhandleARB>( -1 ) };
+shaderProgram_t		stencilShadowShader = { static_cast<GLhandleARB>( -1 ) };
 
 /*
 =========================================================================================
@@ -316,20 +316,20 @@ bool R_LoadGLSLShader( const char *name, shaderProgram_t *shaderProgram, GLenum 
 	GLuint shader;
 	switch( type ) {
 	case GL_VERTEX_SHADER_ARB:
-		if( shaderProgram->vertexShader != -1 ) {
+		if( shaderProgram->vertexShader != static_cast<GLhandleARB>( -1 ) ) {
 			glDeleteShader( shaderProgram->vertexShader );
 		}
-		shaderProgram->vertexShader = -1;
+		shaderProgram->vertexShader = static_cast<GLhandleARB>( -1 );
 		// create vertex shader
 		shader = glCreateShaderObjectARB( GL_VERTEX_SHADER_ARB );
 		glShaderSourceARB( shader, 1, ( const GLcharARB ** )&buffer, 0 );
 		glCompileShaderARB( shader );
 		break;
 	case GL_FRAGMENT_SHADER_ARB:
-		if( shaderProgram->fragmentShader != -1 ) {
+		if( shaderProgram->fragmentShader != static_cast<GLhandleARB>( -1 ) ) {
 			glDeleteShader( shaderProgram->fragmentShader );
 		}
-		shaderProgram->fragmentShader = -1;
+		shaderProgram->fragmentShader = static_cast<GLhandleARB>( -1 );
 		// create fragment shader
 		shader = glCreateShaderObjectARB( GL_FRAGMENT_SHADER_ARB );
 		glShaderSourceARB( shader, 1, ( const GLcharARB ** )&buffer, 0 );
@@ -425,14 +425,14 @@ static bool RB_GLSL_InitShaders( ) {
 	R_LoadGLSLShader( "interaction.fp", &interactionShader, GL_FRAGMENT_SHADER_ARB );
 	// destroy the shaders in case we failed to load them
 	if( !R_LinkGLSLShader( &interactionShader, true ) && !R_ValidateGLSLProgram( &interactionShader ) ) {
-		if( interactionShader.fragmentShader != -1 ) {
+		if( interactionShader.fragmentShader != static_cast<GLhandleARB>( -1 ) ) {
 			glDeleteShader( interactionShader.fragmentShader );
 		}
-		if( interactionShader.vertexShader != -1 ) {
+		if( interactionShader.vertexShader != static_cast<GLhandleARB>( -1 ) ) {
 			glDeleteShader( interactionShader.vertexShader );
 		}
-		interactionShader.fragmentShader = -1;
-		interactionShader.vertexShader = -1;
+		interactionShader.fragmentShader = static_cast<GLhandleARB>( -1 );
+		interactionShader.vertexShader = static_cast<GLhandleARB>( -1 );
 		common->Printf( "GLSL interactionShader failed to init.\n" );
 		return false;
 	} else {
@@ -473,14 +473,14 @@ static bool RB_GLSL_InitShaders( ) {
 	R_LoadGLSLShader( "ambientInteraction.fp", &ambientInteractionShader, GL_FRAGMENT_SHADER_ARB );
 	// destroy the shaders in case we failed to load them
 	if( !R_LinkGLSLShader( &ambientInteractionShader, true ) && !R_ValidateGLSLProgram( &ambientInteractionShader ) ) {
-		if( ambientInteractionShader.fragmentShader != -1 ) {
+		if( ambientInteractionShader.fragmentShader != static_cast<GLhandleARB>( -1 ) ) {
 			glDeleteShader( ambientInteractionShader.fragmentShader );
 		}
-		if( ambientInteractionShader.vertexShader != -1 ) {
+		if( ambientInteractionShader.vertexShader != static_cast<GLhandleARB>( -1 ) ) {
 			glDeleteShader( ambientInteractionShader.vertexShader );
 		}
-		ambientInteractionShader.fragmentShader = -1;
-		ambientInteractionShader.vertexShader = -1;
+		ambientInteractionShader.fragmentShader = static_cast<GLhandleARB>( -1 );
+		ambientInteractionShader.vertexShader = static_cast<GLhandleARB>( -1 );
 		common->Printf( "GLSL ambientInteractionShader failed to init.\n" );
 		return false;
 	} else {
@@ -515,14 +515,14 @@ static bool RB_GLSL_InitShaders( ) {
 	R_LoadGLSLShader( "stencilshadow.fp", &stencilShadowShader, GL_FRAGMENT_SHADER_ARB );
 	// destroy the shaders in case we failed to load them
 	if( !R_LinkGLSLShader( &stencilShadowShader, false ) && !R_ValidateGLSLProgram( &stencilShadowShader ) ) {
-		if( stencilShadowShader.fragmentShader != -1 ) {
+		if( stencilShadowShader.fragmentShader != static_cast<GLhandleARB>( -1 ) ) {
 			glDeleteShader( stencilShadowShader.fragmentShader );
 		}
-		if( stencilShadowShader.vertexShader != -1 ) {
+		if( stencilShadowShader.vertexShader != static_cast<GLhandleARB>( -1 ) ) {
 			glDeleteShader( stencilShadowShader.vertexShader );
 		}
-		stencilShadowShader.fragmentShader = -1;
-		stencilShadowShader.vertexShader = -1;
+		stencilShadowShader.fragmentShader = static_cast<GLhandleARB>( -1 );
+		stencilShadowShader.vertexShader = static_cast<GLhandleARB>( -1 );
 		common->Printf( "GLSL stencilShadowShader failed to init.\n" );
 		return false;
 	} else {

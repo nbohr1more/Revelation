@@ -50,9 +50,7 @@ cpuid_t	Sys_GetCPUId( void );
 
 int		MapKey( int key );
 
-
 // Input subsystem
-
 void	IN_Init( void );
 void	IN_Shutdown( void );
 // add additional non keyboard / non mouse movement on top of the keyboard move cmd

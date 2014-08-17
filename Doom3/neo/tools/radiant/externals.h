@@ -38,7 +38,7 @@ extern void		Select_RotateTexture( float amt, bool absolute );
 extern void		Select_SetKeyVal( const char *key, const char *val );
 
 // splines
-extern void		glLabeledPoint( idVec4 &color, idVec3 &point, float size, const char *label );
+extern void		glLabeledPoint( idVec4 color, idVec3 &point, float size, const char *label );
 extern void		glBox( idVec4 &color, idVec3 &point, float size );
 
 // editorbrush

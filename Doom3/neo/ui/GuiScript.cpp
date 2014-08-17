@@ -508,7 +508,7 @@ void idGuiScript::FixupParms( idWindow *win ) {
 			idWinVec4 *v4 = new idWinVec4;
 			parms[c].var = v4;
 			parms[c].own = true;
-			drawWin_t *owner;
+			drawWin_t *owner = NULL;
 			if( ( *str[0] ) == '$' ) {
 				dest = win->GetWinVarByName( ( const char * )( *str ) + 1, true, &owner );
 			} else {
@@ -521,8 +521,7 @@ void idGuiScript::FixupParms( idWindow *win ) {
 					ownerparent = owner->simp ? owner->simp->GetParent() : owner->win->GetParent();
 					destparent  = destowner->simp ? destowner->simp->GetParent() : destowner->win->GetParent();
 					// If its the rectangle they are referencing then adjust it
-					if( ownerparent && destparent &&
-							( dest == ( owner->simp ? owner->simp->GetWinVarByName( "rect" ) : owner->win->GetWinVarByName( "rect" ) ) ) ) {
+					if( ownerparent && destparent && ( dest == ( owner->simp ? owner->simp->GetWinVarByName( "rect" ) : owner->win->GetWinVarByName( "rect" ) ) ) ) {
 						idRectangle rect;
 						rect = *( dynamic_cast<idWinRectangle *>( dest ) );
 						ownerparent->ClientToScreen( &rect );

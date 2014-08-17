@@ -3436,7 +3436,7 @@ void Brush_DrawModel( brush_t *b, bool camera, bool bSelected ) {
 					color.y = b->owner->eclass->color.y;
 					color.z = b->owner->eclass->color.z;
 				}
-				idVec3 center = bounds.GetCenter();
+				idVec3 &center = bounds.GetCenter();
 				glBox( color, b->owner->origin + center, bounds.GetRadius( center ) );
 				model = renderModelManager->DefaultModel();
 			} else {

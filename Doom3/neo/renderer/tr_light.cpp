@@ -136,9 +136,9 @@ void R_SkyboxTexGen( drawSurf_t *surf, const idVec3 &viewOrg ) {
 	idVec3				*texCoords = ( idVec3 * ) _alloca16( size );
 	const idDrawVert	*verts = surf->geo->verts;
 	for( i = 0; i < numVerts; i++ ) {
-		texCoords[i][0] = verts[i].xyz[0] - localViewOrigin[0];
-		texCoords[i][1] = verts[i].xyz[1] - localViewOrigin[1];
-		texCoords[i][2] = verts[i].xyz[2] - localViewOrigin[2];
+		texCoords[i][0] = verts[i].xyz[0] - localViewOrigin[0 * 4 + 0];
+		texCoords[i][1] = verts[i].xyz[1] - localViewOrigin[0 * 4 + 1];
+		texCoords[i][2] = verts[i].xyz[2] - localViewOrigin[0 * 4 + 2];
 	}
 	surf->dynamicTexCoords = vertexCache.AllocFrameTemp( texCoords, size );
 }
@@ -179,17 +179,17 @@ void R_WobbleskyTexGen( drawSurf_t *surf, const idVec3 &viewOrg ) {
 	// add the rotate
 	s = sin( rotateSpeed * tr.viewDef->floatTime );
 	c = cos( rotateSpeed * tr.viewDef->floatTime );
-	transform[0] = axis[0][0] * c + axis[1][0] * s;
-	transform[4] = axis[0][1] * c + axis[1][1] * s;
-	transform[8] = axis[0][2] * c + axis[1][2] * s;
-	transform[1] = axis[1][0] * c - axis[0][0] * s;
-	transform[5] = axis[1][1] * c - axis[0][1] * s;
-	transform[9] = axis[1][2] * c - axis[0][2] * s;
-	transform[2] = axis[2][0];
-	transform[6] = axis[2][1];
-	transform[10] = axis[2][2];
-	transform[3] = transform[7] = transform[11] = 0.0f;
-	transform[12] = transform[13] = transform[14] = 0.0f;
+	transform[0 * 4 + 0] = axis[0][0] * c + axis[1][0] * s;
+	transform[1 * 4 + 0] = axis[0][1] * c + axis[1][1] * s;
+	transform[2 * 4 + 0] = axis[0][2] * c + axis[1][2] * s;
+	transform[0 * 4 + 1] = axis[1][0] * c - axis[0][0] * s;
+	transform[1 * 4 + 1] = axis[1][1] * c - axis[0][1] * s;
+	transform[2 * 4 + 1] = axis[1][2] * c - axis[0][2] * s;
+	transform[0 * 4 + 2] = axis[2][0];
+	transform[1 * 4 + 2] = axis[2][1];
+	transform[2 * 4 + 2] = axis[2][2];
+	transform[0 * 4 + 3] = transform[1 * 4 + 3] = transform[3 * 4 + 1] = 0.0f;
+	transform[3 * 4 + 0] = transform[3 * 4 + 1] = transform[3 * 4 + 2] = 0.0f;
 	R_GlobalPointToLocal( surf->space->modelMatrix, viewOrg, localViewOrigin );
 	int					numVerts = surf->geo->numVerts;
 	int					size = numVerts * sizeof( idVec3 );
@@ -197,9 +197,9 @@ void R_WobbleskyTexGen( drawSurf_t *surf, const idVec3 &viewOrg ) {
 	const idDrawVert	*verts = surf->geo->verts;
 	for( i = 0; i < numVerts; i++ ) {
 		idVec3 v;
-		v[0] = verts[i].xyz[0] - localViewOrigin[0];
-		v[1] = verts[i].xyz[1] - localViewOrigin[1];
-		v[2] = verts[i].xyz[2] - localViewOrigin[2];
+		v[0 * 4 + 0] = verts[i].xyz[0] - localViewOrigin[0 * 4 + 0];
+		v[0 * 4 + 1] = verts[i].xyz[1] - localViewOrigin[0 * 4 + 1];
+		v[0 * 4 + 2] = verts[i].xyz[2] - localViewOrigin[0 * 4 + 2];
 		R_LocalPointToGlobal( transform, v, texCoords[i] );
 	}
 	surf->dynamicTexCoords = vertexCache.AllocFrameTemp( texCoords, size );

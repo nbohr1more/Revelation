@@ -112,7 +112,7 @@ BOOL DefaultOnToolTipNotify( const toolTip_t *toolTips, UINT id, NMHDR *pNMHDR, 
 	}
 	int i;
 	for( i = 0; toolTips[i].tip; i++ ) {
-		if( toolTips[i].id == nID ) {
+		if( toolTips[i].id == static_cast<int>( nID ) ) {
 			break;
 		}
 	}

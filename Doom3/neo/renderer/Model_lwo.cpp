@@ -322,13 +322,13 @@ Read an ENVL chunk from an LWO2 file.
 ====================================================================== */
 
 lwEnvelope *lwGetEnvelope( idFile *fp, int cksize ) {
-	lwEnvelope *env;
-	lwKey *key;
-	lwPlugin *plug;
-	unsigned int id;
-	unsigned short sz;
-	float f[ 4 ];
-	int i, nparams, pos, rlen;
+	lwEnvelope		*env;
+	lwKey			*key = NULL;
+	lwPlugin		*plug;
+	unsigned int	id;
+	unsigned short	sz;
+	float			f[ 4 ];
+	int				i, nparams, pos, rlen;
 	/* allocate the Envelope structure */
 	env = ( lwEnvelope * )Mem_ClearedAlloc( sizeof( lwEnvelope ) );
 	if( !env ) {
@@ -840,7 +840,7 @@ Append a node to a list.
 ====================================================================== */
 
 void lwListAdd( void **list, void *node ) {
-	lwNode *head, *tail;
+	lwNode *head, *tail = NULL;
 	head = *( ( lwNode ** ) list );
 	if( !head ) {
 		*list = node;
@@ -1705,14 +1705,14 @@ Read an lwSurface from an LWOB file.
 ====================================================================== */
 
 lwSurface *lwGetSurface5( idFile *fp, int cksize, lwObject *obj ) {
-	lwSurface *surf;
-	lwTexture *tex;
-	lwPlugin *shdr;
-	char *s;
-	float v[ 3 ];
-	unsigned int id, flags;
-	unsigned short sz;
-	int pos, rlen, i;
+	lwSurface		*surf;
+	lwTexture		*tex = NULL;
+	lwPlugin		*shdr = NULL;
+	char			*s;
+	float			v[ 3 ];
+	unsigned int	id, flags;
+	unsigned short	sz;
+	int				pos, rlen, i;
 	/* allocate the Surface structure */
 	surf = ( lwSurface * )Mem_ClearedAlloc( sizeof( lwSurface ) );
 	if( !surf ) {

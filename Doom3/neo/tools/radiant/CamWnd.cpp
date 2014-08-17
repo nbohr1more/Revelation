@@ -765,6 +765,7 @@ void setGLMode( int mode ) {
 void DrawAxial( face_t *selFace ) {
 	if( g_bAxialMode ) {
 		idVec3 points[4];
+		idVec4 color;
 		for( int j = 0; j < selFace->face_winding->GetNumPoints(); j++ ) {
 			glLabeledPoint( idVec4( 1, 1, 1, 1 ), ( *selFace->face_winding )[j].ToVec3(), 3, va( "%i", j ) );
 		}

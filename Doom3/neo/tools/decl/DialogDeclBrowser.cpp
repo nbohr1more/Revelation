@@ -268,46 +268,46 @@ void DialogDeclBrowser::EditSelected( void ) const {
 	type = GetTypeFromId( id );
 	index = GetIndexFromId( id );
 	switch( type ) {
-	case DECL_AF: {
-		decl = declManager->DeclByIndex( type, index, false );
-		spawnArgs.Set( "articulatedFigure", decl->GetName() );
-		AFEditorInit( &spawnArgs );
-		break;
-	}
-	case DECL_PARTICLE: {
-		decl = declManager->DeclByIndex( type, index, false );
-		spawnArgs.Set( "model", decl->GetName() );
-		ParticleEditorInit( &spawnArgs );
-		break;
-	}
-	case DECL_PDA: {
-		decl = declManager->DeclByIndex( type, index, false );
-		spawnArgs.Set( "pda", decl->GetName() );
-		PDAEditorInit( &spawnArgs );
-		break;
-	}
-	case DECLTYPE_SCRIPT:
-	case DECLTYPE_GUI: {
-		idStr typeName, declName;
-		GetDeclName( item, typeName, declName );
-		DialogScriptEditor *scriptEditor;
-		scriptEditor = new DialogScriptEditor;
-		scriptEditor->Create( IDD_DIALOG_SCRIPTEDITOR, GetParent() );
-		scriptEditor->OpenFile( typeName + "/" + declName + ( ( type == DECLTYPE_SCRIPT ) ? ".script" : ".gui" ) );
-		scriptEditor->ShowWindow( SW_SHOW );
-		scriptEditor->SetFocus();
-		break;
-	}
-	default: {
-		decl = declManager->DeclByIndex( type, index, false );
-		DialogDeclEditor *declEditor;
-		declEditor = new DialogDeclEditor;
-		declEditor->Create( IDD_DIALOG_DECLEDITOR, GetParent() );
-		declEditor->LoadDecl( const_cast<idDecl *>( decl ) );
-		declEditor->ShowWindow( SW_SHOW );
-		declEditor->SetFocus();
-		break;
-	}
+		case DECL_AF: {
+			decl = declManager->DeclByIndex( type, index, false );
+			spawnArgs.Set( "articulatedFigure", decl->GetName() );
+			AFEditorInit( &spawnArgs );
+			break;
+		}
+		case DECL_PARTICLE: {
+			decl = declManager->DeclByIndex( type, index, false );
+			spawnArgs.Set( "model", decl->GetName() );
+			ParticleEditorInit( &spawnArgs );
+			break;
+		}
+		case DECL_PDA: {
+			decl = declManager->DeclByIndex( type, index, false );
+			spawnArgs.Set( "pda", decl->GetName() );
+			PDAEditorInit( &spawnArgs );
+			break;
+		}
+		case DECLTYPE_SCRIPT:
+		case DECLTYPE_GUI: {
+			idStr typeName, declName;
+			GetDeclName( item, typeName, declName );
+			DialogScriptEditor *scriptEditor;
+			scriptEditor = new DialogScriptEditor;
+			scriptEditor->Create( IDD_DIALOG_SCRIPTEDITOR, GetParent() );
+			scriptEditor->OpenFile( typeName + "/" + declName + ( ( type == DECLTYPE_SCRIPT ) ? ".script" : ".gui" ) );
+			scriptEditor->ShowWindow( SW_SHOW );
+			scriptEditor->SetFocus();
+			break;
+		}
+		default: {
+			decl = declManager->DeclByIndex( type, index, false );
+			DialogDeclEditor *declEditor;
+			declEditor = new DialogDeclEditor;
+			declEditor->Create( IDD_DIALOG_DECLEDITOR, GetParent() );
+			declEditor->LoadDecl( const_cast<idDecl *>( decl ) );
+			declEditor->ShowWindow( SW_SHOW );
+			declEditor->SetFocus();
+			break;
+		}
 	}
 }
 

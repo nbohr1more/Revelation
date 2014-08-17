@@ -267,7 +267,7 @@ static void LoadBMP( const char *name, byte **pic, int *width, int *height, ID_T
 	if( bmpHeader.id[0] != 'B' && bmpHeader.id[1] != 'M' ) {
 		common->Error( "LoadBMP: only Windows-style BMP files supported (%s)\n", name );
 	}
-	if( bmpHeader.fileSize != length ) {
+	if( bmpHeader.fileSize != ( unsigned long )length ) {
 		common->Error( "LoadBMP: header size does not match file size (%lu vs. %d) (%s)\n", bmpHeader.fileSize, length, name );
 	}
 	if( bmpHeader.compression != 0 ) {

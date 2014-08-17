@@ -434,7 +434,7 @@ static void GenerateSilEdges( void ) {
 		}
 	}
 	qsort( edges, numEdges, sizeof( edges[0] ), EdgeSort );
-	edges[numEdges] = -1;	// force the last to make an edge if no matched to previous
+	edges[numEdges] = static_cast<unsigned int>( -1 );	// force the last to make an edge if no matched to previous
 	for( i = 0 ; i < numEdges ; i++ ) {
 		if( ( edges[i] ^ edges[i + 1] ) == 1 ) {
 			// skip the next one, because we matched and

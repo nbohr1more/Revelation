@@ -82,48 +82,48 @@ public:
 	~rvGEWorkspace( );
 	
 	// Attach the workspace to a win32 window
-	bool					Attach( HWND wnd );
+	bool						Attach( HWND wnd );
 	
 	// Detach the workspace from the current win32 window
-	void					Detach( void );
+	void						Detach( void );
 	
-	bool					NewFile( void );
-	bool					LoadFile( const char *filename, idStr *error = NULL );
-	bool					SaveFile( const char *filename );
-	const char				*GetFilename( void );
+	bool						NewFile( void );
+	bool						LoadFile( const char *filename, idStr *error = NULL );
+	bool						SaveFile( const char *filename );
+	const char					*GetFilename( void );
 	
 	// Source control methods
-	bool					CheckOut( void );
-	bool					CheckIn( void );
-	bool					UndoCheckout( void );
-	ESourceControlState		GetSourceControlState( void );
+	bool						CheckOut( void );
+	bool						CheckIn( void );
+	bool						UndoCheckout( void );
+	ESourceControlState			GetSourceControlState( void );
 	
-	void					Render( HDC hDC );
+	void						Render( HDC hDC );
 	
-	rvGEApp				*GetApplication( void );
+	rvGEApp						*GetApplication( void );
 	
-	void					HideSelected( void );
-	void					UnhideSelected( void );
-	void					DeleteSelected( void );
-	bool					EditSelectedProperties( void );
-	bool					EditSelectedScripts( void );
-	void					BringSelectedForward( void );
-	void					BringSelectedToFront( void );
-	void					SendSelectedBackward( void );
-	void					SendSelectedToBack( void );
-	void					AlignSelected( EItemAlign align );
-	void					MakeSelectedSameSize( bool width, bool height );
-	void					MakeSelectedAChild( void );
+	void						HideSelected( void );
+	void						UnhideSelected( void );
+	void						DeleteSelected( void );
+	bool						EditSelectedProperties( void );
+	bool						EditSelectedScripts( void );
+	void						BringSelectedForward( void );
+	void						BringSelectedToFront( void );
+	void						SendSelectedBackward( void );
+	void						SendSelectedToBack( void );
+	void						AlignSelected( EItemAlign align );
+	void						MakeSelectedSameSize( bool width, bool height );
+	void						MakeSelectedAChild( void );
 	
-	bool					CanHide( void );
-	void					ShowHidden( void );
-	void					HideWindow( idWindow *window );
-	void					UnhideWindow( idWindow *window );
+	bool						CanHide( void );
+	void						ShowHidden( void );
+	void						HideWindow( idWindow *window );
+	void						UnhideWindow( idWindow *window );
 	
-	EZoomLevel				ZoomIn( void );
-	EZoomLevel				ZoomOut( void );
-	EZoomLevel				GetZoom( void );
-	float					GetZoomScale( void );
+	EZoomLevel					ZoomIn( void );
+	EZoomLevel					ZoomOut( void );
+	EZoomLevel					GetZoom( void );
+	float						GetZoomScale( void );
 	
 	static rvGEWorkspace		*GetWorkspace( HWND wnd );
 	rvGEModifierStack			&GetModifierStack( void );
@@ -132,26 +132,25 @@ public:
 	idList<rvGEClipboardItem *>	GetClipboard( void );
 	HWND						GetWindow( void );
 	
-	void					HandleMessage( UINT msg, WPARAM wParam, LPARAM lParam );
+	void						HandleMessage( UINT msg, WPARAM wParam, LPARAM lParam );
 	
-	idVec2					&WindowToWorkspace( idVec2 &point );
-	idVec2					&WorkspaceToWindow( idVec2 &point );
-	idRectangle			&WindowToWorkspace( idRectangle &rect );
-	idRectangle			&WorkspaceToWindow( idRectangle &rect );
+	idVec2						&WindowToWorkspace( idVec2 &point );
+	idVec2						&WorkspaceToWindow( idVec2 &point );
+	idRectangle					&WindowToWorkspace( idRectangle &rect );
+	idRectangle					&WorkspaceToWindow( idRectangle &rect );
 	
-	bool					IsModified( void );
-	bool					IsNew( void );
+	bool						IsModified( void );
+	bool						IsNew( void );
 	
-	idWindow				*AddWindow( rvGEWindowWrapper::EWindowType type );
+	idWindow					*AddWindow( rvGEWindowWrapper::EWindowType type );
 	
-	//	void					Cut						( void );
-	void					Copy( void );
-	void					Paste( void );
+	void						Copy( void );
+	void						Paste( void );
 	
-	void					AddModifierMove( const char *modName, float x, float y, bool snap );
-	void					AddModifierSize( const char *modName, float l, float t, float r, float b, bool snap );
+	void						AddModifierMove( const char *modName, float x, float y, bool snap );
+	void						AddModifierSize( const char *modName, float l, float t, float r, float b, bool snap );
 	
-	void					SetModified( bool mod );
+	void						SetModified( bool mod );
 	
 protected:
 

@@ -126,12 +126,12 @@ bool rvGEViewer::OpenFile( const char *filename ) {
 
 /*
 =======
-MapKey
+MapEditorKey
 
 Map from windows to Doom keynums
 =======
 */
-static int MapKey( int key ) {
+static int MapEditorKey( int key ) {
 	int result;
 	int modified;
 	bool is_extended;
@@ -242,7 +242,7 @@ LRESULT CALLBACK rvGEViewer::WndProc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 			bool       visuals;
 			ZeroMemory( &event, sizeof( event ) ) ;
 			event.evType = SE_KEY;
-			event.evValue = MapKey( lParam );
+			event.evValue = MapEditorKey( lParam );
 			event.evValue2 = true;
 			viewer->mInterface->HandleEvent( &event, viewer->mTime, &visuals );
 		}
@@ -254,7 +254,7 @@ LRESULT CALLBACK rvGEViewer::WndProc( HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 			bool       visuals;
 			ZeroMemory( &event, sizeof( event ) ) ;
 			event.evType = SE_KEY;
-			event.evValue = MapKey( lParam );
+			event.evValue = MapEditorKey( lParam );
 			event.evValue2 = false;
 			viewer->mInterface->HandleEvent( &event, viewer->mTime, &visuals );
 		}

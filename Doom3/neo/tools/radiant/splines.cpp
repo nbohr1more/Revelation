@@ -39,7 +39,7 @@ idCameraDef *g_splineList = &splineList;
 glLabeledPoint
 ================
 */
-void glLabeledPoint( idVec4 &color, idVec3 &point, float size, const char *label ) {
+void glLabeledPoint( idVec4 color, idVec3 &point, float size, const char *label ) {
 	glColor3fv( color.ToFloatPtr() );
 	glPointSize( size );
 	glBegin( GL_POINTS );

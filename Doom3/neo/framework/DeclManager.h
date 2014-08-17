@@ -79,8 +79,7 @@ typedef enum {
 	DECL_MODELEXPORT,
 	DECL_MAPDEF,
 	
-	// new decl types can be added here
-	
+	// new decl types can be added here	
 	DECL_MAX_TYPES			= 32
 } declType_t;
 

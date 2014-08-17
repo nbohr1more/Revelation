@@ -238,7 +238,7 @@ static void RB_T_FillDepthBuffer( const drawSurf_t *surf ) {
 	const idMaterial		*shader;
 	const shaderStage_t		*pStage;
 	const float				*regs;
-	float					color[4];
+	float					color[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 	const srfTriangles_t	*tri;
 	tri = surf->geo;
 	shader = surf->material;
@@ -280,10 +280,6 @@ static void RB_T_FillDepthBuffer( const drawSurf_t *surf ) {
 	if( stage == shader->GetNumStages() ) {
 		return;
 	}
-	// change the matrix if needed (BFG)
-	if( surf->space != backEnd.currentSpace ) {
-		glLoadMatrixf( surf->space->modelViewMatrix );
-	}
 	// set polygon offset if necessary
 	if( shader->TestMaterialFlag( MF_POLYGONOFFSET ) ) {
 		glEnable( GL_POLYGON_OFFSET_FILL );
@@ -307,11 +303,10 @@ static void RB_T_FillDepthBuffer( const drawSurf_t *surf ) {
 	glVertexPointer( 3, GL_FLOAT, sizeof( idDrawVert ), ac->xyz.ToFloatPtr() );
 	glTexCoordPointer( 2, GL_FLOAT, sizeof( idDrawVert ), reinterpret_cast<const GLvoid *>( &ac->st ) );
 	bool drawSolid = false;
+	// we may have multiple alpha tested stages
 	if( shader->Coverage() == MC_OPAQUE ) {
 		drawSolid = true;
-	}
-	// we may have multiple alpha tested stages
-	if( shader->Coverage() == MC_PERFORATED ) {
+	} else if( shader->Coverage() == MC_PERFORATED ) {
 		// if the only alpha tested stages are condition register omitted,
 		// draw a normal opaque surface
 		bool	didDraw = false;
@@ -332,7 +327,7 @@ static void RB_T_FillDepthBuffer( const drawSurf_t *surf ) {
 			// set the alpha modulate
 			color[3] = regs[ pStage->color.registers[3] ];
 			// skip the entire stage if alpha would be black
-			if( color[3] <= 0 ) {
+			if( color[3] <= 0.0f ) {
 				continue;
 			}
 			GL_Color( color[0], color[1], color[2], color[3] );
@@ -354,7 +349,6 @@ static void RB_T_FillDepthBuffer( const drawSurf_t *surf ) {
 	if( drawSolid ) {
 		GL_Color( color[0], color[1], color[2], color[3] );
 		globalImages->whiteImage->Bind();
-		// draw it
 		RB_DrawElementsWithCounters( tri );
 	}
 	// reset polygon offset

@@ -561,7 +561,7 @@ static bool GLW_SetFullScreen( glimpParms_t parms ) {
 				&& ( int )devmode.dmPelsHeight >= parms.height
 				&& devmode.dmBitsPerPel == 32 ) {
 			matched = true;
-			if( parms.displayHz == 0 || devmode.dmDisplayFrequency == parms.displayHz ) {
+			if( parms.displayHz == 0 || devmode.dmDisplayFrequency == static_cast<DWORD>( parms.displayHz ) ) {
 				break;
 			}
 		}

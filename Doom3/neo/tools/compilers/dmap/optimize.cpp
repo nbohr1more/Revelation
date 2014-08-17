@@ -542,7 +542,7 @@ RemoveIfColinear
 #define	COLINEAR_EPSILON	0.1
 static	void RemoveIfColinear( optVertex_t *ov, optIsland_t *island ) {
 	optEdge_t	*e, *e1, *e2;
-	optVertex_t *v1, *v2, *v3;
+	optVertex_t *v1 = NULL, *v2, *v3 = NULL;
 	idVec3		dir1, dir2;
 	float		len, dist;
 	idVec3		point;
@@ -832,7 +832,7 @@ CreateOptTri
 */
 static void CreateOptTri( optVertex_t *first, optEdge_t *e1, optEdge_t *e2, optIsland_t *island ) {
 	optEdge_t		*opposite;
-	optVertex_t		*second, *third;
+	optVertex_t		*second = NULL, *third = NULL;
 	optTri_t		*optTri;
 	mapTri_t		*tri;
 	if( e1->v1 == first ) {
@@ -952,8 +952,8 @@ Generate a new list of triangles from the optEdeges
 ====================
 */
 static void BuildOptTriangles( optIsland_t *island ) {
-	optVertex_t		*ov, *second, *third, *middle;
-	optEdge_t		*e1, *e1Next, *e2, *e2Next, *check, *checkNext;
+	optVertex_t		*ov, *second = NULL, *third = NULL, *middle = NULL;
+	optEdge_t		*e1, *e1Next = NULL, *e2, *e2Next = NULL, *check, *checkNext = NULL;
 	// free them
 	FreeOptTriangles( island );
 	// clear the vertex emitted flags
@@ -1020,8 +1020,7 @@ static void BuildOptTriangles( optIsland_t *island ) {
 					if( check == e1 || check == e2 ) {
 						continue;
 					}
-					if( IsTriangleValid( ov, second, middle ) &&
-							IsTriangleValid( ov, middle, third ) ) {
+					if( IsTriangleValid( ov, second, middle ) && IsTriangleValid( ov, middle, third ) ) {
 						break;	// should use the subdivided ones
 					}
 				}
