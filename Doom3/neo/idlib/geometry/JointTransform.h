@@ -69,8 +69,8 @@ public:
 	idVec3			operator*( const idVec3 &v ) const;							// only rotate
 	idVec3			operator*( const idVec4 &v ) const;							// rotate and translate
 
-	idJointMat 	&operator*=( const idJointMat &a );							// transform
-	idJointMat 	&operator/=( const idJointMat &a );							// untransform
+	idJointMat 		&operator*=( const idJointMat &a );							// transform
+	idJointMat 		&operator/=( const idJointMat &a );							// untransform
 
 	bool			Compare( const idJointMat &a ) const;						// exact compare, no epsilon
 	bool			Compare( const idJointMat &a, const float epsilon ) const;	// compare with epsilon

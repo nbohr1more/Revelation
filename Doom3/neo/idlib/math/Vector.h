@@ -54,7 +54,7 @@ public:
 	float			x;
 	float			y;
 
-	idVec2( void );
+	idVec2();
 	explicit idVec2( const float x, const float y );
 
 	void 			Set( const float x, const float y );
@@ -68,11 +68,11 @@ public:
 	idVec2			operator/( const float a ) const;
 	idVec2			operator+( const idVec2 &a ) const;
 	idVec2			operator-( const idVec2 &a ) const;
-	idVec2 		&operator+=( const idVec2 &a );
-	idVec2 		&operator-=( const idVec2 &a );
-	idVec2 		&operator/=( const idVec2 &a );
-	idVec2 		&operator/=( const float a );
-	idVec2 		&operator*=( const float a );
+	idVec2 			&operator+=( const idVec2 &a );
+	idVec2 			&operator-=( const idVec2 &a );
+	idVec2 			&operator/=( const idVec2 &a );
+	idVec2 			&operator/=( const float a );
+	idVec2 			&operator*=( const float a );
 
 	friend idVec2	operator*( const float a, const idVec2 b );
 
@@ -86,7 +86,7 @@ public:
 	float			LengthSqr( void ) const;
 	float			Normalize( void );			// returns length
 	float			NormalizeFast( void );		// returns length
-	idVec2 		&Truncate( float length );	// cap length
+	idVec2 			&Truncate( float length );	// cap length
 	void			Clamp( const idVec2 &min, const idVec2 &max );
 	void			Snap( void );				// snap to closest integer value
 	void			SnapInt( void );			// snap towards integer (floor)
@@ -95,15 +95,15 @@ public:
 
 	const float 	*ToFloatPtr( void ) const;
 	float 			*ToFloatPtr( void );
-	const char 	*ToString( int precision = 2 ) const;
+	const char		*ToString( int precision = 2 ) const;
 
 	void			Lerp( const idVec2 &v1, const idVec2 &v2, const float l );
 };
 
-extern idVec2 vec2_origin;
-#define vec2_zero vec2_origin
+extern idVec2		vec2_origin;
+#define vec2_zero	vec2_origin
 
-ID_INLINE idVec2::idVec2( void ) {
+ID_INLINE idVec2::idVec2() {
 }
 
 ID_INLINE idVec2::idVec2( const float x, const float y ) {
@@ -306,7 +306,7 @@ public:
 	float			y;
 	float			z;
 
-	idVec3( void );
+	idVec3();
 	explicit idVec3( const float x, const float y, const float z );
 
 	void 			Set( const float x, const float y, const float z );
@@ -373,10 +373,10 @@ public:
 	void			SLerp( const idVec3 &v1, const idVec3 &v2, const float l );
 };
 
-extern idVec3 vec3_origin;
-#define vec3_zero vec3_origin
+extern idVec3		vec3_origin;
+#define vec3_zero	vec3_origin
 
-ID_INLINE idVec3::idVec3( void ) {
+ID_INLINE idVec3::idVec3() {
 }
 
 ID_INLINE idVec3::idVec3( const float x, const float y, const float z ) {
@@ -777,7 +777,7 @@ public:
 	float			z;
 	float			w;
 
-	idVec4( void );
+	idVec4();
 	explicit idVec4( const float x, const float y, const float z, const float w );
 
 	void 			Set( const float x, const float y, const float z, const float w );
@@ -822,10 +822,10 @@ public:
 	void			Lerp( const idVec4 &v1, const idVec4 &v2, const float l );
 };
 
-extern idVec4 vec4_origin;
-#define vec4_zero vec4_origin
+extern idVec4		vec4_origin;
+#define vec4_zero	vec4_origin
 
-ID_INLINE idVec4::idVec4( void ) {
+ID_INLINE idVec4::idVec4() {
 }
 
 ID_INLINE idVec4::idVec4( const float x, const float y, const float z, const float w ) {
@@ -1025,7 +1025,7 @@ public:
 	float			s;
 	float			t;
 
-	idVec5( void );
+	idVec5();
 	explicit idVec5( const idVec3 &xyz, const idVec2 &st );
 	explicit idVec5( const float x, const float y, const float z, const float s, const float t );
 
@@ -1044,10 +1044,10 @@ public:
 	void			Lerp( const idVec5 &v1, const idVec5 &v2, const float l );
 };
 
-extern idVec5 vec5_origin;
-#define vec5_zero vec5_origin
+extern idVec5		vec5_origin;
+#define vec5_zero	vec5_origin
 
-ID_INLINE idVec5::idVec5( void ) {
+ID_INLINE idVec5::idVec5() {
 }
 
 ID_INLINE idVec5::idVec5( const idVec3 &xyz, const idVec2 &st ) {
@@ -1111,7 +1111,7 @@ ID_INLINE float *idVec5::ToFloatPtr( void ) {
 
 class idVec6 {
 public:
-	idVec6( void );
+	idVec6();
 	explicit idVec6( const float *a );
 	explicit idVec6( const float a1, const float a2, const float a3, const float a4, const float a5, const float a6 );
 
@@ -1155,11 +1155,11 @@ private:
 	float			p[6];
 };
 
-extern idVec6 vec6_origin;
-#define vec6_zero vec6_origin
-extern idVec6 vec6_infinity;
+extern idVec6		vec6_origin;
+#define vec6_zero	vec6_origin
+extern idVec6		vec6_infinity;
 
-ID_INLINE idVec6::idVec6( void ) {
+ID_INLINE idVec6::idVec6() {
 }
 
 ID_INLINE idVec6::idVec6( const float *a ) {
@@ -1380,10 +1380,10 @@ class idVecX {
 	friend class idMatX;
 
 public:
-	idVecX( void );
+	idVecX();
 	explicit idVecX( int length );
 	explicit idVecX( int length, float *data );
-	~idVecX( void );
+	~idVecX();
 
 	float			operator[]( const int index ) const;
 	float 			&operator[]( const int index );
@@ -1449,7 +1449,7 @@ private:
 };
 
 
-ID_INLINE idVecX::idVecX( void ) {
+ID_INLINE idVecX::idVecX() {
 	size = alloced = 0;
 	p = NULL;
 }
@@ -1466,7 +1466,7 @@ ID_INLINE idVecX::idVecX( int length, float *data ) {
 	SetData( length, data );
 }
 
-ID_INLINE idVecX::~idVecX( void ) {
+ID_INLINE idVecX::~idVecX() {
 	// if not temp memory
 	if( p && ( p < idVecX::tempPtr || p >= idVecX::tempPtr + VECX_MAX_TEMP ) && alloced != -1 ) {
 		Mem_Free16( p );
@@ -1859,7 +1859,7 @@ class idPolar3 {
 public:
 	float			radius, theta, phi;
 
-	idPolar3( void );
+	idPolar3();
 	explicit idPolar3( const float radius, const float theta, const float phi );
 
 	void 			Set( const float radius, const float theta, const float phi );
@@ -1872,7 +1872,7 @@ public:
 	idVec3			ToVec3( void ) const;
 };
 
-ID_INLINE idPolar3::idPolar3( void ) {
+ID_INLINE idPolar3::idPolar3() {
 }
 
 ID_INLINE idPolar3::idPolar3( const float radius, const float theta, const float phi ) {

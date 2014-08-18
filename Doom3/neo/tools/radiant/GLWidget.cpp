@@ -178,8 +178,6 @@ void idGLWidget::OnPaint() {
 	wglMakeCurrent( win32.hDC, win32.hGLRC );
 }
 
-extern bool Sys_KeyDown( int key );
-
 void idGLDrawable::buttonDown( int _button, float x, float y ) {
 	pressX = x;
 	pressY = y;

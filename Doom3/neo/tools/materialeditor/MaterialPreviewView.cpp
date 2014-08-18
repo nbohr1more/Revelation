@@ -154,9 +154,6 @@ void MaterialPreviewView::OnShowLightsChange( bool showLights ) {
  =============================================================================
  */
 
-extern bool		Sys_KeyDown( int key );
-extern float	fDiff( float f1, float f2 );
-
 idGLDrawableView::idGLDrawableView() {
 	material = NULL;
 	modelDefHandle = -1;
@@ -415,7 +412,7 @@ void idGLDrawableView::drawLights( renderView_t *refdef ) {
 		lColor.w = 1.f;
 		idSphere sphere( vLight->renderLight.origin, 4 );
 		session->rw->DebugSphere( lColor, sphere, 0, true );
-		session->rw->DrawText( va( "%d", i + 1 ), vLight->renderLight.origin + idVec3( 0, 0, 5 ), 0.25f, idVec4( 1, 1, 0, 1 ), refdef->viewaxis, 1, 0, true );
+		session->rw->DrawText( va( "%d", i + 1 ), vLight->renderLight.origin + idVec3( 0, 0, 5 ), 0.25f, idVec4( 1.0f, 1.0f,  0.0f, 1.0f ), refdef->viewaxis, 1, 0, true );
 	}
 }
 

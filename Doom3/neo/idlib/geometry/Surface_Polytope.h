@@ -41,7 +41,8 @@ If you have questions concerning this license or the applicable additional terms
 
 class idSurface_Polytope : public idSurface {
 public:
-	idSurface_Polytope( void );
+	idSurface_Polytope();
+	explicit idSurface_Polytope( const idSurface& surface ) : idSurface( surface ) {}
 
 	void				FromPlanes( const idPlane *planes, const int numPlanes );
 
@@ -64,7 +65,7 @@ protected:
 idSurface_Polytope::idSurface_Polytope
 ====================
 */
-ID_INLINE idSurface_Polytope::idSurface_Polytope( void ) {
+ID_INLINE idSurface_Polytope::idSurface_Polytope() {
 }
 
 #endif /* !__SURFACE_POLYTOPE_H__ */

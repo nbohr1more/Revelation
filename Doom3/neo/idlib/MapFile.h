@@ -58,7 +58,7 @@ public:
 
 	idDict					epairs;
 
-	idMapPrimitive( void ) {
+	idMapPrimitive() {
 		type = TYPE_INVALID;
 	}
 	virtual					~idMapPrimitive( void ) { }
@@ -75,8 +75,8 @@ class idMapBrushSide {
 	friend class idMapBrush;
 
 public:
-	idMapBrushSide( void );
-	~idMapBrushSide( void ) { }
+	idMapBrushSide();
+	~idMapBrushSide() {}
 	const char 			*GetMaterial( void ) const {
 		return material;
 	}
@@ -106,7 +106,7 @@ protected:
 	idVec3					origin;
 };
 
-ID_INLINE idMapBrushSide::idMapBrushSide( void ) {
+ID_INLINE idMapBrushSide::idMapBrushSide() {
 	plane.Zero();
 	texMat[0].Zero();
 	texMat[1].Zero();
@@ -116,11 +116,11 @@ ID_INLINE idMapBrushSide::idMapBrushSide( void ) {
 
 class idMapBrush : public idMapPrimitive {
 public:
-	idMapBrush( void ) {
+	idMapBrush() {
 		type = TYPE_BRUSH;
 		sides.Resize( 8, 4 );
 	}
-	~idMapBrush( void ) {
+	~idMapBrush() {
 		sides.DeleteContents( true );
 	}
 	static idMapBrush 		*Parse( idLexer &src, const idVec3 &origin, bool newFormat = true, float version = CURRENT_MAP_VERSION );
@@ -145,9 +145,9 @@ protected:
 
 class idMapPatch : public idMapPrimitive, public idSurface_Patch {
 public:
-	idMapPatch( void );
+	idMapPatch();
 	idMapPatch( int maxPatchWidth, int maxPatchHeight );
-	~idMapPatch( void ) { }
+	~idMapPatch() {}
 	static idMapPatch 		*Parse( idLexer &src, const idVec3 &origin, bool patchDef3 = true, float version = CURRENT_MAP_VERSION );
 	bool					Write( idFile *fp, int primitiveNum, const idVec3 &origin ) const;
 	const char 			*GetMaterial( void ) const {
@@ -183,7 +183,7 @@ protected:
 	bool					explicitSubdivisions;
 };
 
-ID_INLINE idMapPatch::idMapPatch( void ) {
+ID_INLINE idMapPatch::idMapPatch() {
 	type = TYPE_PATCH;
 	horzSubdivisions = vertSubdivisions = 0;
 	explicitSubdivisions = false;
@@ -211,10 +211,10 @@ public:
 	idDict					epairs;
 
 public:
-	idMapEntity( void ) {
+	idMapEntity() {
 		epairs.SetHashSize( 64 );
 	}
-	~idMapEntity( void ) {
+	~idMapEntity() {
 		primitives.DeleteContents( true );
 	}
 	static idMapEntity 	*Parse( idLexer &src, bool worldSpawn = false, float version = CURRENT_MAP_VERSION );
@@ -238,8 +238,8 @@ protected:
 
 class idMapFile {
 public:
-	idMapFile( void );
-	~idMapFile( void ) {
+	idMapFile();
+	~idMapFile() {
 		entities.DeleteContents( true );
 	}
 
@@ -295,7 +295,7 @@ private:
 	void					SetGeometryCRC( void );
 };
 
-ID_INLINE idMapFile::idMapFile( void ) {
+ID_INLINE idMapFile::idMapFile() {
 	version = CURRENT_MAP_VERSION;
 	fileTime = 0;
 	geometryCRC = 0;

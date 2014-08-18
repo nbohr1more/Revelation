@@ -42,7 +42,7 @@ If you have questions concerning this license or the applicable additional terms
 template< class type, int dimension >
 class idVectorSet : public idList<type> {
 public:
-	idVectorSet( void );
+	idVectorSet();
 	idVectorSet( const type &mins, const type &maxs, const int boxHashSize, const int initialSize );
 
 	// returns total size of allocated memory
@@ -70,7 +70,7 @@ private:
 };
 
 template< class type, int dimension >
-ID_INLINE idVectorSet<type, dimension>::idVectorSet( void ) {
+ID_INLINE idVectorSet<type, dimension>::idVectorSet() {
 	hash.Clear( idMath::IPow( boxHashSize, dimension ), 128 );
 	boxHashSize = 16;
 	memset( boxInvSize, 0, dimension * sizeof( boxInvSize[0] ) );
@@ -160,7 +160,7 @@ ID_INLINE int idVectorSet<type, dimension>::FindVector( const type &v, const flo
 template< class type, int dimension >
 class idVectorSubset {
 public:
-	idVectorSubset( void );
+	idVectorSubset();
 	idVectorSubset( const type &mins, const type &maxs, const int boxHashSize, const int initialSize );
 
 	// returns total size of allocated memory
@@ -188,7 +188,7 @@ private:
 };
 
 template< class type, int dimension >
-ID_INLINE idVectorSubset<type, dimension>::idVectorSubset( void ) {
+ID_INLINE idVectorSubset<type, dimension>::idVectorSubset() {
 	hash.Clear( idMath::IPow( boxHashSize, dimension ), 128 );
 	boxHashSize = 16;
 	memset( boxInvSize, 0, dimension * sizeof( boxInvSize[0] ) );

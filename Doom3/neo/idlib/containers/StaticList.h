@@ -55,11 +55,11 @@ public:
 	size_t				Size( void ) const;									// returns total size of allocated memory including size of list type
 	size_t				MemoryUsed( void ) const;							// returns size of the used elements in the list
 
-	const type 		&operator[]( int index ) const;
+	const type 			&operator[]( int index ) const;
 	type 				&operator[]( int index );
 
 	type 				*Ptr( void );										// returns a pointer to the list
-	const type 		*Ptr( void ) const;									// returns a pointer to the list
+	const type 			*Ptr( void ) const;									// returns a pointer to the list
 	type 				*Alloc( void );										// returns reference to a new data element at the end of the list.  returns NULL when full.
 	int					Append( const type &obj );							// append element
 	int					Append( const idStaticList<type, size> &other );		// append list

@@ -39,9 +39,9 @@ If you have questions concerning this license or the applicable additional terms
 
 class idBase64 {
 public:
-	idBase64( void );
+	idBase64();
 	idBase64( const idStr &s );
-	~idBase64( void );
+	~idBase64();
 
 	void		Encode( const byte *from, int size );
 	void		Encode( const idStr &src );
@@ -64,7 +64,7 @@ private:
 	void		EnsureAlloced( int size );
 };
 
-ID_INLINE idBase64::idBase64( void ) {
+ID_INLINE idBase64::idBase64() {
 	Init();
 }
 
@@ -73,7 +73,7 @@ ID_INLINE idBase64::idBase64( const idStr &s ) {
 	*this = s;
 }
 
-ID_INLINE idBase64::~idBase64( void ) {
+ID_INLINE idBase64::~idBase64() {
 	Release();
 }
 

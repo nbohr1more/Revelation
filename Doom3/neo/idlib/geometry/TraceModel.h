@@ -95,7 +95,7 @@ public:
 	bool				isConvex;		// true when model is convex
 
 public:
-	idTraceModel( void );
+	idTraceModel();
 	// axial bounding box
 	idTraceModel( const idBounds &boxBounds );
 	// cylinder approximation
@@ -157,7 +157,7 @@ private:
 };
 
 
-ID_INLINE idTraceModel::idTraceModel( void ) {
+ID_INLINE idTraceModel::idTraceModel() {
 	type = TRM_INVALID;
 	numVerts = numEdges = numPolys = 0;
 	bounds.Zero();

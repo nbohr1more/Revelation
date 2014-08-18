@@ -133,9 +133,9 @@ void idWindow::CommonInit() {
 	shear.Zero();
 	textScale = 0.35f;
 	backColor.Zero();
-	foreColor = idVec4( 1, 1, 1, 1 );
-	hoverColor = idVec4( 1, 1, 1, 1 );
-	matColor = idVec4( 1, 1, 1, 1 );
+	foreColor = idVec4( 1.0f, 1.0f,  1.0f, 1.0f );
+	hoverColor = idVec4( 1.0f, 1.0f,  1.0f, 1.0f );
+	matColor = idVec4( 1.0f, 1.0f,  1.0f, 1.0f );
 	borderColor.Zero();
 	background = NULL;
 	backGroundName = "";
@@ -3620,9 +3620,9 @@ void idWindow::SetDefaults( void ) {
 	shear.Zero();
 	textScale = 0.35f;
 	backColor.Zero();
-	foreColor = idVec4( 1, 1, 1, 1 );
-	hoverColor = idVec4( 1, 1, 1, 1 );
-	matColor = idVec4( 1, 1, 1, 1 );
+	foreColor = idVec4( 1.0f, 1.0f,  1.0f, 1.0f );
+	hoverColor = idVec4( 1.0f, 1.0f,  1.0f, 1.0f );
+	matColor = idVec4( 1.0f, 1.0f,  1.0f, 1.0f );
 	borderColor.Zero();
 	text = "";
 	background = NULL;

@@ -40,8 +40,8 @@ If you have questions concerning this license or the applicable additional terms
 template< class type >
 class idCurve {
 public:
-	idCurve( void );
-	virtual				~idCurve( void );
+	idCurve();
+	virtual				~idCurve();
 
 	virtual int			AddValue( const float time, const type &value );
 	virtual void		RemoveIndex( const int index ) {
@@ -110,7 +110,7 @@ idCurve::idCurve
 ====================
 */
 template< class type >
-ID_INLINE idCurve<type>::idCurve( void ) {
+ID_INLINE idCurve<type>::idCurve() {
 	currentIndex = -1;
 	changed = false;
 }
@@ -121,7 +121,7 @@ idCurve::~idCurve
 ====================
 */
 template< class type >
-ID_INLINE idCurve<type>::~idCurve( void ) {
+ID_INLINE idCurve<type>::~idCurve() {
 }
 
 /*

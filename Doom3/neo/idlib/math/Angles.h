@@ -54,7 +54,7 @@ public:
 	float			yaw;
 	float			roll;
 
-	idAngles( void );
+	idAngles();
 	idAngles( float pitch, float yaw, float roll );
 	explicit idAngles( const idVec3 &v );
 
@@ -102,7 +102,7 @@ public:
 
 extern idAngles ang_zero;
 
-ID_INLINE idAngles::idAngles( void ) {
+ID_INLINE idAngles::idAngles() {
 }
 
 ID_INLINE idAngles::idAngles( float pitch, float yaw, float roll ) {

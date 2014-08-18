@@ -69,7 +69,7 @@ class idMat3;
 
 class idPlane {
 public:
-	idPlane( void );
+	idPlane();
 	explicit idPlane( float a, float b, float c, float d );
 	explicit idPlane( const idVec3 &normal, const float dist );
 	explicit idPlane( const idVec3& v0, const idVec3& v1, const idVec3& v2, bool fixDegenerate = false );
@@ -131,10 +131,10 @@ private:
 	float			d;
 };
 
-extern idPlane plane_origin;
-#define plane_zero plane_origin
+extern idPlane		plane_origin;
+#define plane_zero	plane_origin
 
-ID_INLINE idPlane::idPlane( void ) {
+ID_INLINE idPlane::idPlane() {
 }
 
 ID_INLINE idPlane::idPlane( float a, float b, float c, float d ) {

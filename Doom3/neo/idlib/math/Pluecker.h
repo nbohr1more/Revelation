@@ -39,7 +39,7 @@ If you have questions concerning this license or the applicable additional terms
 
 class idPluecker {
 public:
-	idPluecker( void );
+	idPluecker();
 	explicit idPluecker( const float *a );
 	explicit idPluecker( const idVec3 &start, const idVec3 &end );
 	explicit idPluecker( const float a1, const float a2, const float a3, const float a4, const float a5, const float a6 );
@@ -52,10 +52,10 @@ public:
 	float			operator*( const idPluecker &a ) const;						// permuted inner product
 	idPluecker		operator-( const idPluecker &a ) const;
 	idPluecker		operator+( const idPluecker &a ) const;
-	idPluecker 	&operator*=( const float a );
-	idPluecker 	&operator/=( const float a );
-	idPluecker 	&operator+=( const idPluecker &a );
-	idPluecker 	&operator-=( const idPluecker &a );
+	idPluecker 		&operator*=( const float a );
+	idPluecker 		&operator/=( const float a );
+	idPluecker 		&operator+=( const idPluecker &a );
+	idPluecker 		&operator-=( const idPluecker &a );
 
 	bool			Compare( const idPluecker &a ) const;						// exact compare, no epsilon
 	bool			Compare( const idPluecker &a, const float epsilon ) const;	// compare with epsilon
@@ -83,16 +83,16 @@ public:
 
 	const float 	*ToFloatPtr( void ) const;
 	float 			*ToFloatPtr( void );
-	const char 	*ToString( int precision = 2 ) const;
+	const char 		*ToString( int precision = 2 ) const;
 
 private:
 	float			p[6];
 };
 
-extern idPluecker pluecker_origin;
-#define pluecker_zero pluecker_origin
+extern idPluecker		pluecker_origin;
+#define pluecker_zero	pluecker_origin
 
-ID_INLINE idPluecker::idPluecker( void ) {
+ID_INLINE idPluecker::idPluecker() {
 }
 
 ID_INLINE idPluecker::idPluecker( const float *a ) {

@@ -64,9 +64,9 @@ idSurface_SweptSpline::SetSweptCircle
 void idSurface_SweptSpline::SetSweptCircle( const float radius ) {
 	idCurve_NURBS<idVec4> *nurbs = new idCurve_NURBS<idVec4>();
 	nurbs->Clear();
-	nurbs->AddValue( 0.0f, idVec4( radius,  radius, 0.0f, 0.00f ) );
+	nurbs->AddValue( 0.0f, idVec4( radius,  radius, 0.0f, 0.0f ) );
 	nurbs->AddValue( 100.0f, idVec4( -radius,  radius, 0.0f, 0.25f ) );
-	nurbs->AddValue( 200.0f, idVec4( -radius, -radius, 0.0f, 0.50f ) );
+	nurbs->AddValue( 200.0f, idVec4( -radius, -radius, 0.0f, 0.5f ) );
 	nurbs->AddValue( 300.0f, idVec4( radius, -radius, 0.0f, 0.75f ) );
 	nurbs->SetBoundaryType( idCurve_NURBS<idVec4>::BT_CLOSED );
 	nurbs->SetCloseTime( 100.0f );

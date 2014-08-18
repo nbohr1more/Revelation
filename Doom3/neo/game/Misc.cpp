@@ -624,7 +624,7 @@ void idSpring::Think( void ) {
 			origin = ent2->GetPhysics()->GetOrigin();
 			end = origin + p2 * axis;
 		}
-		gameRenderWorld->DebugLine( idVec4( 1, 1, 0, 1 ), start, end, 0, true );
+		gameRenderWorld->DebugLine( idVec4( 1.0f, 1.0f,  0.0f, 1.0f ), start, end, 0, true );
 	}
 	Present();
 }

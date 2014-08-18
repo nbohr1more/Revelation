@@ -48,10 +48,10 @@ typedef struct surfaceEdge_s {
 
 class idSurface {
 public:
-	idSurface( void );
+	idSurface();
 	explicit idSurface( const idSurface &surf );
 	explicit idSurface( const idDrawVert *verts, const int numVerts, const int *indexes, const int numIndexes );
-	~idSurface( void );
+	~idSurface();
 
 	const idDrawVert 		&operator[]( const int index ) const;
 	idDrawVert 			&operator[]( const int index );

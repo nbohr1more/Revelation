@@ -1652,9 +1652,9 @@ void idGameSSDWindow::AsteroidStruckPlayer( SSDAsteroid *asteroid ) {
 void idGameSSDWindow::AddScore( SSDEntity *ent, int points ) {
 	SSDPoints *pointsEnt;
 	if( points > 0 ) {
-		pointsEnt = SSDPoints::GetNewPoints( this, ent, points, 1000, 50, idVec4( 0, 1, 0, 1 ) );
+		pointsEnt = SSDPoints::GetNewPoints( this, ent, points, 1000, 50, idVec4( 0.0f, 1.0f, 0.0f, 1.0f ) );
 	} else {
-		pointsEnt = SSDPoints::GetNewPoints( this, ent, points, 1000, 50, idVec4( 1, 0, 0, 1 ) );
+		pointsEnt = SSDPoints::GetNewPoints( this, ent, points, 1000, 50, idVec4( 1.0f, 0.0f,  0.0f, 1.0f ) );
 	}
 	entities.Append( pointsEnt );
 	gameStats.score += points;

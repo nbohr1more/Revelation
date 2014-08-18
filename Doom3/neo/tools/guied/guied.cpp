@@ -110,12 +110,13 @@ StringFromVec4
 Returns a clean string version of the given vec4
 ================
 */
-const char *StringFromVec4( idVec4 &v ) {
-	return va( "%s,%s,%s,%s",
-			   idStr::FloatArrayToString( &v[0], 1, 8 ),
-			   idStr::FloatArrayToString( &v[1], 1, 8 ),
-			   idStr::FloatArrayToString( &v[2], 1, 8 ),
-			   idStr::FloatArrayToString( &v[3], 1, 8 ) );
+const char *StringFromVec4( const idVec4 &vec ) {
+	const float strArray[] = { vec[0], vec[1], vec[2], vec[3] };
+	return va( "%s, %s, %s, %s",
+			   idStr::FloatArrayToString( &strArray[0], 1, 8 ),
+			   idStr::FloatArrayToString( &strArray[1], 1, 8 ),
+			   idStr::FloatArrayToString( &strArray[2], 1, 8 ),
+			   idStr::FloatArrayToString( &strArray[3], 1, 8 ) );
 }
 
 /*

@@ -150,7 +150,6 @@ void AssertFailed( const char *file, int line, const char *expression );
 class idException {
 public:
 	char error[MAX_STRING_CHARS];
-
 	idException( const char *text = "" ) {
 		strcpy( error, text );
 	}

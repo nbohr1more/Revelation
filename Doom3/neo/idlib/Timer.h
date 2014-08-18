@@ -39,9 +39,9 @@ If you have questions concerning this license or the applicable additional terms
 
 class idTimer {
 public:
-	idTimer( void );
+	idTimer();
 	idTimer( double clockTicks );
-	~idTimer( void );
+	~idTimer();
 
 	idTimer			operator+( const idTimer &t ) const;
 	idTimer			operator-( const idTimer &t ) const;
@@ -71,7 +71,7 @@ private:
 idTimer::idTimer
 =================
 */
-ID_INLINE idTimer::idTimer( void ) {
+ID_INLINE idTimer::idTimer() {
 	state = TS_STOPPED;
 	clockTicks = 0.0;
 }
@@ -91,7 +91,7 @@ ID_INLINE idTimer::idTimer( double _clockTicks ) {
 idTimer::~idTimer
 =================
 */
-ID_INLINE idTimer::~idTimer( void ) {
+ID_INLINE idTimer::~idTimer() {
 }
 
 /*
@@ -204,8 +204,8 @@ ID_INLINE double idTimer::Milliseconds( void ) const {
 
 class idTimerReport {
 public:
-	idTimerReport( void );
-	~idTimerReport( void );
+	idTimerReport();
+	~idTimerReport();
 
 	void			SetReportName( const char *name );
 	int				AddReport( const char *name );

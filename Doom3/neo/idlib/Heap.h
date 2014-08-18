@@ -153,8 +153,8 @@ __inline void operator delete[]( void *p ) {
 template<class type, int blockSize>
 class idBlockAlloc {
 public:
-	idBlockAlloc( void );
-	~idBlockAlloc( void );
+	idBlockAlloc();
+	~idBlockAlloc();
 
 	void					Shutdown( void );
 
@@ -188,14 +188,14 @@ private:
 };
 
 template<class type, int blockSize>
-idBlockAlloc<type, blockSize>::idBlockAlloc( void ) {
+idBlockAlloc<type, blockSize>::idBlockAlloc() {
 	blocks = NULL;
 	free = NULL;
 	total = active = 0;
 }
 
 template<class type, int blockSize>
-idBlockAlloc<type, blockSize>::~idBlockAlloc( void ) {
+idBlockAlloc<type, blockSize>::~idBlockAlloc() {
 	Shutdown();
 }
 
@@ -253,8 +253,8 @@ void idBlockAlloc<type, blockSize>::Shutdown( void ) {
 template<class type, int baseBlockSize, int minBlockSize>
 class idDynamicAlloc {
 public:
-	idDynamicAlloc( void );
-	~idDynamicAlloc( void );
+	idDynamicAlloc();
+	~idDynamicAlloc();
 
 	void							Init( void );
 	void							Shutdown( void );
@@ -301,12 +301,12 @@ private:
 };
 
 template<class type, int baseBlockSize, int minBlockSize>
-idDynamicAlloc<type, baseBlockSize, minBlockSize>::idDynamicAlloc( void ) {
+idDynamicAlloc<type, baseBlockSize, minBlockSize>::idDynamicAlloc() {
 	Clear();
 }
 
 template<class type, int baseBlockSize, int minBlockSize>
-idDynamicAlloc<type, baseBlockSize, minBlockSize>::~idDynamicAlloc( void ) {
+idDynamicAlloc<type, baseBlockSize, minBlockSize>::~idDynamicAlloc() {
 	Shutdown();
 }
 
@@ -413,8 +413,8 @@ public:
 template<class type, int baseBlockSize, int minBlockSize>
 class idDynamicBlockAlloc {
 public:
-	idDynamicBlockAlloc( void );
-	~idDynamicBlockAlloc( void );
+	idDynamicBlockAlloc();
+	~idDynamicBlockAlloc();
 
 	void							Init( void );
 	void							Shutdown( void );
@@ -479,12 +479,12 @@ private:
 };
 
 template<class type, int baseBlockSize, int minBlockSize>
-idDynamicBlockAlloc<type, baseBlockSize, minBlockSize>::idDynamicBlockAlloc( void ) {
+idDynamicBlockAlloc<type, baseBlockSize, minBlockSize>::idDynamicBlockAlloc() {
 	Clear();
 }
 
 template<class type, int baseBlockSize, int minBlockSize>
-idDynamicBlockAlloc<type, baseBlockSize, minBlockSize>::~idDynamicBlockAlloc( void ) {
+idDynamicBlockAlloc<type, baseBlockSize, minBlockSize>::~idDynamicBlockAlloc() {
 	Shutdown();
 }
 
@@ -669,19 +669,6 @@ const char *idDynamicBlockAlloc<type, baseBlockSize, minBlockSize>::CheckMemory(
 		return "memory was allocated with different allocator";
 	}
 #endif
-	/* base blocks can be larger than baseBlockSize which can cause this code to fail
-	idDynamicBlock<type> *base;
-	for ( base = firstBlock; base != NULL; base = base->next ) {
-		if ( base->IsBaseBlock() ) {
-			if ( ((int)block) >= ((int)base) && ((int)block) < ((int)base) + baseBlockSize ) {
-				break;
-			}
-		}
-	}
-	if ( base == NULL ) {
-		return "no base block found for memory";
-	}
-	*/
 	return NULL;
 }
 

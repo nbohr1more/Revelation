@@ -568,7 +568,7 @@ Old style stage rendering
 */
 static void RB_STD_T_RenderShaderPassesStage2( const drawSurf_t *surf, const srfTriangles_t *tri, idDrawVert *ac, const shaderStage_t *pStage, const float *regs ) {
 	// set the color
-	const GLfloat color[4] =	{
+	const GLfloat color[] =	{
 		regs[pStage->color.registers[0]],
 		regs[pStage->color.registers[1]],
 		regs[pStage->color.registers[2]],

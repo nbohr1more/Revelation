@@ -40,7 +40,7 @@ If you have questions concerning this license or the applicable additional terms
 
 class idPolynomial {
 public:
-	idPolynomial( void );
+	idPolynomial();
 	explicit idPolynomial( int d );
 	explicit idPolynomial( float a, float b );
 	explicit idPolynomial( float a, float b, float c );
@@ -88,7 +88,7 @@ public:
 
 	const float 	*ToFloatPtr( void ) const;
 	float 			*ToFloatPtr( void );
-	const char 	*ToString( int precision = 2 ) const;
+	const char 		*ToString( int precision = 2 ) const;
 
 	static void		Test( void );
 
@@ -101,7 +101,7 @@ private:
 	int				Laguer( const idComplex *coef, const int degree, idComplex &r ) const;
 };
 
-ID_INLINE idPolynomial::idPolynomial( void ) {
+ID_INLINE idPolynomial::idPolynomial() {
 	degree = -1;
 	allocated = 0;
 	coefficient = NULL;

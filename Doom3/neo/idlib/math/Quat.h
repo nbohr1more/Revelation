@@ -52,7 +52,7 @@ public:
 	float			z;
 	float			w;
 
-	idQuat( void );
+	idQuat();
 	idQuat( float x, float y, float z, float w );
 
 	void 			Set( float x, float y, float z, float w );
@@ -60,16 +60,16 @@ public:
 	float			operator[]( int index ) const;
 	float 			&operator[]( int index );
 	idQuat			operator-() const;
-	idQuat 		&operator=( const idQuat &a );
+	idQuat 			&operator=( const idQuat &a );
 	idQuat			operator+( const idQuat &a ) const;
-	idQuat 		&operator+=( const idQuat &a );
+	idQuat 			&operator+=( const idQuat &a );
 	idQuat			operator-( const idQuat &a ) const;
-	idQuat 		&operator-=( const idQuat &a );
+	idQuat 			&operator-=( const idQuat &a );
 	idQuat			operator*( const idQuat &a ) const;
 	idVec3			operator*( const idVec3 &a ) const;
 	idQuat			operator*( float a ) const;
-	idQuat 		&operator*=( const idQuat &a );
-	idQuat 		&operator*=( float a );
+	idQuat 			&operator*=( const idQuat &a );
+	idQuat 			&operator*=( float a );
 
 	friend idQuat	operator*( const float a, const idQuat &b );
 	friend idVec3	operator*( const idVec3 &a, const idQuat &b );
@@ -81,7 +81,7 @@ public:
 
 	idQuat			Inverse( void ) const;
 	float			Length( void ) const;
-	idQuat 		&Normalize( void );
+	idQuat 			&Normalize( void );
 
 	float			CalcW( void ) const;
 	int				GetDimension( void ) const;
@@ -94,12 +94,12 @@ public:
 	idVec3			ToAngularVelocity( void ) const;
 	const float 	*ToFloatPtr( void ) const;
 	float 			*ToFloatPtr( void );
-	const char 	*ToString( int precision = 2 ) const;
+	const char 		*ToString( int precision = 2 ) const;
 
-	idQuat 		&Slerp( const idQuat &from, const idQuat &to, float t );
+	idQuat 			&Slerp( const idQuat &from, const idQuat &to, float t );
 };
 
-ID_INLINE idQuat::idQuat( void ) {
+ID_INLINE idQuat::idQuat() {
 }
 
 ID_INLINE idQuat::idQuat( float x, float y, float z, float w ) {
@@ -285,7 +285,6 @@ ID_INLINE float *idQuat::ToFloatPtr( void ) {
 	return &x;
 }
 
-
 /*
 ===============================================================================
 
@@ -300,7 +299,7 @@ public:
 	float			y;
 	float			z;
 
-	idCQuat( void );
+	idCQuat();
 	idCQuat( float x, float y, float z );
 
 	void 			Set( float x, float y, float z );
@@ -325,7 +324,7 @@ public:
 	const char 	*ToString( int precision = 2 ) const;
 };
 
-ID_INLINE idCQuat::idCQuat( void ) {
+ID_INLINE idCQuat::idCQuat() {
 }
 
 ID_INLINE idCQuat::idCQuat( float x, float y, float z ) {

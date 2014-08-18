@@ -845,7 +845,7 @@ idTarget_SetInfluence::Event_Flash
 */
 void idTarget_SetInfluence::Event_Flash( float flash, int out ) {
 	idPlayer *player = gameLocal.GetLocalPlayer();
-	player->playerView.Fade( idVec4( 1, 1, 1, 1 ), flash );
+	player->playerView.Fade( idVec4( 1.0f, 1.0f,  1.0f, 1.0f ), flash );
 	const idSoundShader *shader = NULL;
 	if( !out && flashInSound.Length() ) {
 		shader = declManager->FindSound( flashInSound );

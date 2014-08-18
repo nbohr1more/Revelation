@@ -43,7 +43,7 @@ class idHashTable {
 public:
 	idHashTable( int newtablesize = 256 );
 	idHashTable( const idHashTable<Type> &map );
-	~idHashTable( void );
+	~idHashTable();
 
 	// returns total size of allocated memory
 	size_t			Allocated( void ) const;
@@ -133,7 +133,7 @@ idHashTable<Type>::~idHashTable<Type>
 ================
 */
 template< class Type >
-ID_INLINE idHashTable<Type>::~idHashTable( void ) {
+ID_INLINE idHashTable<Type>::~idHashTable() {
 	Clear();
 	delete[] heads;
 }

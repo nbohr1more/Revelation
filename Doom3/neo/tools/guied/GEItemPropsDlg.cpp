@@ -133,44 +133,44 @@ Handles messages for the text item properties page
 */
 int rvGEItemPropsImagePage::HandleMessage( UINT msg, WPARAM wParam, LPARAM lParam ) {
 	switch( msg ) {
-	case WM_DRAWITEM:
-		ColorButton_DrawItem( GetDlgItem( mPage, wParam ), ( LPDRAWITEMSTRUCT )lParam );
-		return TRUE;
-	case WM_COMMAND:
-		switch( LOWORD( wParam ) ) {
-		case IDC_GUIED_ITEMBORDERSIZE:
-			if( HIWORD( wParam ) == EN_CHANGE ) {
+		case WM_DRAWITEM:
+			ColorButton_DrawItem( GetDlgItem( mPage, wParam ), ( LPDRAWITEMSTRUCT )lParam );
+			return TRUE;
+		case WM_COMMAND:
+			switch( LOWORD( wParam ) ) {
+			case IDC_GUIED_ITEMBORDERSIZE:
+				if( HIWORD( wParam ) == EN_CHANGE ) {
+					UpdateCheckedStates( );
+				}
+				break;
+			case IDC_GUIED_USEBORDERCOLOR:
+			case IDC_GUIED_USEBORDERMATERIAL:
+			case IDC_GUIED_USEBACKCOLOR:
+			case IDC_GUIED_USEMATERIAL:
 				UpdateCheckedStates( );
+				break;
+			case IDC_GUIED_ITEMBACKCOLORALPHA:
+			case IDC_GUIED_ITEMMATCOLORALPHA:
+			case IDC_GUIED_ITEMBORDERCOLORALPHA: {
+				AlphaButton_OpenPopup( GetDlgItem( mPage, LOWORD( wParam ) ) );
+				break;
 			}
-			break;
-		case IDC_GUIED_USEBORDERCOLOR:
-		case IDC_GUIED_USEBORDERMATERIAL:
-		case IDC_GUIED_USEBACKCOLOR:
-		case IDC_GUIED_USEMATERIAL:
-			UpdateCheckedStates( );
-			break;
-		case IDC_GUIED_ITEMBACKCOLORALPHA:
-		case IDC_GUIED_ITEMMATCOLORALPHA:
-		case IDC_GUIED_ITEMBORDERCOLORALPHA: {
-			AlphaButton_OpenPopup( GetDlgItem( mPage, LOWORD( wParam ) ) );
-			break;
-		}
-		case IDC_GUIED_ITEMBORDERCOLOR:
-		case IDC_GUIED_ITEMBACKCOLOR:
-		case IDC_GUIED_ITEMMATCOLOR: {
-			CHOOSECOLOR col;
-			ZeroMemory( &col, sizeof( col ) );
-			col.lStructSize = sizeof( col );
-			col.lpCustColors = gApp.GetOptions().GetCustomColors( );
-			col.hwndOwner = mPage;
-			col.hInstance = NULL;
-			col.Flags = CC_RGBINIT;
-			col.rgbResult = ColorButton_GetColor( GetDlgItem( mPage, LOWORD( wParam ) ) );
-			if( ChooseColor( &col ) ) {
-				ColorButton_SetColor( GetDlgItem( mPage, LOWORD( wParam ) ), col.rgbResult );
+			case IDC_GUIED_ITEMBORDERCOLOR:
+			case IDC_GUIED_ITEMBACKCOLOR:
+			case IDC_GUIED_ITEMMATCOLOR: {
+				CHOOSECOLOR col;
+				ZeroMemory( &col, sizeof( col ) );
+				col.lStructSize = sizeof( col );
+				col.lpCustColors = gApp.GetOptions().GetCustomColors( );
+				col.hwndOwner = mPage;
+				col.hInstance = NULL;
+				col.Flags = CC_RGBINIT;
+				col.rgbResult = ColorButton_GetColor( GetDlgItem( mPage, LOWORD( wParam ) ) );
+				if( ChooseColor( &col ) ) {
+					ColorButton_SetColor( GetDlgItem( mPage, LOWORD( wParam ) ), col.rgbResult );
+				}
+				break;
 			}
-			break;
-		}
 		}
 		break;
 	}
@@ -201,8 +201,7 @@ bool rvGEItemPropsImagePage::SetActive( void ) {
 	CheckDlgButton( mPage, IDC_GUIED_ITEMVARIABLEBACKGROUND, mDict->GetBool( "variablebackground", "0" ) );
 	CheckDlgButton( mPage, IDC_GUIED_USEMATERIAL, idStr( mDict->GetString( "background", "" ) ).StripQuotes( ).Length() ? BST_CHECKED : BST_UNCHECKED );
 	CheckDlgButton( mPage, IDC_GUIED_USEBACKCOLOR, idStr( mDict->GetString( "backcolor", "" ) ).StripQuotes( ).Length() ? BST_CHECKED : BST_UNCHECKED );
-	CheckRadioButton( mPage, IDC_GUIED_USEBORDERCOLOR, IDC_GUIED_USEBORDERMATERIAL,
-					  idStr( mDict->GetString( "borderShader", "" ) ).Length() ? IDC_GUIED_USEBORDERMATERIAL : IDC_GUIED_USEBORDERCOLOR );
+	CheckRadioButton( mPage, IDC_GUIED_USEBORDERCOLOR, IDC_GUIED_USEBORDERMATERIAL, idStr( mDict->GetString( "borderShader", "" ) ).Length() ? IDC_GUIED_USEBORDERMATERIAL : IDC_GUIED_USEBORDERCOLOR );
 	UpdateCheckedStates( );
 	return true;
 }
@@ -255,8 +254,7 @@ bool rvGEItemPropsImagePage::KillActive( void ) {
 		if( IsWindowEnabled( GetDlgItem( mPage, IDC_GUIED_ITEMBACKCOLOR ) ) ) {
 			COLORREF color = ColorButton_GetColor( GetDlgItem( mPage, IDC_GUIED_ITEMBACKCOLOR ) );
 			COLORREF alpha = ColorButton_GetColor( GetDlgItem( mPage, IDC_GUIED_ITEMBACKCOLORALPHA ) );
-			idVec4	 colorPtr = idVec4( ( float )GetRValue( color ) / 255.0f, ( float )GetGValue( color ) / 255.0f, ( float )GetBValue( color ) / 255.0f, ( float )GetRValue( alpha ) / 255.0f );
-			mDict->Set( "backcolor", StringFromVec4( colorPtr ) );
+			mDict->Set( "backcolor", StringFromVec4( idVec4( ( float )GetRValue( color ) / 255.0f, ( float )GetGValue( color ) / 255.0f, ( float )GetBValue( color ) / 255.0f, ( float )GetRValue( alpha ) / 255.0f ) ) );
 		}
 	} else {
 		mDict->Delete( "backcolor" );
@@ -270,8 +268,7 @@ bool rvGEItemPropsImagePage::KillActive( void ) {
 			if( IsWindowEnabled( GetDlgItem( mPage, IDC_GUIED_ITEMBORDERCOLOR ) ) ) {
 				COLORREF color = ColorButton_GetColor( GetDlgItem( mPage, IDC_GUIED_ITEMBORDERCOLOR ) );
 				COLORREF alpha = ColorButton_GetColor( GetDlgItem( mPage, IDC_GUIED_ITEMBORDERCOLORALPHA ) );
-				idVec4 &colorPtr = idVec4( ( float )GetRValue( color ) / 255.0f, ( float )GetGValue( color ) / 255.0f, ( float )GetBValue( color ) / 255.0f, ( float )GetRValue( alpha ) / 255.0f );
-				mDict->Set( "bordercolor", StringFromVec4( colorPtr ) );
+				mDict->Set( "bordercolor", StringFromVec4( idVec4( ( float )GetRValue( color ) / 255.0f, ( float )GetGValue( color ) / 255.0f, ( float )GetBValue( color ) / 255.0f, ( float )GetRValue( alpha ) / 255.0f ) ) );
 			}
 			mDict->Delete( "borderShader" );
 		} else {
@@ -292,8 +289,7 @@ bool rvGEItemPropsImagePage::KillActive( void ) {
 		if( IsWindowEnabled( GetDlgItem( mPage, IDC_GUIED_ITEMMATCOLOR ) ) ) {
 			COLORREF color = ColorButton_GetColor( GetDlgItem( mPage, IDC_GUIED_ITEMMATCOLOR ) );
 			COLORREF alpha = ColorButton_GetColor( GetDlgItem( mPage, IDC_GUIED_ITEMMATCOLORALPHA ) );
-			idVec4 &colorPtr = idVec4( ( float )GetRValue( color ) / 255.0f, ( float )GetGValue( color ) / 255.0f, ( float )GetBValue( color ) / 255.0f, ( float )GetRValue( alpha ) / 255.0f );
-			mDict->Set( "matcolor", StringFromVec4( colorPtr ) );
+			mDict->Set( "matcolor", StringFromVec4( idVec4( ( float )GetRValue( color ) / 255.0f, ( float )GetGValue( color ) / 255.0f, ( float )GetBValue( color ) / 255.0f, ( float )GetRValue( alpha ) / 255.0f ) ) );
 		}
 	} else {
 		mDict->Delete( "matcolor" );
@@ -470,8 +466,7 @@ bool rvGEItemPropsTextPage::KillActive( void ) {
 		if( IsWindowEnabled( GetDlgItem( mPage, IDC_GUIED_ITEMFORECOLOR ) ) ) {
 			COLORREF color = ColorButton_GetColor( GetDlgItem( mPage, IDC_GUIED_ITEMFORECOLOR ) );
 			COLORREF alpha = ColorButton_GetColor( GetDlgItem( mPage, IDC_GUIED_ITEMFORECOLORALPHA ) );
-			idVec4  &colorPtr = idVec4( ( float )GetRValue( color ) / 255.0f, ( float )GetGValue( color ) / 255.0f, ( float )GetBValue( color ) / 255.0f, ( float )GetRValue( alpha ) / 255.0f );
-			mDict->Set( "forecolor", StringFromVec4( colorPtr ) );
+			mDict->Set( "forecolor", StringFromVec4( idVec4( ( float )GetRValue( color ) / 255.0f, ( float )GetGValue( color ) / 255.0f, ( float )GetBValue( color ) / 255.0f, ( float )GetRValue( alpha ) / 255.0f ) ) );
 		}
 		GetWindowText( GetDlgItem( mPage, IDC_GUIED_ITEMTEXT ), temp, 1024 );
 		s = "\"";
@@ -569,17 +564,15 @@ INT_PTR CALLBACK ModifyItemKeyDlg_WndProc( HWND hwnd, UINT msg, WPARAM wParam, L
 	case WM_COMMAND:
 		switch( LOWORD( wParam ) ) {
 		case IDOK: {
-			char key[1024];
-			char value[1024];
-			const idKeyValue *keyValue = ( const idKeyValue * ) GetWindowLong( hwnd, GWL_USERDATA );
+			char				key[1024];
+			char				value[1024];
+			const idKeyValue	*keyValue = ( const idKeyValue * ) GetWindowLong( hwnd, GWL_USERDATA );
 			GetWindowText( GetDlgItem( hwnd, IDC_GUIED_ITEMKEY ), key, 1024 );
 			GetWindowText( GetDlgItem( hwnd, IDC_GUIED_ITEMVALUE ), value, 1024 );
 			if( strlen( key ) < 1 ) {
 				gApp.MessageBox( va( "Invalid key name '%s'", key ), MB_OK | MB_ICONERROR );
 			} else {
 				// FIXME: MrE may never change key value pairs directly!
-				//keyValue->GetKey() = key;
-				//keyValue->GetValue = value;
 				EndDialog( hwnd, 1 );
 			}
 			break;

@@ -74,9 +74,9 @@ private:
 
 class idDict {
 public:
-	idDict( void );
+	idDict();
 	idDict( const idDict &other );	// allow declaration with assignment
-	~idDict( void );
+	~idDict();
 
 	// set the granularity for the index
 	void				SetGranularity( int granularity );
@@ -172,7 +172,7 @@ private:
 };
 
 
-ID_INLINE idDict::idDict( void ) {
+ID_INLINE idDict::idDict() {
 	args.SetGranularity( 16 );
 	argHash.SetGranularity( 16 );
 	argHash.Clear( 128, 16 );
@@ -182,7 +182,7 @@ ID_INLINE idDict::idDict( const idDict &other ) {
 	*this = other;
 }
 
-ID_INLINE idDict::~idDict( void ) {
+ID_INLINE idDict::~idDict() {
 	Clear();
 }
 

@@ -741,7 +741,7 @@ static void RB_ShowViewEntitys( viewEntity_t *vModels ) {
 	GL_Cull( CT_TWO_SIDED );
 	glDisable( GL_DEPTH_TEST );
 	glDisable( GL_SCISSOR_TEST );
-	for( ; vModels ; vModels = vModels->next ) {
+	for( /**/; vModels ; vModels = vModels->next ) {
 		idBounds	b;
 		glLoadMatrixf( vModels->modelViewMatrix );
 		if( !vModels->entityDef ) {

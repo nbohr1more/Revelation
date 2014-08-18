@@ -42,7 +42,7 @@ If you have questions concerning this license or the applicable additional terms
 
 class idWinding2D {
 public:
-	idWinding2D( void );
+	idWinding2D();
 
 	idWinding2D 	&operator=( const idWinding2D &winding );
 	const idVec2 	&operator[]( const int index ) const;
@@ -90,7 +90,7 @@ private:
 	idVec2			p[MAX_POINTS_ON_WINDING_2D];
 };
 
-ID_INLINE idWinding2D::idWinding2D( void ) {
+ID_INLINE idWinding2D::idWinding2D() {
 	numPoints = 0;
 }
 

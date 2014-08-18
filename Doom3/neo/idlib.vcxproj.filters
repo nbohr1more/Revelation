@@ -298,9 +298,6 @@
     <ClInclude Include="idlib\math\Simd_3DNow.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="idlib\math\Simd_AltiVec.h">
-      <Filter>Math</Filter>
-    </ClInclude>
     <ClInclude Include="idlib\math\Simd_Generic.h">
       <Filter>Math</Filter>
     </ClInclude>

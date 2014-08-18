@@ -42,7 +42,7 @@ If you have questions concerning this license or the applicable additional terms
 template< class type, int nextOffset >
 class idStackTemplate {
 public:
-	idStackTemplate( void );
+	idStackTemplate();
 
 	void					Add( type *element );
 	type 					*Get( void );

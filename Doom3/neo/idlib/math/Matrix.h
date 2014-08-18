@@ -54,23 +54,23 @@ class idMat4;
 
 class idMat2 {
 public:
-	idMat2( void );
+	idMat2();
 	explicit idMat2( const idVec2 &x, const idVec2 &y );
 	explicit idMat2( const float xx, const float xy, const float yx, const float yy );
 	explicit idMat2( const float src[ 2 ][ 2 ] );
 
 	const idVec2 	&operator[]( int index ) const;
-	idVec2 		&operator[]( int index );
+	idVec2 			&operator[]( int index );
 	idMat2			operator-() const;
 	idMat2			operator*( const float a ) const;
 	idVec2			operator*( const idVec2 &vec ) const;
 	idMat2			operator*( const idMat2 &a ) const;
 	idMat2			operator+( const idMat2 &a ) const;
 	idMat2			operator-( const idMat2 &a ) const;
-	idMat2 		&operator*=( const float a );
-	idMat2 		&operator*=( const idMat2 &a );
-	idMat2 		&operator+=( const idMat2 &a );
-	idMat2 		&operator-=( const idMat2 &a );
+	idMat2 			&operator*=( const float a );
+	idMat2 			&operator*=( const idMat2 &a );
+	idMat2 			&operator+=( const idMat2 &a );
+	idMat2 			&operator-=( const idMat2 &a );
 
 	friend idMat2	operator*( const float a, const idMat2 &mat );
 	friend idVec2	operator*( const idVec2 &vec, const idMat2 &mat );
@@ -90,7 +90,7 @@ public:
 	float			Trace( void ) const;
 	float			Determinant( void ) const;
 	idMat2			Transpose( void ) const;	// returns transpose
-	idMat2 		&TransposeSelf( void );
+	idMat2 			&TransposeSelf( void );
 	idMat2			Inverse( void ) const;		// returns the inverse ( m * m.Inverse() = identity )
 	bool			InverseSelf( void );		// returns false if determinant is zero
 	idMat2			InverseFast( void ) const;	// returns the inverse ( m * m.Inverse() = identity )
@@ -100,7 +100,7 @@ public:
 
 	const float 	*ToFloatPtr( void ) const;
 	float 			*ToFloatPtr( void );
-	const char 	*ToString( int precision = 2 ) const;
+	const char 		*ToString( int precision = 2 ) const;
 
 private:
 	idVec2			mat[ 2 ];
@@ -110,7 +110,7 @@ extern idMat2 mat2_zero;
 extern idMat2 mat2_identity;
 #define mat2_default	mat2_identity
 
-ID_INLINE idMat2::idMat2( void ) {
+ID_INLINE idMat2::idMat2() {
 }
 
 ID_INLINE idMat2::idMat2( const idVec2 &x, const idVec2 &y ) {
@@ -337,23 +337,23 @@ ID_INLINE float *idMat2::ToFloatPtr( void ) {
 
 class idMat3 {
 public:
-	idMat3( void );
+	idMat3();
 	explicit idMat3( const idVec3 &x, const idVec3 &y, const idVec3 &z );
 	explicit idMat3( const float xx, const float xy, const float xz, const float yx, const float yy, const float yz, const float zx, const float zy, const float zz );
 	explicit idMat3( const float src[ 3 ][ 3 ] );
 
 	const idVec3 	&operator[]( int index ) const;
-	idVec3 		&operator[]( int index );
+	idVec3 			&operator[]( int index );
 	idMat3			operator-() const;
 	idMat3			operator*( const float a ) const;
 	idVec3			operator*( const idVec3 &vec ) const;
 	idMat3			operator*( const idMat3 &a ) const;
 	idMat3			operator+( const idMat3 &a ) const;
 	idMat3			operator-( const idMat3 &a ) const;
-	idMat3 		&operator*=( const float a );
-	idMat3 		&operator*=( const idMat3 &a );
-	idMat3 		&operator+=( const idMat3 &a );
-	idMat3 		&operator-=( const idMat3 &a );
+	idMat3 			&operator*=( const float a );
+	idMat3 			&operator*=( const idMat3 &a );
+	idMat3 			&operator+=( const idMat3 &a );
+	idMat3 			&operator-=( const idMat3 &a );
 
 	friend idMat3	operator*( const float a, const idMat3 &mat );
 	friend idVec3	operator*( const idVec3 &vec, const idMat3 &mat );
@@ -380,9 +380,9 @@ public:
 	float			Trace( void ) const;
 	float			Determinant( void ) const;
 	idMat3			OrthoNormalize( void ) const;
-	idMat3 		&OrthoNormalizeSelf( void );
+	idMat3 			&OrthoNormalizeSelf( void );
 	idMat3			Transpose( void ) const;	// returns transpose
-	idMat3 		&TransposeSelf( void );
+	idMat3 			&TransposeSelf( void );
 	idMat3			Inverse( void ) const;		// returns the inverse ( m * m.Inverse() = identity )
 	bool			InverseSelf( void );		// returns false if determinant is zero
 	idMat3			InverseFast( void ) const;	// returns the inverse ( m * m.Inverse() = identity )
@@ -390,9 +390,9 @@ public:
 	idMat3			TransposeMultiply( const idMat3 &b ) const;
 
 	idMat3			InertiaTranslate( const float mass, const idVec3 &centerOfMass, const idVec3 &translation ) const;
-	idMat3 		&InertiaTranslateSelf( const float mass, const idVec3 &centerOfMass, const idVec3 &translation );
+	idMat3 			&InertiaTranslateSelf( const float mass, const idVec3 &centerOfMass, const idVec3 &translation );
 	idMat3			InertiaRotate( const idMat3 &rotation ) const;
-	idMat3 		&InertiaRotateSelf( const idMat3 &rotation );
+	idMat3 			&InertiaRotateSelf( const idMat3 &rotation );
 
 	int				GetDimension( void ) const;
 
@@ -404,7 +404,7 @@ public:
 	idVec3			ToAngularVelocity( void ) const;
 	const float 	*ToFloatPtr( void ) const;
 	float 			*ToFloatPtr( void );
-	const char 	*ToString( int precision = 2 ) const;
+	const char 		*ToString( int precision = 2 ) const;
 
 	friend void		TransposeMultiply( const idMat3 &inv, const idMat3 &b, idMat3 &dst );
 	friend idMat3	SkewSymmetric( idVec3 const &src );
@@ -417,7 +417,7 @@ extern idMat3 mat3_zero;
 extern idMat3 mat3_identity;
 #define mat3_default	mat3_identity
 
-ID_INLINE idMat3::idMat3( void ) {
+ID_INLINE idMat3::idMat3() {
 }
 
 ID_INLINE idMat3::idMat3( const idVec3 &x, const idVec3 &y, const idVec3 &z ) {
@@ -641,11 +641,11 @@ ID_INLINE bool idMat3::IsSymmetric( const float epsilon ) const {
 
 ID_INLINE bool idMat3::IsDiagonal( const float epsilon ) const {
 	if( idMath::Fabs( mat[0][1] ) > epsilon ||
-			idMath::Fabs( mat[0][2] ) > epsilon ||
-			idMath::Fabs( mat[1][0] ) > epsilon ||
-			idMath::Fabs( mat[1][2] ) > epsilon ||
-			idMath::Fabs( mat[2][0] ) > epsilon ||
-			idMath::Fabs( mat[2][1] ) > epsilon ) {
+		idMath::Fabs( mat[0][2] ) > epsilon ||
+		idMath::Fabs( mat[1][0] ) > epsilon ||
+		idMath::Fabs( mat[1][2] ) > epsilon ||
+		idMath::Fabs( mat[2][0] ) > epsilon ||
+		idMath::Fabs( mat[2][1] ) > epsilon ) {
 		return false;
 	}
 	return true;
@@ -788,7 +788,7 @@ ID_INLINE float *idMat3::ToFloatPtr( void ) {
 
 class idMat4 {
 public:
-	idMat4( void );
+	idMat4();
 	explicit idMat4( const idVec4 &x, const idVec4 &y, const idVec4 &z, const idVec4 &w );
 	explicit idMat4( const float xx, const float xy, const float xz, const float xw,
 					 const float yx, const float yy, const float yz, const float yw,
@@ -798,17 +798,17 @@ public:
 	explicit idMat4( const float src[ 4 ][ 4 ] );
 
 	const idVec4 	&operator[]( int index ) const;
-	idVec4 		&operator[]( int index );
+	idVec4 			&operator[]( int index );
 	idMat4			operator*( const float a ) const;
 	idVec4			operator*( const idVec4 &vec ) const;
 	idVec3			operator*( const idVec3 &vec ) const;
 	idMat4			operator*( const idMat4 &a ) const;
 	idMat4			operator+( const idMat4 &a ) const;
 	idMat4			operator-( const idMat4 &a ) const;
-	idMat4 		&operator*=( const float a );
-	idMat4 		&operator*=( const idMat4 &a );
-	idMat4 		&operator+=( const idMat4 &a );
-	idMat4 		&operator-=( const idMat4 &a );
+	idMat4 			&operator*=( const float a );
+	idMat4 			&operator*=( const idMat4 &a );
+	idMat4 			&operator+=( const idMat4 &a );
+	idMat4 			&operator-=( const idMat4 &a );
 
 	friend idMat4	operator*( const float a, const idMat4 &mat );
 	friend idVec4	operator*( const idVec4 &vec, const idMat4 &mat );
@@ -834,7 +834,7 @@ public:
 	float			Trace( void ) const;
 	float			Determinant( void ) const;
 	idMat4			Transpose( void ) const;	// returns transpose
-	idMat4 		&TransposeSelf( void );
+	idMat4 			&TransposeSelf( void );
 	idMat4			Inverse( void ) const;		// returns the inverse ( m * m.Inverse() = identity )
 	bool			InverseSelf( void );		// returns false if determinant is zero
 	idMat4			InverseFast( void ) const;	// returns the inverse ( m * m.Inverse() = identity )
@@ -845,17 +845,17 @@ public:
 
 	const float 	*ToFloatPtr( void ) const;
 	float 			*ToFloatPtr( void );
-	const char 	*ToString( int precision = 2 ) const;
+	const char 		*ToString( int precision = 2 ) const;
 
 private:
 	idVec4			mat[ 4 ];
 };
 
-extern idMat4 mat4_zero;
-extern idMat4 mat4_identity;
+extern idMat4			mat4_zero;
+extern idMat4			mat4_identity;
 #define mat4_default	mat4_identity
 
-ID_INLINE idMat4::idMat4( void ) {
+ID_INLINE idMat4::idMat4() {
 }
 
 ID_INLINE idMat4::idMat4( const idVec4 &x, const idVec4 &y, const idVec4 &z, const idVec4 &w ) {
@@ -1217,7 +1217,7 @@ ID_INLINE float *idMat4::ToFloatPtr( void ) {
 
 class idMat5 {
 public:
-	idMat5( void );
+	idMat5();
 	explicit idMat5( const idVec5 &v0, const idVec5 &v1, const idVec5 &v2, const idVec5 &v3, const idVec5 &v4 );
 	explicit idMat5( const float src[ 5 ][ 5 ] );
 
@@ -1267,11 +1267,11 @@ private:
 	idVec5			mat[ 5 ];
 };
 
-extern idMat5 mat5_zero;
-extern idMat5 mat5_identity;
+extern idMat5			mat5_zero;
+extern idMat5			mat5_identity;
 #define mat5_default	mat5_identity
 
-ID_INLINE idMat5::idMat5( void ) {
+ID_INLINE idMat5::idMat5() {
 }
 
 ID_INLINE idMat5::idMat5( const float src[ 5 ][ 5 ] ) {
@@ -1568,22 +1568,22 @@ ID_INLINE float *idMat5::ToFloatPtr( void ) {
 
 class idMat6 {
 public:
-	idMat6( void );
+	idMat6();
 	explicit idMat6( const idVec6 &v0, const idVec6 &v1, const idVec6 &v2, const idVec6 &v3, const idVec6 &v4, const idVec6 &v5 );
 	explicit idMat6( const idMat3 &m0, const idMat3 &m1, const idMat3 &m2, const idMat3 &m3 );
 	explicit idMat6( const float src[ 6 ][ 6 ] );
 
 	const idVec6 	&operator[]( int index ) const;
-	idVec6 		&operator[]( int index );
+	idVec6 			&operator[]( int index );
 	idMat6			operator*( const float a ) const;
 	idVec6			operator*( const idVec6 &vec ) const;
 	idMat6			operator*( const idMat6 &a ) const;
 	idMat6			operator+( const idMat6 &a ) const;
 	idMat6			operator-( const idMat6 &a ) const;
-	idMat6 		&operator*=( const float a );
-	idMat6 		&operator*=( const idMat6 &a );
-	idMat6 		&operator+=( const idMat6 &a );
-	idMat6 		&operator-=( const idMat6 &a );
+	idMat6 			&operator*=( const float a );
+	idMat6 			&operator*=( const idMat6 &a );
+	idMat6 			&operator+=( const idMat6 &a );
+	idMat6 			&operator-=( const idMat6 &a );
 
 	friend idMat6	operator*( const float a, const idMat6 &mat );
 	friend idVec6	operator*( const idVec6 &vec, const idMat6 &mat );
@@ -1604,7 +1604,7 @@ public:
 	float			Trace( void ) const;
 	float			Determinant( void ) const;
 	idMat6			Transpose( void ) const;	// returns transpose
-	idMat6 		&TransposeSelf( void );
+	idMat6 			&TransposeSelf( void );
 	idMat6			Inverse( void ) const;		// returns the inverse ( m * m.Inverse() = identity )
 	bool			InverseSelf( void );		// returns false if determinant is zero
 	idMat6			InverseFast( void ) const;	// returns the inverse ( m * m.Inverse() = identity )
@@ -1614,17 +1614,17 @@ public:
 
 	const float 	*ToFloatPtr( void ) const;
 	float 			*ToFloatPtr( void );
-	const char 	*ToString( int precision = 2 ) const;
+	const char 		*ToString( int precision = 2 ) const;
 
 private:
 	idVec6			mat[ 6 ];
 };
 
-extern idMat6 mat6_zero;
-extern idMat6 mat6_identity;
+extern idMat6			mat6_zero;
+extern idMat6			mat6_identity;
 #define mat6_default	mat6_identity
 
-ID_INLINE idMat6::idMat6( void ) {
+ID_INLINE idMat6::idMat6() {
 }
 
 ID_INLINE idMat6::idMat6( const idMat3 &m0, const idMat3 &m1, const idMat3 &m2, const idMat3 &m3 ) {
@@ -1989,10 +1989,10 @@ ID_INLINE float *idMat6::ToFloatPtr( void ) {
 
 class idMatX {
 public:
-	idMatX( void );
+	idMatX();
 	explicit idMatX( int rows, int columns );
 	explicit idMatX( int rows, int columns, float *src );
-	~idMatX( void );
+	~idMatX();
 
 	void			Set( int rows, int columns, const float *src );
 	void			Set( const idMat3 &m1, const idMat3 &m2 );
@@ -2000,16 +2000,16 @@ public:
 
 	const float 	*operator[]( int index ) const;
 	float 			*operator[]( int index );
-	idMatX 		&operator=( const idMatX &a );
+	idMatX 			&operator=( const idMatX &a );
 	idMatX			operator*( const float a ) const;
 	idVecX			operator*( const idVecX &vec ) const;
 	idMatX			operator*( const idMatX &a ) const;
 	idMatX			operator+( const idMatX &a ) const;
 	idMatX			operator-( const idMatX &a ) const;
-	idMatX 		&operator*=( const float a );
-	idMatX 		&operator*=( const idMatX &a );
-	idMatX 		&operator+=( const idMatX &a );
-	idMatX 		&operator-=( const idMatX &a );
+	idMatX 			&operator*=( const float a );
+	idMatX 			&operator*=( const idMatX &a );
+	idMatX 			&operator+=( const idMatX &a );
+	idMatX 			&operator-=( const idMatX &a );
 
 	friend idMatX	operator*( const float a, const idMatX &m );
 	friend idVecX	operator*( const idVecX &vec, const idMatX &m );
@@ -2038,12 +2038,12 @@ public:
 	void			Random( int rows, int columns, int seed, float l = 0.0f, float u = 1.0f );
 	void			Negate( void );													// (*this) = - (*this)
 	void			Clamp( float min, float max );									// clamp all values
-	idMatX 		&SwapRows( int r1, int r2 );										// swap rows
-	idMatX 		&SwapColumns( int r1, int r2 );									// swap columns
-	idMatX 		&SwapRowsColumns( int r1, int r2 );								// swap rows and columns
-	idMatX 		&RemoveRow( int r );												// remove a row
-	idMatX 		&RemoveColumn( int r );											// remove a column
-	idMatX 		&RemoveRowColumn( int r );										// remove a row and column
+	idMatX 			&SwapRows( int r1, int r2 );									// swap rows
+	idMatX 			&SwapColumns( int r1, int r2 );									// swap columns
+	idMatX 			&SwapRowsColumns( int r1, int r2 );								// swap rows and columns
+	idMatX 			&RemoveRow( int r );											// remove a row
+	idMatX 			&RemoveColumn( int r );											// remove a column
+	idMatX 			&RemoveRowColumn( int r );										// remove a row and column
 	void			ClearUpperTriangle( void );										// clear the upper triangle
 	void			ClearLowerTriangle( void );										// clear the lower triangle
 	void			SquareSubMatrix( const idMatX &m, int size );					// get square sub-matrix from 0,0 to size,size
@@ -2069,7 +2069,7 @@ public:
 	float			Trace( void ) const;											// returns product of diagonal elements
 	float			Determinant( void ) const;										// returns determinant of matrix
 	idMatX			Transpose( void ) const;										// returns transpose
-	idMatX 		&TransposeSelf( void );											// transposes the matrix itself
+	idMatX 			&TransposeSelf( void );											// transposes the matrix itself
 	idMatX			Inverse( void ) const;											// returns the inverse ( m * m.Inverse() = identity )
 	bool			InverseSelf( void );											// returns false if determinant is zero
 	idMatX			InverseFast( void ) const;										// returns the inverse ( m * m.Inverse() = identity )
@@ -2097,12 +2097,12 @@ public:
 	int				GetDimension( void ) const;										// returns total number of values in matrix
 
 	const idVec6 	&SubVec6( int row ) const;										// interpret beginning of row as a const idVec6
-	idVec6 		&SubVec6( int row );												// interpret beginning of row as an idVec6
+	idVec6 			&SubVec6( int row );												// interpret beginning of row as an idVec6
 	const idVecX	SubVecX( int row ) const;										// interpret complete row as a const idVecX
 	idVecX			SubVecX( int row );												// interpret complete row as an idVecX
 	const float 	*ToFloatPtr( void ) const;										// pointer to const matrix float array
 	float 			*ToFloatPtr( void );												// pointer to matrix float array
-	const char 	*ToString( int precision = 2 ) const;
+	const char 		*ToString( int precision = 2 ) const;
 
 	void			Update_RankOne( const idVecX &v, const idVecX &w, float alpha );
 	void			Update_RankOneSymmetric( const idVecX &v, float alpha );
@@ -2201,12 +2201,12 @@ private:
 	bool			HessenbergToRealSchur( idMatX &H, idVecX &realEigenValues, idVecX &imaginaryEigenValues );
 };
 
-ID_INLINE idMatX::idMatX( void ) {
+ID_INLINE idMatX::idMatX() {
 	numRows = numColumns = alloced = 0;
 	mat = NULL;
 }
 
-ID_INLINE idMatX::~idMatX( void ) {
+ID_INLINE idMatX::~idMatX() {
 	// if not temp memory
 	if( mat != NULL && ( mat < idMatX::tempPtr || mat > idMatX::tempPtr + MATX_MAX_TEMP ) && alloced != -1 ) {
 		Mem_Free16( mat );

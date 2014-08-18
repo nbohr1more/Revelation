@@ -68,11 +68,10 @@ Writes the options to the registry so they can later be read using the Load meth
 ================
 */
 bool rvGEOptions::Save( void ) {
-	idVec4 &color = idVec4( mGridColor[0], mGridColor[1], mGridColor[2], 1.0f );
 	// Write the last page we visited
 	mRegistry.SetLong( "lastOptionsPage", mLastOptionsPage );
 	// Write the grid settings
-	mRegistry.SetVec4( "gridColor", color );
+	mRegistry.SetVec4( "gridColor", idVec4( mGridColor[0], mGridColor[1], mGridColor[2], 1.0f ) );
 	mRegistry.SetLong( "gridWidth", mGridWidth );
 	mRegistry.SetLong( "gridHeight", mGridHeight );
 	mRegistry.SetBool( "gridSnap", mGridSnap );

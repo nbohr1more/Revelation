@@ -56,8 +56,8 @@ public:
 template< class objType, class keyType, int maxChildrenPerNode >
 class idBTree {
 public:
-	idBTree( void );
-	~idBTree( void );
+	idBTree();
+	~idBTree();
 
 	void							Init( void );
 	void							Shutdown( void );

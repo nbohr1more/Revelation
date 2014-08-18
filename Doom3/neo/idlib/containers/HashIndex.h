@@ -43,9 +43,9 @@ If you have questions concerning this license or the applicable additional terms
 
 class idHashIndex {
 public:
-	idHashIndex( void );
+	idHashIndex();
 	idHashIndex( const int initialHashSize, const int initialIndexSize );
-	~idHashIndex( void );
+	~idHashIndex();
 
 	// returns total size of allocated memory
 	size_t			Allocated( void ) const;
@@ -108,7 +108,7 @@ private:
 idHashIndex::idHashIndex
 ================
 */
-ID_INLINE idHashIndex::idHashIndex( void ) {
+ID_INLINE idHashIndex::idHashIndex() {
 	Init( DEFAULT_HASH_SIZE, DEFAULT_HASH_SIZE );
 }
 
@@ -126,7 +126,7 @@ ID_INLINE idHashIndex::idHashIndex( const int initialHashSize, const int initial
 idHashIndex::~idHashIndex
 ================
 */
-ID_INLINE idHashIndex::~idHashIndex( void ) {
+ID_INLINE idHashIndex::~idHashIndex() {
 	Free();
 }
 

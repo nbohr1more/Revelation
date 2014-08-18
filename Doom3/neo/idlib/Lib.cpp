@@ -99,21 +99,21 @@ void idLib::ShutDown( void ) {
 ===============================================================================
 */
 
-idVec4	colorBlack	= idVec4( 0.00f, 0.00f, 0.00f, 1.00f );
-idVec4	colorWhite	= idVec4( 1.00f, 1.00f, 1.00f, 1.00f );
-idVec4	colorRed	= idVec4( 1.00f, 0.00f, 0.00f, 1.00f );
-idVec4	colorGreen	= idVec4( 0.00f, 1.00f, 0.00f, 1.00f );
-idVec4	colorBlue	= idVec4( 0.00f, 0.00f, 1.00f, 1.00f );
-idVec4	colorYellow	= idVec4( 1.00f, 1.00f, 0.00f, 1.00f );
-idVec4	colorMagenta = idVec4( 1.00f, 0.00f, 1.00f, 1.00f );
-idVec4	colorCyan	= idVec4( 0.00f, 1.00f, 1.00f, 1.00f );
-idVec4	colorOrange	= idVec4( 1.00f, 0.50f, 0.00f, 1.00f );
-idVec4	colorPurple	= idVec4( 0.60f, 0.00f, 0.60f, 1.00f );
-idVec4	colorPink	= idVec4( 0.73f, 0.40f, 0.48f, 1.00f );
-idVec4	colorBrown	= idVec4( 0.40f, 0.35f, 0.08f, 1.00f );
-idVec4	colorLtGrey	= idVec4( 0.75f, 0.75f, 0.75f, 1.00f );
-idVec4	colorMdGrey	= idVec4( 0.50f, 0.50f, 0.50f, 1.00f );
-idVec4	colorDkGrey	= idVec4( 0.25f, 0.25f, 0.25f, 1.00f );
+idVec4	colorBlack	= idVec4( 0.0f, 0.0f,  0.0f, 1.0f );
+idVec4	colorWhite	= idVec4( 1.0f, 1.0f, 1.0f, 1.0f );
+idVec4	colorRed	= idVec4( 1.0f, 0.0f, 0.0f, 1.0f );
+idVec4	colorGreen	= idVec4( 0.0f, 1.0f, 0.0f, 1.0f );
+idVec4	colorBlue	= idVec4( 0.0f, 0.00f, 1.0f, 1.0f );
+idVec4	colorYellow	= idVec4( 1.0f, 1.0f, 0.0f, 1.0f );
+idVec4	colorMagenta = idVec4( 1.0f, 0.0f, 1.0f, 1.0f );
+idVec4	colorCyan	= idVec4( 0.0f, 1.0f, 1.0f, 1.0f );
+idVec4	colorOrange	= idVec4( 1.0f, 0.5f, 0.0f, 1.0f );
+idVec4	colorPurple	= idVec4( 0.6f, 0.0f, 0.6f, 1.0f );
+idVec4	colorPink	= idVec4( 0.73f, 0.4f, 0.48f, 1.0f );
+idVec4	colorBrown	= idVec4( 0.4f, 0.35f, 0.08f, 1.0f );
+idVec4	colorLtGrey	= idVec4( 0.75f, 0.75f, 0.75f, 1.0f );
+idVec4	colorMdGrey	= idVec4( 0.5f, 0.5f, 0.5f, 1.0f );
+idVec4	colorDkGrey	= idVec4( 0.25f, 0.25f, 0.25f, 1.0f );
 
 static dword colorMask[2] = { 255, 0 };
 

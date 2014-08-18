@@ -3775,10 +3775,10 @@ Brush_Draw
 ================
 */
 void Brush_Draw( brush_t *b, bool bSelected ) {
-	face_t		*face;
-	int			i, order;
+	face_t				*face;
+	int					i, order;
 	const idMaterial	*prev = NULL;
-	idWinding	*w;
+	idWinding			*w;
 	bool model = false;
 	//
 	// (TTimo) NOTE: added by build 173, I check after pPlugEnt so it doesn't
@@ -3951,42 +3951,6 @@ void Brush_DrawCurve( brush_t *b, bool bSelected, bool cam ) {
 				}
 			}
 		}
-		/*
-				if ( cam ) {
-					idSurface_SweptSpline *ss = SplineToSweptSpline( b->owner->curve );
-					if ( ss ) {
-						idMaterial *mat = declManager->FindMaterial( "_default" );
-						mat->GetEditorImage()->Bind();
-						glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-						glBegin( GL_TRIANGLES );
-						const int *indexes = ss->GetIndexes();
-						const idDrawVert *verts = ss->GetVertices();
-						for ( j = 0; j < ss->GetNumIndexes(); j += 3 ) {
-							for ( k = 0; k < 3; k++ ) {
-								int	index = indexes[ j + 2 - k ];
-								float f = ShadeForNormal( verts[index].normal  );
-								glColor3f( f, f, f );
-								glTexCoord2fv( verts[index].st.ToFloatPtr() );
-								glVertex3fv( verts[index].xyz.ToFloatPtr() );
-							}
-						}
-						glEnd();
-						delete ss;
-					}
-				} else {
-		*/
-		/*			glPointSize( 1.0f );
-					glBegin( GL_POINTS );
-					if ( i + 1  < maxage ) {
-						int start = b->owner->curve->GetTime( i );
-						int end = b->owner->curve->GetTime( i + 1 );
-						int inc = (end - start) / POINTS_PER_KNOT;
-						for ( int j = 0; j < POINTS_PER_KNOT; j++ ) {
-							idVec3 v = b->owner->curve->GetCurrentValue( start );
-							glVertex3f( v.x, v.y, v.z );
-							start += inc;
-						}
-					}*/
 		// DHM - _D3XP : Makes it easier to see curve
 		glBegin( GL_LINE_STRIP );
 		if( i + 1  < maxage ) {
@@ -4000,9 +3964,6 @@ void Brush_DrawCurve( brush_t *b, bool bSelected, bool cam ) {
 			}
 		}
 		glEnd();
-		/*
-				}
-		*/
 	}
 	glPointSize( 1 );
 }
@@ -4081,7 +4042,7 @@ void Brush_DrawXY( brush_t *b, int nViewType, bool bSelected, bool ignoreViewTyp
 			DrawProjectedLight( b, bSelected, false );
 			return;
 		} else if( b->owner->eclass->nShowFlags & ECLASS_MISCMODEL ) {
-			// if (PaintedModel(b, false)) return;
+			
 		} else if( b->owner->eclass->nShowFlags & ECLASS_ENV ) {
 			Brush_DrawEnv( b, false, bSelected );
 		} else if( b->owner->eclass->nShowFlags & ECLASS_COMBATNODE ) {
@@ -4125,7 +4086,6 @@ void Brush_DrawXY( brush_t *b, int nViewType, bool bSelected, bool ignoreViewTyp
 			continue;
 		}
 		//
-		// if (b->alphaBrush && !(face->texdef.flags & SURF_ALPHA)) continue;
 		// draw the polygon
 		//
 		glBegin( GL_LINE_LOOP );
@@ -4133,11 +4093,6 @@ void Brush_DrawXY( brush_t *b, int nViewType, bool bSelected, bool ignoreViewTyp
 			glVertex3fv( ( *w )[i].ToFloatPtr() );
 		}
 		glEnd();
-		/*
-				for (i = 0; i < 3; i++) {
-					glLabeledPoint(idVec4(1, 0, 0, 1), face->planepts[i], 3, va("%i", i));
-				}
-		*/
 	}
 	DrawBrushEntityName( b );
 }
@@ -4156,8 +4111,6 @@ static int PointValueInPointList( idVec3 v ) {
 	return -1;
 }
 
-
-extern bool Sys_KeyDown( int key );
 /*
 ================
 Brush_Move
@@ -4189,7 +4142,6 @@ void Brush_Move( brush_t *b, const idVec3 move, bool bSnap, bool updateOrigin ) 
 	idVec3	temp;
 	// PGM - keep the origin vector up to date on fixed size entities.
 	if( b->owner->eclass->fixedsize || EntityHasModel( b->owner ) || ( updateOrigin && GetVectorForKey( b->owner, "origin", temp ) ) ) {
-		//		if (!b->entityModel) {
 		bool adjustOrigin = true;
 		if( b->trackLightOrigin ) {
 			b->owner->lightOrigin += move;
@@ -4220,7 +4172,6 @@ void Brush_Move( brush_t *b, const idVec3 move, bool bSnap, bool updateOrigin ) 
 			offset.Zero();
 			Brush_UpdateLightPoints( b, offset );
 		}
-		//}
 		if( b->owner->eclass->nShowFlags & ECLASS_ENV ) {
 			const idKeyValue *arg  = b->owner->epairs.MatchPrefix( "body ", NULL );
 			idStr val;

@@ -42,7 +42,7 @@ If you have questions concerning this license or the applicable additional terms
 template< class type, int nextOffset >
 class idQueueTemplate {
 public:
-	idQueueTemplate( void );
+	idQueueTemplate();
 
 	void					Add( type *element );
 	type 					*Get( void );

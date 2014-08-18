@@ -330,7 +330,6 @@
     <ClInclude Include="idlib\math\Rotation.h" />
     <ClInclude Include="idlib\math\Simd.h" />
     <ClInclude Include="idlib\math\Simd_3DNow.h" />
-    <ClInclude Include="idlib\math\Simd_AltiVec.h" />
     <ClInclude Include="idlib\math\Simd_Generic.h" />
     <ClInclude Include="idlib\math\Simd_MMX.h" />
     <ClInclude Include="idlib\math\Simd_SSE.h" />

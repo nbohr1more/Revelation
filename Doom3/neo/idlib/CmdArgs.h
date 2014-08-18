@@ -39,7 +39,7 @@ If you have questions concerning this license or the applicable additional terms
 
 class idCmdArgs {
 public:
-	idCmdArgs( void ) {
+	idCmdArgs() {
 		argc = 0;
 	}
 	idCmdArgs( const char *text, bool keepAsStrings ) {

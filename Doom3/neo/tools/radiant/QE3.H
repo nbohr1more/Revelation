@@ -76,8 +76,7 @@ const float	HUGE_DISTANCE = 100000;
 #include "PMESH.H"
 
 // the dec offsetof macro doesn't work very well...
-#define myoffsetof(type,identifier) ((size_t)&((type *)0)->identifier)
-
+#define myoffsetof(type, identifier) ((size_t) & ((type *)0)->identifier)
 
 void	Error( char *error, ... );
 void	Warning( char *error, ... );
@@ -205,7 +204,6 @@ typedef struct {
 	idSoundWorld	*sw;
 } QEGlobals_t;
 
-
 void Pointfile_Delete( void );
 void WINAPI Pointfile_Check( void );
 void Pointfile_Next( void );
@@ -321,7 +319,7 @@ bool	QE_SingleBrush( bool bQuiet = false, bool entityOK = false );
 
 
 // sys stuff
-void Sys_MarkMapModified( void );
+void	Sys_MarkMapModified( void );
 
 /*
 ** QE Win32 function declarations
@@ -374,7 +372,6 @@ void BPMatRotate( float A[2][3], float theta );
 void BPMatDump( float A[2][3] );
 #endif
 
-
 //
 // eclass.cpp
 //
@@ -406,7 +403,6 @@ extern idCVar radiant_entityMode;
 #define QR_4WAY 2
 #define QR_SPLITZ 3
 
-
 // externs
 extern void AddSlash( CString & );
 extern void DLLBuildDone();
@@ -425,7 +421,9 @@ extern bool g_bClipMode;
 extern bool g_bScaleMode;
 extern int g_nScaleHow;
 extern bool g_bPathMode;
+extern float fDiff( float f1, float f2 );
 extern void RunScript( char *pBuffer );
+extern bool Sys_KeyDown( int key );
 extern HINSTANCE g_hOpenGL32;
 
 extern void FindReplaceTextures( const char *pFind, const char *pReplace, bool bSelected, bool bForce );

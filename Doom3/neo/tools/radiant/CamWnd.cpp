@@ -767,7 +767,7 @@ void DrawAxial( face_t *selFace ) {
 		idVec3 points[4];
 		idVec4 color;
 		for( int j = 0; j < selFace->face_winding->GetNumPoints(); j++ ) {
-			glLabeledPoint( idVec4( 1, 1, 1, 1 ), ( *selFace->face_winding )[j].ToVec3(), 3, va( "%i", j ) );
+			glLabeledPoint( idVec4( 1.0f, 1.0f,  1.0f, 1.0f ), ( *selFace->face_winding )[j].ToVec3(), 3, va( "%i", j ) );
 		}
 		ValidateAxialPoints();
 		points[0] = ( *selFace->face_winding )[g_axialAnchor].ToVec3();
@@ -776,8 +776,8 @@ void DrawAxial( face_t *selFace ) {
 		points[3] = ( *selFace->face_winding )[g_axialDest].ToVec3();
 		VectorMA( points[3], 1, selFace->plane, points[3] );
 		VectorMA( points[3], 4, selFace->plane, points[2] );
-		glLabeledPoint( idVec4( 1, 0, 0, 1 ), points[1], 3, "Anchor" );
-		glLabeledPoint( idVec4( 1, 1, 0, 1 ), points[2], 3, "Dest" );
+		glLabeledPoint( idVec4( 1.0f, 0.0f,  0.0f, 1.0f ), points[1], 3, "Anchor" );
+		glLabeledPoint( idVec4( 1.0f, 1.0f,  0.0f, 1.0f ), points[2], 3, "Dest" );
 		glBegin( GL_LINE_STRIP );
 		glVertex3fv( points[0].ToFloatPtr() );
 		glVertex3fv( points[1].ToFloatPtr() );

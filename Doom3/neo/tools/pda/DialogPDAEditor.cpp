@@ -52,7 +52,6 @@ CDialogPDAEditor::CDialogPDAEditor( CWnd *pParent /*=NULL*/ )
 	//}}AFX_DATA_INIT
 }
 
-
 void CDialogPDAEditor::DoDataExchange( CDataExchange *pDX ) {
 	CDialog::DoDataExchange( pDX );
 	//{{AFX_DATA_MAP(CDialogPDAEditor)
@@ -69,7 +68,6 @@ void CDialogPDAEditor::DoDataExchange( CDataExchange *pDX ) {
 	DDX_Control( pDX, IDC_BUTTON_SAVE, saveButton );
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP( CDialogPDAEditor, CDialog )
 	//{{AFX_MSG_MAP(CDialogPDAEditor)
@@ -111,8 +109,8 @@ void PDAEditorInit( const idDict *spawnArgs ) {
 	g_PDAEditorDialog->SetFocus();
 	if( spawnArgs ) {
 		// select PDA based on spawn args
-		const char *name = spawnArgs->GetString( "pda" );
-		idDeclPDA *decl = static_cast<idDeclPDA *>( const_cast<idDecl *>( declManager->FindType( DECL_PDA, name ) ) );
+		const char	*name = spawnArgs->GetString( "pda" );
+		idDeclPDA	*decl = static_cast<idDeclPDA *>( const_cast<idDecl *>( declManager->FindType( DECL_PDA, name ) ) );
 		// FIXME: select this PDA
 	}
 }
@@ -362,6 +360,7 @@ void CDialogPDAEditor::OnBtnClickedEmailEdit() {
 	}
 }
 
+// TODO: implement.
 void CDialogPDAEditor::OnBtnClickedEmailDel() {
 }
 
@@ -383,15 +382,11 @@ void CDialogPDAEditor::OnBtnClickedVideoEdit() {
 void CDialogPDAEditor::OnBtnClickedVideoDel() {
 }
 
-
-
-
 CDialogPDAEditEmail::CDialogPDAEditEmail( CWnd *pParent /*=NULL*/ )
 	: CDialog( CDialogPDAEditEmail::IDD, pParent ) {
 	//{{AFX_DATA_INIT(CDialogPDAEditEmail)
 	//}}AFX_DATA_INIT
 }
-
 
 void CDialogPDAEditEmail::DoDataExchange( CDataExchange *pDX ) {
 	CDialog::DoDataExchange( pDX );
@@ -403,7 +398,6 @@ void CDialogPDAEditEmail::DoDataExchange( CDataExchange *pDX ) {
 	DDX_Text( pDX, IDC_EDIT_BODY, body );
 	//}}AFX_DATA_MAP
 }
-
 
 BEGIN_MESSAGE_MAP( CDialogPDAEditEmail, CDialog )
 	//{{AFX_MSG_MAP(CDialogPDAEditEmail)

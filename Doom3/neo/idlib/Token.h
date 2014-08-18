@@ -81,9 +81,9 @@ public:
 	int				flags;								// token flags, used for recursive defines
 
 public:
-	idToken( void );
+	idToken();
 	idToken( const idToken *token );
-	~idToken( void );
+	~idToken();
 
 	void			operator=( const idStr &text );
 	void			operator=( const char *text );
@@ -107,14 +107,14 @@ private:
 	void			AppendDirty( const char a );		// append character without adding trailing zero
 };
 
-ID_INLINE idToken::idToken( void ) {
+ID_INLINE idToken::idToken() {
 }
 
 ID_INLINE idToken::idToken( const idToken *token ) {
 	*this = *token;
 }
 
-ID_INLINE idToken::~idToken( void ) {
+ID_INLINE idToken::~idToken() {
 }
 
 ID_INLINE void idToken::operator=( const char *text ) {

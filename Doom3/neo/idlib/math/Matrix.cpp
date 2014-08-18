@@ -539,8 +539,8 @@ const char *idMat3::ToString( int precision ) const {
 //
 //===============================================================
 
-idMat4 mat4_zero( idVec4( 0, 0, 0, 0 ), idVec4( 0, 0, 0, 0 ), idVec4( 0, 0, 0, 0 ), idVec4( 0, 0, 0, 0 ) );
-idMat4 mat4_identity( idVec4( 1, 0, 0, 0 ), idVec4( 0, 1, 0, 0 ), idVec4( 0, 0, 1, 0 ), idVec4( 0, 0, 0, 1 ) );
+idMat4 mat4_zero( idVec4( 0.0f, 0.0f,  0.0f, 0.0f ), idVec4( 0.0f, 0.0f,  0.0f, 0.0f ), idVec4( 0.0f, 0.0f,  0.0f, 0.0f ), idVec4( 0.0f, 0.0f,  0.0f, 0.0f ) );
+idMat4 mat4_identity( idVec4( 1.0f, 0.0f,  0.0f, 0.0f ), idVec4( 0.0f, 1.0f,  0.0f, 0.0f ), idVec4( 0.0f, 0.0f,  1.0f, 0.0f ), idVec4( 0.0f, 0.0f,  0.0f, 1.0f ) );
 
 /*
 ============

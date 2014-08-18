@@ -193,9 +193,6 @@ const idMaterial *CNewTexWnd::NextPos() {
 		}
 		mat = declManager->MaterialByIndex( currentIndex, false );
 		currentIndex++;
-		//if (mat->getName()[0] == '(') { // fake color texture
-		//	continue;
-		//}
 		if( !mat->IsValid() ) {
 			continue;
 		}
@@ -232,7 +229,6 @@ const idMaterial *CNewTexWnd::NextPos() {
 void CNewTexWnd::OnPaint() {
 	CPaintDC	dc( this );	// device context for painting
 	int nOld = g_qeglobals.d_texturewin.m_nTotalHeight;
-	//hdcTexture = GetDC();
 	if( !wglMakeCurrent( dc.GetSafeHdc(), win32.hGLRC ) ) {
 		common->Printf( "ERROR: wglMakeCurrent failed..\n " );
 	} else {
@@ -319,7 +315,6 @@ void CNewTexWnd::OnPaint() {
 					name++;
 				}
 				glCallLists( strlen( name ), GL_UNSIGNED_BYTE, name );
-				//glCallLists(va("%s -- %d, %d" strlen(name), GL_UNSIGNED_BYTE, name);
 			}
 		}
 		g_qeglobals.d_texturewin.m_nTotalHeight = abs( draw.y ) + 100;
@@ -333,7 +328,6 @@ void CNewTexWnd::OnPaint() {
 		m_bNeedRange = false;
 		SetScrollRange( SB_VERT, 0, g_qeglobals.d_texturewin.m_nTotalHeight, TRUE );
 	}
-	//ReleaseDC(hdcTexture);
 }
 
 /*
@@ -418,7 +412,6 @@ const idMaterial *CNewTexWnd::getMaterialAtPoint( CPoint point ) {
 		}
 		int width = mat->GetEditorImage()->uploadWidth * ( ( float )g_PrefsDlg.m_nTextureScale / 100 );
 		int height = mat->GetEditorImage()->uploadHeight * ( ( float )g_PrefsDlg.m_nTextureScale / 100 );
-		//if (point.x > draw.x && point.x - draw.x < width && my < draw.y && my + draw.y < height + FONT_HEIGHT) {
 		if( point.x > draw.x && point.x - draw.x < width && my < draw.y &&  draw.y - my < height + FONT_HEIGHT ) {
 			return mat;
 		}
@@ -485,8 +478,6 @@ void CNewTexWnd::OnMButtonUp( UINT nFlags, CPoint point ) {
 void CNewTexWnd::OnRButtonUp( UINT nFlags, CPoint point ) {
 	CWnd::OnRButtonUp( nFlags, point );
 }
-
-extern float	fDiff( float f1, float f2 );
 
 /*
  =======================================================================================================================

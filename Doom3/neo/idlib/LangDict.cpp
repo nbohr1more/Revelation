@@ -34,7 +34,7 @@ If you have questions concerning this license or the applicable additional terms
 idLangDict::idLangDict
 ============
 */
-idLangDict::idLangDict( void ) {
+idLangDict::idLangDict() {
 	args.SetGranularity( 256 );
 	hash.SetGranularity( 256 );
 	hash.Clear( 4096, 8192 );
@@ -46,7 +46,7 @@ idLangDict::idLangDict( void ) {
 idLangDict::~idLangDict
 ============
 */
-idLangDict::~idLangDict( void ) {
+idLangDict::~idLangDict() {
 	Clear();
 }
 

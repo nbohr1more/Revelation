@@ -42,7 +42,7 @@ public:
 	float				r;		// real part
 	float				i;		// imaginary part
 
-	idComplex( void );
+	idComplex();
 	idComplex( const float r, const float i );
 
 	void 				Set( const float r, const float i );
@@ -98,7 +98,7 @@ public:
 extern idComplex complex_origin;
 #define complex_zero complex_origin
 
-ID_INLINE idComplex::idComplex( void ) {
+ID_INLINE idComplex::idComplex() {
 }
 
 ID_INLINE idComplex::idComplex( const float r, const float i ) {

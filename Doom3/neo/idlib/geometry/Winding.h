@@ -40,17 +40,17 @@ If you have questions concerning this license or the applicable additional terms
 class idWinding {
 
 public:
-	idWinding( void );
+	idWinding();
 	explicit idWinding( const int n );								// allocate for n points
 	explicit idWinding( const idVec3 *verts, const int n );			// winding from points
 	explicit idWinding( const idVec3 &normal, const float dist );	// base winding for plane
 	explicit idWinding( const idPlane &plane );						// base winding for plane
 	explicit idWinding( const idWinding &winding );
-	virtual			~idWinding( void );
+	virtual			~idWinding();
 
 	idWinding 		&operator=( const idWinding &winding );
 	const idVec5 	&operator[]( const int index ) const;
-	idVec5 		&operator[]( const int index );
+	idVec5 			&operator[]( const int index );
 
 	// add a point to the end of the winding point array
 	idWinding 		&operator+=( const idVec3 &v );
@@ -122,7 +122,7 @@ public:
 
 protected:
 	int				numPoints;				// number of points
-	idVec5 		*p;						// pointer to point data
+	idVec5 			*p;						// pointer to point data
 	int				allocedSize;
 
 	bool			EnsureAlloced( int n, bool keep = false );

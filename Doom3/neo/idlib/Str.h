@@ -116,7 +116,7 @@ typedef enum {
 class idStr {
 
 public:
-	idStr( void );
+	idStr();
 	idStr( const idStr &text );
 	idStr( const idStr &text, int start, int end );
 	idStr( const char *text );
@@ -126,7 +126,7 @@ public:
 	explicit idStr( const int i );
 	explicit idStr( const unsigned u );
 	explicit idStr( const float f );
-	~idStr( void );
+	~idStr();
 
 	size_t				Size( void ) const;
 	const char 		*c_str( void ) const;
@@ -211,9 +211,9 @@ public:
 	int					Find( const char *text, bool casesensitive = true, int start = 0, int end = -1 ) const;
 	bool				Filter( const char *filter, bool casesensitive ) const;
 	int					Last( const char c ) const;						// return the index to the last occurance of 'c', returns -1 if not found
-	const char 		*Left( int len, idStr &result ) const;			// store the leftmost 'len' characters in the result
-	const char 		*Right( int len, idStr &result ) const;			// store the rightmost 'len' characters in the result
-	const char 		*Mid( int start, int len, idStr &result ) const;	// store 'len' characters starting at 'start' in result
+	const char 			*Left( int len, idStr &result ) const;			// store the leftmost 'len' characters in the result
+	const char 			*Right( int len, idStr &result ) const;			// store the rightmost 'len' characters in the result
+	const char 			*Mid( int start, int len, idStr &result ) const;// store 'len' characters starting at 'start' in result
 	idStr				Left( int len ) const;							// return the leftmost 'len' characters
 	idStr				Right( int len ) const;							// return the rightmost 'len' characters
 	idStr				Mid( int start, int len ) const;				// return 'len' characters starting at 'start'
@@ -341,7 +341,7 @@ ID_INLINE void idStr::Init( void ) {
 #endif
 }
 
-ID_INLINE idStr::idStr( void ) {
+ID_INLINE idStr::idStr() {
 	Init();
 }
 
@@ -465,7 +465,7 @@ ID_INLINE idStr::idStr( const float f ) {
 	len = l;
 }
 
-ID_INLINE idStr::~idStr( void ) {
+ID_INLINE idStr::~idStr() {
 	FreeData();
 }
 

@@ -229,14 +229,14 @@ polyhedron PolyhedronFromBounds( const idBounds &b ) {
 	//
 	static polyhedron p;
 	if( p.e.size() == 0 ) {
-		p.v.push_back( idVec4( -1, -1,  1, 1 ) );
-		p.v.push_back( idVec4( 1, -1,  1, 1 ) );
-		p.v.push_back( idVec4( 1,  1,  1, 1 ) );
-		p.v.push_back( idVec4( -1,  1,  1, 1 ) );
-		p.v.push_back( idVec4( -1, -1, -1, 1 ) );
-		p.v.push_back( idVec4( 1, -1, -1, 1 ) );
-		p.v.push_back( idVec4( 1,  1, -1, 1 ) );
-		p.v.push_back( idVec4( -1,  1, -1, 1 ) );
+		p.v.push_back( idVec4( -1.0f, -1.0f,  1.0f, 1.0f ) );
+		p.v.push_back( idVec4( 1.0f, -1.0f,  1.0f, 1.0f ) );
+		p.v.push_back( idVec4( 1.0f, 1.0f, 1.0f, 1.0f ) );
+		p.v.push_back( idVec4( -1.0f, 1.0f, 1.0f, 1.0f ) );
+		p.v.push_back( idVec4( -1.0f, -1.0f, -1.0f, 1.0f ) );
+		p.v.push_back( idVec4( 1.0f, -1.0f, -1.0f, 1.0f ) );
+		p.v.push_back( idVec4( 1.0f, 1.0f, -1.0f, 1.0f ) );
+		p.v.push_back( idVec4( -1.0f, 1.0f, -1.0f, 1.0f ) );
 		p.add_quad( 0, 1, 2, 3 );
 		p.add_quad( 7, 6, 5, 4 );
 		p.add_quad( 1, 0, 4, 5 );
@@ -277,7 +277,7 @@ polyhedron make_sv( const polyhedron &oc, idVec4 light ) {
 		int V = ph.v.size();
 		for( int j = 0; j < V; j++ ) {
 			idVec3 proj = homogeneous_difference( light, ph.v[j] );
-			ph.v.push_back( idVec4( proj.x, proj.y, proj.z, 0 ) );
+			ph.v.push_back( idVec4( proj.x, proj.y, proj.z, 0.0f ) );
 		}
 		ph.p.empty();
 		for( unsigned int i = 0; i < oc.p.size(); i++ ) {
@@ -318,7 +318,7 @@ polyhedron make_sv( const polyhedron &oc, idVec4 light ) {
 	int V = ph2.v.size();
 	for( int j = 0; j < V; j++ ) {
 		idVec3 proj = homogeneous_difference( light, ph2.v[j] );
-		ph2.v.push_back( idVec4( proj.x, proj.y, proj.z, 0 ) );
+		ph2.v.push_back( idVec4( proj.x, proj.y, proj.z, 0.0f ) );
 	}
 	// need to compute planes for the shadow volume (sv)
 	ph2.recompute_planes();

@@ -64,7 +64,7 @@ If you have questions concerning this license or the applicable additional terms
 #endif // GESTATUSBAR_H_
 
 // Utility functions
-const char *StringFromVec4( idVec4 &vec );
+const char *StringFromVec4( const idVec4 &vec );
 bool		IsExpression( const char *s );
 
 class rvGEViewer;

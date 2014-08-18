@@ -424,7 +424,7 @@ void idRenderWorldLocal::CreateLightDefInteractions( idRenderLightLocal *ldef ) 
 				// the CPU time.  The table is updated at interaction::AllocAndLink() and interaction::UnlinkAndFree()
 				int index = ldef->index * this->interactionTableWidth + edef->index;
 				inter = this->interactionTable[ index ];
-				if( inter ) {
+				if( inter != NULL  ) {
 					// if this entity wasn't in view already, the scissor rect will be empty,
 					// so it will only be used for shadow casting
 					if( !inter->IsEmpty() ) {
@@ -683,12 +683,12 @@ void R_AddLightSurfaces( void ) {
 		}
 		// see if we are suppressing the light in this view
 		if( !r_skipSuppress.GetBool() ) {
-			if( light->parms.suppressLightInViewID	&& light->parms.suppressLightInViewID == tr.viewDef->renderView.viewID ) {
+			if( light->parms.suppressLightInViewID	&& ( light->parms.suppressLightInViewID == tr.viewDef->renderView.viewID ) ) {
 				*ptr = vLight->next;
 				light->viewCount = -1;
 				continue;
 			}
-			if( light->parms.allowLightInViewID && light->parms.allowLightInViewID != tr.viewDef->renderView.viewID ) {
+			if( light->parms.allowLightInViewID && ( light->parms.allowLightInViewID != tr.viewDef->renderView.viewID ) ) {
 				*ptr = vLight->next;
 				light->viewCount = -1;
 				continue;
@@ -701,8 +701,8 @@ void R_AddLightSurfaces( void ) {
 		// if this is a purely additive light and no stage in the light shader evaluates
 		// to a positive light value, we can completely skip the light
 		if( !lightShader->IsFogLight() && !lightShader->IsBlendLight() ) {
-			int lightStageNum;
-			for( lightStageNum = 0 ; lightStageNum < lightShader->GetNumStages() ; lightStageNum++ ) {
+			int lightStageNum = 0;
+			for( /**/ ; lightStageNum < lightShader->GetNumStages() ; lightStageNum++ ) {
 				const shaderStage_t	*lightStage = lightShader->GetStage( lightStageNum );
 				// ignore stages that fail the condition
 				if( !lightRegs[ lightStage->conditionRegister ] ) {
@@ -749,7 +749,7 @@ void R_AddLightSurfaces( void ) {
 		// a random offset every time
 		if( r_lightSourceRadius.GetFloat() != 0.0f ) {
 			for( int i = 0 ; i < 3 ; i++ ) {
-				light->globalLightOrigin[i] += r_lightSourceRadius.GetFloat() * ( -1 + 2 * ( rand() & 0xfff ) / ( float )0xfff );
+				light->globalLightOrigin[i] += r_lightSourceRadius.GetFloat() * ( -1.0f + 2.0f * ( rand() & 0xfff ) / ( float )0xfff );
 			}
 		}
 		// create interactions with all entities the light may touch, and add viewEntities
@@ -799,7 +799,7 @@ void R_AddLightSurfaces( void ) {
 			if( tri->indexCache ) {
 				vertexCache.Touch( tri->indexCache );
 			}
-			R_LinkLightSurf( &vLight->globalShadows, tri, NULL, light, NULL, vLight->scissorRect, true /* FIXME? */ );
+			R_LinkLightSurf( &vLight->globalShadows, tri, NULL, light, NULL, vLight->scissorRect, true );
 		}
 	}
 }
@@ -1101,7 +1101,7 @@ static void R_AddAmbientDrawsurfs( viewEntity_t *vEntity ) {
 	// add all the surfaces
 	total = model->NumSurfaces();
 	for( i = 0 ; i < total ; i++ ) {
-		const modelSurface_t	*surf = model->Surface( i );
+		const modelSurface_t *surf = model->Surface( i );
 		// for debugging, only show a single surface at a time
 		if( r_singleSurface.GetInteger() >= 0 && i != r_singleSurface.GetInteger() ) {
 			continue;
@@ -1145,8 +1145,8 @@ static void R_AddAmbientDrawsurfs( viewEntity_t *vEntity ) {
 			def->visibleCount = tr.viewCount;
 			// make sure we have an ambient cache
 			if( !R_CreateAmbientCache( tri, shader->ReceivesLighting() ) ) {
-				// don't add anything if the vertex cache was too full to give us an ambient cache
-				return;
+				// skip if the vertex cache was too full to give us an ambient cache
+				continue;
 			}
 			// touch it so it won't get purged
 			vertexCache.Touch( tri->ambientCache );

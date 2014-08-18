@@ -40,7 +40,7 @@ If you have questions concerning this license or the applicable additional terms
 class idSurface_Patch : public idSurface {
 
 public:
-	idSurface_Patch( void );
+	idSurface_Patch();
 	idSurface_Patch( int maxPatchWidth, int maxPatchHeight );
 	idSurface_Patch( const idSurface_Patch &patch );
 	~idSurface_Patch( void );
@@ -90,7 +90,7 @@ private:
 idSurface_Patch::idSurface_Patch
 =================
 */
-ID_INLINE idSurface_Patch::idSurface_Patch( void ) {
+ID_INLINE idSurface_Patch::idSurface_Patch() {
 	height = width = maxHeight = maxWidth = 0;
 	expanded = false;
 }

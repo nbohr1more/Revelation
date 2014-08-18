@@ -57,7 +57,7 @@ public:
 	void			SetLong( const char *name, long v );
 	void			SetBool( const char *name, bool v );
 	void			SetString( const char *name, const char *v );
-	void			SetVec4( const char *name, idVec4 &v );
+	void			SetVec4( const char *name, const idVec4 &v );
 	void			SetBinary( const char *name, const unsigned char *data, int size );
 	
 	// Get routines
@@ -96,7 +96,7 @@ ID_INLINE void rvRegistryOptions::SetString( const char *name, const char *v ) {
 	mValues.Set( name, v );
 }
 
-ID_INLINE void rvRegistryOptions::SetVec4( const char *name, idVec4 &v ) {
+ID_INLINE void rvRegistryOptions::SetVec4( const char *name, const idVec4 &v ) {
 	mValues.SetVec4( name, v );
 }
 

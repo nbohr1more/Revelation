@@ -50,7 +50,7 @@ class idRotation {
 	friend class idMat3;
 
 public:
-	idRotation( void );
+	idRotation();
 	idRotation( const idVec3 &rotationOrigin, const idVec3 &rotationVec, const float rotationAngle );
 
 	void				Set( const idVec3 &rotationOrigin, const idVec3 &rotationVec, const float rotationAngle );
@@ -67,8 +67,8 @@ public:
 	idRotation			operator-() const;										// flips rotation
 	idRotation			operator*( const float s ) const;						// scale rotation
 	idRotation			operator/( const float s ) const;						// scale rotation
-	idRotation 		&operator*=( const float s );							// scale rotation
-	idRotation 		&operator/=( const float s );							// scale rotation
+	idRotation 			&operator*=( const float s );							// scale rotation
+	idRotation 			&operator/=( const float s );							// scale rotation
 	idVec3				operator*( const idVec3 &v ) const;						// rotate vector
 
 	friend idRotation	operator*( const float s, const idRotation &r );		// scale rotation
@@ -95,7 +95,7 @@ private:
 };
 
 
-ID_INLINE idRotation::idRotation( void ) {
+ID_INLINE idRotation::idRotation() {
 }
 
 ID_INLINE idRotation::idRotation( const idVec3 &rotationOrigin, const idVec3 &rotationVec, const float rotationAngle ) {
