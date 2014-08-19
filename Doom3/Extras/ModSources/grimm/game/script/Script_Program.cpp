@@ -848,7 +848,7 @@ void idScriptObject::Restore( idRestoreGame *savefile ) {
 		savefile->Error( "idScriptObject::Restore: failed to restore object of type '%s'.", typeName.c_str() );
 	}
 	savefile->ReadInt( ( int & )size );
-	if( size != type->Size() ) {
+	if( size != static_cast<size_t>( type->Size() ) ) {
 		savefile->Error( "idScriptObject::Restore: size of object '%s' doesn't match size in save game.", typeName.c_str() );
 	}
 	savefile->Read( data, size );

@@ -82,7 +82,6 @@ void CleanEntityList( eclass_t *&pList ) {
 	pList = NULL;
 }
 
-
 void CleanUpEntities() {
 	CleanEntityList( eclass );
 	CleanEntityList( g_md3Cache );

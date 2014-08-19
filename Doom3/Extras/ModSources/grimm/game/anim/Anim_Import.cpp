@@ -351,7 +351,7 @@ int idModelExport::ParseExportSection( idParser &parser ) {
 	}
 	count = 0;
 	lex.SetFlags( LEXFL_NOSTRINGCONCAT | LEXFL_ALLOWPATHNAMES | LEXFL_ALLOWMULTICHARLITERALS | LEXFL_ALLOWBACKSLASHSTRINGCONCAT );
-	while( 1 ) {
+	while( true ) {
 		if( !parser.ReadToken( &command ) ) {
 			parser.Error( "Unexpoected end-of-file" );
 			break;

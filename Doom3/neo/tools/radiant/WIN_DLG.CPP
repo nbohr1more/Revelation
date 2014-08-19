@@ -66,13 +66,8 @@ BOOL CALLBACK EditCommandDlgProc(
 				common->Printf( "Command not added\n" );
 				return FALSE;
 			}
-			//if (key[0] == 'b' && key[1] == 's' && key[2] == 'p')
-			//{
 			SetKeyValue( g_qeglobals.d_project_entity, key, value );
 			FillBSPMenu();
-			//}
-			//else
-			//	common->Printf ("BSP commands must be preceded by \"bsp\"");
 			EndDialog( hwndDlg, 1 );
 			return TRUE;
 		case IDCANCEL:
@@ -85,7 +80,7 @@ BOOL CALLBACK EditCommandDlgProc(
 
 BOOL CALLBACK AddCommandDlgProc(
 	HWND hwndDlg,	// handle to dialog box
-	UINT uMsg,	// message
+	UINT uMsg,		// message
 	WPARAM wParam,	// first message parameter
 	LPARAM lParam 	// second message parameter
 ) {

@@ -503,11 +503,11 @@ void rvGEWorkspace::UpdateCursor( rvGESelectionMgr::EHitTest type ) {
 }
 
 void rvGEWorkspace::UpdateCursor( float x, float y ) {
+	idVec2						center = idVec2( x, y );
 	idVec2						point;
-	idVec2						&coord = idVec2( x, y ); 
 	rvGESelectionMgr::EHitTest	type;
 	// First convert the worspace coord to a window coord
-	point = WorkspaceToWindow( coord );
+	point = WorkspaceToWindow( center );
 	// See if it hits anything
 	type = mSelections.HitTest( point.x, point.y );
 	// If it hits something then use it to update the cursor

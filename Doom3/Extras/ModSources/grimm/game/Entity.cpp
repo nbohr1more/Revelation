@@ -741,20 +741,18 @@ bool idEntity::DoDormantTests( void ) {
 			return false;
 		}
 		return true;
-	} else {
-		// the monster area is topologically connected to a player, but if
-		// the monster hasn't been woken up before, do the more precise PVS check
-		if( !fl.hasAwakened ) {
-			if( !gameLocal.InPlayerPVS( this ) ) {
-				return true;		// stay dormant
-			}
-		}
-		// wake up
-		dormantStart = 0;
-		fl.hasAwakened = true;		// only go dormant when area closed off now, not just out of PVS
-		return false;
 	}
-	//	return false;	// sikk - warning C4702: unreachable code
+	// the monster area is topologically connected to a player, but if
+	// the monster hasn't been woken up before, do the more precise PVS check
+	if( !fl.hasAwakened ) {
+		if( !gameLocal.InPlayerPVS( this ) ) {
+			return true;		// stay dormant
+		}
+	}
+	// wake up
+	dormantStart = 0;
+	fl.hasAwakened = true;		// only go dormant when area closed off now, not just out of PVS
+	return false;
 }
 
 /*
@@ -3005,7 +3003,7 @@ bool idEntity::HandleGuiCommands( idEntity *entityGui, const char *cmds ) {
 		idLexer src;
 		idToken token, token2, token3, token4;
 		src.LoadMemory( cmds, strlen( cmds ), "guiCommands" );
-		while( 1 ) {
+		while( true ) {
 			if( !src.ReadToken( &token ) ) {
 				return ret;
 			}
@@ -4407,34 +4405,34 @@ bool idEntity::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
 	const idSoundShader	*shader;
 	s_channelType		channel;
 	switch( event ) {
-	case EVENT_STARTSOUNDSHADER: {
-		// the sound stuff would early out
-		assert( gameLocal.isNewFrame );
-		if( time < gameLocal.realClientTime - 1000 ) {
-			// too old, skip it ( reliable messages don't need to be parsed in full )
-			common->DPrintf( "ent 0x%x: start sound shader too old (%d ms)\n", entityNumber, gameLocal.realClientTime - time );
+		case EVENT_STARTSOUNDSHADER: {
+			// the sound stuff would early out
+			assert( gameLocal.isNewFrame );
+			if( time < gameLocal.realClientTime - 1000 ) {
+				// too old, skip it ( reliable messages don't need to be parsed in full )
+				common->DPrintf( "ent 0x%x: start sound shader too old (%d ms)\n", entityNumber, gameLocal.realClientTime - time );
+				return true;
+			}
+			index = gameLocal.ClientRemapDecl( DECL_SOUND, msg.ReadLong() );
+			if( index >= 0 && index < declManager->GetNumDecls( DECL_SOUND ) ) {
+				shader = declManager->SoundByIndex( index, false );
+				channel = ( s_channelType )msg.ReadByte();
+				StartSoundShader( shader, channel, 0, false, NULL );
+			}
 			return true;
 		}
-		index = gameLocal.ClientRemapDecl( DECL_SOUND, msg.ReadLong() );
-		if( index >= 0 && index < declManager->GetNumDecls( DECL_SOUND ) ) {
-			shader = declManager->SoundByIndex( index, false );
+		case EVENT_STOPSOUNDSHADER: {
+			// the sound stuff would early out
+			assert( gameLocal.isNewFrame );
 			channel = ( s_channelType )msg.ReadByte();
-			StartSoundShader( shader, channel, 0, false, NULL );
+			StopSound( channel, false );
+			return true;
 		}
-		return true;
+		default: {
+			break;
+		}
 	}
-	case EVENT_STOPSOUNDSHADER: {
-		// the sound stuff would early out
-		assert( gameLocal.isNewFrame );
-		channel = ( s_channelType )msg.ReadByte();
-		StopSound( channel, false );
-		return true;
-	}
-	default: {
-		return false;
-	}
-	}
-	//	return false;	// sikk - warning C4702: unreachable code
+	return false;	// sikk - warning C4702: unreachable code
 }
 
 /*
@@ -4817,25 +4815,25 @@ bool idAnimatedEntity::ClientReceiveEvent( int event, int time, const idBitMsg &
 	jointHandle_t jointNum;
 	idVec3 localOrigin, localNormal, localDir;
 	switch( event ) {
-	case EVENT_ADD_DAMAGE_EFFECT: {
-		jointNum = ( jointHandle_t ) msg.ReadShort();
-		localOrigin[0] = msg.ReadFloat();
-		localOrigin[1] = msg.ReadFloat();
-		localOrigin[2] = msg.ReadFloat();
-		localNormal = msg.ReadDir( 24 );
-		localDir = msg.ReadDir( 24 );
-		damageDefIndex = gameLocal.ClientRemapDecl( DECL_ENTITYDEF, msg.ReadLong() );
-		materialIndex = gameLocal.ClientRemapDecl( DECL_MATERIAL, msg.ReadLong() );
-		const idDeclEntityDef *damageDef = static_cast<const idDeclEntityDef *>( declManager->DeclByIndex( DECL_ENTITYDEF, damageDefIndex ) );
-		const idMaterial *collisionMaterial = static_cast<const idMaterial *>( declManager->DeclByIndex( DECL_MATERIAL, materialIndex ) );
-		AddLocalDamageEffect( jointNum, localOrigin, localNormal, localDir, damageDef, collisionMaterial );
-		return true;
+		case EVENT_ADD_DAMAGE_EFFECT: {
+			jointNum = ( jointHandle_t ) msg.ReadShort();
+			localOrigin[0] = msg.ReadFloat();
+			localOrigin[1] = msg.ReadFloat();
+			localOrigin[2] = msg.ReadFloat();
+			localNormal = msg.ReadDir( 24 );
+			localDir = msg.ReadDir( 24 );
+			damageDefIndex = gameLocal.ClientRemapDecl( DECL_ENTITYDEF, msg.ReadLong() );
+			materialIndex = gameLocal.ClientRemapDecl( DECL_MATERIAL, msg.ReadLong() );
+			const idDeclEntityDef *damageDef = static_cast<const idDeclEntityDef *>( declManager->DeclByIndex( DECL_ENTITYDEF, damageDefIndex ) );
+			const idMaterial *collisionMaterial = static_cast<const idMaterial *>( declManager->DeclByIndex( DECL_MATERIAL, materialIndex ) );
+			AddLocalDamageEffect( jointNum, localOrigin, localNormal, localDir, damageDef, collisionMaterial );
+			return true;
+		}
+		default: {
+			break;
+		}
 	}
-	default: {
-		return idEntity::ClientReceiveEvent( event, time, msg );
-	}
-	}
-	//	return false;	// sikk - warning C4702: unreachable code
+	return idEntity::ClientReceiveEvent( event, time, msg );	// sikk - warning C4702: unreachable code
 }
 
 /*

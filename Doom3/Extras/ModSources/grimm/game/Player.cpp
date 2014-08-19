@@ -3506,7 +3506,7 @@ void idPlayer::NextWeapon( void ) {
 		return;
 	}
 	w = idealWeapon;
-	while( 1 ) {
+	while( true ) {
 		w++;
 		if( w >= MAX_WEAPONS ) {
 			w = 0;
@@ -3551,7 +3551,7 @@ void idPlayer::PrevWeapon( void ) {
 		return;
 	}
 	w = idealWeapon;
-	while( 1 ) {
+	while( true ) {
 		w--;
 		if( w < 0 ) {
 			w = MAX_WEAPONS - 1;
@@ -8215,40 +8215,40 @@ bool idPlayer::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
 	int powerup;
 	bool start;
 	switch( event ) {
-	case EVENT_EXIT_TELEPORTER:
-		Event_ExitTeleporter();
-		return true;
-	case EVENT_ABORT_TELEPORTER:
-		SetPrivateCameraView( NULL );
-		return true;
-	case EVENT_POWERUP: {
-		powerup = msg.ReadShort();
-		start = msg.ReadBits( 1 ) != 0;
-		if( start ) {
-			GivePowerUp( powerup, 0 );
-		} else {
-			ClearPowerup( powerup );
-		}
-		return true;
-	}
-	case EVENT_SPECTATE: {
-		bool spectate = ( msg.ReadBits( 1 ) != 0 );
-		Spectate( spectate );
-		return true;
-	}
-	case EVENT_ADD_DAMAGE_EFFECT: {
-		if( spectating ) {
-			// if we're spectating, ignore
-			// happens if the event and the spectate change are written on the server during the same frame (fraglimit)
+		case EVENT_EXIT_TELEPORTER:
+			Event_ExitTeleporter();
+			return true;
+		case EVENT_ABORT_TELEPORTER:
+			SetPrivateCameraView( NULL );
+			return true;
+		case EVENT_POWERUP: {
+			powerup = msg.ReadShort();
+			start = msg.ReadBits( 1 ) != 0;
+			if( start ) {
+				GivePowerUp( powerup, 0 );
+			} else {
+				ClearPowerup( powerup );
+			}
 			return true;
 		}
-		return idActor::ClientReceiveEvent( event, time, msg );
+		case EVENT_SPECTATE: {
+			bool spectate = ( msg.ReadBits( 1 ) != 0 );
+			Spectate( spectate );
+			return true;
+		}
+		case EVENT_ADD_DAMAGE_EFFECT: {
+			if( spectating ) {
+				// if we're spectating, ignore
+				// happens if the event and the spectate change are written on the server during the same frame (fraglimit)
+				return true;
+			}
+			break;
+		}
+		default: {
+			break;
+		}
 	}
-	default: {
-		return idActor::ClientReceiveEvent( event, time, msg );
-	}
-	}
-	//	return false;	// sikk - warning C4702: unreachable code
+	return idActor::ClientReceiveEvent( event, time, msg );	// sikk - warning C4702: unreachable code
 }
 
 /*
@@ -8887,8 +8887,6 @@ idPlayer::UseHealthPack
 */
 void idPlayer::UseHealthPack() {
 	if( ( health > 0 ) && ( health < inventory.maxHealth ) && healthPackAmount ) {
-		int oldhealth = health;
-		int oldhealthPackAmount = healthPackAmount;
 		healthPackAmount -= 1;
 		health += 35;
 		if( health > inventory.maxHealth ) {

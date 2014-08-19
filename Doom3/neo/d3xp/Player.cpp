@@ -1716,7 +1716,7 @@ void idPlayer::Spawn( void ) {
 		idLexer src;
 		idToken token;
 		src.LoadMemory( toggleData, toggleData.Length(), "toggleData" );
-		while( 1 ) {
+		while( true ) {
 			if( !src.ReadToken( &token ) ) {
 				break;
 			}
@@ -3280,9 +3280,6 @@ bool idPlayer::GivePowerUp( int powerup, int time ) {
 			if( weapon.GetEntity() ) {
 				weapon.GetEntity()->UpdateSkin();
 			}
-			/*				if ( spawnArgs.GetString( "snd_invisibility", "", &sound ) ) {
-								StartSoundShader( declManager->FindSound( sound ), SND_CHANNEL_ANY, 0, false, NULL );
-							} */
 			break;
 		}
 		case ADRENALINE: {
@@ -3346,25 +3343,12 @@ bool idPlayer::GivePowerUp( int powerup, int time ) {
 				inventory.AddPickupName( "#str_00100630", "", this );
 			}
 			if( gameLocal.isMultiplayer ) {
-				/*if ( spawnArgs.GetString( "snd_invulnerable", "", &sound ) ) {
-					StartSoundShader( declManager->FindSound( sound ), SND_CHANNEL_DEMONIC, 0, false, NULL );
-				}*/
 				if( baseSkinName.Length() ) {
 					powerUpSkin = declManager->FindSkin( baseSkinName + "_invuln" );
 				}
 			}
 			break;
 		}
-		/*case HASTE: {
-			if(gameLocal.isMultiplayer && !gameLocal.isClient) {
-				inventory.AddPickupName("#str_00100631", "", this);
-			}
-
-			if ( baseSkinName.Length() ) {
-				powerUpSkin = declManager->FindSkin( baseSkinName + "_haste" );
-			}
-			break;
-		}*/
 #endif
 		}
 		if( hud ) {
@@ -3922,7 +3906,7 @@ void idPlayer::NextWeapon( void ) {
 		return;
 	}
 	w = idealWeapon;
-	while( 1 ) {
+	while( true ) {
 		w++;
 		if( w >= MAX_WEAPONS ) {
 			w = 0;
@@ -3971,7 +3955,7 @@ void idPlayer::PrevWeapon( void ) {
 		return;
 	}
 	w = idealWeapon;
-	while( 1 ) {
+	while( true ) {
 		w--;
 		if( w < 0 ) {
 			w = MAX_WEAPONS - 1;

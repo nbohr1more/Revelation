@@ -848,7 +848,7 @@ void idBrittleFracture::Fracture_r( idFixedWinding &w ) {
 	idFixedWinding back;
 	idTraceModel trm;
 	idClipModel *clipModel;
-	while( 1 ) {
+	while( true ) {
 		origin = w.GetCenter();
 		w.GetPlane( windingPlane );
 		if( w.GetArea() < maxShardArea ) {
@@ -1058,29 +1058,29 @@ idBrittleFracture::ClientReceiveEvent
 bool idBrittleFracture::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
 	idVec3 point, dir;
 	switch( event ) {
-	case EVENT_PROJECT_DECAL: {
-		point[0] = msg.ReadFloat();
-		point[1] = msg.ReadFloat();
-		point[2] = msg.ReadFloat();
-		dir[0] = msg.ReadFloat();
-		dir[1] = msg.ReadFloat();
-		dir[2] = msg.ReadFloat();
-		ProjectDecal( point, dir, time, NULL );
-		return true;
+		case EVENT_PROJECT_DECAL: {
+			point[0] = msg.ReadFloat();
+			point[1] = msg.ReadFloat();
+			point[2] = msg.ReadFloat();
+			dir[0] = msg.ReadFloat();
+			dir[1] = msg.ReadFloat();
+			dir[2] = msg.ReadFloat();
+			ProjectDecal( point, dir, time, NULL );
+			return true;
+		}
+		case EVENT_SHATTER: {
+			point[0] = msg.ReadFloat();
+			point[1] = msg.ReadFloat();
+			point[2] = msg.ReadFloat();
+			dir[0] = msg.ReadFloat();
+			dir[1] = msg.ReadFloat();
+			dir[2] = msg.ReadFloat();
+			Shatter( point, dir, time );
+			return true;
+		}
+		default: {
+			break;
+		}
 	}
-	case EVENT_SHATTER: {
-		point[0] = msg.ReadFloat();
-		point[1] = msg.ReadFloat();
-		point[2] = msg.ReadFloat();
-		dir[0] = msg.ReadFloat();
-		dir[1] = msg.ReadFloat();
-		dir[2] = msg.ReadFloat();
-		Shatter( point, dir, time );
-		return true;
-	}
-	default: {
-		return idEntity::ClientReceiveEvent( event, time, msg );
-	}
-	}
-	return false;
+	return idEntity::ClientReceiveEvent( event, time, msg );
 }

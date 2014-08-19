@@ -3065,7 +3065,7 @@ bool idEntity::HandleGuiCommands( idEntity *entityGui, const char *cmds ) {
 		idLexer src;
 		idToken token, token2, token3, token4;
 		src.LoadMemory( cmds, strlen( cmds ), "guiCommands" );
-		while( 1 ) {
+		while( true ) {
 			if( !src.ReadToken( &token ) ) {
 				return ret;
 			}

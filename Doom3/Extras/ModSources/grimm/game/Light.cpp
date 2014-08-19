@@ -1014,15 +1014,15 @@ idLight::ClientReceiveEvent
 */
 bool idLight::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
 	switch( event ) {
-	case EVENT_BECOMEBROKEN: {
-		BecomeBroken( NULL );
-		return true;
+		case EVENT_BECOMEBROKEN: {
+			BecomeBroken( NULL );
+			return true;
+		}
+		default: {
+			break;
+		}
 	}
-	default: {
-		return idEntity::ClientReceiveEvent( event, time, msg );
-	}
-	}
-	//	return false;	// sikk - warning C4702: unreachable code
+	return idEntity::ClientReceiveEvent( event, time, msg );	// sikk - warning C4702: unreachable code
 }
 
 // sikk---> Soft Shadows PostProcess

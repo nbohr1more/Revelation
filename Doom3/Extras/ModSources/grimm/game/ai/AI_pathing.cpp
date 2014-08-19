@@ -463,7 +463,7 @@ bool GetPathNodeDelta( pathNode_t *node, const obstacle_t *obstacles, const idVe
 	pathNode_t *n;
 	numPoints = obstacles[node->obstacle].winding.GetNumPoints();
 	// get delta along the current edge
-	while( 1 ) {
+	while( true ) {
 		edgeNum = ( node->edgeNum + node->dir ) % numPoints;
 		node->delta = obstacles[node->obstacle].winding[edgeNum] - node->pos;
 		if( node->delta.LengthSqr() > 0.01f ) {
@@ -1136,21 +1136,6 @@ static int Ballistics( const idVec3 &start, const idVec3 &end, float speed, floa
 		n++;
 	}
 	return n;
-}
-
-/*
-=====================
-HeightForTrajectory
-
-Returns the maximum hieght of a given trajectory
-=====================
-*/
-static float HeightForTrajectory( const idVec3 &start, float zVel, float gravity ) {
-	float maxHeight, t;
-	t = zVel / gravity;
-	// maximum height of projectile
-	maxHeight = start.z - 0.5f * gravity * ( t * t );
-	return maxHeight;
 }
 
 /*

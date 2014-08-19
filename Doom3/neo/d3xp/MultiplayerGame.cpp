@@ -628,7 +628,6 @@ void idMultiplayerGame::UpdateCTFScoreboard( idUserInterface *scoreBoard, idPlay
 				scoreBoard->SetStateInt( va( "player%i_%s_score", ilines[ player->team ], curTeam ), value );
 				/* Team score and score, blanked */
 				scoreBoard->SetStateString( va( "player%i_%s_tscore", ilines[ player->team ], curTeam ), "" );
-				//scoreBoard->SetStateString( va( "player%i_%s_score",  ilines[ player->team ], curTeam ), "" );
 			}
 			/* Wins */
 			value = idMath::ClampInt( 0, MP_PLAYER_MAXWINS, playerState[ rankedPlayers[ i ]->entityNumber ].wins );

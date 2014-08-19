@@ -2033,35 +2033,35 @@ idWeapon::ClientReceiveEvent
 */
 bool idWeapon::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
 	switch( event ) {
-	case EVENT_RELOAD: {
-		if( gameLocal.time - time < 1000 ) {
-			if( WEAPON_NETRELOAD.IsLinked() ) {
-				WEAPON_NETRELOAD = true;
-				WEAPON_NETENDRELOAD = false;
+		case EVENT_RELOAD: {
+			if( gameLocal.time - time < 1000 ) {
+				if( WEAPON_NETRELOAD.IsLinked() ) {
+					WEAPON_NETRELOAD = true;
+					WEAPON_NETENDRELOAD = false;
+				}
 			}
+			return true;
 		}
-		return true;
-	}
-	case EVENT_ENDRELOAD: {
-		if( WEAPON_NETENDRELOAD.IsLinked() ) {
-			WEAPON_NETENDRELOAD = true;
+		case EVENT_ENDRELOAD: {
+			if( WEAPON_NETENDRELOAD.IsLinked() ) {
+				WEAPON_NETENDRELOAD = true;
+			}
+			return true;
 		}
-		return true;
-	}
-	case EVENT_CHANGESKIN: {
-		int index = gameLocal.ClientRemapDecl( DECL_SKIN, msg.ReadLong() );
-		renderEntity.customSkin = ( index != -1 ) ? static_cast<const idDeclSkin *>( declManager->DeclByIndex( DECL_SKIN, index ) ) : NULL;
-		UpdateVisuals();
-		if( worldModel.GetEntity() ) {
-			worldModel.GetEntity()->SetSkin( renderEntity.customSkin );
+		case EVENT_CHANGESKIN: {
+			int index = gameLocal.ClientRemapDecl( DECL_SKIN, msg.ReadLong() );
+			renderEntity.customSkin = ( index != -1 ) ? static_cast<const idDeclSkin *>( declManager->DeclByIndex( DECL_SKIN, index ) ) : NULL;
+			UpdateVisuals();
+			if( worldModel.GetEntity() ) {
+				worldModel.GetEntity()->SetSkin( renderEntity.customSkin );
+			}
+			return true;
 		}
-		return true;
+		default: {
+			break;
+		}
 	}
-	default: {
-		return idEntity::ClientReceiveEvent( event, time, msg );
-	}
-	}
-	//	return false;	// sikk - warning C4702: unreachable code
+	return idEntity::ClientReceiveEvent( event, time, msg );	// sikk - warning C4702: unreachable code
 }
 
 /***********************************************************************
@@ -2694,7 +2694,7 @@ idWeapon::Event_LaunchGrimmProjectiles
 ================
 */
 void idWeapon::Event_LaunchGrimmProjectiles( char *gprojdef, int num_projectiles, float spread, float fuseOffset, float launchPower, float dmgPower ) {
-	idProjectile	*proj;
+	idProjectile	*proj = NULL;
 	idEntity		*ent;
 	int				i;
 	idVec3			dir;

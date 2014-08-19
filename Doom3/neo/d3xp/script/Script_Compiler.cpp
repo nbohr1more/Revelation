@@ -1450,7 +1450,7 @@ idVarDef *idCompiler::GetExpression( int priority ) {
 		// save us from searching through the opcodes unneccesarily
 		return e;
 	}
-	while( 1 ) {
+	while( true ) {
 		if( ( priority == FUNCTION_PRIORITY ) && CheckToken( "(" ) ) {
 			return ParseFunctionCall( e );
 		}

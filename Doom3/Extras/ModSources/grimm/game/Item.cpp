@@ -456,34 +456,33 @@ idItem::ClientReceiveEvent
 */
 bool idItem::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
 	switch( event ) {
-	case EVENT_PICKUP: {
-		// play pickup sound
-		// grimm --> SND_CHANNEL_ITEM chokes somehow on items sometimes, let's see how it works out on the player entity.
-		//StartSound( "snd_acquire", SND_CHANNEL_ITEM, 0, false, NULL );
-		StartSound( "snd_acquire", SND_CHANNEL_ITEM, 0, true, NULL );
-		// grimm <--
-		// hide the model
-		Hide();
-		// remove the highlight shell
-		if( itemShellHandle != -1 ) {
-			gameRenderWorld->FreeEntityDef( itemShellHandle );
-			itemShellHandle = -1;
+		case EVENT_PICKUP: {
+			// play pickup sound
+			// grimm --> SND_CHANNEL_ITEM chokes somehow on items sometimes, let's see how it works out on the player entity.
+			StartSound( "snd_acquire", SND_CHANNEL_ITEM, 0, true, NULL );
+			// grimm <--
+			// hide the model
+			Hide();
+			// remove the highlight shell
+			if( itemShellHandle != -1 ) {
+				gameRenderWorld->FreeEntityDef( itemShellHandle );
+				itemShellHandle = -1;
+			}
+			return true;
 		}
-		return true;
+		case EVENT_RESPAWN: {
+			Event_Respawn();
+			return true;
+		}
+		case EVENT_RESPAWNFX: {
+			Event_RespawnFx();
+			return true;
+		}
+		default: {
+			break;
+		}
 	}
-	case EVENT_RESPAWN: {
-		Event_Respawn();
-		return true;
-	}
-	case EVENT_RESPAWNFX: {
-		Event_RespawnFx();
-		return true;
-	}
-	default: {
-		return idEntity::ClientReceiveEvent( event, time, msg );
-	}
-	}
-	//	return false;	// sikk - warning C4702: unreachable code
+	return idEntity::ClientReceiveEvent( event, time, msg );	// sikk - warning C4702: unreachable code
 }
 
 /*

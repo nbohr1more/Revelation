@@ -233,12 +233,11 @@ void idMoveable::Hide( void ) {
 	temp = spawnArgs.GetString( "fx_broken" );
 	if( *temp != '\0' ) {
 		idVec3 org = physicsObj.GetOrigin();
-		//org.z = org.z + 8.0f;
 		idEntityFx::StartFx( temp, &org, NULL, gameLocal.GetLocalPlayer(), false );
 	}
 	// grimm --> blood spray
 	last_spraytime = 0;
-	if( mtr_collide.c_str() != "" && last_spraytime < gameLocal.GetTime() ) {
+	if( idStr::Icmp( mtr_collide.c_str(), "" ) && last_spraytime < gameLocal.GetTime() ) {
 		idVec3 org = physicsObj.GetOrigin();
 		gameLocal.ProjectDecal( org, GetPhysics()->GetGravity(), 128.0f, true, 96.0f, mtr_collide.c_str() );
 	}
@@ -297,7 +296,6 @@ bool idMoveable::Collide( const trace_t &collision, const idVec3 &velocity ) {
 		float ranScale;
 		ranScale = 128.0f * ( 0.35 + gameLocal.random.CRandomFloat() );
 		last_spraytime = gameLocal.GetTime() + 1500;
-		//gameLocal.ProjectDecal( GetPhysics()->GetOrigin(), GetPhysics()->GetGravity(), 128.0f, true, ranScale, mtr_collide.c_str() );
 		gameLocal.ProjectDecal( GetPhysics()->GetOrigin(), -collision.c.normal, 128.0f, true, 96.0f, mtr_collide.c_str() );
 	}
 	// <-- grimm
@@ -477,8 +475,8 @@ idMoveable::Event_Activate
 ================
 */
 void idMoveable::Event_Activate( idEntity *activator ) {
-	float delay;
-	idVec3 init_velocity, init_avelocity;
+	float	delay;
+	idVec3	init_velocity, init_avelocity;
 	Show();
 	if( !spawnArgs.GetInt( "notPushable" ) ) {
 		physicsObj.EnableImpact();
@@ -967,21 +965,15 @@ void idExplodingBarrel::Killed( idEntity *inflictor, idEntity *attacker, int dam
 	ExplodingEffects( );
 	//FIXME: need to precache all the debris stuff here and in the projectiles
 	const idKeyValue *kv = spawnArgs.MatchPrefix( "def_debris" );
-	// bool first = true;
 	while( kv ) {
 		const idDict *debris_args = gameLocal.FindEntityDefDict( kv->GetValue(), false );
 		if( debris_args ) {
-			idEntity *ent;
-			idVec3 dir;
-			idDebris *debris;
-			//if ( first ) {
+			idEntity	*ent;
+			idVec3		dir;
+			idDebris	*debris;
 			dir = physicsObj.GetAxis()[1];
-			//	first = false;
-			//} else {
 			dir.x += gameLocal.random.CRandomFloat() * 4.0f;
 			dir.y += gameLocal.random.CRandomFloat() * 4.0f;
-			//dir.z = gameLocal.random.RandomFloat() * 8.0f;
-			//}
 			dir.Normalize();
 			gameLocal.SpawnEntityDef( *debris_args, &ent, false );
 			if( !ent || !ent->IsType( idDebris::Type ) ) {
@@ -1128,15 +1120,15 @@ idExplodingBarrel::ClientReceiveEvent
 */
 bool idExplodingBarrel::ClientReceiveEvent( int event, int time, const idBitMsg &msg ) {
 	switch( event ) {
-	case EVENT_EXPLODE: {
-		if( gameLocal.realClientTime - msg.ReadLong() < spawnArgs.GetInt( "explode_lapse", "1000" ) ) {
-			ExplodingEffects( );
+		case EVENT_EXPLODE: {
+			if( gameLocal.realClientTime - msg.ReadLong() < spawnArgs.GetInt( "explode_lapse", "1000" ) ) {
+				ExplodingEffects( );
+			}
+			return true;
 		}
-		return true;
+		default: {
+			break;
+		}
 	}
-	default: {
-		return idBarrel::ClientReceiveEvent( event, time, msg );
-	}
-	}
-	//	return false;	// sikk - warning C4702: unreachable code
+	return idBarrel::ClientReceiveEvent( event, time, msg );	// sikk - warning C4702: unreachable code
 }

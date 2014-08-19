@@ -1981,8 +1981,7 @@ void idActor::Damage( idEntity *inflictor, idEntity *attacker, const idVec3 &dir
 		return;
 	}
 	// Maledict is immume to the falling asteroids
-	if( !idStr::Icmp( GetEntityDefName(), "monster_boss_d3xp_maledict" ) &&
-			( !idStr::Icmp( damageDefName, "damage_maledict_asteroid" ) || !idStr::Icmp( damageDefName, "damage_maledict_asteroid_splash" ) ) ) {
+	if( !idStr::Icmp( GetEntityDefName(), "monster_boss_d3xp_maledict" ) &&	( !idStr::Icmp( damageDefName, "damage_maledict_asteroid" ) || !idStr::Icmp( damageDefName, "damage_maledict_asteroid_splash" ) ) ) {
 		return;
 	}
 #else

@@ -1363,51 +1363,49 @@ bool idGameLocal::DownloadRequest( const char *IP, const char *guid, const char 
 	if( cvarSystem->GetCVarInteger( "net_serverDownload" ) == 1 ) {
 		// 1: single URL redirect
 		if( !strlen( cvarSystem->GetCVarString( "si_serverURL" ) ) ) {
-			common->Warning( "si_serverURL not set" );
+			common->DWarning( "si_serverURL not set" );
 			return false;
 		}
 		idStr::snPrintf( urls, MAX_STRING_CHARS, "1;%s", cvarSystem->GetCVarString( "si_serverURL" ) );
 		return true;
-	} else {
-		// 2: table of pak URLs
-		// first token is the game pak if request, empty if not requested by the client
-		// there may be empty tokens for paks the server couldn't pinpoint - the order matters
-		idStr reply = "2;";
-		idStrList dlTable, pakList;
-		int i, j;
-		Tokenize( dlTable, cvarSystem->GetCVarString( "net_serverDlTable" ) );
-		Tokenize( pakList, paks );
-		for( i = 0; i < pakList.Num(); i++ ) {
-			if( i > 0 ) {
-				reply += ";";
-			}
-			if( pakList[ i ][ 0 ] == '\0' ) {
-				if( i == 0 ) {
-					// pak 0 will always miss when client doesn't ask for game bin
-					common->DPrintf( "no game pak request\n" );
-				} else {
-					common->DPrintf( "no pak %d\n", i );
-				}
-				continue;
-			}
-			for( j = 0; j < dlTable.Num(); j++ ) {
-				if( !fileSystem->FilenameCompare( pakList[ i ], dlTable[ j ] ) ) {
-					break;
-				}
-			}
-			if( j == dlTable.Num() ) {
-				common->Printf( "download for %s: pak not matched: %s\n", IP, pakList[ i ].c_str() );
+	}
+	// 2: table of pak URLs
+	// first token is the game pak if request, empty if not requested by the client
+	// there may be empty tokens for paks the server couldn't pinpoint - the order matters
+	idStr		reply = "2;";
+	idStrList	dlTable, pakList;
+	int			i, j;
+	Tokenize( dlTable, cvarSystem->GetCVarString( "net_serverDlTable" ) );
+	Tokenize( pakList, paks );
+	for( i = 0; i < pakList.Num(); i++ ) {
+		if( i > 0 ) {
+			reply += ";";
+		}
+		if( pakList[ i ][ 0 ] == '\0' ) {
+			if( i == 0 ) {
+				// pak 0 will always miss when client doesn't ask for game bin
+				common->DPrintf( "no game pak request\n" );
 			} else {
-				idStr url = cvarSystem->GetCVarString( "net_serverDlBaseURL" );
-				url.AppendPath( dlTable[ j ] );
-				reply += url;
-				common->DPrintf( "download for %s: %s\n", IP, url.c_str() );
+				common->DPrintf( "no pak %d\n", i );
+			}
+			continue;
+		}
+		for( j = 0; j < dlTable.Num(); j++ ) {
+			if( !fileSystem->FilenameCompare( pakList[ i ], dlTable[ j ] ) ) {
+				break;
 			}
 		}
-		idStr::Copynz( urls, reply, MAX_STRING_CHARS );
-		return true;
+		if( j == dlTable.Num() ) {
+			common->Printf( "download for %s: pak not matched: %s\n", IP, pakList[ i ].c_str() );
+		} else {
+			idStr url = cvarSystem->GetCVarString( "net_serverDlBaseURL" );
+			url.AppendPath( dlTable[ j ] );
+			reply += url;
+			common->DPrintf( "download for %s: %s\n", IP, url.c_str() );
+		}
 	}
-	return false;
+	idStr::Copynz( urls, reply, MAX_STRING_CHARS );
+	return true;
 }
 
 /*

@@ -199,8 +199,11 @@
     <PreBuildEvent />
     <ClCompile />
     <ClCompile />
+    <ClCompile />
+    <ClCompile />
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
+      <FloatingPointModel>Precise</FloatingPointModel>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>

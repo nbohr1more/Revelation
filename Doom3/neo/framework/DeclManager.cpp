@@ -1804,7 +1804,7 @@ bool idDeclLocal::ReplaceSourceFileText( void ) {
 		}
 		file->Read( buffer, oldFileLength );
 		fileSystem->CloseFile( file );
-		if( MD5_BlockChecksum( buffer, oldFileLength ) != sourceFile->checksum ) {
+		if( MD5_BlockChecksum( buffer, oldFileLength ) != static_cast<unsigned long>( sourceFile->checksum ) ) {
 			Mem_Free( buffer );
 			common->Warning( "The file %s has been modified outside of the engine.", GetFileName() );
 			return false;

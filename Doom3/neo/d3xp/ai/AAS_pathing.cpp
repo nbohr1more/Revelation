@@ -150,7 +150,7 @@ bool idAASLocal::WalkPathValid( int areaNum, const idVec3 &origin, int goalAreaN
 	farPlane.FitThroughPoint( goalOrigin );
 	curAreaNum = areaNum;
 	lastAreaNum = curAreaNum;
-	while( 1 ) {
+	while( true ) {
 		// find the furthest floor face split point on the path
 		if( !FloorEdgeSplitPoint( endPos, curAreaNum, pathPlane, frontPlane, false ) ) {
 			endPos = origin;

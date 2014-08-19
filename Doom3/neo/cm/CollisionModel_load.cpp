@@ -2734,8 +2734,6 @@ void idCollisionModelManagerLocal::FinishModel( cm_model_t *model ) {
 	// calculate edge normals
 	checkCount++;
 	CalculateEdgeNormals( model, model->node );
-	//common->Printf( "%s vertex hash spread is %d\n", model->name.c_str(), cm_vertexHash->GetSpread() );
-	//common->Printf( "%s edge hash spread is %d\n", model->name.c_str(), cm_edgeHash->GetSpread() );
 	// remove all unused vertices and edges
 	OptimizeArrays( model );
 	// get model bounds from brush and polygon bounds

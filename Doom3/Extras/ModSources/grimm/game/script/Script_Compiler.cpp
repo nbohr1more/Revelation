@@ -327,7 +327,6 @@ idCompiler::Divide
 ID_INLINE float idCompiler::Divide( float numerator, float denominator ) {
 	if( denominator == 0 ) {
 		Error( "Divide by zero" );
-		return 0;
 	}
 	return numerator / denominator;
 }
@@ -1028,10 +1027,9 @@ idVarDef *idCompiler::EmitFunctionParms( int op, idVarDef *func, int startarg, i
 			resultOp = OP_STORE_OBJ;
 			break;
 		default :
-			Error( "Invalid return type for function '%s'", func->Name() );
 			// shut up compiler
 			resultOp = OP_STORE_OBJ;
-			break;
+			Error( "Invalid return type for function '%s'", func->Name() );
 		}
 	}
 	if( returnType->Type() == ev_void ) {
@@ -1288,10 +1286,9 @@ idVarDef *idCompiler::GetTerm( void ) {
 			op = OP_COMP_F;
 			break;
 		default :
-			Error( "type mismatch for ~" );
 			// shut up compiler
 			op = OP_COMP_F;
-			break;
+			Error( "type mismatch for ~" );
 		}
 		return EmitOpcode( op, e, 0 );
 	}
@@ -1314,18 +1311,16 @@ idVarDef *idCompiler::GetTerm( void ) {
 			op = OP_NOT_ENT;
 			break;
 		case ev_function :
-			Error( "Invalid type for !" );
 			// shut up compiler
 			op = OP_NOT_F;
-			break;
+			Error( "Invalid type for !" );
 		case ev_object :
 			op = OP_NOT_ENT;
 			break;
 		default :
-			Error( "type mismatch for !" );
 			// shut up compiler
 			op = OP_NOT_F;
-			break;
+			Error( "type mismatch for !" );
 		}
 		return EmitOpcode( op, e, 0 );
 	}
@@ -1350,10 +1345,9 @@ idVarDef *idCompiler::GetTerm( void ) {
 				op = OP_NEG_V;
 				break;
 			default :
-				Error( "type mismatch for -" );
 				// shut up compiler
 				op = OP_NEG_F;
-				break;
+				Error( "type mismatch for -" );
 			}
 			return EmitOpcode( &opcodes[ op ], e, 0 );
 		}
@@ -1425,7 +1419,7 @@ idVarDef *idCompiler::GetExpression( int priority ) {
 		// save us from searching through the opcodes unneccesarily
 		return e;
 	}
-	while( 1 ) {
+	while( true ) {
 		if( ( priority == FUNCTION_PRIORITY ) && CheckToken( "(" ) ) {
 			return ParseFunctionCall( e );
 		}

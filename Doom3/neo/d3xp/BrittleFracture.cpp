@@ -896,7 +896,7 @@ void idBrittleFracture::Fracture_r( idFixedWinding &w ) {
 	idFixedWinding back;
 	idTraceModel trm;
 	idClipModel *clipModel;
-	while( 1 ) {
+	while( true ) {
 		origin = w.GetCenter();
 		w.GetPlane( windingPlane );
 		if( w.GetArea() < maxShardArea ) {
