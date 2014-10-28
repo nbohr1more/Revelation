@@ -127,12 +127,17 @@ void RB_ARB2_CreateDrawInteractions( const drawSurf_t *surf ) {
 	// perform setup here that will be constant for all interactions
 	GL_State( GLS_SRCBLEND_ONE | GLS_DSTBLEND_ONE | GLS_DEPTHMASK | backEnd.depthFunc );
 	// bind the vertex program
-	if( r_testARBProgram.GetBool() ) {
-		glBindProgramARB( GL_VERTEX_PROGRAM_ARB, VPROG_TEST );
-		glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, FPROG_TEST );
+	//custom light interaction ARB programs defined in material
+	if ( backEnd.vLight->lightShader->IsCustomLight() ) {    // custom light defined by material
+		qglBindProgramARB( GL_VERTEX_PROGRAM_ARB, newStage->vertexProgram );
+		qglBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, newStage->fragmentProgram );
 	} else {
-		glBindProgramARB( GL_VERTEX_PROGRAM_ARB, VPROG_INTERACTION );
-		glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, FPROG_INTERACTION );
+		if( r_testARBProgram.GetBool() ) {
+			glBindProgramARB( GL_VERTEX_PROGRAM_ARB, VPROG_TEST );
+			glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, FPROG_TEST );
+		} else {
+			glBindProgramARB( GL_VERTEX_PROGRAM_ARB, VPROG_INTERACTION );
+			glBindProgramARB( GL_FRAGMENT_PROGRAM_ARB, FPROG_INTERACTION );
 	}
 	glEnable( GL_VERTEX_PROGRAM_ARB );
 	glEnable( GL_FRAGMENT_PROGRAM_ARB );
