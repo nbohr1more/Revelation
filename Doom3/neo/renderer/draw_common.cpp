@@ -504,6 +504,11 @@ static void RB_STD_T_RenderShaderPassesStage1( const drawSurf_t *surf, const srf
 	if( r_skipNewAmbient.GetBool() ) {
 		return;
 	}
+	 // nbohr1more skip ARB shaders for custom lights so that they are not processed twice
+	if ( backEnd.vLight->lightShader->IsCustomLight() ) {
+		return;
+	}
+
 	newShaderStage_t *newStage = pStage->newStage;
 	glColorPointer( 4, GL_UNSIGNED_BYTE, sizeof( idDrawVert ), ( const GLvoid * )&ac->color );
 	glVertexAttribPointerARB( 9, 3, GL_FLOAT, false, sizeof( idDrawVert ), ac->tangents[0].ToFloatPtr() );
