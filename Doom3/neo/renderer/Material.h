@@ -506,6 +506,11 @@ public:
 		return ambientLight;
 	}
 	
+	// custom light which allows arbitrary ARB program definition in the material
+	bool				IsCustomLight() const {
+		return customLight;
+	}
+	
 	// implicitly no-shadows lights (ambients, fogs, etc) will never cast shadows
 	// but individual light entities can also override this value
 	bool				LightCastsShadows() const {
