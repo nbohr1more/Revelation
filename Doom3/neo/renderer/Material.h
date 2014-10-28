@@ -752,6 +752,7 @@ private:
 	bool				fogLight;
 	bool				blendLight;
 	bool				ambientLight;
+	bool				customLight;                    // arbitrary material defined interaction program
 	bool				unsmoothedTangents;
 	bool				hasSubview;			// mirror, remote render, etc
 	bool				allowOverlays;
